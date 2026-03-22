@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Income Tax Act — TrustFactON</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    :root { --act-color: #D97706; }
+    .slab-table { width:100%; border-collapse:collapse; margin-top:20px; font-size:0.88rem; }
+    .slab-table th { background:var(--navy); color:white; padding:10px 16px; text-align:left; }
+    .slab-table td { padding:10px 16px; border-bottom:1px solid var(--gray-200); }
+    .slab-table tr:nth-child(even) td { background:var(--gray-50); }
+    .slab-table tr:hover td { background:#FEF3C7; }
+    .highlight-box {
+      background: #FEF3C7;
+      border-left: 4px solid var(--amber);
+      padding: 16px 20px;
+      border-radius: 0 10px 10px 0;
+      margin: 20px 0;
+      font-size:0.9rem;
+    }
+    .regime-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:24px; }
+    .regime-card { background:white; border-radius:var(--radius); padding:20px; border:2px solid var(--gray-200); }
+    .regime-card.active { border-color:var(--green); }
+    .regime-card h4 { color:var(--navy); margin-bottom:10px; }
+    .regime-card ul { padding-left:16px; font-size:0.85rem; color:var(--gray-600); }
+    .regime-card li { margin-bottom:6px; }
+    @media(max-width:600px){ .regime-grid{grid-template-columns:1fr;} }
+  </style>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+
+<!-- HERO -->
+<section class="act-hero">
+  <div class="container">
+    <div class="act-hero-badge">📊 Direct Taxation</div>
+    <h1>Income Tax Act <span>1961 / 2025</span></h1>
+    <p>Taxation of income from salary, business, profession, capital gains, and other sources for individuals, companies, HUFs, and other entities.</p>
+    <div class="act-hero-stats">
+      <div class="act-hero-stat"><span class="val">298</span><span class="lbl">Sections (IT Act 2025)</span></div>
+      <div class="act-hero-stat"><span class="val">1961</span><span class="lbl">Year of Enactment</span></div>
+      <div class="act-hero-stat"><span class="val">Apr 2026</span><span class="lbl">IT Act 2025 Effective</span></div>
+      <div class="act-hero-stat"><span class="val">CBDT</span><span class="lbl">Administering Body</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- OVERVIEW -->
+<section class="act-section">
+  <div class="container">
+    <div class="act-section-label">Overview</div>
+    <h2>What is the Income Tax Act?</h2>
+    <p style="color:var(--gray-600);max-width:760px;margin-bottom:20px">
+      The Income Tax Act governs the levy and collection of income tax in India. The original 1961 Act has been replaced by the <strong>Income Tax Act 2025</strong>, which takes effect from April 1, 2026 for AY 2026-27 onwards. The 2025 Act retains the substantive law but restructures it with simpler language, new section numbering, and a cleaner layout across 536 clauses and 16 schedules.
+    </p>
+    <div class="highlight-box">
+      ⚠️ <strong>Important:</strong> For AY 2025-26 (FY 2024-25), the <em>Income Tax Act 1961</em> applies. The new <em>Income Tax Act 2025</em> applies from AY 2026-27 (FY 2025-26). Many section numbers have changed — e.g., Section 80C is now Section 123, Section 80D is Section 126.
+    </div>
+
+    <h3 style="color:var(--navy);margin-top:32px;margin-bottom:16px">Tax Regimes — FY 2025-26</h3>
+    <div class="regime-grid">
+      <div class="regime-card active">
+        <h4>✅ New Tax Regime (Default)</h4>
+        <p style="font-size:0.82rem;color:var(--green);font-weight:600;margin-bottom:8px">Default from FY 2023-24 onwards</p>
+        <ul>
+          <li>Lower slab rates, no most deductions</li>
+          <li>Standard deduction: ₹75,000 (salary)</li>
+          <li>Rebate u/s 87A: Nil tax up to ₹12 lakh net income</li>
+          <li>No HRA, 80C, 80D, LTA exemptions</li>
+          <li>NPS employer contribution allowed</li>
+        </ul>
+      </div>
+      <div class="regime-card">
+        <h4>Old Tax Regime (Opt-in)</h4>
+        <p style="font-size:0.82rem;color:var(--gray-400);font-weight:600;margin-bottom:8px">Opt-in required via ITR / Form 10-IEA</p>
+        <ul>
+          <li>Higher slab rates but 70+ deductions available</li>
+          <li>80C up to ₹1.5L, 80D, HRA, LTA, NPS</li>
+          <li>Home loan interest deduction (Sec 24)</li>
+          <li>Loss from HP against salary income</li>
+          <li>Standard deduction: ₹50,000</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 style="color:var(--navy);margin-top:32px;margin-bottom:8px">New Tax Regime Slabs — FY 2025-26 (AY 2026-27)</h3>
+    <table class="slab-table">
+      <thead><tr><th>Income Range</th><th>Tax Rate</th><th>Effective Tax</th></tr></thead>
+      <tbody>
+        <tr><td>Up to ₹4,00,000</td><td>Nil</td><td>₹0</td></tr>
+        <tr><td>₹4,00,001 – ₹8,00,000</td><td>5%</td><td>Up to ₹20,000</td></tr>
+        <tr><td>₹8,00,001 – ₹12,00,000</td><td>10%</td><td>Up to ₹40,000</td></tr>
+        <tr><td>₹12,00,001 – ₹16,00,000</td><td>15%</td><td>Up to ₹60,000</td></tr>
+        <tr><td>₹16,00,001 – ₹20,00,000</td><td>20%</td><td>Up to ₹80,000</td></tr>
+        <tr><td>₹20,00,001 – ₹24,00,000</td><td>25%</td><td>Up to ₹1,00,000</td></tr>
+        <tr><td>Above ₹24,00,000</td><td>30%</td><td>—</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:0.8rem;color:var(--gray-400);margin-top:8px">+ 4% Health & Education Cess. Surcharge applicable above ₹50L. Rebate u/s 87A: Nil tax for income ≤ ₹12L (net taxable) under New Regime.</p>
+  </div>
+</section>
+
+<!-- KEY CHAPTERS -->
+<section class="act-section" style="background:var(--gray-50)">
+  <div class="container">
+    <div class="act-section-label">Structure</div>
+    <h2>Key Chapters & Heads of Income</h2>
+    <div class="accordion">
+      <div class="accordion-item">
+        <div class="accordion-header">
+          <div class="accordion-title"><div class="accordion-num">I</div>Salary Income</div>
+          <span class="accordion-chevron">▼</span>
+        </div>
+        <div class="accordion-body">
+          Taxable salary includes basic pay, allowances (HRA, LTA, special), perquisites, and retirement benefits. Under IT Act 2025, these are covered in Chapter IV (Sections 17-24 equivalent).
+          <ul>
+            <li><strong>Standard Deduction:</strong> ₹75,000 (New Regime) / ₹50,000 (Old Regime)</li>
+            <li><strong>HRA Exemption:</strong> Available only under Old Regime — least of actual HRA, 50%/40% of basic, or rent paid minus 10% of basic</li>
+            <li><strong>Gratuity:</strong> Exempt up to ₹20 lakh for government employees; ₹20L for others (per Payment of Gratuity Act ceiling)</li>
+            <li><strong>Leave Encashment:</strong> Fully exempt on retirement for government employees; up to ₹25 lakh for others</li>
+          </ul>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header">
+          <div class="accordion-title"><div class="accordion-num">II</div>House Property Income</div>
+          <span class="accordion-chevron">▼</span>
+        </div>
+        <div class="accordion-body">
+          Annual value of property owned is taxable. Deductions allowed: 30% standard deduction, municipal taxes paid, and interest on home loan.
+          <ul>
+            <li><strong>Self-occupied property:</strong> Annual value = Nil; interest deduction up to ₹2L (Old Regime only)</li>
+            <li><strong>Let-out property:</strong> Actual rent or expected rent, whichever is higher</li>
+            <li><strong>Loss from HP:</strong> Under New Regime, loss cannot be set off against salary income</li>
+            <li><strong>Pre-construction interest:</strong> 1/5th allowed for 5 years from completion year</li>
+          </ul>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header">
+          <div class="accordion-title"><div class="accordion-num">III</div>Business & Profession (PGBP)</div>
+          <span class="accordion-chevron">▼</span>
+        </div>
+        <div class="accordion-body">
+          Profits and gains of business or profession are taxable after allowable deductions. Covers sole proprietors, partnerships, companies, and professionals.
+          <ul>
+            <li><strong>Presumptive taxation (Sec 44AD):</strong> 8% of turnover for businesses with turnover up to ₹3 crore (6% if digital receipts)</li>
+            <li><strong>Professionals (Sec 44ADA):</strong> 50% of gross receipts as deemed profit for receipts up to ₹75 lakh</li>
+            <li><strong>Depreciation:</strong> Block asset system; rates from 5% to 40%</li>
+            <li><strong>Deductions:</strong> Revenue expenses, interest, rent, employee costs, repairs</li>
+          </ul>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header">
+          <div class="accordion-title"><div class="accordion-num">IV</div>Capital Gains</div>
+          <span class="accordion-chevron">▼</span>
+        </div>
+        <div class="accordion-body">
+          Gains from sale of capital assets — listed shares, real estate, unlisted securities, MFs, etc.
+          <ul>
+            <li><strong>LTCG on listed equity (>12 months):</strong> 12.5% above ₹1.25L (from Budget 2024; earlier 10% above ₹1L)</li>
+            <li><strong>STCG on listed equity (≤12 months):</strong> 20% (from Budget 2024; earlier 15%)</li>
+            <li><strong>LTCG on property (>24 months):</strong> 12.5% without indexation (from Budget 2024)</li>
+            <li><strong>STCG on property:</strong> Taxed as per slab</li>
+            <li><strong>Reinvestment exemptions:</strong> Sections 54, 54F, 54EC for residential property reinvestment</li>
+          </ul>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header">
+          <div class="accordion-title"><div class="accordion-num">V</div>TDS & Advance Tax</div>
+          <span class="accordion-chevron">▼</span>
+        </div>
+        <div class="accordion-body">
+          Tax Deducted at Source (TDS) and Tax Collected at Source (TCS) are withholding mechanisms ensuring tax collected at source.
+          <ul>
+            <li><strong>Salary TDS (Sec 192):</strong> Deducted at applicable slab rates</li>
+            <li><strong>Bank interest TDS (Sec 194A):</strong> 10% if interest > ₹50,000 (senior citizens) / ₹40,000</li>
+            <li><strong>Rent TDS (Sec 194I):</strong> 10% if annual rent > ₹2.4L</li>
+            <li><strong>Advance Tax:</strong> Payable in 4 instalments — 15% by Jun 15, 45% by Sep 15, 75% by Dec 15, 100% by Mar 15</li>
+            <li><strong>Form 26AS / AIS:</strong> Annual tax credit statement — verify before filing ITR</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KEY PROVISIONS -->
+<section class="act-section">
+  <div class="container">
+    <div class="act-section-label">Key Provisions</div>
+    <h2>Important Sections to Know</h2>
+    <div class="provisions-grid">
+      <div class="provision-card">
+        <div class="p-section">Sec 123 (80C)</div>
+        <h4>Life & Investment Deductions</h4>
+        <p>Up to ₹1.5L deduction for LIC, PPF, ELSS, NSC, home loan principal, tuition fees — <em>Old Regime only</em></p>
+      </div>
+      <div class="provision-card">
+        <div class="p-section">Sec 126 (80D)</div>
+        <h4>Health Insurance Premium</h4>
+        <p>Up to ₹25,000 (₹50,000 for senior citizens) for health insurance premiums — <em>Old Regime only</em></p>
+      </div>
+      <div class="provision-card">
+        <div class="p-section">Sec 139</div>
+        <h4>Return Filing</h4>
+        <p>ITR due July 31 (non-audit) / Oct 31 (audit). Updated return (ITR-U) allowed within 2 years of AY end.</p>
+      </div>
+      <div class="provision-card">
+        <div class="p-section">Sec 148A</div>
+        <h4>Reassessment</h4>
+        <p>Notice before reassessment must be given with opportunity to respond. Limitation: 3 years (income escaped ≤ ₹50L) / 10 years (> ₹50L).</p>
+      </div>
+      <div class="provision-card">
+        <div class="p-section">Sec 44AB</div>
+        <h4>Tax Audit</h4>
+        <p>Mandatory if business turnover > ₹1 crore (₹10 crore if 95% digital). Professionals: gross receipts > ₹50 lakh.</p>
+      </div>
+      <div class="provision-card">
+        <div class="p-section">Sec 271AAC</div>
+        <h4>Undisclosed Income Penalty</h4>
+        <p>60% penalty on undisclosed income found during search; 30% if disclosed voluntarily before assessment.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AI CHAT -->
+<section class="ai-section">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:40px">
+      <span class="section-label" style="color:var(--amber)">AI Assistant</span>
+      <h2 class="section-title">Ask About Income Tax</h2>
+      <p class="section-lead" style="margin:0 auto">Get answers on TDS rates, advance tax, capital gains, and more.</p>
+    </div>
+    <div class="chat-container" id="chat-widget" data-act="Income Tax Act 1961 / Income Tax Act 2025">
+      <div class="chat-header">
+        <div class="chat-avatar">TF</div>
+        <div class="chat-header-info">
+          <h4>Income Tax AI Assistant</h4>
+          <span><span class="online-dot"></span>Specialised in Income Tax Act 1961 & IT Act 2025</span>
+        </div>
+      </div>
+      <div class="chat-messages"></div>
+      <div class="chat-suggestions">
+        <button class="chat-suggest-btn">What are the new tax slabs for FY 2025-26?</button>
+        <button class="chat-suggest-btn">TDS on salary — which form to file?</button>
+        <button class="chat-suggest-btn">LTCG on listed shares — tax rate?</button>
+        <button class="chat-suggest-btn">Difference between 44AD and 44ADA?</button>
+      </div>
+      <div class="chat-input-row">
+        <textarea class="chat-input" rows="1" placeholder="Ask about Income Tax — slabs, TDS, deductions, filing..."></textarea>
+        <button class="chat-send-btn">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="newsletter-section">
+  <div class="container">
+    <div class="newsletter-inner">
+      <h2>Tax Updates Every Week</h2>
+      <p>Budget amendments, CBDT circulars, and compliance reminders — straight to your inbox.</p>
+      <div class="newsletter-form">
+        <input type="email" id="nl-email" placeholder="your@email.com">
+        <button onclick="window.open('https://trustfacton.beehiiv.com/subscribe','_blank')">Subscribe →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+<script src="components.js"></script>
+<script src="chat-widget.js"></script>
+</body>
+</html>
