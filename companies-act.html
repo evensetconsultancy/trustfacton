@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Companies Act 2013 — TrustFactON</title>
+  <link rel="stylesheet" href="style.css">
+  <style>:root{--act-color:#1A3A6B;}</style>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+
+<!-- HERO -->
+<section class="act-hero">
+  <div class="container">
+    <div class="act-hero-badge">🏢 Corporate Law</div>
+    <h1>Companies Act <span>2013</span></h1>
+    <p>Governs incorporation, management, governance, and winding up of companies in India. Select any topic below.</p>
+    <div class="act-hero-stats">
+      <div class="act-hero-stat"><span class="val">470</span><span class="lbl">Sections</span></div>
+      <div class="act-hero-stat"><span class="val">MCA21</span><span class="lbl">Filing Portal</span></div>
+      <div class="act-hero-stat"><span class="val">NCLT</span><span class="lbl">Adjudicating Authority</span></div>
+      <div class="act-hero-stat"><span class="val">7</span><span class="lbl">Schedules</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- TOPIC SELECTOR -->
+<div class="topic-bar">
+  <div class="container">
+    <div class="topic-bar-inner">
+      <span class="topic-bar-label">📌 Select Topic:</span>
+      <div class="topic-select-wrap">
+        <select class="topic-select" id="topicSelect" onchange="showTopic(this.value)">
+          <option value="">— Choose a topic —</option>
+          <option value="types">🏢 Types of Companies</option>
+          <option value="incorporation">📝 Incorporation Process</option>
+          <option value="directors">👤 Directors & KMPs</option>
+          <option value="meetings">📅 Board & General Meetings</option>
+          <option value="audit">📊 Audit & Accounts</option>
+          <option value="csr">🌱 CSR Obligations</option>
+          <option value="filings">📋 Annual MCA Filings</option>
+          <option value="penalties">⚠️ Penalties & Offences</option>
+          <option value="official">🔗 Official Government Links</option>
+          <option value="chat">🤖 Ask AI Assistant</option>
+        </select>
+        <span class="topic-select-arrow">▼</span>
+      </div>
+      <div class="topic-chips">
+        <button class="topic-chip" onclick="showTopic('types')">🏢 Co Types</button>
+        <button class="topic-chip" onclick="showTopic('directors')">👤 Directors</button>
+        <button class="topic-chip" onclick="showTopic('filings')">📋 Filings</button>
+        <button class="topic-chip" onclick="showTopic('audit')">📊 Audit</button>
+        <button class="topic-chip" onclick="showTopic('csr')">🌱 CSR</button>
+        <button class="topic-chip" onclick="showTopic('chat')">🤖 Ask AI</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PANELS -->
+<div id="panels-wrap" style="background:var(--cream);min-height:500px;">
+  <div class="container">
+
+    <!-- WELCOME -->
+    <div class="topic-panel active" id="panel-welcome">
+      <div class="welcome-panel">
+        <div class="welcome-icon">🏢</div>
+        <h2>What would you like to know about Companies Act?</h2>
+        <p>Pick a topic from the dropdown above — or click a quick topic below.</p>
+        <div class="quick-topics-grid">
+          <div class="quick-topic-card" onclick="showTopic('types')"><div class="icon">🏢</div><div><h4>Types of Companies</h4><p>Tap to explore</p></div></div>
+          <div class="quick-topic-card" onclick="showTopic('incorporation')"><div class="icon">📝</div><div><h4>Incorporation Process</h4><p>Tap to explore</p></div></div>
+          <div class="quick-topic-card" onclick="showTopic('directors')"><div class="icon">👤</div><div><h4>Directors & KMPs</h4><p>Tap to explore</p></div></div>
+          <div class="quick-topic-card" onclick="showTopic('meetings')"><div class="icon">📅</div><div><h4>Board & General Meetings</h4><p>Tap to explore</p></div></div>
+          <div class="quick-topic-card" onclick="showTopic('audit')"><div class="icon">📊</div><div><h4>Audit & Accounts</h4><p>Tap to explore</p></div></div>
+          <div class="quick-topic-card" onclick="showTopic('csr')"><div class="icon">🌱</div><div><h4>CSR Obligations</h4><p>Tap to explore</p></div></div>
+          <div class="quick-topic-card" onclick="showTopic('filings')"><div class="icon">📋</div><div><h4>Annual MCA Filings</h4><p>Tap to explore</p></div></div>
+          <div class="quick-topic-card" onclick="showTopic('penalties')"><div class="icon">⚠️</div><div><h4>Penalties & Offences</h4><p>Tap to explore</p></div></div>
+          <div class="quick-topic-card" onclick="showTopic('official')"><div class="icon">🔗</div><div><h4>Official Links</h4><p>Government portals</p></div></div>
+          <div class="quick-topic-card" onclick="showTopic('chat')"><div class="icon">🤖</div><div><h4>Ask AI</h4><p>Instant answers</p></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PLACEHOLDER TOPIC PANELS (content injected by AI on demand) -->
+        <div class="topic-panel" id="panel-types">
+      <div class="panel-header">
+        <span class="panel-label">Types of Companies</span>
+        <h2>Types of Companies</h2>
+        <p>Key provisions, thresholds, and compliance requirements under Companies Act 2013.</p>
+      </div>
+      <div class="info-box navy">
+        <strong>Quick Reference</strong>
+        Use the AI assistant below for detailed answers on Types of Companies under Companies Act. Or visit the official government portal using the "Official Links" tab above.
+      </div>
+      <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Types of Companies under Companies Act 2013';window._tfChat.send();}},300)">Ask AI about Types of Companies →</button>
+        <a href="#" onclick="showTopic('official');return false" class="btn btn-navy">Official Sources →</a>
+      </div>
+    </div>
+
+    <div class="topic-panel" id="panel-incorporation">
+      <div class="panel-header">
+        <span class="panel-label">Incorporation Process</span>
+        <h2>Incorporation Process</h2>
+        <p>Key provisions, thresholds, and compliance requirements under Companies Act 2013.</p>
+      </div>
+      <div class="info-box navy">
+        <strong>Quick Reference</strong>
+        Use the AI assistant below for detailed answers on Incorporation Process under Companies Act. Or visit the official government portal using the "Official Links" tab above.
+      </div>
+      <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Incorporation Process under Companies Act 2013';window._tfChat.send();}},300)">Ask AI about Incorporation Process →</button>
+        <a href="#" onclick="showTopic('official');return false" class="btn btn-navy">Official Sources →</a>
+      </div>
+    </div>
+
+    <div class="topic-panel" id="panel-directors">
+      <div class="panel-header">
+        <span class="panel-label">Directors & KMPs</span>
+        <h2>Directors & KMPs</h2>
+        <p>Key provisions, thresholds, and compliance requirements under Companies Act 2013.</p>
+      </div>
+      <div class="info-box navy">
+        <strong>Quick Reference</strong>
+        Use the AI assistant below for detailed answers on Directors & KMPs under Companies Act. Or visit the official government portal using the "Official Links" tab above.
+      </div>
+      <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Directors & KMPs under Companies Act 2013';window._tfChat.send();}},300)">Ask AI about Directors & KMPs →</button>
+        <a href="#" onclick="showTopic('official');return false" class="btn btn-navy">Official Sources →</a>
+      </div>
+    </div>
+
+    <div class="topic-panel" id="panel-meetings">
+      <div class="panel-header">
+        <span class="panel-label">Board & General Meetings</span>
+        <h2>Board & General Meetings</h2>
+        <p>Key provisions, thresholds, and compliance requirements under Companies Act 2013.</p>
+      </div>
+      <div class="info-box navy">
+        <strong>Quick Reference</strong>
+        Use the AI assistant below for detailed answers on Board & General Meetings under Companies Act. Or visit the official government portal using the "Official Links" tab above.
+      </div>
+      <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Board & General Meetings under Companies Act 2013';window._tfChat.send();}},300)">Ask AI about Board & General Meetings →</button>
+        <a href="#" onclick="showTopic('official');return false" class="btn btn-navy">Official Sources →</a>
+      </div>
+    </div>
+
+    <div class="topic-panel" id="panel-audit">
+      <div class="panel-header">
+        <span class="panel-label">Audit & Accounts</span>
+        <h2>Audit & Accounts</h2>
+        <p>Key provisions, thresholds, and compliance requirements under Companies Act 2013.</p>
+      </div>
+      <div class="info-box navy">
+        <strong>Quick Reference</strong>
+        Use the AI assistant below for detailed answers on Audit & Accounts under Companies Act. Or visit the official government portal using the "Official Links" tab above.
+      </div>
+      <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Audit & Accounts under Companies Act 2013';window._tfChat.send();}},300)">Ask AI about Audit & Accounts →</button>
+        <a href="#" onclick="showTopic('official');return false" class="btn btn-navy">Official Sources →</a>
+      </div>
+    </div>
+
+    <div class="topic-panel" id="panel-csr">
+      <div class="panel-header">
+        <span class="panel-label">CSR Obligations</span>
+        <h2>CSR Obligations</h2>
+        <p>Key provisions, thresholds, and compliance requirements under Companies Act 2013.</p>
+      </div>
+      <div class="info-box navy">
+        <strong>Quick Reference</strong>
+        Use the AI assistant below for detailed answers on CSR Obligations under Companies Act. Or visit the official government portal using the "Official Links" tab above.
+      </div>
+      <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain CSR Obligations under Companies Act 2013';window._tfChat.send();}},300)">Ask AI about CSR Obligations →</button>
+        <a href="#" onclick="showTopic('official');return false" class="btn btn-navy">Official Sources →</a>
+      </div>
+    </div>
+
+    <div class="topic-panel" id="panel-filings">
+      <div class="panel-header">
+        <span class="panel-label">Annual MCA Filings</span>
+        <h2>Annual MCA Filings</h2>
+        <p>Key provisions, thresholds, and compliance requirements under Companies Act 2013.</p>
+      </div>
+      <div class="info-box navy">
+        <strong>Quick Reference</strong>
+        Use the AI assistant below for detailed answers on Annual MCA Filings under Companies Act. Or visit the official government portal using the "Official Links" tab above.
+      </div>
+      <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Annual MCA Filings under Companies Act 2013';window._tfChat.send();}},300)">Ask AI about Annual MCA Filings →</button>
+        <a href="#" onclick="showTopic('official');return false" class="btn btn-navy">Official Sources →</a>
+      </div>
+    </div>
+
+    <div class="topic-panel" id="panel-penalties">
+      <div class="panel-header">
+        <span class="panel-label">Penalties & Offences</span>
+        <h2>Penalties & Offences</h2>
+        <p>Key provisions, thresholds, and compliance requirements under Companies Act 2013.</p>
+      </div>
+      <div class="info-box navy">
+        <strong>Quick Reference</strong>
+        Use the AI assistant below for detailed answers on Penalties & Offences under Companies Act. Or visit the official government portal using the "Official Links" tab above.
+      </div>
+      <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Penalties & Offences under Companies Act 2013';window._tfChat.send();}},300)">Ask AI about Penalties & Offences →</button>
+        <a href="#" onclick="showTopic('official');return false" class="btn btn-navy">Official Sources →</a>
+      </div>
+    </div>
+
+    <!-- OFFICIAL LINKS PANEL -->
+    <div class="topic-panel" id="panel-official">
+      <div class="panel-header">
+        <span class="panel-label">Official Government Sources</span>
+        <h2>Direct Links to Official Portals</h2>
+        <p>All information on this page is based on these official sources. Visit them for the most current and complete data.</p>
+      </div>
+      <div class="official-links">
+        <div class="official-links-grid">
+          <a href="https://www.mca.gov.in" target="_blank" class="official-link">MCA Portal <span class="ext">↗</span></a>
+          <a href="https://www.mca.gov.in/content/mca/global/en/mca/e-filing/e-filing.html" target="_blank" class="official-link">MCA E-Filing <span class="ext">↗</span></a>
+          <a href="https://www.mca.gov.in/content/mca/global/en/acts-rules/ebooks/acts.html" target="_blank" class="official-link">Companies Act Text <span class="ext">↗</span></a>
+          <a href="https://www.mca.gov.in/content/mca/global/en/data-and-reports/compliance.html" target="_blank" class="official-link">Compliance <span class="ext">↗</span></a>
+        </div>
+      </div>
+      <div class="info-box navy" style="margin-top:24px">
+        <strong>About TrustFactON</strong>
+        TrustFactON summarises and simplifies information from these official sources. For the complete text of law, notifications, and circulars, always refer to the official government portals linked above. Built by Evenset Consultancy Services, Bengaluru.
+      </div>
+    </div>
+
+    <!-- AI CHAT PANEL -->
+    <div class="topic-panel" id="panel-chat">
+      <div class="panel-header">
+        <span class="panel-label">AI Assistant</span>
+        <h2>Ask About Companies Act</h2>
+        <p>Get instant answers powered by Google Gemini — free for all users, no login required.</p>
+      </div>
+      <div class="chat-container" id="chat-widget" data-act="Companies Act 2013 and MCA Rules">
+        <div class="chat-header">
+          <div class="chat-avatar">TF</div>
+          <div class="chat-header-info">
+            <h4>Companies Act AI Assistant</h4>
+            <span><span class="online-dot"></span>Powered by Google Gemini · Free · No login needed</span>
+          </div>
+        </div>
+        <div class="chat-messages"></div>
+        <div class="chat-suggestions">
+          <button class="chat-suggest-btn">Due date for MGT-7 annual return?</button>
+          <button class="chat-suggest-btn">What is director disqualification u/s 164?</button>
+          <button class="chat-suggest-btn">CSR applicability thresholds?</button>
+          <button class="chat-suggest-btn">OPC vs Pvt Ltd — key differences?</button>
+        </div>
+        <div class="chat-input-row">
+          <textarea class="chat-input" rows="1" placeholder="Ask anything about Companies Act..."></textarea>
+          <button class="chat-send-btn"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- NEWSLETTER -->
+<section class="newsletter-section">
+  <div class="container">
+    <div class="newsletter-inner">
+      <h2>Stay Updated on Companies Act</h2>
+      <p>Law changes, circulars, and compliance alerts — weekly from TrustFactON.</p>
+      <div class="newsletter-form">
+        <input type="email" placeholder="your@email.com">
+        <button onclick="window.open('https://trustfacton.beehiiv.com/subscribe','_blank')">Subscribe →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+<script src="components.js"></script>
+<script src="chat-widget.js"></script>
+</body>
+</html>

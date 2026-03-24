@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FEMA 1999 — TrustFactON</title>
+  <link rel="stylesheet" href="style.css">
+  <style>:root{--act-color:#DC2626;}</style>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+
+<!-- HERO -->
+<section class="act-hero">
+  <div class="container">
+    <div class="act-hero-badge">💱 Foreign Exchange</div>
+    <h1>FEMA <span>1999</span></h1>
+    <p>Foreign Exchange Management Act — facilitates external trade and regulates cross-border capital transactions. Select any topic below.</p>
+    <div class="act-hero-stats">
+      <div class="act-hero-stat"><span class="val">1999</span><span class="lbl">Year Enacted</span></div>
+      <div class="act-hero-stat"><span class="val">RBI</span><span class="lbl">Administering Body</span></div>
+      <div class="act-hero-stat"><span class="val">ED</span><span class="lbl">Enforcement Directorate</span></div>
+      <div class="act-hero-stat"><span class="val">FIRMS</span><span class="lbl">Reporting Portal</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- TOPIC SELECTOR -->
+<div class="topic-bar">
+  <div class="container">
+    <div class="topic-bar-inner">
+      <span class="topic-bar-label">📌 Select Topic:</span>
+      <div class="topic-select-wrap">
+        <select class="topic-select" id="topicSelect" onchange="showTopic(this.value)">
+          <option value="">— Choose a topic —</option>
+          <option value="overview">📋 FEMA Overview</option>
+          <option value="fdi">📥 FDI — Inward Investment</option>
+          <option value="odi">📤 ODI — Overseas Investment</option>
+          <option value="lrs">💳 LRS — Remittance Scheme</option>
+          <option value="current">💱 Current Account Transactions</option>
+          <option value="reporting">📝 Reporting Requirements</option>
+          <option value="penalties">⚠️ Penalties & Compounding</option>
+          <option value="official">🔗 Official Government Links</option>
+          <option value="chat">🤖 Ask AI Assistant</option>
+        </select>
+        <span class="topic-select-arrow">▼</span>
+      </div>
+      <div class="topic-chips">
+        <button class="topic-chip" onclick="showTopic('fdi')">📥 FDI</button>
+        <button class="topic-chip" onclick="showTopic('odi')">📤 ODI</button>
+        <button class="topic-chip" onclick="showTopic('lrs')">💳 LRS</button>
+        <button class="topic-chip" onclick="showTopic('reporting')">📝 Reporting</button>
+        <button class="topic-chip" onclick="showTopic('penalties')">⚠️ Penalties</button>
+        <button class="topic-chip" onclick="showTopic('chat')">🤖 Ask AI</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PANELS -->
+<div id="panels-wrap" style="background:var(--cream);min-height:500px;">
+  <div class="container">
+
+    <!-- WELCOME -->
+    <div class="topic-panel active" id="panel-welcome">
+      <div class="welcome-panel">
+        <div class="welcome-icon">💱</div>
+        <h2>What would you like to know about FEMA?</h2>
+        <p>Pick a topic from the dropdown above — or click a quick topic below.</p>
+        <div class="quick-topics-grid">
+          <div class="quick-topic-card" onclick="showTopic('overview')"><div class="icon">📋</div><div><h4>FEMA Overview</h4><p>Tap to explore</p></div></div>
+          <div class="quick-topic-card" onclick="showTopic('fdi')"><div class="icon">📥</div><div><h4>FDI — Inward Investment</h4><p>Tap to explore</p></div></div>
+          <div class="quick-topic-card" onclick="showTopic('odi')"><div class="icon">📤</div><div><h4>ODI — Overseas Investment</h4><p>Tap to explore</p></div></div>
+          <div class="quick-topic-card" onclick="showTopic('lrs')"><div class="icon">💳</div><div><h4>LRS — Remittance Scheme</h4><p>Tap to explore</p></div></div>
+          <div class="quick-topic-card" onclick="showTopic('current')"><div class="icon">💱</div><div><h4>Current Account Transactions</h4><p>Tap to explore</p></div></div>
+          <div class="quick-topic-card" onclick="showTopic('reporting')"><div class="icon">📝</div><div><h4>Reporting Requirements</h4><p>Tap to explore</p></div></div>
+          <div class="quick-topic-card" onclick="showTopic('penalties')"><div class="icon">⚠️</div><div><h4>Penalties & Compounding</h4><p>Tap to explore</p></div></div>
+          <div class="quick-topic-card" onclick="showTopic('official')"><div class="icon">🔗</div><div><h4>Official Links</h4><p>Government portals</p></div></div>
+          <div class="quick-topic-card" onclick="showTopic('chat')"><div class="icon">🤖</div><div><h4>Ask AI</h4><p>Instant answers</p></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PLACEHOLDER TOPIC PANELS (content injected by AI on demand) -->
+        <div class="topic-panel" id="panel-overview">
+      <div class="panel-header">
+        <span class="panel-label">FEMA Overview</span>
+        <h2>FEMA Overview</h2>
+        <p>Key provisions, thresholds, and compliance requirements under FEMA 1999.</p>
+      </div>
+      <div class="info-box navy">
+        <strong>Quick Reference</strong>
+        Use the AI assistant below for detailed answers on FEMA Overview under FEMA. Or visit the official government portal using the "Official Links" tab above.
+      </div>
+      <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain FEMA Overview under FEMA 1999';window._tfChat.send();}},300)">Ask AI about FEMA Overview →</button>
+        <a href="#" onclick="showTopic('official');return false" class="btn btn-navy">Official Sources →</a>
+      </div>
+    </div>
+
+    <div class="topic-panel" id="panel-fdi">
+      <div class="panel-header">
+        <span class="panel-label">FDI — Inward Investment</span>
+        <h2>FDI — Inward Investment</h2>
+        <p>Key provisions, thresholds, and compliance requirements under FEMA 1999.</p>
+      </div>
+      <div class="info-box navy">
+        <strong>Quick Reference</strong>
+        Use the AI assistant below for detailed answers on FDI — Inward Investment under FEMA. Or visit the official government portal using the "Official Links" tab above.
+      </div>
+      <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain FDI — Inward Investment under FEMA 1999';window._tfChat.send();}},300)">Ask AI about FDI — Inward Investment →</button>
+        <a href="#" onclick="showTopic('official');return false" class="btn btn-navy">Official Sources →</a>
+      </div>
+    </div>
+
+    <div class="topic-panel" id="panel-odi">
+      <div class="panel-header">
+        <span class="panel-label">ODI — Overseas Investment</span>
+        <h2>ODI — Overseas Investment</h2>
+        <p>Key provisions, thresholds, and compliance requirements under FEMA 1999.</p>
+      </div>
+      <div class="info-box navy">
+        <strong>Quick Reference</strong>
+        Use the AI assistant below for detailed answers on ODI — Overseas Investment under FEMA. Or visit the official government portal using the "Official Links" tab above.
+      </div>
+      <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain ODI — Overseas Investment under FEMA 1999';window._tfChat.send();}},300)">Ask AI about ODI — Overseas Investment →</button>
+        <a href="#" onclick="showTopic('official');return false" class="btn btn-navy">Official Sources →</a>
+      </div>
+    </div>
+
+    <div class="topic-panel" id="panel-lrs">
+      <div class="panel-header">
+        <span class="panel-label">LRS — Remittance Scheme</span>
+        <h2>LRS — Remittance Scheme</h2>
+        <p>Key provisions, thresholds, and compliance requirements under FEMA 1999.</p>
+      </div>
+      <div class="info-box navy">
+        <strong>Quick Reference</strong>
+        Use the AI assistant below for detailed answers on LRS — Remittance Scheme under FEMA. Or visit the official government portal using the "Official Links" tab above.
+      </div>
+      <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain LRS — Remittance Scheme under FEMA 1999';window._tfChat.send();}},300)">Ask AI about LRS — Remittance Scheme →</button>
+        <a href="#" onclick="showTopic('official');return false" class="btn btn-navy">Official Sources →</a>
+      </div>
+    </div>
+
+    <div class="topic-panel" id="panel-current">
+      <div class="panel-header">
+        <span class="panel-label">Current Account Transactions</span>
+        <h2>Current Account Transactions</h2>
+        <p>Key provisions, thresholds, and compliance requirements under FEMA 1999.</p>
+      </div>
+      <div class="info-box navy">
+        <strong>Quick Reference</strong>
+        Use the AI assistant below for detailed answers on Current Account Transactions under FEMA. Or visit the official government portal using the "Official Links" tab above.
+      </div>
+      <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Current Account Transactions under FEMA 1999';window._tfChat.send();}},300)">Ask AI about Current Account Transactions →</button>
+        <a href="#" onclick="showTopic('official');return false" class="btn btn-navy">Official Sources →</a>
+      </div>
+    </div>
+
+    <div class="topic-panel" id="panel-reporting">
+      <div class="panel-header">
+        <span class="panel-label">Reporting Requirements</span>
+        <h2>Reporting Requirements</h2>
+        <p>Key provisions, thresholds, and compliance requirements under FEMA 1999.</p>
+      </div>
+      <div class="info-box navy">
+        <strong>Quick Reference</strong>
+        Use the AI assistant below for detailed answers on Reporting Requirements under FEMA. Or visit the official government portal using the "Official Links" tab above.
+      </div>
+      <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Reporting Requirements under FEMA 1999';window._tfChat.send();}},300)">Ask AI about Reporting Requirements →</button>
+        <a href="#" onclick="showTopic('official');return false" class="btn btn-navy">Official Sources →</a>
+      </div>
+    </div>
+
+    <div class="topic-panel" id="panel-penalties">
+      <div class="panel-header">
+        <span class="panel-label">Penalties & Compounding</span>
+        <h2>Penalties & Compounding</h2>
+        <p>Key provisions, thresholds, and compliance requirements under FEMA 1999.</p>
+      </div>
+      <div class="info-box navy">
+        <strong>Quick Reference</strong>
+        Use the AI assistant below for detailed answers on Penalties & Compounding under FEMA. Or visit the official government portal using the "Official Links" tab above.
+      </div>
+      <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Penalties & Compounding under FEMA 1999';window._tfChat.send();}},300)">Ask AI about Penalties & Compounding →</button>
+        <a href="#" onclick="showTopic('official');return false" class="btn btn-navy">Official Sources →</a>
+      </div>
+    </div>
+
+    <!-- OFFICIAL LINKS PANEL -->
+    <div class="topic-panel" id="panel-official">
+      <div class="panel-header">
+        <span class="panel-label">Official Government Sources</span>
+        <h2>Direct Links to Official Portals</h2>
+        <p>All information on this page is based on these official sources. Visit them for the most current and complete data.</p>
+      </div>
+      <div class="official-links">
+        <div class="official-links-grid">
+          <a href="https://www.rbi.org.in/Scripts/BS_FemaNotifications.aspx" target="_blank" class="official-link">FEMA Notifications <span class="ext">↗</span></a>
+          <a href="https://firms.rbi.org.in" target="_blank" class="official-link">FIRMS Portal (Reporting) <span class="ext">↗</span></a>
+          <a href="https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=9378" target="_blank" class="official-link">FDI Policy <span class="ext">↗</span></a>
+          <a href="https://www.rbi.org.in" target="_blank" class="official-link">RBI Portal <span class="ext">↗</span></a>
+        </div>
+      </div>
+      <div class="info-box navy" style="margin-top:24px">
+        <strong>About TrustFactON</strong>
+        TrustFactON summarises and simplifies information from these official sources. For the complete text of law, notifications, and circulars, always refer to the official government portals linked above. Built by Evenset Consultancy Services, Bengaluru.
+      </div>
+    </div>
+
+    <!-- AI CHAT PANEL -->
+    <div class="topic-panel" id="panel-chat">
+      <div class="panel-header">
+        <span class="panel-label">AI Assistant</span>
+        <h2>Ask About FEMA</h2>
+        <p>Get instant answers powered by Google Gemini — free for all users, no login required.</p>
+      </div>
+      <div class="chat-container" id="chat-widget" data-act="FEMA 1999 and RBI Foreign Exchange Regulations">
+        <div class="chat-header">
+          <div class="chat-avatar">TF</div>
+          <div class="chat-header-info">
+            <h4>FEMA AI Assistant</h4>
+            <span><span class="online-dot"></span>Powered by Google Gemini · Free · No login needed</span>
+          </div>
+        </div>
+        <div class="chat-messages"></div>
+        <div class="chat-suggestions">
+          <button class="chat-suggest-btn">LRS limit for FY 2025-26?</button>
+          <button class="chat-suggest-btn">FDI automatic vs government route?</button>
+          <button class="chat-suggest-btn">FC-GPR filing deadline?</button>
+          <button class="chat-suggest-btn">FEMA penalties and compounding?</button>
+        </div>
+        <div class="chat-input-row">
+          <textarea class="chat-input" rows="1" placeholder="Ask anything about FEMA..."></textarea>
+          <button class="chat-send-btn"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- NEWSLETTER -->
+<section class="newsletter-section">
+  <div class="container">
+    <div class="newsletter-inner">
+      <h2>Stay Updated on FEMA</h2>
+      <p>Law changes, circulars, and compliance alerts — weekly from TrustFactON.</p>
+      <div class="newsletter-form">
+        <input type="email" placeholder="your@email.com">
+        <button onclick="window.open('https://trustfacton.beehiiv.com/subscribe','_blank')">Subscribe →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+<script src="components.js"></script>
+<script src="chat-widget.js"></script>
+</body>
+</html>

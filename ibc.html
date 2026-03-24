@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Insolvency & Bankruptcy Code 2016 — TrustFactON</title>
+  <link rel="stylesheet" href="style.css">
+  <style>:root{--act-color:#EA580C;}</style>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+
+<!-- HERO -->
+<section class="act-hero">
+  <div class="container">
+    <div class="act-hero-badge">⚖️ Insolvency Law</div>
+    <h1>Insolvency & Bankruptcy Code <span>2016</span></h1>
+    <p>Time-bound creditor-in-control framework for resolution of insolvency of companies, LLPs, and individuals. Select any topic below.</p>
+    <div class="act-hero-stats">
+      <div class="act-hero-stat"><span class="val">2016</span><span class="lbl">Year Enacted</span></div>
+      <div class="act-hero-stat"><span class="val">180+90</span><span class="lbl">CIRP Days</span></div>
+      <div class="act-hero-stat"><span class="val">IBBI</span><span class="lbl">Insolvency Regulator</span></div>
+      <div class="act-hero-stat"><span class="val">NCLT</span><span class="lbl">Adjudicating Authority</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- TOPIC SELECTOR -->
+<div class="topic-bar">
+  <div class="container">
+    <div class="topic-bar-inner">
+      <span class="topic-bar-label">📌 Select Topic:</span>
+      <div class="topic-select-wrap">
+        <select class="topic-select" id="topicSelect" onchange="showTopic(this.value)">
+          <option value="">— Choose a topic —</option>
+          <option value="overview">📋 IBC Overview</option>
+          <option value="cirp">⏱️ CIRP Process & Timeline</option>
+          <option value="parties">👥 Key Stakeholders</option>
+          <option value="resolution">📄 Resolution Plan</option>
+          <option value="liquidation">💧 Liquidation Process</option>
+          <option value="prepack">📦 Pre-Pack Insolvency</option>
+          <option value="personal">👤 Personal Insolvency</option>
+          <option value="penalties">⚠️ Offences & Penalties</option>
+          <option value="official">🔗 Official Government Links</option>
+          <option value="chat">🤖 Ask AI Assistant</option>
+        </select>
+        <span class="topic-select-arrow">▼</span>
+      </div>
+      <div class="topic-chips">
+        <button class="topic-chip" onclick="showTopic('cirp')">⏱️ CIRP</button>
+        <button class="topic-chip" onclick="showTopic('parties')">👥 Stakeholders</button>
+        <button class="topic-chip" onclick="showTopic('resolution')">📄 Resolution</button>
+        <button class="topic-chip" onclick="showTopic('liquidation')">💧 Liquidation</button>
+        <button class="topic-chip" onclick="showTopic('prepack')">📦 Pre-Pack</button>
+        <button class="topic-chip" onclick="showTopic('chat')">🤖 Ask AI</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PANELS -->
+<div id="panels-wrap" style="background:var(--cream);min-height:500px;">
+  <div class="container">
+
+    <!-- WELCOME -->
+    <div class="topic-panel active" id="panel-welcome">
+      <div class="welcome-panel">
+        <div class="welcome-icon">⚖️</div>
+        <h2>What would you like to know about Insolvency & Bankruptcy Code?</h2>
+        <p>Pick a topic from the dropdown above — or click a quick topic below.</p>
+        <div class="quick-topics-grid">
+          <div class="quick-topic-card" onclick="showTopic('overview')"><div class="icon">📋</div><div><h4>IBC Overview</h4><p>Tap to explore</p></div></div>
+          <div class="quick-topic-card" onclick="showTopic('cirp')"><div class="icon">⏱️</div><div><h4>CIRP Process & Timeline</h4><p>Tap to explore</p></div></div>
+          <div class="quick-topic-card" onclick="showTopic('parties')"><div class="icon">👥</div><div><h4>Key Stakeholders</h4><p>Tap to explore</p></div></div>
+          <div class="quick-topic-card" onclick="showTopic('resolution')"><div class="icon">📄</div><div><h4>Resolution Plan</h4><p>Tap to explore</p></div></div>
+          <div class="quick-topic-card" onclick="showTopic('liquidation')"><div class="icon">💧</div><div><h4>Liquidation Process</h4><p>Tap to explore</p></div></div>
+          <div class="quick-topic-card" onclick="showTopic('prepack')"><div class="icon">📦</div><div><h4>Pre-Pack Insolvency</h4><p>Tap to explore</p></div></div>
+          <div class="quick-topic-card" onclick="showTopic('personal')"><div class="icon">👤</div><div><h4>Personal Insolvency</h4><p>Tap to explore</p></div></div>
+          <div class="quick-topic-card" onclick="showTopic('penalties')"><div class="icon">⚠️</div><div><h4>Offences & Penalties</h4><p>Tap to explore</p></div></div>
+          <div class="quick-topic-card" onclick="showTopic('official')"><div class="icon">🔗</div><div><h4>Official Links</h4><p>Government portals</p></div></div>
+          <div class="quick-topic-card" onclick="showTopic('chat')"><div class="icon">🤖</div><div><h4>Ask AI</h4><p>Instant answers</p></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PLACEHOLDER TOPIC PANELS (content injected by AI on demand) -->
+        <div class="topic-panel" id="panel-overview">
+      <div class="panel-header">
+        <span class="panel-label">IBC Overview</span>
+        <h2>IBC Overview</h2>
+        <p>Key provisions, thresholds, and compliance requirements under Insolvency & Bankruptcy Code 2016.</p>
+      </div>
+      <div class="info-box navy">
+        <strong>Quick Reference</strong>
+        Use the AI assistant below for detailed answers on IBC Overview under Insolvency & Bankruptcy Code. Or visit the official government portal using the "Official Links" tab above.
+      </div>
+      <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain IBC Overview under Insolvency & Bankruptcy Code 2016';window._tfChat.send();}},300)">Ask AI about IBC Overview →</button>
+        <a href="#" onclick="showTopic('official');return false" class="btn btn-navy">Official Sources →</a>
+      </div>
+    </div>
+
+    <div class="topic-panel" id="panel-cirp">
+      <div class="panel-header">
+        <span class="panel-label">CIRP Process & Timeline</span>
+        <h2>CIRP Process & Timeline</h2>
+        <p>Key provisions, thresholds, and compliance requirements under Insolvency & Bankruptcy Code 2016.</p>
+      </div>
+      <div class="info-box navy">
+        <strong>Quick Reference</strong>
+        Use the AI assistant below for detailed answers on CIRP Process & Timeline under Insolvency & Bankruptcy Code. Or visit the official government portal using the "Official Links" tab above.
+      </div>
+      <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain CIRP Process & Timeline under Insolvency & Bankruptcy Code 2016';window._tfChat.send();}},300)">Ask AI about CIRP Process & Timeline →</button>
+        <a href="#" onclick="showTopic('official');return false" class="btn btn-navy">Official Sources →</a>
+      </div>
+    </div>
+
+    <div class="topic-panel" id="panel-parties">
+      <div class="panel-header">
+        <span class="panel-label">Key Stakeholders</span>
+        <h2>Key Stakeholders</h2>
+        <p>Key provisions, thresholds, and compliance requirements under Insolvency & Bankruptcy Code 2016.</p>
+      </div>
+      <div class="info-box navy">
+        <strong>Quick Reference</strong>
+        Use the AI assistant below for detailed answers on Key Stakeholders under Insolvency & Bankruptcy Code. Or visit the official government portal using the "Official Links" tab above.
+      </div>
+      <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Key Stakeholders under Insolvency & Bankruptcy Code 2016';window._tfChat.send();}},300)">Ask AI about Key Stakeholders →</button>
+        <a href="#" onclick="showTopic('official');return false" class="btn btn-navy">Official Sources →</a>
+      </div>
+    </div>
+
+    <div class="topic-panel" id="panel-resolution">
+      <div class="panel-header">
+        <span class="panel-label">Resolution Plan</span>
+        <h2>Resolution Plan</h2>
+        <p>Key provisions, thresholds, and compliance requirements under Insolvency & Bankruptcy Code 2016.</p>
+      </div>
+      <div class="info-box navy">
+        <strong>Quick Reference</strong>
+        Use the AI assistant below for detailed answers on Resolution Plan under Insolvency & Bankruptcy Code. Or visit the official government portal using the "Official Links" tab above.
+      </div>
+      <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Resolution Plan under Insolvency & Bankruptcy Code 2016';window._tfChat.send();}},300)">Ask AI about Resolution Plan →</button>
+        <a href="#" onclick="showTopic('official');return false" class="btn btn-navy">Official Sources →</a>
+      </div>
+    </div>
+
+    <div class="topic-panel" id="panel-liquidation">
+      <div class="panel-header">
+        <span class="panel-label">Liquidation Process</span>
+        <h2>Liquidation Process</h2>
+        <p>Key provisions, thresholds, and compliance requirements under Insolvency & Bankruptcy Code 2016.</p>
+      </div>
+      <div class="info-box navy">
+        <strong>Quick Reference</strong>
+        Use the AI assistant below for detailed answers on Liquidation Process under Insolvency & Bankruptcy Code. Or visit the official government portal using the "Official Links" tab above.
+      </div>
+      <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Liquidation Process under Insolvency & Bankruptcy Code 2016';window._tfChat.send();}},300)">Ask AI about Liquidation Process →</button>
+        <a href="#" onclick="showTopic('official');return false" class="btn btn-navy">Official Sources →</a>
+      </div>
+    </div>
+
+    <div class="topic-panel" id="panel-prepack">
+      <div class="panel-header">
+        <span class="panel-label">Pre-Pack Insolvency</span>
+        <h2>Pre-Pack Insolvency</h2>
+        <p>Key provisions, thresholds, and compliance requirements under Insolvency & Bankruptcy Code 2016.</p>
+      </div>
+      <div class="info-box navy">
+        <strong>Quick Reference</strong>
+        Use the AI assistant below for detailed answers on Pre-Pack Insolvency under Insolvency & Bankruptcy Code. Or visit the official government portal using the "Official Links" tab above.
+      </div>
+      <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Pre-Pack Insolvency under Insolvency & Bankruptcy Code 2016';window._tfChat.send();}},300)">Ask AI about Pre-Pack Insolvency →</button>
+        <a href="#" onclick="showTopic('official');return false" class="btn btn-navy">Official Sources →</a>
+      </div>
+    </div>
+
+    <div class="topic-panel" id="panel-personal">
+      <div class="panel-header">
+        <span class="panel-label">Personal Insolvency</span>
+        <h2>Personal Insolvency</h2>
+        <p>Key provisions, thresholds, and compliance requirements under Insolvency & Bankruptcy Code 2016.</p>
+      </div>
+      <div class="info-box navy">
+        <strong>Quick Reference</strong>
+        Use the AI assistant below for detailed answers on Personal Insolvency under Insolvency & Bankruptcy Code. Or visit the official government portal using the "Official Links" tab above.
+      </div>
+      <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Personal Insolvency under Insolvency & Bankruptcy Code 2016';window._tfChat.send();}},300)">Ask AI about Personal Insolvency →</button>
+        <a href="#" onclick="showTopic('official');return false" class="btn btn-navy">Official Sources →</a>
+      </div>
+    </div>
+
+    <div class="topic-panel" id="panel-penalties">
+      <div class="panel-header">
+        <span class="panel-label">Offences & Penalties</span>
+        <h2>Offences & Penalties</h2>
+        <p>Key provisions, thresholds, and compliance requirements under Insolvency & Bankruptcy Code 2016.</p>
+      </div>
+      <div class="info-box navy">
+        <strong>Quick Reference</strong>
+        Use the AI assistant below for detailed answers on Offences & Penalties under Insolvency & Bankruptcy Code. Or visit the official government portal using the "Official Links" tab above.
+      </div>
+      <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Offences & Penalties under Insolvency & Bankruptcy Code 2016';window._tfChat.send();}},300)">Ask AI about Offences & Penalties →</button>
+        <a href="#" onclick="showTopic('official');return false" class="btn btn-navy">Official Sources →</a>
+      </div>
+    </div>
+
+    <!-- OFFICIAL LINKS PANEL -->
+    <div class="topic-panel" id="panel-official">
+      <div class="panel-header">
+        <span class="panel-label">Official Government Sources</span>
+        <h2>Direct Links to Official Portals</h2>
+        <p>All information on this page is based on these official sources. Visit them for the most current and complete data.</p>
+      </div>
+      <div class="official-links">
+        <div class="official-links-grid">
+          <a href="https://ibbi.gov.in" target="_blank" class="official-link">IBBI Portal <span class="ext">↗</span></a>
+          <a href="https://ibbi.gov.in/en/regulation/show" target="_blank" class="official-link">IBBI Regulations <span class="ext">↗</span></a>
+          <a href="https://nclt.gov.in" target="_blank" class="official-link">NCLT Portal <span class="ext">↗</span></a>
+          <a href="https://ibbi.gov.in/en/insolvency-professionals" target="_blank" class="official-link">Insolvency Professionals <span class="ext">↗</span></a>
+        </div>
+      </div>
+      <div class="info-box navy" style="margin-top:24px">
+        <strong>About TrustFactON</strong>
+        TrustFactON summarises and simplifies information from these official sources. For the complete text of law, notifications, and circulars, always refer to the official government portals linked above. Built by Evenset Consultancy Services, Bengaluru.
+      </div>
+    </div>
+
+    <!-- AI CHAT PANEL -->
+    <div class="topic-panel" id="panel-chat">
+      <div class="panel-header">
+        <span class="panel-label">AI Assistant</span>
+        <h2>Ask About Insolvency & Bankruptcy Code</h2>
+        <p>Get instant answers powered by Google Gemini — free for all users, no login required.</p>
+      </div>
+      <div class="chat-container" id="chat-widget" data-act="Insolvency and Bankruptcy Code 2016 (IBC)">
+        <div class="chat-header">
+          <div class="chat-avatar">TF</div>
+          <div class="chat-header-info">
+            <h4>Insolvency & Bankruptcy Code AI Assistant</h4>
+            <span><span class="online-dot"></span>Powered by Google Gemini · Free · No login needed</span>
+          </div>
+        </div>
+        <div class="chat-messages"></div>
+        <div class="chat-suggestions">
+          <button class="chat-suggest-btn">Default threshold to trigger CIRP?</button>
+          <button class="chat-suggest-btn">Difference between IRP and RP?</button>
+          <button class="chat-suggest-btn">What is Section 29A ineligibility?</button>
+          <button class="chat-suggest-btn">How does liquidation waterfall work?</button>
+        </div>
+        <div class="chat-input-row">
+          <textarea class="chat-input" rows="1" placeholder="Ask anything about Insolvency & Bankruptcy Code..."></textarea>
+          <button class="chat-send-btn"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- NEWSLETTER -->
+<section class="newsletter-section">
+  <div class="container">
+    <div class="newsletter-inner">
+      <h2>Stay Updated on Insolvency & Bankruptcy Code</h2>
+      <p>Law changes, circulars, and compliance alerts — weekly from TrustFactON.</p>
+      <div class="newsletter-form">
+        <input type="email" placeholder="your@email.com">
+        <button onclick="window.open('https://trustfacton.beehiiv.com/subscribe','_blank')">Subscribe →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+<script src="components.js"></script>
+<script src="chat-widget.js"></script>
+</body>
+</html>
