@@ -3,7 +3,7 @@
 
 // ✅ UPDATE THIS after you deploy on Render.com
 // Example: const BACKEND_URL = "https://trustfacton-ai.onrender.com";
-const BACKEND_URL = "trustfacton-backend-i8kl5zbxq-evensetconsultancys-projects.vercel.app";
+const BACKEND_URL = "https://trustfacton-backend-i8kl5zbxq-evensetconsultancys-projects.vercel.app/";
 
 class TrustFactONChat {
   constructor(containerId, actContext = '') {
