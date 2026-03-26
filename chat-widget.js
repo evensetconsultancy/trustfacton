@@ -1,7 +1,7 @@
 /* ===== TrustFactON — AI Chat Widget ===== */
 /* Calls Flask backend on Render.com — users need NO API key */
 
-const BACKEND_URL = "https://trustfacton-backend-i8kl5zbxq-evensetconsultancys-projects.vercel.app";
+const BACKEND_URL = "https://trustfacton-backend.vercel.app";
 
 class TrustFactONChat {
   constructor(containerId, actContext = '') {
