@@ -1,9 +1,9 @@
 /* ===== TrustFactON — Components ===== */
 
 const ACTS = [
-  {name:'Income Tax Act', file:'income-tax.html', color:'#2563EB', emoji:'📊'},
-  {name:'GST Act 2017',   file:'gst.html',        color:'#16A34A', emoji:'🏷️'},
-  {name:'Companies Act 2013', file:'companies-act.html', color:'#1A3A6B', emoji:'🏢'},
+  {name:'Income Tax',         file:'income-tax.html', color:'#2563EB', emoji:'📊'},
+  {name:'Goods & Service Tax', file:'gst.html',       color:'#16A34A', emoji:'🏷️'},
+  {name:'Companies Act',      file:'companies-act.html', color:'#1A3A6B', emoji:'🏢'},
 ];
 
 const NAV_HTML = `
@@ -46,7 +46,7 @@ const FOOTER_HTML = `
     <div class="footer-grid">
       <div class="footer-brand">
         <div class="footer-logo">Trust<span class="accent">Fact</span>ON</div>
-        <p>India's plain-language guide to Indian statutory law. Income Tax, GST, Companies Act. Powered by Evenset Consultancy Services, Bengaluru.</p>
+        <p>India's plain-language compliance reference. Income Tax · Goods &amp; Service Tax · Companies Act · TDS/TCS. Powered by Evenset Consultancy Services, Bengaluru.</p>
       </div>
       <div class="footer-col">
         <h4>Acts & Tools</h4>

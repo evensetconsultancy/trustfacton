@@ -3,9 +3,199 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TrustFactON — India's Laws, Simply Explained</title>
-  <meta name="description" content="Plain-language guide to Indian statutory law — Income Tax, GST, Companies Act. AI-powered. Free.">
+  <title>TrustFactON — India's Tax & Compliance Reference Platform</title>
+  <meta name="description" content="GSTIN verifier, HSN/SAC code search, live forex rates, Income Tax, Goods & Service Tax, Companies Act guides. Free. No login. Built by Evenset Consultancy.">
   <link rel="stylesheet" href="style.css">
+  <style>
+  /* ── TOOLS STRIP ── */
+  .tools-strip {
+    background: white;
+    padding: 52px 0 60px;
+    border-bottom: 1px solid var(--gray-3);
+  }
+  .tools-header { text-align: center; margin-bottom: 36px; }
+  .tools-header h2 { font-size: clamp(1.4rem,2.5vw,1.9rem); color: var(--black); margin-bottom: 6px; }
+  .tools-header p  { font-size: 0.9rem; color: var(--gray-5); }
+
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    align-items: start;
+  }
+
+  /* ── TOOL CARD ── */
+  .tc {
+    background: var(--gray-1);
+    border: 1px solid var(--gray-3);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  .tc-head {
+    padding: 14px 18px 12px;
+    background: white;
+    border-bottom: 1px solid var(--gray-3);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .tc-icon {
+    width: 36px; height: 36px; border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; flex-shrink: 0;
+  }
+  .tc-head h3 { font-size: 0.88rem; color: var(--black); margin: 0 0 2px; font-weight: 700; }
+  .tc-head p  { font-size: 0.72rem; color: var(--gray-4); margin: 0; }
+  .tc-body { padding: 14px 16px 16px; flex: 1; }
+
+  /* Input base */
+  .t-inp {
+    width: 100%; padding: 9px 12px;
+    border: 1.5px solid var(--gray-3);
+    border-radius: var(--radius);
+    font-size: 0.84rem;
+    font-family: 'Inter', sans-serif;
+    color: var(--black);
+    background: white;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    box-sizing: border-box;
+  }
+  .t-inp:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,0.07); }
+  .t-inp::placeholder { color: var(--gray-4); }
+
+  .t-btn {
+    padding: 9px 16px;
+    border-radius: var(--radius);
+    font-size: 0.82rem; font-weight: 600;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    border: none;
+    transition: all 0.15s;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .t-btn-blue  { background: var(--blue); color: white; }
+  .t-btn-blue:hover  { background: #1D4ED8; }
+  .t-btn-blue:disabled { background: var(--gray-3); cursor: not-allowed; }
+
+  .t-note { font-size: 0.7rem; color: var(--gray-4); margin-top: 8px; line-height: 1.5; }
+
+  /* ── GSTIN TOOL ── */
+  .gstin-row  { display: flex; gap: 7px; }
+  .gstin-mono { font-family: monospace; text-transform: uppercase; letter-spacing: 1px; }
+  .gstin-mono::placeholder { text-transform: none; font-family: 'Inter',sans-serif; letter-spacing: 0; }
+
+  .g-loading { display: none; text-align: center; padding: 10px; font-size: 0.82rem; color: var(--gray-4); }
+  .g-loading.on { display: block; }
+
+  .g-err { display: none; margin-top: 10px; padding: 10px 13px; background: #FEF2F2; border: 1px solid #FECACA; border-radius: var(--radius); font-size: 0.8rem; color: #991B1B; line-height: 1.6; }
+  .g-err.on { display: block; }
+
+  .g-result { display: none; margin-top: 10px; }
+  .g-result.on { display: block; }
+  .g-card { background: white; border: 1px solid var(--gray-3); border-radius: var(--radius); padding: 12px 14px; }
+  .g-lname { font-size: 0.9rem; font-weight: 700; color: var(--black); margin-bottom: 2px; }
+  .g-gstin { font-family: monospace; font-size: 0.76rem; color: var(--blue); font-weight: 600; margin-bottom: 6px; }
+  .g-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 9px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; margin-bottom: 10px; }
+  .g-active   { background: #DCFCE7; color: #166534; }
+  .g-inactive { background: #FEE2E2; color: #991B1B; }
+  .g-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .g-f label { font-size: 0.59rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--gray-4); display: block; margin-bottom: 1px; }
+  .g-f .v { font-size: 0.78rem; color: var(--gray-6); line-height: 1.4; }
+
+  .g-portal-link {
+    display: inline-flex; align-items: center; gap: 5px;
+    margin-top: 8px; padding: 6px 12px;
+    border: 1px solid #BFDBFE; border-radius: var(--radius);
+    font-size: 0.76rem; color: var(--blue);
+    text-decoration: none; background: #EFF6FF;
+    transition: all 0.15s;
+  }
+  .g-portal-link:hover { background: var(--blue); color: white; }
+
+  /* ── HSN TOOL ── */
+  .hsn-tabs { display: flex; gap: 5px; margin-bottom: 9px; }
+  .hsn-tab {
+    padding: 4px 13px; border-radius: 20px;
+    border: 1.5px solid var(--gray-3); background: white;
+    font-size: 0.74rem; font-weight: 500;
+    cursor: pointer; color: var(--gray-5);
+    font-family: 'Inter', sans-serif;
+    transition: all 0.15s;
+  }
+  .hsn-tab.on { background: var(--navy); color: white; border-color: var(--navy); }
+
+  .hsn-results { margin-top: 8px; max-height: 260px; overflow-y: auto; }
+  .hsn-item {
+    background: white; border: 1px solid var(--gray-3); border-radius: var(--radius);
+    padding: 9px 12px; margin-bottom: 5px;
+    transition: border-color 0.15s;
+  }
+  .hsn-item:hover { border-color: var(--navy); }
+  .hsn-item:last-child { margin-bottom: 0; }
+  .hi-code { font-family: monospace; font-size: 0.78rem; font-weight: 700; color: var(--navy); }
+  .hi-desc { font-size: 0.77rem; color: var(--gray-5); margin: 2px 0; line-height: 1.4; }
+  .hi-rate {
+    display: inline-block; margin-top: 4px;
+    padding: 2px 8px; border-radius: 4px;
+    font-size: 0.69rem; font-weight: 700;
+    background: #FEF3C7; color: #92400E;
+  }
+  .hi-rate.nil  { background: #DCFCE7; color: #166534; }
+  .hi-rate.r40  { background: #FEE2E2; color: #991B1B; }
+  .hi-rate.r18  { background: #DBEAFE; color: #1E40AF; }
+  .hi-rate.r5   { background: #F0FDF4; color: #166534; }
+  .hsn-empty { text-align: center; padding: 20px 10px; color: var(--gray-4); font-size: 0.82rem; }
+
+  /* ── FOREX TOOL ── */
+  .fx-topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .fx-time { font-size: 0.7rem; color: var(--gray-4); }
+  .fx-refresh {
+    padding: 3px 10px; border: 1px solid var(--gray-3); border-radius: 6px;
+    font-size: 0.69rem; color: var(--gray-5); cursor: pointer;
+    font-family: 'Inter', sans-serif; background: white; transition: all 0.15s;
+  }
+  .fx-refresh:hover { border-color: var(--blue); color: var(--blue); }
+  .fx-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+  .fx-row {
+    background: white; border: 1px solid var(--gray-3); border-radius: var(--radius);
+    padding: 8px 11px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .fx-ccy { display: flex; align-items: center; gap: 7px; }
+  .fx-flag { font-size: 1rem; line-height: 1; }
+  .fx-code { font-family: monospace; font-size: 0.75rem; font-weight: 700; color: var(--navy); display: block; }
+  .fx-name { font-size: 0.62rem; color: var(--gray-4); }
+  .fx-amount .big { font-size: 0.9rem; font-weight: 700; color: var(--black); display: block; text-align: right; }
+  .fx-amount .sm  { font-size: 0.62rem; color: var(--gray-4); text-align: right; display: block; }
+  .fx-skeleton { background: var(--gray-2); border-radius: var(--radius); height: 50px; animation: pulse 1.4s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
+  .fx-err { font-size: 0.79rem; color: var(--gray-4); text-align: center; padding: 12px; grid-column: 1/-1; }
+  .fx-rbi { font-size: 0.68rem; color: var(--gray-4); margin-top: 8px; text-align: center; }
+
+  /* ── BROWSE SECTION ── */
+  .browse-section { background: var(--gray-1); padding: 56px 0 60px; }
+  .browse-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px; margin-top: 32px; }
+  .bc {
+    background: white; border-radius: var(--radius-lg);
+    border: 1px solid var(--gray-3);
+    transition: all 0.2s; text-decoration: none;
+    display: flex; flex-direction: column; overflow: hidden;
+  }
+  .bc:hover { box-shadow: 0 8px 28px rgba(0,0,0,0.09); transform: translateY(-3px); border-color: transparent; }
+  .bc-bar { height: 3px; }
+  .bc-body { padding: 18px 20px; flex: 1; }
+  .bc-icon { width: 38px; height: 38px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; margin-bottom: 10px; }
+  .bc-body h3 { font-size: 0.92rem; color: var(--black); margin-bottom: 5px; font-weight: 700; }
+  .bc-body p  { font-size: 0.8rem; color: var(--gray-5); line-height: 1.6; }
+  .bc-foot { padding: 10px 20px; border-top: 1px solid var(--gray-2); display: flex; align-items: center; justify-content: space-between; }
+  .bc-tags { display: flex; gap: 4px; flex-wrap: wrap; }
+  .bc-tag { font-size: 0.66rem; padding: 2px 7px; border-radius: 4px; background: var(--gray-2); color: var(--gray-5); font-weight: 500; }
+  .bc-arrow { font-size: 0.78rem; font-weight: 600; }
+
+  /* Responsive */
+  @media (max-width: 900px) { .tools-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 600px) { .fx-grid { grid-template-columns: 1fr; } .browse-grid { grid-template-columns: 1fr; } }
+  </style>
 </head>
 <body>
 <div id="nav-placeholder"></div>
@@ -14,176 +204,263 @@
 <section class="hero">
   <div class="container">
     <div class="hero-content">
-      <div class="hero-eyebrow"><span class="dot"></span>AI-Powered · Income Tax · GST · Companies Act</div>
-      <h1>India's Laws.<br><span class="hl">Simply Explained.</span></h1>
-      <p class="sub">Plain-language summaries of major Indian statutes. Ask our AI any compliance question — free, instant, no signup.</p>
+      <div class="hero-eyebrow"><span class="dot"></span>Income Tax · Goods & Service Tax · Companies · TDS/TCS</div>
+      <h1>India's Tax &<br><span class="hl">Compliance Platform</span></h1>
+      <p class="sub">Verify GSTIN, search HSN/SAC codes, track live forex rates — and explore Income Tax, Goods & Service Tax and Companies in plain language. Free, no login.</p>
       <div class="hero-actions">
-        <a href="chat.html" class="btn btn-blue btn-lg">Ask AI Now →</a>
-        <a href="#acts" class="btn btn-ghost btn-lg">Browse Acts</a>
-      </div>
-      <div class="hero-search">
-        <input type="text" id="hero-search" placeholder="Search Income Tax, GST, Companies Act, TDS..." autocomplete="off">
-        <button class="hero-search-btn" onclick="doSearch()">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-        </button>
+        <a href="#tools" class="btn btn-blue btn-lg">Try Free Tools ↓</a>
+        <a href="chat.html" class="btn btn-ghost btn-lg">Ask AI →</a>
       </div>
       <div class="hero-stats">
-        <div class="hero-stat"><span class="v">3</span><span class="l">Major Acts</span></div>
-        <div class="hero-stat"><span class="v">AI</span><span class="l">Chat Assistant</span></div>
-        <div class="hero-stat"><span class="v">91</span><span class="l">TDS/TCS Codes</span></div>
-        <div class="hero-stat"><span class="v">Free</span><span class="l">Always</span></div>
+        <div class="hero-stat"><span class="v">GSTIN</span><span class="l">Live Verification</span></div>
+        <div class="hero-stat"><span class="v">HSN</span><span class="l">Code Search</span></div>
+        <div class="hero-stat"><span class="v">Forex</span><span class="l">Live Rates</span></div>
+        <div class="hero-stat"><span class="v">AI</span><span class="l">Compliance Chat</span></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ACTS -->
-<section class="section" id="acts" style="background:var(--light)">
+<!-- ════════════════════ TOOLS ════════════════════ -->
+<section class="tools-strip" id="tools">
   <div class="container">
-    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:32px">
-      <div>
-        <span class="sec-label">Browse Acts</span>
-        <h2 class="sec-title">What are you looking for?</h2>
-      </div>
-      <div class="filter-tabs">
-        <button class="ftab active" data-filter="all">All</button>
-        <button class="ftab" data-filter="tax">Taxation</button>
-        <button class="ftab" data-filter="corporate">Corporate</button>
-      </div>
-    </div>
-    <div id="no-results" style="display:none;text-align:center;padding:40px;color:var(--gray-4)">No results. Try a different keyword.</div>
-    <div class="acts-grid" id="acts-grid">
-
-      <div class="act-card" data-cat="tax" data-kw="income tax salary tds tcs capital gains deductions itr slab rates">
-        <div class="act-card-accent" style="background:#2563EB"></div>
-        <div class="act-card-body">
-          <div class="act-icon" style="background:#EFF6FF">📊</div>
-          <h3>Income Tax Act</h3>
-          <p>IT Act 1961 & IT Act 2025 — salary, capital gains, business income, TDS, deductions, ITR filing. Effective April 2026.</p>
-        </div>
-        <div class="act-card-footer">
-          <div class="act-tags">
-            <span class="act-tag">Direct Tax</span>
-            <span class="act-tag">TDS/TCS</span>
-            <span class="act-tag">IT Act 2025</span>
-          </div>
-          <a href="income-tax.html" class="act-link" style="color:#2563EB">Explore →</a>
-        </div>
-      </div>
-
-      <div class="act-card" data-cat="tax" data-kw="gst goods services tax cgst sgst igst returns itc input tax credit">
-        <div class="act-card-accent" style="background:#16A34A"></div>
-        <div class="act-card-body">
-          <div class="act-icon" style="background:#F0FDF4">🏷️</div>
-          <h3>GST Act 2017</h3>
-          <p>CGST, SGST & IGST — registration, ITC, returns, e-invoice, composition scheme, and rate finder.</p>
-        </div>
-        <div class="act-card-footer">
-          <div class="act-tags">
-            <span class="act-tag">Indirect Tax</span>
-            <span class="act-tag">ITC</span>
-            <span class="act-tag">GSTR Returns</span>
-          </div>
-          <a href="gst.html" class="act-link" style="color:#16A34A">Explore →</a>
-        </div>
-      </div>
-
-      <div class="act-card" data-cat="corporate" data-kw="companies act mca directors agm annual return csr board meeting">
-        <div class="act-card-accent" style="background:#1A3A6B"></div>
-        <div class="act-card-body">
-          <div class="act-icon" style="background:#EFF6FF">🏢</div>
-          <h3>Companies Act 2013</h3>
-          <p>Incorporation, directors, AGM, annual filings, CSR, audit requirements — all MCA compliance in plain language.</p>
-        </div>
-        <div class="act-card-footer">
-          <div class="act-tags">
-            <span class="act-tag">Corporate Law</span>
-            <span class="act-tag">MCA</span>
-            <span class="act-tag">Directors</span>
-          </div>
-          <a href="companies-act.html" class="act-link" style="color:#1A3A6B">Explore →</a>
-        </div>
-      </div>
-
-      <div class="act-card" data-cat="tax" data-kw="tds tcs section code master 194 192 206c deductor rate threshold">
-        <div class="act-card-accent" style="background:#D97706"></div>
-        <div class="act-card-body">
-          <div class="act-icon" style="background:#FFFBEB">✂️</div>
-          <h3>TDS/TCS Section Master</h3>
-          <p>All 91 TDS/TCS section codes — IT Act 1961 to IT Act 2025 mapping. Finance Bill 2026 rates. Searchable & exportable.</p>
-        </div>
-        <div class="act-card-footer">
-          <div class="act-tags">
-            <span class="act-tag">91 Codes</span>
-            <span class="act-tag">TY 2026-27</span>
-            <span class="act-tag">FB 2026</span>
-          </div>
-          <a href="tds-master.html" class="act-link" style="color:#D97706">Explore →</a>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- TOOLS STRIP -->
-<section style="background:white;padding:48px 0;border-top:1px solid var(--gray-3)">
-  <div class="container">
-    <div style="text-align:center;margin-bottom:28px">
+    <div class="tools-header">
       <span class="sec-label">Free Tools</span>
-      <h2 class="sec-title">Useful Reference Tools</h2>
+      <h2>Verify · Search · Track</h2>
+      <p>No login · No signup · Instant results</p>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px">
-      <a href="tds-master.html" style="display:block;background:var(--light);border:1px solid var(--gray-3);border-radius:var(--radius-lg);padding:22px;transition:all 0.2s;text-decoration:none" onmouseover="this.style.borderColor='var(--blue)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='var(--gray-3)';this.style.transform='none'">
-        <div style="font-size:1.4rem;margin-bottom:10px">✂️</div>
-        <h3 style="color:var(--black);font-size:0.95rem;margin-bottom:6px">TDS/TCS Section Master</h3>
-        <p style="font-size:0.8rem">91 codes with plain language. IT Act 1961 ↔ IT Act 2025. Finance Bill 2026. Search & export.</p>
+
+    <div class="tools-grid">
+
+      <!-- ① GSTIN VERIFIER -->
+      <div class="tc">
+        <div class="tc-head">
+          <div class="tc-icon" style="background:#F0FDF4">🔍</div>
+          <div>
+            <h3>GSTIN Verifier</h3>
+            <p>Live verification from GSTN · Check registration status</p>
+          </div>
+        </div>
+        <div class="tc-body">
+          <div class="gstin-row">
+            <input type="text" id="gstinInp"
+              class="t-inp gstin-mono"
+              placeholder="Enter 15-digit GSTIN…"
+              maxlength="15"
+              autocomplete="off"
+              oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')"
+              onkeydown="if(event.key==='Enter')doGSTIN()">
+            <button class="t-btn t-btn-blue" id="gstinBtn" onclick="doGSTIN()">Verify</button>
+          </div>
+
+          <div class="g-loading" id="gLoading">⏳ Querying GSTN…</div>
+          <div class="g-err"    id="gErr"></div>
+
+          <div class="g-result" id="gResult">
+            <div class="g-card">
+              <div class="g-lname" id="gLname">—</div>
+              <div class="g-gstin" id="gGstin">—</div>
+              <span class="g-badge" id="gBadge">—</span>
+              <div class="g-grid">
+                <div class="g-f"><label>Trade Name</label><div class="v" id="gTrade">—</div></div>
+                <div class="g-f"><label>Taxpayer Type</label><div class="v" id="gType">—</div></div>
+                <div class="g-f"><label>Registration Date</label><div class="v" id="gDate">—</div></div>
+                <div class="g-f"><label>State</label><div class="v" id="gState">—</div></div>
+                <div class="g-f"><label>Constitution</label><div class="v" id="gConst">—</div></div>
+                <div class="g-f"><label>Jurisdiction</label><div class="v" id="gJuris">—</div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Always-visible portal link -->
+          <div style="margin-top:10px">
+            <a href="https://services.gst.gov.in/services/searchtp" target="_blank" class="g-portal-link">
+              🔗 Search on official GST Portal →
+            </a>
+          </div>
+          <p class="t-note">Data from GSTN public API. If browser CORS blocks the request, use the official portal link above. For informational use only.</p>
+        </div>
+      </div>
+
+      <!-- ② HSN / SAC SEARCH -->
+      <div class="tc">
+        <div class="tc-head">
+          <div class="tc-icon" style="background:#EFF6FF">📦</div>
+          <div>
+            <h3>HSN / SAC Search</h3>
+            <p>Find GST rate by code or description · GST 2.0 rates</p>
+          </div>
+        </div>
+        <div class="tc-body">
+          <div class="hsn-tabs">
+            <button class="hsn-tab on" id="tabG" onclick="setTab('goods')">📦 Goods (HSN)</button>
+            <button class="hsn-tab"    id="tabS" onclick="setTab('services')">⚙️ Services (SAC)</button>
+          </div>
+          <input type="text" id="hsnInp" class="t-inp"
+            placeholder="Code or description — e.g. 8528 or television…"
+            autocomplete="off" oninput="doHSN()">
+          <div class="hsn-results" id="hsnOut"></div>
+          <p class="t-note" style="margin-top:8px">Rates updated for GST 2.0 (effective 22 Sept 2025). 12% and 28% slabs removed. Verify from <a href="https://services.gst.gov.in/services/searchhsnsac" target="_blank" style="color:var(--blue)">official GSTN portal →</a> for compliance filings.</p>
+        </div>
+      </div>
+
+      <!-- ③ FOREX RATES -->
+      <div class="tc">
+        <div class="tc-head">
+          <div class="tc-icon" style="background:#FFFBEB">💱</div>
+          <div>
+            <h3>Live Forex Rates</h3>
+            <p>INR exchange rates vs 8 major currencies</p>
+          </div>
+        </div>
+        <div class="tc-body">
+          <div class="fx-topbar">
+            <span class="fx-time" id="fxTime">Fetching rates…</span>
+            <button class="fx-refresh" onclick="doForex()">↺ Refresh</button>
+          </div>
+          <div class="fx-grid" id="fxGrid">
+            <!-- skeleton -->
+            <div class="fx-skeleton"></div><div class="fx-skeleton"></div>
+            <div class="fx-skeleton"></div><div class="fx-skeleton"></div>
+            <div class="fx-skeleton"></div><div class="fx-skeleton"></div>
+            <div class="fx-skeleton"></div><div class="fx-skeleton"></div>
+          </div>
+          <div class="fx-rbi" id="fxRbi"></div>
+          <p class="t-note">Indicative rates from open API. For compliance and FEMA use <a href="https://www.rbi.org.in/Scripts/ReferenceRateArchive.aspx" target="_blank" style="color:var(--blue)">RBI Reference Rates →</a></p>
+        </div>
+      </div>
+
+    </div><!-- /tools-grid -->
+  </div>
+</section>
+
+<!-- ════════════════════ BROWSE ════════════════════ -->
+<section class="browse-section" id="browse">
+  <div class="container">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:0">
+      <div>
+        <span class="sec-label">Reference Guides</span>
+        <h2 class="sec-title">Browse by Topic</h2>
+        <p style="color:var(--gray-5);margin-top:4px;font-size:0.88rem">Plain language · Updated for latest amendments · Official sources linked</p>
+      </div>
+      <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:4px">
+        <button class="ftab active" data-f="all">All</button>
+        <button class="ftab" data-f="tax">Tax</button>
+        <button class="ftab" data-f="corporate">Corporate</button>
+      </div>
+    </div>
+
+    <div class="browse-grid">
+
+      <!-- Income Tax -->
+      <a href="income-tax.html" class="bc" data-f="tax">
+        <div class="bc-bar" style="background:#2563EB"></div>
+        <div class="bc-body">
+          <div class="bc-icon" style="background:#EFF6FF">📊</div>
+          <h3>Income Tax</h3>
+          <p>Tax slabs, salary, capital gains, deductions 80C–80U, TDS rates and ITR filing. IT Act 1961 ↔ IT Act 2025 (effective 1 April 2026).</p>
+        </div>
+        <div class="bc-foot">
+          <div class="bc-tags">
+            <span class="bc-tag">Direct Tax</span>
+            <span class="bc-tag">TDS</span>
+            <span class="bc-tag">IT Act 2025</span>
+          </div>
+          <span class="bc-arrow" style="color:#2563EB">Explore →</span>
+        </div>
       </a>
-      <a href="chat.html" style="display:block;background:var(--light);border:1px solid var(--gray-3);border-radius:var(--radius-lg);padding:22px;transition:all 0.2s;text-decoration:none" onmouseover="this.style.borderColor='var(--blue)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='var(--gray-3)';this.style.transform='none'">
-        <div style="font-size:1.4rem;margin-bottom:10px">🤖</div>
-        <h3 style="color:var(--black);font-size:0.95rem;margin-bottom:6px">AI Legal Assistant</h3>
-        <p style="font-size:0.8rem">Ask any question on Indian law — get instant, section-cited answers. Free for all users.</p>
+
+      <!-- Goods & Service Tax -->
+      <a href="gst.html" class="bc" data-f="tax">
+        <div class="bc-bar" style="background:#16A34A"></div>
+        <div class="bc-body">
+          <div class="bc-icon" style="background:#F0FDF4">🏷️</div>
+          <h3>Goods & Service Tax</h3>
+          <p>GST 2.0 rates (0%, 5%, 18%, 40%), registration, ITC, e-invoice, returns calendar. Updated September 2025.</p>
+        </div>
+        <div class="bc-foot">
+          <div class="bc-tags">
+            <span class="bc-tag">Indirect Tax</span>
+            <span class="bc-tag">ITC</span>
+            <span class="bc-tag">GST 2.0</span>
+          </div>
+          <span class="bc-arrow" style="color:#16A34A">Explore →</span>
+        </div>
       </a>
-      <a href="https://trustfacton.beehiiv.com/subscribe" target="_blank" style="display:block;background:var(--light);border:1px solid var(--gray-3);border-radius:var(--radius-lg);padding:22px;transition:all 0.2s;text-decoration:none" onmouseover="this.style.borderColor='var(--blue)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='var(--gray-3)';this.style.transform='none'">
-        <div style="font-size:1.4rem;margin-bottom:10px">📧</div>
-        <h3 style="color:var(--black);font-size:0.95rem;margin-bottom:6px">Weekly Newsletter</h3>
-        <p style="font-size:0.8rem">CBDT circulars, GST updates, MCA notifications — in plain language every week.</p>
+
+      <!-- Companies Act -->
+      <a href="companies-act.html" class="bc" data-f="corporate">
+        <div class="bc-bar" style="background:#1A3A6B"></div>
+        <div class="bc-body">
+          <div class="bc-icon" style="background:#EFF6FF">🏢</div>
+          <h3>Companies Act</h3>
+          <p>Incorporation, directors, meetings, audit, CSR, MCA filings. Includes Dec 2025 small company update, DIR-3 KYC and fast-track merger amendments.</p>
+        </div>
+        <div class="bc-foot">
+          <div class="bc-tags">
+            <span class="bc-tag">MCA</span>
+            <span class="bc-tag">NCLT</span>
+            <span class="bc-tag">Updated 2025</span>
+          </div>
+          <span class="bc-arrow" style="color:#1A3A6B">Explore →</span>
+        </div>
       </a>
+
+      <!-- TDS/TCS Master -->
+      <a href="tds-master.html" class="bc" data-f="tax">
+        <div class="bc-bar" style="background:#D97706"></div>
+        <div class="bc-body">
+          <div class="bc-icon" style="background:#FFFBEB">✂️</div>
+          <h3>TDS / TCS Section Master</h3>
+          <p>All 91 TDS and TCS section codes — rates, thresholds, who deducts, who pays. IT Act 1961 ↔ IT Act 2025. Finance Bill 2026 rates.</p>
+        </div>
+        <div class="bc-foot">
+          <div class="bc-tags">
+            <span class="bc-tag">91 Sections</span>
+            <span class="bc-tag">TY 2026-27</span>
+            <span class="bc-tag">Compare</span>
+          </div>
+          <span class="bc-arrow" style="color:#D97706">Explore →</span>
+        </div>
+      </a>
+
     </div>
   </div>
 </section>
 
-<!-- AI CHAT PREVIEW -->
+<!-- ════════════════════ AI CHAT ════════════════════ -->
 <section class="chat-section">
   <div class="container">
     <div style="text-align:center;margin-bottom:32px">
       <span class="sec-label" style="color:#93C5FD">AI Legal Assistant</span>
-      <h2>Ask Anything About Indian Law</h2>
-      <p class="sub">Free for all users · No signup · Powered by Google Gemini</p>
+      <h2>Ask Anything About Indian Tax & Compliance</h2>
+      <p class="sub">Free · No login · Powered by Google Gemini</p>
     </div>
-    <div class="chat-container" id="chat-widget">
+    <div class="chat-container" id="chat-widget" style="max-width:820px;margin:0 auto">
       <div class="chat-header">
         <div class="chat-avatar">TF</div>
         <div class="chat-header-info">
           <h4>TrustFactON AI</h4>
-          <span><span class="online-dot"></span>Income Tax · GST · Companies Act · TDS/TCS</span>
+          <span><span class="online-dot"></span>Income Tax · Goods & Service Tax · Companies · TDS/TCS</span>
         </div>
       </div>
       <div class="chat-messages"></div>
       <div class="chat-suggestions">
-        <button class="chat-suggest-btn">New tax slabs FY 2025-26?</button>
-        <button class="chat-suggest-btn">GST return filing due dates?</button>
-        <button class="chat-suggest-btn">AGM notice requirements?</button>
-        <button class="chat-suggest-btn">TDS on rent — Sec 194IB?</button>
+        <button class="chat-suggest-btn">New tax slabs under IT Act 2025?</button>
+        <button class="chat-suggest-btn">GST 2.0 — what changed from Sept 2025?</button>
+        <button class="chat-suggest-btn">Small company definition after Dec 2025?</button>
+        <button class="chat-suggest-btn">TDS on rent — Sec 194IB vs Sec 393?</button>
       </div>
       <div class="chat-input-row">
-        <textarea class="chat-input" rows="1" placeholder="Ask about Income Tax, GST, Companies Act..."></textarea>
+        <textarea class="chat-input" rows="1" placeholder="Ask about Income Tax, Goods & Service Tax, Companies, TDS/TCS…"></textarea>
         <button class="chat-send-btn">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+          </svg>
         </button>
       </div>
     </div>
-    <p style="text-align:center;font-size:0.74rem;color:rgba(255,255,255,0.25);margin-top:12px">Informational only. Not a substitute for professional legal or tax advice.</p>
+    <p style="text-align:center;font-size:0.73rem;color:rgba(255,255,255,0.22);margin-top:14px">Informational only · Not legal or tax advice · Consult a qualified professional for your situation</p>
   </div>
 </section>
 
@@ -191,12 +468,12 @@
 <section class="newsletter-section">
   <div class="container">
     <div class="newsletter-inner">
-      <span class="sec-label">Newsletter</span>
-      <h2 class="sec-title" style="margin-bottom:8px">Stay Ahead of Every Circular & Amendment</h2>
-      <p class="sec-sub" style="margin-bottom:24px">Weekly compliance updates from TrustFactON — free for finance professionals.</p>
+      <span class="sec-label">TrustFactON Weekly</span>
+      <h2 class="sec-title" style="margin-bottom:8px">Tax & Compliance Updates</h2>
+      <p class="sec-sub" style="margin-bottom:24px">CBDT circulars · GST Council decisions · MCA notifications — in plain language. Every week.</p>
       <div class="newsletter-form">
-        <input type="email" id="nl-email" placeholder="your@email.com">
-        <button onclick="window.open('https://trustfacton.beehiiv.com/subscribe?email='+document.getElementById('nl-email').value,'_blank')">Subscribe →</button>
+        <input type="email" id="nlEmail" placeholder="your@email.com">
+        <button onclick="window.open('https://trustfacton.beehiiv.com/subscribe?email='+encodeURIComponent(document.getElementById('nlEmail').value||''),'_blank')">Subscribe →</button>
       </div>
     </div>
   </div>
@@ -206,14 +483,299 @@
 <script src="components.js"></script>
 <script src="chat-widget.js"></script>
 <script>
-// Search
-function doSearch() { const q=document.getElementById('hero-search').value.trim().toLowerCase(); if(!q){resetActs();return;} filterActs(q); document.getElementById('acts').scrollIntoView({behavior:'smooth'}); }
-document.getElementById('hero-search').addEventListener('keydown',e=>{if(e.key==='Enter')doSearch();});
-document.getElementById('hero-search').addEventListener('input',e=>{const q=e.target.value.trim().toLowerCase();q?filterActs(q):resetActs();});
-function filterActs(q){let v=0;document.querySelectorAll('.act-card').forEach(c=>{const m=c.dataset.kw.includes(q)||c.querySelector('h3').textContent.toLowerCase().includes(q);c.classList.toggle('hidden',!m);if(m)v++;});document.getElementById('no-results').style.display=v===0?'block':'none';}
-function resetActs(){document.querySelectorAll('.act-card').forEach(c=>c.classList.remove('hidden'));document.getElementById('no-results').style.display='none';document.querySelectorAll('.ftab').forEach(t=>t.classList.remove('active'));document.querySelector('.ftab[data-filter="all"]').classList.add('active');}
-// Filter tabs
-document.querySelectorAll('.ftab').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('.ftab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.getElementById('hero-search').value='';const f=btn.dataset.filter;let v=0;document.querySelectorAll('.act-card').forEach(c=>{const m=f==='all'||c.dataset.cat===f;c.classList.toggle('hidden',!m);if(m)v++;});document.getElementById('no-results').style.display=v===0?'block':'none';});});
+/* ════════════ GSTIN VERIFIER ════════════ */
+const GSTIN_RE = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
+
+function gState(s) {
+  const loading = document.getElementById('gLoading');
+  const err     = document.getElementById('gErr');
+  const result  = document.getElementById('gResult');
+  const btn     = document.getElementById('gstinBtn');
+  loading.classList.toggle('on', s === 'loading');
+  err.classList.toggle('on',     s === 'error');
+  result.classList.toggle('on',  s === 'result');
+  btn.disabled = s === 'loading';
+}
+
+async function doGSTIN() {
+  const val = document.getElementById('gstinInp').value.trim().toUpperCase();
+
+  if (!val) return;
+  if (val.length !== 15) {
+    document.getElementById('gErr').textContent = 'GSTIN must be exactly 15 characters. Example: 29AABCU9603R1ZM';
+    gState('error'); return;
+  }
+  if (!GSTIN_RE.test(val)) {
+    document.getElementById('gErr').textContent = 'Invalid GSTIN format. Please check and try again.';
+    gState('error'); return;
+  }
+
+  gState('loading');
+
+  // Try 3 endpoints — GSTN public → proxy fallback → show portal link
+  const endpoints = [
+    `https://services.gst.gov.in/services/api/search/taxpayerDetails?gstin=${val}`,
+    `https://api.gst.gov.in/commonapi/taxpayerDetails/search/${val}`,
+  ];
+
+  let data = null;
+  for (const url of endpoints) {
+    try {
+      const r = await fetch(url, { signal: AbortSignal.timeout(6000) });
+      if (!r.ok) continue;
+      const j = await r.json();
+      if (j && (j.lgnm || j.tradeNam || j.tradeName)) { data = j; break; }
+    } catch {}
+  }
+
+  if (data) {
+    fillGSTIN(data, val);
+    gState('result');
+  } else {
+    document.getElementById('gErr').innerHTML =
+      `Could not retrieve details automatically (GSTN restricts direct browser access). ` +
+      `<a href="https://services.gst.gov.in/services/searchtp" target="_blank" style="color:var(--blue);font-weight:600">Verify on the official GST Portal →</a>`;
+    gState('error');
+  }
+}
+
+function fillGSTIN(d, gstin) {
+  const status = d.sts || d.status || 'Active';
+  const active = status.toLowerCase().includes('active');
+  document.getElementById('gLname').textContent = d.lgnm || d.legalName || d.legal_name || '—';
+  document.getElementById('gGstin').textContent = gstin;
+  const badge = document.getElementById('gBadge');
+  badge.textContent = status;
+  badge.className = 'g-badge ' + (active ? 'g-active' : 'g-inactive');
+  document.getElementById('gTrade').textContent = d.tradeNam || d.tradeName  || d.lgnm || '—';
+  document.getElementById('gType').textContent  = d.dty || d.taxpayerType    || '—';
+  document.getElementById('gDate').textContent  = d.rgdt || d.regDate        || '—';
+  document.getElementById('gState').textContent = d.stj  || d.state          || '—';
+  document.getElementById('gConst').textContent = d.ctb  || d.constitution   || '—';
+  document.getElementById('gJuris').textContent = d.ctj  || d.jurisdiction   || '—';
+}
+
+document.getElementById('gstinInp').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doGSTIN();
+});
+
+/* ════════════ HSN / SAC DATA ════════════ */
+const HSN = [
+  // GOODS
+  {t:'goods', c:'0101', d:'Live horses, asses, mules and hinnies',                   r:'Nil'},
+  {t:'goods', c:'0201', d:'Meat of bovine animals, fresh or chilled',                r:'Nil'},
+  {t:'goods', c:'0401', d:'Milk and cream, not concentrated or sweetened',            r:'Nil'},
+  {t:'goods', c:'0702', d:'Tomatoes, fresh or chilled',                               r:'Nil'},
+  {t:'goods', c:'0901', d:'Coffee, whether or not roasted',                           r:'5%'},
+  {t:'goods', c:'0902', d:'Tea, whether or not flavoured',                            r:'5%'},
+  {t:'goods', c:'1001', d:'Wheat and meslin',                                         r:'Nil'},
+  {t:'goods', c:'1006', d:'Rice',                                                     r:'Nil'},
+  {t:'goods', c:'1507', d:'Soya-bean oil and its fractions',                          r:'5%'},
+  {t:'goods', c:'1701', d:'Cane or beet sugar',                                       r:'5%'},
+  {t:'goods', c:'1905', d:'Bread, pastry, cakes, biscuits (branded/packaged)',        r:'5%'},
+  {t:'goods', c:'2106', d:'Food preparations — packaged food mixes',                  r:'5%'},
+  {t:'goods', c:'2202', d:'Aerated waters, soft drinks, flavoured water',             r:'40%'},
+  {t:'goods', c:'2401', d:'Unmanufactured tobacco, tobacco refuse',                   r:'40%'},
+  {t:'goods', c:'2402', d:'Cigars, cigarettes, cigarillos',                           r:'40%'},
+  {t:'goods', c:'2403', d:'Other tobacco — gutka, pan masala, khaini',                r:'40%'},
+  {t:'goods', c:'2710', d:'Petroleum oils — petrol, diesel, ATF (outside GST)',       r:'Outside GST'},
+  {t:'goods', c:'2711', d:'Liquefied petroleum gas (LPG)',                            r:'5%'},
+  {t:'goods', c:'3002', d:'Human blood, vaccines, antisera',                          r:'Nil'},
+  {t:'goods', c:'3004', d:'Medicaments — drugs and medicines for retail sale',        r:'5%'},
+  {t:'goods', c:'3401', d:'Soap, organic surface-active products',                    r:'18%'},
+  {t:'goods', c:'3402', d:'Washing preparations, detergents, cleaning preparations',  r:'18%'},
+  {t:'goods', c:'3305', d:'Hair preparations — shampoo, hair oil, hair cream',        r:'18%'},
+  {t:'goods', c:'3306', d:'Toothpaste, dental floss, mouthwash',                     r:'18%'},
+  {t:'goods', c:'4011', d:'New pneumatic tyres of rubber',                            r:'18%'},
+  {t:'goods', c:'4901', d:'Printed books, brochures, pamphlets, leaflets',            r:'Nil'},
+  {t:'goods', c:'4902', d:'Newspapers, journals and periodicals',                     r:'Nil'},
+  {t:'goods', c:'5201', d:'Cotton, not carded or combed',                             r:'Nil'},
+  {t:'goods', c:'5407', d:'Woven fabrics of synthetic filament yarn',                 r:'5%'},
+  {t:'goods', c:'6101', d:'Overcoats, carcoats, capes — value ≤₹1000: 5%, >₹1000: 12%', r:'5% / 12%'},
+  {t:'goods', c:'6402', d:'Footwear — other rubber or plastic outer soles',          r:'5%'},
+  {t:'goods', c:'6403', d:'Footwear with leather outer soles',                        r:'5%'},
+  {t:'goods', c:'7101', d:'Pearls, natural or cultured',                              r:'3%'},
+  {t:'goods', c:'7108', d:'Gold in unwrought or semi-manufactured forms',             r:'3%'},
+  {t:'goods', c:'7113', d:'Jewellery of precious metal (gold, silver, platinum)',     r:'3%'},
+  {t:'goods', c:'7117', d:'Imitation jewellery',                                      r:'3%'},
+  {t:'goods', c:'8415', d:'Air conditioning machines (ACs)',                          r:'18%'},
+  {t:'goods', c:'8418', d:'Refrigerators, freezers, heat pumps',                     r:'18%'},
+  {t:'goods', c:'8450', d:'Household washing machines',                               r:'18%'},
+  {t:'goods', c:'8471', d:'Computers, laptops, automatic data-processing machines',  r:'18%'},
+  {t:'goods', c:'8517', d:'Mobile phones, smartphones, telephone sets',               r:'18%'},
+  {t:'goods', c:'8528', d:'Monitors, projectors, television receivers (TVs)',         r:'18%'},
+  {t:'goods', c:'8703', d:'Motor cars — small cars 18%, large/luxury cars 40%',      r:'18% / 40%'},
+  {t:'goods', c:'8711', d:'Motorcycles, scooters, mopeds',                           r:'18%'},
+  {t:'goods', c:'8712', d:'Bicycles, other cycles',                                  r:'5%'},
+  {t:'goods', c:'9619', d:'Sanitary towels, tampons, nappies for babies',             r:'Nil'},
+  // SERVICES
+  {t:'services', c:'9954', d:'Construction services — works contract, real estate',      r:'1% / 5% / 18%'},
+  {t:'services', c:'9961', d:'Services in wholesale trade',                               r:'18%'},
+  {t:'services', c:'9962', d:'Services in retail trade',                                  r:'18%'},
+  {t:'services', c:'9963', d:'Accommodation and food — restaurants, hotels',             r:'5% / 18%'},
+  {t:'services', c:'9964', d:'Passenger transport — air travel economy 5%, business 5%, taxi 18%', r:'5% / 18%'},
+  {t:'services', c:'9965', d:'Goods transport — GTA freight service',                    r:'5% / 18%'},
+  {t:'services', c:'9966', d:'Vehicle rental and leasing services with operator',         r:'18%'},
+  {t:'services', c:'9967', d:'Supporting services in transport (loading, packing)',       r:'18%'},
+  {t:'services', c:'9968', d:'Postal and courier services',                               r:'18%'},
+  {t:'services', c:'9971', d:'Financial services — banking, insurance, NBFCs; health/life insurance Nil (GST 2.0)', r:'Nil / 18%'},
+  {t:'services', c:'9972', d:'Real estate services — renting, leasing of property',      r:'18%'},
+  {t:'services', c:'9973', d:'Leasing or rental services without operator',               r:'18%'},
+  {t:'services', c:'9981', d:'Research and development services',                         r:'18%'},
+  {t:'services', c:'9982', d:'Legal and accounting services',                             r:'18%'},
+  {t:'services', c:'9983', d:'IT services, software, professional and technical services',r:'18%'},
+  {t:'services', c:'9984', d:'Telecommunications and broadcasting services',              r:'18%'},
+  {t:'services', c:'9985', d:'Support services — cleaning, security, packaging',         r:'18%'},
+  {t:'services', c:'9986', d:'Agricultural support services — irrigation, pest control',  r:'Nil'},
+  {t:'services', c:'9987', d:'Maintenance, repair and installation services',             r:'18%'},
+  {t:'services', c:'9988', d:'Job work / manufacturing services on physical inputs',      r:'5% / 18%'},
+  {t:'services', c:'9991', d:'Government and public administration services',             r:'Nil'},
+  {t:'services', c:'9992', d:'Education services — schools, approved colleges',           r:'Nil'},
+  {t:'services', c:'9993', d:'Human health and social care — hospitals, doctors, clinics',r:'Nil'},
+  {t:'services', c:'9994', d:'Sewage, waste collection and treatment services',           r:'Nil / 18%'},
+  {t:'services', c:'9995', d:'Membership organisation services',                          r:'18%'},
+  {t:'services', c:'9996', d:'Recreational, cultural and sporting services',              r:'18%'},
+  {t:'services', c:'9997', d:'Personal services — gyms, salons, barbers, yoga centres',  r:'5%'},
+  {t:'services', c:'9998', d:'Domestic household worker services',                        r:'Nil'},
+];
+
+function rateClass(r) {
+  if (!r || r === 'Nil') return 'nil';
+  if (r.includes('40'))  return 'r40';
+  if (r.includes('18'))  return 'r18';
+  if (r.includes('5'))   return 'r5';
+  return '';
+}
+
+let hsnTab = 'goods';
+function setTab(t) {
+  hsnTab = t;
+  document.getElementById('tabG').classList.toggle('on', t === 'goods');
+  document.getElementById('tabS').classList.toggle('on', t === 'services');
+  document.getElementById('hsnInp').placeholder = t === 'goods'
+    ? 'HSN code or description — e.g. 8528 or television…'
+    : 'SAC code or description — e.g. 9983 or software…';
+  document.getElementById('hsnInp').value = '';
+  document.getElementById('hsnOut').innerHTML = '';
+}
+
+function doHSN() {
+  const q   = document.getElementById('hsnInp').value.trim().toLowerCase();
+  const out = document.getElementById('hsnOut');
+  if (q.length < 2) { out.innerHTML = ''; return; }
+
+  const hits = HSN
+    .filter(h => h.t === hsnTab)
+    .filter(h => h.c.startsWith(q) || h.d.toLowerCase().includes(q))
+    .slice(0, 7);
+
+  if (!hits.length) {
+    out.innerHTML = `<div class="hsn-empty">No results for "<b>${q}</b>". Try a broader term or use the <a href="https://services.gst.gov.in/services/searchhsnsac" target="_blank" style="color:var(--blue)">official GSTN search</a>.</div>`;
+    return;
+  }
+
+  out.innerHTML = hits.map(h => `
+    <div class="hsn-item">
+      <div class="hi-code">${h.t === 'goods' ? 'HSN' : 'SAC'} ${h.c}</div>
+      <div class="hi-desc">${h.d}</div>
+      <span class="hi-rate ${rateClass(h.r)}">GST: ${h.r}</span>
+    </div>`).join('');
+}
+
+/* ════════════ FOREX RATES ════════════ */
+const CCYS = [
+  {code:'USD', name:'US Dollar',     flag:'🇺🇸'},
+  {code:'EUR', name:'Euro',          flag:'🇪🇺'},
+  {code:'GBP', name:'British Pound', flag:'🇬🇧'},
+  {code:'AED', name:'UAE Dirham',    flag:'🇦🇪'},
+  {code:'SGD', name:'Singapore $',   flag:'🇸🇬'},
+  {code:'JPY', name:'Japanese Yen',  flag:'🇯🇵'},
+  {code:'AUD', name:'Aus Dollar',    flag:'🇦🇺'},
+  {code:'SAR', name:'Saudi Riyal',   flag:'🇸🇦'},
+];
+
+async function doForex() {
+  const grid   = document.getElementById('fxGrid');
+  const timeEl = document.getElementById('fxTime');
+  const rbiEl  = document.getElementById('fxRbi');
+
+  // Show skeletons
+  grid.innerHTML = Array(8).fill('<div class="fx-skeleton"></div>').join('');
+  timeEl.textContent = 'Fetching live rates…';
+
+  const syms = CCYS.map(c => c.code).join(',');
+  const APIS = [
+    `https://api.frankfurter.app/latest?from=INR&to=${syms}`,
+    `https://open.er-api.com/v6/latest/INR`,
+    `https://api.exchangerate-api.com/v4/latest/INR`,
+  ];
+
+  let rates = null;
+  for (const url of APIS) {
+    try {
+      const r = await fetch(url, { signal: AbortSignal.timeout(7000) });
+      if (!r.ok) continue;
+      const j = await r.json();
+      if (j && j.rates && j.rates.USD) { rates = j.rates; break; }
+    } catch {}
+  }
+
+  if (!rates) {
+    grid.innerHTML = `<div class="fx-err">
+      Could not load live rates. Check
+      <a href="https://www.rbi.org.in/Scripts/ReferenceRateArchive.aspx" target="_blank" style="color:var(--blue)">RBI Reference Rates →</a>
+    </div>`;
+    timeEl.textContent = 'Rates unavailable';
+    return;
+  }
+
+  const now = new Date();
+  timeEl.textContent = `Updated ${now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})} IST`;
+  rbiEl.innerHTML = `Indicative only · <a href="https://www.rbi.org.in/Scripts/ReferenceRateArchive.aspx" target="_blank" style="color:var(--blue)">Official RBI Rates ↗</a>`;
+
+  grid.innerHTML = CCYS.map(c => {
+    const rawRate = rates[c.code];
+    if (!rawRate) return '';
+    // API gives INR per 1 foreign: 1/rawRate if from=INR
+    // Frankfurter from=INR gives how much of target you get per 1 INR
+    // So 1 USD = 1/rate INR
+    const inrPer1 = (1 / rawRate);
+    const display = c.code === 'JPY'
+      ? inrPer1.toFixed(3)
+      : inrPer1.toFixed(2);
+
+    return `<div class="fx-row">
+      <div class="fx-ccy">
+        <span class="fx-flag">${c.flag}</span>
+        <div>
+          <span class="fx-code">${c.code}</span>
+          <span class="fx-name">${c.name}</span>
+        </div>
+      </div>
+      <div class="fx-amount">
+        <span class="big">₹${display}</span>
+        <span class="sm">per 1 ${c.code}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ════════════ FILTER TABS ════════════ */
+document.querySelectorAll('.ftab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.ftab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.f;
+    document.querySelectorAll('.bc').forEach(c => {
+      c.style.display = (f === 'all' || c.dataset.f === f) ? '' : 'none';
+    });
+  });
+});
+
+/* ════════════ INIT ════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  doForex();
+});
 </script>
 </body>
 </html>
