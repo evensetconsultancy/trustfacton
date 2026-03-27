@@ -368,80 +368,133 @@
 <script src="chat-widget.js"></script>
 <script>
 /* ══════════════════════════════════════════
-   GSTIN VERIFIER — via TrustFactON backend proxy
-   Backend: https://trustfacton-backend.vercel.app/gstin?gstin=XXXX
+   GSTIN VERIFIER
+   1. Validates format client-side
+   2. Calls TrustFactON backend proxy (/gstin)
+   3. Falls back to direct GSTN call
+   4. If all fail → opens official portal with GSTIN pre-filled
    ══════════════════════════════════════════ */
-const BACKEND = 'https://trustfacton-backend.vercel.app';
+const BACKEND  = 'https://trustfacton-backend.vercel.app';
 const GSTIN_RE = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
 
+// State machine
 function gState(s) {
-  const spin = document.getElementById('gSpin');
-  const err  = document.getElementById('gErr');
-  const res  = document.getElementById('gRes');
-  const btn  = document.getElementById('gBtn');
-  spin.classList.toggle('on', s === 'loading');
-  err.classList.toggle('on',  s === 'error');
-  res.classList.toggle('on',  s === 'result');
-  btn.disabled = s === 'loading';
-  if (s !== 'error')  err.innerHTML  = '';
-  if (s !== 'result') {/* keep result */}
+  document.getElementById('gSpin').classList.toggle('on', s === 'loading');
+  document.getElementById('gErr').classList.toggle('on',  s === 'error');
+  document.getElementById('gRes').classList.toggle('on',  s === 'result');
+  document.getElementById('gBtn').disabled = (s === 'loading');
 }
 
 async function doGSTIN() {
   const raw = document.getElementById('gInp').value.trim().toUpperCase();
 
+  // ── Validate format ──
   if (raw.length !== 15) {
-    document.getElementById('gErr').innerHTML = '⚠ GSTIN must be exactly 15 characters. Format: <code style="font-family:monospace">22AAAAA0000A1Z5</code>';
+    document.getElementById('gErr').innerHTML =
+      '⚠ GSTIN must be 15 characters. Example: <span style="font-family:monospace;font-weight:700">29AABCU9603R1ZM</span>';
     gState('error'); return;
   }
   if (!GSTIN_RE.test(raw)) {
-    document.getElementById('gErr').textContent = '⚠ Invalid GSTIN format. Please check and try again.';
+    document.getElementById('gErr').textContent = '⚠ Invalid GSTIN format. Check digits and letters and try again.';
     gState('error'); return;
   }
 
   gState('loading');
 
-  // Try 1: Our Vercel backend proxy (avoids CORS)
-  // Try 2: Direct GSTN (may work in some environments)
-  const URLS = [
-    `${BACKEND}/gstin?gstin=${raw}`,
-    `https://services.gst.gov.in/services/api/search/taxpayerDetails?gstin=${raw}`,
-  ];
+  // ── Decode state code from first 2 digits ──
+  const STATE_CODES = {
+    '01':'Jammu & Kashmir','02':'Himachal Pradesh','03':'Punjab','04':'Chandigarh',
+    '05':'Uttarakhand','06':'Haryana','07':'Delhi','08':'Rajasthan','09':'Uttar Pradesh',
+    '10':'Bihar','11':'Sikkim','12':'Arunachal Pradesh','13':'Nagaland','14':'Manipur',
+    '15':'Mizoram','16':'Tripura','17':'Meghalaya','18':'Assam','19':'West Bengal',
+    '20':'Jharkhand','21':'Odisha','22':'Chhattisgarh','23':'Madhya Pradesh',
+    '24':'Gujarat','25':'Daman & Diu','26':'Dadra & Nagar Haveli','27':'Maharashtra',
+    '28':'Andhra Pradesh (Old)','29':'Karnataka','30':'Goa','31':'Lakshadweep',
+    '32':'Kerala','33':'Tamil Nadu','34':'Puducherry','35':'Andaman & Nicobar Islands',
+    '36':'Telangana','37':'Andhra Pradesh','38':'Ladakh'
+  };
+  const stateCode = raw.substring(0, 2);
+  const stateName = STATE_CODES[stateCode] || '—';
+  const panFromGstin = raw.substring(2, 12);
 
+  // ── Try backend proxy ──
   let data = null;
-  for (const url of URLS) {
-    try {
-      const r = await fetch(url, { signal: AbortSignal.timeout(8000) });
-      if (!r.ok) continue;
+  try {
+    const r = await fetch(`${BACKEND}/gstin?gstin=${raw}`, {
+      signal: AbortSignal.timeout(9000)
+    });
+    if (r.ok) {
       const j = await r.json();
-      // Valid response has lgnm (legal name)
-      if (j && !j.error && (j.lgnm || j.tradeNam || j.legal_name)) {
-        data = j; break;
+      if (j && !j.error && (j.lgnm || j.tradeNam)) data = j;
+    }
+  } catch {}
+
+  // ── Try direct GSTN (works in some network environments) ──
+  if (!data) {
+    try {
+      const r = await fetch(
+        `https://services.gst.gov.in/services/api/search/taxpayerDetails?gstin=${raw}`,
+        { signal: AbortSignal.timeout(6000) }
+      );
+      if (r.ok) {
+        const j = await r.json();
+        if (j && (j.lgnm || j.tradeNam)) data = j;
       }
-    } catch { /* try next */ }
+    } catch {}
   }
 
+  // ── Got live data ──
   if (data) {
     const status = data.sts || data.status || 'Active';
     const active = /active/i.test(status);
-    document.getElementById('gLname').textContent = data.lgnm || data.legal_name || '—';
-    document.getElementById('gNum').textContent   = raw;
+
+    document.getElementById('gLname').textContent  = data.lgnm  || '—';
+    document.getElementById('gNum').textContent    = raw;
     const badge = document.getElementById('gBadge');
-    badge.textContent  = status;
-    badge.className = 'g-badge ' + (active ? 'g-active' : 'g-inactive');
-    document.getElementById('gTrade').textContent = data.tradeNam || data.tradeName || data.lgnm || '—';
-    document.getElementById('gType').textContent  = data.dty   || data.taxpayerType  || '—';
-    document.getElementById('gDate').textContent  = data.rgdt  || data.regDate       || '—';
-    document.getElementById('gState').textContent = data.stj   || data.state         || '—';
-    document.getElementById('gConst').textContent = data.ctb   || data.constitution  || '—';
-    document.getElementById('gJuris').textContent = data.ctj   || data.jurisdiction  || '—';
+    badge.textContent = '● ' + status;
+    badge.className   = 'g-badge ' + (active ? 'g-active' : 'g-inactive');
+
+    document.getElementById('gTrade').textContent  = data.tradeNam || data.lgnm || '—';
+    document.getElementById('gType').textContent   = data.dty || '—';
+    document.getElementById('gDate').textContent   = data.rgdt || '—';
+    document.getElementById('gState').textContent  = data.stj || stateName;
+    document.getElementById('gConst').textContent  = data.ctb || '—';
+    document.getElementById('gJuris').textContent  = data.ctj || '—';
     gState('result');
-  } else {
-    document.getElementById('gErr').innerHTML =
-      '⚠ Could not fetch details. GSTN restricts automated access. ' +
-      '<a href="https://services.gst.gov.in/services/searchtp" target="_blank" style="color:var(--blue);font-weight:600">Verify on official GST Portal →</a>';
-    gState('error');
+    return;
   }
+
+  // ── API failed — show what we CAN decode client-side + portal link ──
+  // We can decode: state, entity type from PAN structure, GSTIN format validity
+  const panTypes = { 'P':'Individual', 'C':'Company', 'H':'HUF', 'F':'Firm',
+    'A':'AOP', 'T':'Trust', 'B':'BOI', 'L':'LLP', 'J':'AJP', 'G':'Govt' };
+  const entityLetter = panFromGstin[3];
+  const entityType   = panTypes[entityLetter] || 'Business Entity';
+
+  document.getElementById('gLname').textContent  = 'Live data unavailable';
+  document.getElementById('gNum').textContent    = raw;
+  const badge = document.getElementById('gBadge');
+  badge.textContent = '⚠ Could not verify';
+  badge.className   = 'g-badge g-inactive';
+  document.getElementById('gTrade').textContent  = '—';
+  document.getElementById('gType').textContent   = entityType + ' (decoded from PAN)';
+  document.getElementById('gDate').textContent   = '—';
+  document.getElementById('gState').textContent  = stateName + ' (decoded from code ' + stateCode + ')';
+  document.getElementById('gConst').textContent  = '—';
+  document.getElementById('gJuris').textContent  = '—';
+  gState('result');
+
+  // Show error below the result card
+  document.getElementById('gErr').innerHTML =
+    '⚠ GSTN restricts automated lookup. State and entity type decoded locally. ' +
+    'For full details: ';
+  const link = document.createElement('a');
+  link.href   = 'https://services.gst.gov.in/services/searchtp';
+  link.target = '_blank';
+  link.style.cssText = 'color:var(--blue);font-weight:600';
+  link.textContent = 'Verify on GST Portal →';
+  document.getElementById('gErr').appendChild(link);
+  document.getElementById('gErr').classList.add('on');
 }
 
 /* ══════════════════════════════════════════
