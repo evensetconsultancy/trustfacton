@@ -160,60 +160,103 @@
 
     <div class="tools-grid">
 
-      <!-- ① GSTIN DECODER + PORTAL LINK -->
+      <!-- ① GSTIN VERIFIER -->
       <div class="tc">
         <div class="tc-head">
           <div class="tc-icon" style="background:#F0FDF4">🔍</div>
           <div>
-            <h3>GSTIN Validator & Decoder</h3>
-            <p>Instant format check · State & entity type decoded · Official portal link</p>
+            <h3>GSTIN Verifier</h3>
+            <p>Validate format · Decode state & entity · Open GST portal to verify</p>
           </div>
         </div>
         <div class="tc-body">
+
+          <!-- Input row -->
           <div class="g-row">
             <input type="text" id="gInp" class="ti g-mono"
-              placeholder="Enter 15-digit GSTIN…" maxlength="15" autocomplete="off"
-              oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'');doGSTIN()"
-              onkeydown="if(event.key==='Enter')doGSTIN()">
-            <button class="tb tb-blue" id="gBtn" onclick="doGSTIN()">Decode</button>
+              placeholder="Enter 15-digit GSTIN…"
+              maxlength="15" autocomplete="off"
+              oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'');onGSTINInput()"
+              onkeydown="if(event.key==='Enter')openGSTNPortal()">
+            <button class="tb tb-blue" id="gBtn" onclick="openGSTNPortal()">Verify →</button>
           </div>
 
-          <!-- Format error -->
+          <!-- Format error bar -->
           <div class="g-err" id="gErr"></div>
 
-          <!-- Decoded result -->
+          <!-- Decoded info card (shows as soon as format is valid) -->
           <div class="g-result" id="gRes">
             <div class="g-card">
-              <!-- Format valid banner -->
-              <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;padding:6px 10px;background:#F0FDF4;border-radius:6px;border:1px solid #BBF7D0">
-                <span style="color:#16A34A;font-size:1rem">✅</span>
+              <div style="display:flex;align-items:center;gap:7px;margin-bottom:10px;
+                          padding:7px 10px;background:#F0FDF4;border-radius:6px;border:1px solid #BBF7D0">
+                <span style="font-size:1.1rem">✅</span>
                 <span style="font-size:0.78rem;color:#166534;font-weight:600">Valid GSTIN format</span>
-                <span class="g-badge" id="gBadge" style="margin-left:auto"></span>
+                <span id="gBadge" style="margin-left:auto;padding:2px 9px;border-radius:12px;
+                      font-size:0.7rem;font-weight:700;background:#DBEAFE;color:#1E40AF"></span>
               </div>
               <div class="g-grid">
-                <div class="gf"><label>GSTIN</label><div class="v g-mono" id="gNum" style="font-size:0.82rem;letter-spacing:1px;color:var(--blue)"></div></div>
-                <div class="gf"><label>PAN (embedded)</label><div class="v g-mono" id="gPan" style="font-size:0.82rem;color:var(--navy)"></div></div>
-                <div class="gf"><label>State / UT</label><div class="v" id="gState"></div></div>
-                <div class="gf"><label>Entity Type</label><div class="v" id="gType"></div></div>
-                <div class="gf"><label>State Code</label><div class="v" id="gCode"></div></div>
-                <div class="gf"><label>Registration No.</label><div class="v" id="gRegNo"></div></div>
-              </div>
-              <!-- Info about what we can't show -->
-              <div style="margin-top:10px;padding:8px 10px;background:#FFFBEB;border:1px solid #FDE68A;border-radius:6px;font-size:0.74rem;color:#92400E;line-height:1.5">
-                ℹ️ <strong>Name, status and filing history</strong> require CAPTCHA verification on GSTN portal. Click below to verify on official portal.
+                <div class="gf">
+                  <label>GSTIN</label>
+                  <div style="display:flex;align-items:center;gap:6px">
+                    <div class="v g-mono" id="gNum" style="font-size:0.8rem;letter-spacing:1px;color:var(--blue)"></div>
+                    <button onclick="copyGSTIN()" id="gCopyBtn"
+                      style="padding:2px 7px;border:1px solid #BFDBFE;border-radius:5px;
+                             font-size:0.68rem;color:var(--blue);background:#EFF6FF;
+                             cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap">
+                      Copy
+                    </button>
+                  </div>
+                </div>
+                <div class="gf"><label>PAN (embedded)</label>
+                  <div class="v g-mono" id="gPan" style="font-size:0.8rem;color:var(--navy)"></div></div>
+                <div class="gf"><label>State / UT</label>
+                  <div class="v" id="gState"></div></div>
+                <div class="gf"><label>Entity Type</label>
+                  <div class="v" id="gType"></div></div>
               </div>
             </div>
-            <!-- Pre-filled portal link -->
-            <a id="gPortalLink" href="#" target="_blank" class="g-portal" style="width:100%;justify-content:center;margin-top:10px;box-sizing:border-box">
-              🔗 Verify Full Details on GST Portal →
-            </a>
+
+            <!-- Step instruction -->
+            <div style="margin-top:10px;padding:10px 12px;background:#F8FAFF;
+                        border:1px solid #BFDBFE;border-radius:8px;font-size:0.78rem;
+                        color:#1E40AF;line-height:1.7">
+              <strong style="display:block;margin-bottom:4px;font-size:0.72rem;
+                             text-transform:uppercase;letter-spacing:0.5px;color:var(--gray-4)">
+                How to verify name & status:
+              </strong>
+              <span style="font-size:1rem">1</span> Click <strong>Open GST Portal</strong> below →
+              popup opens on the official GSTN search page<br>
+              <span style="font-size:1rem">2</span> GSTIN is <strong>copied to your clipboard</strong> automatically —
+              just <strong>Ctrl+V / paste</strong> it in the GSTIN box<br>
+              <span style="font-size:1rem">3</span> Solve the CAPTCHA and click Search to see full details
+            </div>
+
+            <!-- Open portal button — prominent -->
+            <button onclick="openGSTNPortal()"
+              style="width:100%;margin-top:10px;padding:10px 16px;
+                     background:var(--navy);color:white;border:none;border-radius:8px;
+                     font-size:0.84rem;font-weight:600;cursor:pointer;
+                     font-family:'Inter',sans-serif;display:flex;align-items:center;
+                     justify-content:center;gap:8px;transition:background 0.15s"
+              onmouseover="this.style.background='#1E4080'"
+              onmouseout="this.style.background='var(--navy)'">
+              🔗 Open GST Portal &amp; Copy GSTIN
+            </button>
+            <div id="gCopiedMsg" style="display:none;text-align:center;margin-top:6px;
+                 font-size:0.74rem;color:var(--green);font-weight:600">
+              ✅ GSTIN copied to clipboard!
+            </div>
           </div>
 
-          <!-- Default portal link (before any input) -->
-          <a href="https://services.gst.gov.in/services/searchtp" target="_blank" class="g-portal" id="gDefaultPortal">
-            🔗 Open GST Taxpayer Search Portal →
-          </a>
-          <p class="t-note">GSTIN structure decoded instantly. Legal name and filing status require GSTN portal verification (CAPTCHA protected).</p>
+          <!-- Default state — before any input -->
+          <div id="gDefault">
+            <a href="https://services.gst.gov.in/services/searchtp" target="_blank"
+               class="g-portal" style="margin-top:10px">
+              🔗 Open GST Taxpayer Search Portal →
+            </a>
+            <p class="t-note">Enter a GSTIN above. We validate format, decode state and entity type instantly, then help you open the official portal with one click.</p>
+          </div>
+
         </div>
       </div>
 
@@ -384,10 +427,12 @@
 <script src="chat-widget.js"></script>
 <script>
 /* ══════════════════════════════════════════
-   GSTIN VALIDATOR & DECODER
-   Decodes structure from GSTIN itself — no API, no CAPTCHA needed
-   Shows: state, entity type, PAN, registration number
-   Opens official portal with GSTIN pre-filled for full verification
+   GSTIN VERIFIER
+   1. Validates format live as user types
+   2. Decodes state + entity type from structure
+   3. Copies GSTIN to clipboard
+   4. Opens official GSTN portal in new tab
+   (Cross-origin policy prevents auto-fill or result capture — browser security)
    ══════════════════════════════════════════ */
 
 const GSTIN_RE = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
@@ -407,89 +452,120 @@ const STATES = {
 };
 
 const ENTITY = {
-  'C':'Company (Pvt Ltd / Public Ltd)',
-  'P':'Individual / Sole Proprietor',
+  'C':'Company (Pvt / Public Ltd)',
+  'P':'Individual / Proprietor',
   'H':'Hindu Undivided Family (HUF)',
-  'F':'Firm / Partnership Firm',
+  'F':'Partnership Firm',
   'A':'Association of Persons (AOP)',
-  'T':'Trust / AOP (Charitable)',
+  'T':'Trust / Charitable Org',
   'B':'Body of Individuals (BOI)',
-  'L':'Limited Liability Partnership (LLP)',
+  'L':'Limited Liability Partnership',
   'J':'Artificial Juridical Person',
   'G':'Government / Local Authority'
 };
 
-function gState(s) {
-  document.getElementById('gErr').classList.toggle('on', s === 'error');
-  document.getElementById('gRes').classList.toggle('on', s === 'result');
-  // Toggle default portal link visibility
-  const defLink = document.getElementById('gDefaultPortal');
-  if (defLink) defLink.style.display = (s === 'result') ? 'none' : '';
+let currentGSTIN = '';
+
+function showSection(show) {
+  document.getElementById('gErr').classList.toggle('on', show === 'error');
+  document.getElementById('gRes').classList.toggle('on', show === 'result');
+  const def = document.getElementById('gDefault');
+  if (def) def.style.display = (show === 'result' || show === 'error') ? 'none' : '';
 }
 
-function doGSTIN() {
+function onGSTINInput() {
   const raw = (document.getElementById('gInp').value || '').trim().toUpperCase();
+  currentGSTIN = raw;
 
-  // Clear state on empty input
-  if (!raw) { gState('empty'); return; }
+  if (!raw) { showSection('default'); return; }
 
-  const err = document.getElementById('gErr');
-
-  // ── Validate length ──
+  // Show progress hint while typing
   if (raw.length < 15) {
-    err.textContent = '⚠ GSTIN must be 15 characters. Keep typing…';
-    gState('error'); return;
+    document.getElementById('gErr').textContent =
+      `⚠ ${15 - raw.length} more character${raw.length === 14 ? '' : 's'} needed (GSTIN is 15 digits)`;
+    showSection('error');
+    return;
   }
 
-  // ── Validate full format ──
+  // Full 15 chars — validate format
   if (!GSTIN_RE.test(raw)) {
-    err.innerHTML = `⚠ Invalid GSTIN format. Check character ${findBadChar(raw)}.<br>
-      <span style="font-size:0.72rem;color:#666">Format: 2 digits + 5 letters + 4 digits + letter + alphanumeric + Z + check digit</span>`;
-    gState('error'); return;
+    document.getElementById('gErr').innerHTML =
+      '⚠ Invalid GSTIN format — ' + diagnose(raw) +
+      '<br><span style="font-size:0.71rem;color:#B45309">Expected: 2 digits + 5 letters + 4 digits + 1 letter + 1 alphanumeric + Z + 1 check</span>';
+    showSection('error');
+    return;
   }
 
-  // ── Decode structure ──
-  const stateCode  = raw.substring(0, 2);
-  const pan        = raw.substring(2, 12);
-  const entityNum  = raw[12];
-  const panTypeChr = pan[3];           // 4th char of PAN = entity type
-  const stateName  = STATES[stateCode] || 'Unknown (code ' + stateCode + ')';
-  const entityType = ENTITY[panTypeChr] || 'Business Entity';
-
-  // ── Fill result card ──
-  document.getElementById('gNum').textContent    = raw;
-  document.getElementById('gPan').textContent    = pan;
-  document.getElementById('gState').textContent  = stateName;
-  document.getElementById('gType').textContent   = entityType;
-  document.getElementById('gCode').textContent   = stateCode;
-  document.getElementById('gRegNo').textContent  = entityNum + ' of 9 (for this PAN in ' + stateName + ')';
-
-  // Determine if it looks like a company/individual for badge
-  const isCompany  = ['C','L','F','A','B','T'].includes(panTypeChr);
-  const badge      = document.getElementById('gBadge');
-  badge.textContent = isCompany ? '🏢 Business' : '👤 Individual';
-  badge.style.cssText = 'background:#DBEAFE;color:#1E40AF;padding:2px 10px;border-radius:12px;font-size:0.7rem;font-weight:700';
-
-  // ── Pre-fill the portal link with this GSTIN ──
-  const portalLink = document.getElementById('gPortalLink');
-  if (portalLink) {
-    portalLink.href = `https://services.gst.gov.in/services/searchtp`;
-    portalLink.title = `Open GST Portal to verify ${raw}`;
-  }
-
-  gState('result');
+  // ── Valid — decode ──
+  decodeAndShow(raw);
 }
 
-function findBadChar(gstin) {
-  // Help user find which character is wrong
-  const re = /^[0-9]{2}/;
-  if (!/^[0-9]{2}/.test(gstin))       return 'positions 1-2 (must be digits: state code)';
-  if (!/^[0-9]{2}[A-Z]{5}/.test(gstin)) return 'positions 3-7 (must be letters: PAN letters)';
-  if (!/^[0-9]{2}[A-Z]{5}[0-9]{4}/.test(gstin)) return 'positions 8-11 (must be digits: PAN digits)';
-  if (gstin[11] && !/[A-Z]/.test(gstin[11])) return 'position 12 (must be a letter)';
-  if (gstin[12] && !/[1-9A-Z]/.test(gstin[12])) return 'position 13 (must be 1-9 or A-Z)';
-  if (gstin[13] && gstin[13] !== 'Z') return 'position 14 (must be Z)';
-  return '— check all characters';
+function decodeAndShow(raw) {
+  const stateCode  = raw.slice(0, 2);
+  const pan        = raw.slice(2, 12);
+  const entityNum  = raw[12];
+  const panType    = pan[3];
+  const stateName  = STATES[stateCode] || 'State code ' + stateCode;
+  const entityType = ENTITY[panType]   || 'Business Entity';
+  const isBiz      = 'CLFABTG'.includes(panType);
+
+  document.getElementById('gNum').textContent   = raw;
+  document.getElementById('gPan').textContent   = pan;
+  document.getElementById('gState').textContent = stateName;
+  document.getElementById('gType').textContent  = entityType;
+
+  const badge = document.getElementById('gBadge');
+  badge.textContent = isBiz ? '🏢 Business' : '👤 Individual';
+
+  showSection('result');
+}
+
+function diagnose(g) {
+  if (!/^[0-9]{2}/.test(g))           return 'positions 1–2 must be digits (state code)';
+  if (!/^[0-9]{2}[A-Z]{5}/.test(g))   return 'positions 3–7 must be capital letters (PAN)';
+  if (!/^[0-9]{2}[A-Z]{5}[0-9]{4}/.test(g)) return 'positions 8–11 must be digits (PAN)';
+  if (g[11] && !/[A-Z]/.test(g[11]))  return 'position 12 must be a capital letter';
+  if (g[12] && !/[1-9A-Z]/.test(g[12])) return 'position 13 must be 1–9 or A–Z';
+  if (g[13] && g[13] !== 'Z')         return 'position 14 must be the letter Z';
+  return 'check all characters carefully';
+}
+
+// ── Copy GSTIN to clipboard ──
+async function copyGSTIN() {
+  if (!currentGSTIN) return;
+  try {
+    await navigator.clipboard.writeText(currentGSTIN);
+  } catch {
+    // Fallback for older browsers
+    const el = document.createElement('textarea');
+    el.value = currentGSTIN; el.style.position = 'fixed'; el.style.opacity = '0';
+    document.body.appendChild(el); el.select();
+    document.execCommand('copy'); document.body.removeChild(el);
+  }
+  const btn = document.getElementById('gCopyBtn');
+  if (btn) { btn.textContent = '✓ Copied'; btn.style.background = '#DCFCE7'; btn.style.color = '#166534'; btn.style.borderColor = '#BBF7D0'; setTimeout(() => { btn.textContent = 'Copy'; btn.style.background = '#EFF6FF'; btn.style.color = 'var(--blue)'; btn.style.borderColor = '#BFDBFE'; }, 2000); }
+}
+
+// ── Open portal + auto-copy ──
+async function openGSTNPortal() {
+  // If GSTIN is valid, copy it first, then open portal
+  if (currentGSTIN && GSTIN_RE.test(currentGSTIN)) {
+    // Copy to clipboard silently
+    try {
+      await navigator.clipboard.writeText(currentGSTIN);
+    } catch {
+      const el = document.createElement('textarea');
+      el.value = currentGSTIN; el.style.cssText = 'position:fixed;opacity:0';
+      document.body.appendChild(el); el.select();
+      document.execCommand('copy'); document.body.removeChild(el);
+    }
+    // Show copied confirmation
+    const msg = document.getElementById('gCopiedMsg');
+    if (msg) { msg.style.display = 'block'; setTimeout(() => msg.style.display = 'none', 3000); }
+  }
+
+  // Open GST portal in new tab
+  window.open('https://services.gst.gov.in/services/searchtp', '_blank', 'width=900,height=680,left=100,top=80');
 }
 
 document.addEventListener('DOMContentLoaded', () => doForex());
