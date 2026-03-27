@@ -4,232 +4,292 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TDS/TCS Section Master | Tax Year 2026-27 — TrustFactON</title>
-  <meta name="description" content="TDS/TCS Section Code Master for Tax Year 2026-27. 91 codes with plain language explanations. IT Act 1961 to IT Act 2025 mapping.">
+  <meta name="description" content="TDS/TCS Section Code Master — 91 codes, plain language, IT Act 1961 to IT Act 2025 mapping. Finance Bill 2026 rates.">
   <link rel="stylesheet" href="style.css">
   <style>
-    :root{--act-color:#1A3A6B;}
-    .tool-hero{background:var(--navy-dark);padding:40px 0 32px;position:relative;overflow:hidden;}
-    .tool-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 75% 50%,rgba(217,119,6,0.1),transparent 55%);}
-    .hero-inner{position:relative;}
-    .tool-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(217,119,6,0.15);border:1px solid rgba(217,119,6,0.3);padding:5px 16px;border-radius:30px;font-size:0.78rem;color:var(--amber);margin-bottom:14px;}
-    .tool-hero h1{color:white;font-size:clamp(1.5rem,3vw,2.2rem);margin-bottom:8px;}
-    .tool-hero h1 span{color:var(--amber);}
-    .tool-hero p{color:rgba(255,255,255,0.6);font-size:0.9rem;max-width:660px;}
-    .hero-stats{display:flex;gap:24px;flex-wrap:wrap;margin-top:20px;}
-    .hero-stat .v{font-family:var(--font-display);font-size:1.6rem;font-weight:700;color:var(--amber);display:block;line-height:1;}
-    .hero-stat .l{font-size:0.72rem;color:rgba(255,255,255,0.45);margin-top:3px;}
+    /* ── PAGE SHELL ── */
+    .page-hero { background: var(--navy); padding: 36px 0 28px; }
+    .page-hero h1 { color: white; font-size: clamp(1.4rem,3vw,2rem); margin-bottom:6px; }
+    .page-hero h1 span { color: #60A5FA; }
+    .page-hero p { color: rgba(255,255,255,0.6); font-size:0.9rem; max-width:640px; }
+    .hero-meta { display:flex;gap:20px;flex-wrap:wrap;margin-top:16px; }
+    .hero-meta span { font-size:0.75rem;color:rgba(255,255,255,0.45);display:flex;align-items:center;gap:5px; }
+    .hero-meta .dot2 { width:5px;height:5px;border-radius:50%;background:#4ADE80; }
 
-    /* Search */
-    .search-sec{background:var(--navy);padding:24px 0;border-bottom:1px solid rgba(255,255,255,0.1);}
-    .search-big{position:relative;max-width:680px;margin:0 auto;}
-    .search-big input{width:100%;padding:16px 60px 16px 52px;border-radius:12px;font-size:1rem;font-family:var(--font-body);background:white;color:var(--gray-800);box-shadow:0 4px 20px rgba(0,0,0,0.3);}
-    .search-big input::placeholder{color:var(--gray-400);}
-    .search-big input:focus{outline:none;box-shadow:0 0 0 3px rgba(217,119,6,0.3),0 4px 20px rgba(0,0,0,0.3);}
-    .search-icon{position:absolute;left:18px;top:50%;transform:translateY(-50%);color:var(--gray-400);pointer-events:none;}
-    .clr-btn{position:absolute;right:16px;top:50%;transform:translateY(-50%);background:var(--gray-200);border:none;border-radius:6px;padding:4px 10px;font-size:0.78rem;cursor:pointer;color:var(--gray-600);display:none;font-family:var(--font-body);}
-    .clr-btn.show{display:block;}
-    .hints{display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap;}
-    .hint{padding:4px 12px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:20px;font-size:0.76rem;color:rgba(255,255,255,0.6);cursor:pointer;transition:all 0.18s;}
-    .hint:hover{background:rgba(255,255,255,0.15);color:white;}
+    /* ── HERO STATS ── */
+    .page-stats { background:white;border-bottom:1px solid var(--gray-3);padding:14px 0; }
+    .page-stats-row { display:flex;gap:32px;align-items:center;flex-wrap:wrap; }
+    .ps { text-align:center; }
+    .ps .v { font-size:1.3rem;font-weight:700;color:var(--navy);display:block;line-height:1;font-family:'Playfair Display',serif; }
+    .ps .l { font-size:0.7rem;color:var(--gray-4);margin-top:2px; }
 
-    /* Category pills */
-    .cat-sec{background:white;border-bottom:2px solid var(--gray-200);padding:14px 0;overflow-x:auto;}
-    .cat-row{display:flex;gap:8px;white-space:nowrap;}
-    .cat-pill{padding:7px 16px;border-radius:24px;border:1.5px solid var(--gray-200);background:white;font-size:0.8rem;font-weight:500;color:var(--gray-600);cursor:pointer;transition:all 0.18s;font-family:var(--font-body);white-space:nowrap;flex-shrink:0;}
-    .cat-pill:hover{border-color:var(--navy);color:var(--navy);}
-    .cat-pill.active{background:var(--navy);color:white;border-color:var(--navy);}
-    .cnt{font-size:0.68rem;padding:1px 6px;border-radius:10px;margin-left:4px;}
-    .cat-pill.active .cnt{background:rgba(255,255,255,0.2);}
-    .cat-pill:not(.active) .cnt{background:var(--gray-100);color:var(--gray-500);}
+    /* ── SEARCH + FILTERS ── */
+    .filters-bar { background:white;border-bottom:2px solid var(--gray-3);padding:14px 0;position:sticky;top:60px;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.04); }
+    .filters-row { display:flex;gap:8px;align-items:center;flex-wrap:wrap; }
+    .search-box { display:flex;align-items:center;gap:8px;background:var(--gray-1);border:1.5px solid var(--gray-3);border-radius:var(--radius);padding:8px 12px;flex:1;min-width:180px;max-width:320px; }
+    .search-box:focus-within { border-color:var(--blue);background:white; }
+    .search-box input { flex:1;background:transparent;font-size:0.86rem;color:var(--black);font-family:'Inter',sans-serif; }
+    .search-box input::placeholder { color:var(--gray-4); }
+    .fsel { padding:8px 10px;border:1.5px solid var(--gray-3);border-radius:var(--radius);font-size:0.8rem;font-family:'Inter',sans-serif;color:var(--black);background:white;cursor:pointer; }
+    .fsel:focus { outline:none;border-color:var(--blue); }
+    .action-btns { display:flex;gap:6px;margin-left:auto; }
+    .res-badge { display:flex;align-items:center;gap:6px; }
+    .res-badge span { font-size:0.8rem;color:var(--gray-5); }
+    .res-badge strong { color:var(--navy); }
+    .view-toggle { display:flex;border:1.5px solid var(--gray-3);border-radius:var(--radius);overflow:hidden; }
+    .vtbtn { padding:7px 12px;font-size:0.76rem;cursor:pointer;font-family:'Inter',sans-serif;color:var(--gray-5);background:white;border:none;transition:all 0.15s; }
+    .vtbtn.active { background:var(--navy);color:white; }
+    .export-btn { padding:7px 14px;background:var(--navy);color:white;border-radius:var(--radius);font-size:0.76rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:background 0.15s; }
+    .export-btn:hover { background:var(--blue); }
+    .reset-btn { padding:7px 14px;background:var(--gray-2);color:var(--gray-5);border-radius:var(--radius);font-size:0.76rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif; }
 
-    /* Results bar */
-    .res-bar{background:var(--gray-50);border-bottom:1px solid var(--gray-200);padding:10px 0;}
-    .res-inner{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
-    .res-count{font-size:0.84rem;color:var(--gray-600);}
-    .res-count strong{color:var(--navy);}
-    .view-btns{display:flex;gap:6px;}
-    .vbtn{padding:5px 12px;border-radius:6px;border:1.5px solid var(--gray-200);background:white;font-size:0.76rem;cursor:pointer;font-family:var(--font-body);color:var(--gray-600);transition:all 0.15s;}
-    .vbtn.active{background:var(--navy);color:white;border-color:var(--navy);}
-    .exp-btn{padding:5px 14px;background:var(--navy);color:white;border-radius:6px;font-size:0.76rem;font-weight:600;cursor:pointer;font-family:var(--font-body);transition:background 0.2s;}
-    .exp-btn:hover{background:var(--green);}
+    /* ── CATEGORY PILLS ── */
+    .cat-bar { background:var(--gray-1);border-bottom:1px solid var(--gray-3);padding:10px 0;overflow-x:auto; }
+    .cat-scroll { display:flex;gap:6px;white-space:nowrap; }
+    .cpill { padding:5px 14px;border-radius:20px;border:1.5px solid var(--gray-3);background:white;font-size:0.76rem;font-weight:500;color:var(--gray-5);cursor:pointer;transition:all 0.15s;font-family:'Inter',sans-serif;white-space:nowrap;flex-shrink:0; }
+    .cpill:hover { border-color:var(--blue);color:var(--blue); }
+    .cpill.active { background:var(--navy);color:white;border-color:var(--navy); }
+    .cpill .n { font-size:0.65rem;opacity:0.7;margin-left:3px; }
 
-    /* Section lookup */
-    .sec-lookup{background:#FEF3C7;border:1px solid #FDE68A;border-radius:var(--radius);padding:14px 18px;margin-bottom:20px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
-    .sec-lookup label{font-size:0.84rem;font-weight:600;color:#92400E;white-space:nowrap;}
-    .sec-lookup input{flex:1;min-width:140px;max-width:200px;padding:8px 12px;border:1.5px solid #FCD34D;border-radius:8px;font-size:0.88rem;font-family:var(--font-body);background:white;}
-    .sec-lookup input:focus{outline:none;border-color:var(--amber);}
-    .sec-lookup button{padding:8px 16px;background:var(--amber);color:white;border-radius:8px;font-size:0.84rem;font-weight:600;cursor:pointer;font-family:var(--font-body);}
+    /* ── SECTION QUICK LOOKUP ── */
+    .sec-lookup { background:#FFFBEB;border:1px solid #FDE68A;border-radius:var(--radius);padding:12px 16px;margin-bottom:16px;display:flex;gap:8px;align-items:center;flex-wrap:wrap; }
+    .sec-lookup label { font-size:0.82rem;font-weight:600;color:#92400E;white-space:nowrap; }
+    .sec-lookup input { padding:7px 12px;border:1.5px solid #FCD34D;border-radius:var(--radius);font-size:0.84rem;font-family:'Inter',sans-serif;background:white;min-width:160px; }
+    .sec-lookup input:focus { outline:none;border-color:var(--amber); }
+    .sec-lookup button { padding:7px 16px;background:var(--amber);color:white;border-radius:var(--radius);font-size:0.82rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif; }
+    .sec-hint { font-size:0.76rem;color:#92400E;opacity:0.7; }
 
-    /* Cards */
-    .cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:16px;}
-    .tds-card{background:white;border-radius:var(--radius);border:1px solid var(--gray-200);overflow:hidden;transition:all 0.2s;display:flex;flex-direction:column;}
-    .tds-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);border-color:transparent;}
-    .card-top{padding:16px 18px 12px;border-bottom:1px solid var(--gray-100);}
-    .card-badges{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:10px;}
-    .b-code{font-family:var(--font-mono);font-size:0.72rem;font-weight:700;background:var(--gray-100);color:var(--navy);padding:3px 8px;border-radius:6px;}
-    .b-tds{background:#DBEAFE;color:var(--navy);padding:3px 8px;border-radius:6px;font-size:0.7rem;font-weight:700;}
-    .b-tcs{background:#D1FAE5;color:var(--green-dark);padding:3px 8px;border-radius:6px;font-size:0.7rem;font-weight:700;}
-    .b-cat{font-size:0.68rem;background:var(--gray-100);color:var(--gray-600);padding:3px 8px;border-radius:6px;}
-    .b-form{font-family:var(--font-mono);font-size:0.68rem;background:#D1FAE5;color:var(--green-dark);padding:3px 8px;border-radius:6px;}
-    .card-nature{font-size:0.88rem;font-weight:600;color:var(--navy);line-height:1.4;}
-    .card-plain{font-size:0.82rem;color:var(--gray-600);margin-top:6px;line-height:1.5;}
-    .card-mid{padding:12px 18px;background:var(--gray-50);display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-    .cf label{font-size:0.66rem;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--gray-400);display:block;margin-bottom:3px;}
-    .cf-rate{font-size:0.95rem;font-weight:700;color:var(--red);}
-    .cf-thresh{font-size:0.82rem;color:var(--gray-700);font-weight:500;}
-    .card-bot{padding:12px 18px;display:flex;flex-direction:column;gap:8px;margin-top:auto;}
-    .who-row{display:flex;gap:8px;flex-wrap:wrap;}
-    .who-tag{font-size:0.75rem;padding:6px 10px;border-radius:6px;line-height:1.4;flex:1;min-width:120px;}
-    .who-tag.ded{background:#EFF6FF;color:var(--navy);}
-    .who-tag.pay{background:#F0FDF9;color:var(--green-dark);}
-    .who-tag label{font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;display:block;opacity:0.7;margin-bottom:2px;}
-    .card-actions{display:flex;gap:6px;align-items:center;flex-wrap:wrap;}
-    .sec-tag{font-family:var(--font-mono);font-size:0.72rem;color:var(--gray-500);padding:3px 8px;background:var(--gray-100);border-radius:6px;}
-    .sec-arr{color:var(--amber);margin:0 4px;}
-    .cbdt-lnk{font-size:0.74rem;color:var(--green);text-decoration:none;padding:3px 8px;border:1px solid var(--green);border-radius:6px;transition:all 0.15s;display:inline-flex;align-items:center;gap:4px;}
-    .cbdt-lnk:hover{background:var(--green);color:white;}
-    .note-btn3{font-size:0.74rem;color:var(--amber);padding:3px 8px;border:1px solid var(--amber);border-radius:6px;cursor:pointer;background:none;font-family:var(--font-body);transition:all 0.15s;}
-    .note-btn3:hover{background:var(--amber);color:white;}
+    /* ── DISCLAIMER ── */
+    .disc { background:#EFF6FF;border:1px solid #BFDBFE;border-radius:var(--radius);padding:10px 14px;font-size:0.78rem;color:#1E40AF;margin-bottom:16px;line-height:1.6; }
 
-    /* Table */
-    .tbl-wrap{overflow-x:auto;border-radius:var(--radius);border:1px solid var(--gray-200);background:white;display:none;}
-    .tbl-wrap.show{display:block;}
-    .mtbl{width:100%;border-collapse:collapse;font-size:0.8rem;min-width:900px;}
-    .mtbl thead th{background:var(--navy);color:white;padding:10px 12px;text-align:left;font-weight:600;}
-    .mtbl tbody tr{border-bottom:1px solid var(--gray-200);}
-    .mtbl tbody tr:hover{background:#FFFBEB;}
+    /* ── CARDS ── */
+    .tds-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px; }
 
-    /* Note Modal */
-    .note-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9000;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
-    .note-modal.open{display:flex;}
-    .note-box{background:white;border-radius:var(--radius-lg);padding:28px;max-width:580px;width:92%;max-height:80vh;overflow-y:auto;box-shadow:var(--shadow-lg);animation:modalIn 0.2s ease;}
-    @keyframes modalIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
-    .note-head{display:flex;justify-content:space-between;gap:12px;margin-bottom:14px;}
-    .note-head h3{font-family:var(--font-display);color:var(--navy);font-size:1rem;line-height:1.4;}
-    .note-close{background:var(--gray-100);border:none;border-radius:6px;padding:4px 12px;cursor:pointer;}
-    .note-body{font-size:0.86rem;color:var(--gray-600);line-height:1.7;}
-    .note-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;padding-top:14px;border-top:1px solid var(--gray-200);}
-    .ntag{font-size:0.72rem;font-weight:600;padding:3px 10px;border-radius:20px;}
+    .tds-card { background:white;border-radius:var(--radius-lg);border:1px solid var(--gray-3);display:flex;flex-direction:column;transition:all 0.2s; }
+    .tds-card:hover { box-shadow:var(--shadow-md);transform:translateY(-2px);border-color:var(--blue); }
 
-    .no-res{text-align:center;padding:60px 0;display:none;}
-    .no-res.show{display:block;}
-    @keyframes slideUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
-    @media(max-width:640px){.cards-grid{grid-template-columns:1fr;}.card-mid{grid-template-columns:1fr;}}
+    /* Card header strip */
+    .card-strip { height:3px;border-radius:var(--radius-lg) var(--radius-lg) 0 0; }
+
+    /* Card top */
+    .card-top { padding:14px 16px 10px; }
+    .card-meta { display:flex;gap:5px;align-items:center;flex-wrap:wrap;margin-bottom:8px; }
+    .m-code { font-family:monospace;font-size:0.7rem;font-weight:700;background:var(--gray-2);color:var(--navy);padding:2px 7px;border-radius:4px; }
+    .m-tds  { background:#DBEAFE;color:#1E40AF;font-size:0.68rem;font-weight:700;padding:2px 7px;border-radius:4px; }
+    .m-tcs  { background:#DCFCE7;color:#166534;font-size:0.68rem;font-weight:700;padding:2px 7px;border-radius:4px; }
+    .m-cat  { font-size:0.66rem;background:var(--gray-2);color:var(--gray-5);padding:2px 7px;border-radius:4px; }
+    .m-form { font-family:monospace;font-size:0.66rem;background:#DCFCE7;color:#166534;padding:2px 7px;border-radius:4px; }
+
+    .card-nature { font-size:0.86rem;font-weight:600;color:var(--black);line-height:1.4;margin-bottom:5px; }
+    .card-plain  { font-size:0.78rem;color:var(--gray-5);line-height:1.5;padding:7px 10px;background:var(--gray-1);border-radius:6px;border-left:2px solid var(--blue); }
+
+    /* Card middle — rate + threshold */
+    .card-mid { display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--gray-3);margin:10px 0 0; }
+    .card-mid-cell { background:white;padding:10px 14px; }
+    .card-mid-cell label { font-size:0.62rem;font-weight:600;text-transform:uppercase;letter-spacing:0.8px;color:var(--gray-4);display:block;margin-bottom:3px; }
+    .cell-rate   { font-size:0.95rem;font-weight:700;color:var(--red); }
+    .cell-thresh { font-size:0.8rem;color:var(--gray-6);font-weight:500; }
+
+    /* Card bottom */
+    .card-bot { padding:10px 14px;display:flex;flex-direction:column;gap:7px;margin-top:auto; }
+    .who-row { display:grid;grid-template-columns:1fr 1fr;gap:6px; }
+    .who-box { padding:6px 10px;border-radius:6px;font-size:0.74rem;line-height:1.4; }
+    .who-box label { font-size:0.58rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;display:block;opacity:0.6;margin-bottom:2px; }
+    .who-ded { background:#EFF6FF;color:var(--navy); }
+    .who-pay { background:#F0FDF4;color:#166534; }
+    .card-actions { display:flex;gap:5px;align-items:center;flex-wrap:wrap;padding-top:6px;border-top:1px solid var(--gray-2); }
+    .sec-map { font-family:monospace;font-size:0.7rem;color:var(--gray-4);padding:2px 8px;background:var(--gray-1);border-radius:4px; }
+    .sec-arr { color:var(--blue);margin:0 3px; }
+    .cbdt-btn { font-size:0.72rem;color:var(--blue);padding:2px 8px;border:1px solid #BFDBFE;border-radius:4px;text-decoration:none;transition:all 0.15s; }
+    .cbdt-btn:hover { background:var(--blue);color:white; }
+    .note-btn { font-size:0.72rem;color:var(--amber);padding:2px 8px;border:1px solid #FDE68A;border-radius:4px;cursor:pointer;background:none;font-family:'Inter',sans-serif;transition:all 0.15s; }
+    .note-btn:hover { background:var(--amber);color:white;border-color:var(--amber); }
+
+    /* ── TABLE VIEW ── */
+    .tbl-wrap { overflow-x:auto;border-radius:var(--radius);border:1px solid var(--gray-3);background:white;display:none; }
+    .tbl-wrap.show { display:block; }
+    .mtbl { width:100%;border-collapse:collapse;font-size:0.8rem;min-width:960px; }
+    .mtbl thead th { background:var(--navy);color:white;padding:10px 12px;text-align:left;font-weight:600;font-size:0.76rem;white-space:nowrap; }
+    .mtbl tbody tr { border-bottom:1px solid var(--gray-2);transition:background 0.12s; }
+    .mtbl tbody tr:hover { background:var(--gray-1); }
+    .mtbl td { padding:9px 12px;vertical-align:middle; }
+
+    /* ── NOTE MODAL ── */
+    .modal-wrap { display:none;position:fixed;inset:0;background:rgba(15,23,42,0.5);z-index:9000;align-items:center;justify-content:center;backdrop-filter:blur(3px); }
+    .modal-wrap.open { display:flex; }
+    .modal-box { background:white;border-radius:var(--radius-lg);padding:24px;max-width:560px;width:92%;max-height:80vh;overflow-y:auto;box-shadow:var(--shadow-lg);animation:modalIn 0.2s ease; }
+    @keyframes modalIn { from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;} }
+    .modal-head { display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--gray-3); }
+    .modal-head h3 { font-size:0.95rem;color:var(--black);line-height:1.4; }
+    .modal-close { background:var(--gray-2);border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:0.9rem;color:var(--gray-5); }
+    .modal-body { font-size:0.84rem;color:var(--gray-5);line-height:1.7; }
+    .modal-tags { display:flex;gap:6px;flex-wrap:wrap;margin-top:14px;padding-top:12px;border-top:1px solid var(--gray-3); }
+    .mtag { font-size:0.7rem;font-weight:600;padding:2px 9px;border-radius:4px; }
+
+    /* ── EMPTY STATE ── */
+    .empty { text-align:center;padding:60px;display:none; }
+    .empty.show { display:block; }
+
+    @media(max-width:640px){.tds-grid{grid-template-columns:1fr;}.card-mid{grid-template-columns:1fr;}.who-row{grid-template-columns:1fr;}.filters-row{flex-direction:column;align-items:stretch;}.action-btns{margin-left:0;}.search-box{max-width:100%;}}
   </style>
 </head>
 <body>
 <div id="nav-placeholder"></div>
 
-<section class="tool-hero">
+<!-- PAGE HERO -->
+<section class="page-hero">
   <div class="container">
-    <div class="hero-inner">
-      <div class="tool-badge">✂️ TDS / TCS Reference · Tax Year 2026-27 · Finance Bill 2026</div>
-      <h1>TDS / TCS Section <span>Code Master</span></h1>
-      <p>91 section codes with plain-language explanations. Browse by category, search by keyword, or look up by section number. IT Act 1961 ↔ IT Act 2025 mapping included.</p>
-      <div class="hero-stats">
-        <div class="hero-stat"><span class="v">91</span><span class="l">Total Codes</span></div>
-        <div class="hero-stat"><span class="v">66</span><span class="l">TDS Sections</span></div>
-        <div class="hero-stat"><span class="v">25</span><span class="l">TCS Sections</span></div>
-        <div class="hero-stat"><span class="v">19</span><span class="l">Categories</span></div>
-      </div>
+    <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);padding:4px 14px;border-radius:20px;font-size:0.76rem;color:rgba(255,255,255,0.7);margin-bottom:12px;">✂️ TDS / TCS Reference · Tax Year 2026-27</div>
+    <h1>TDS / TCS Section <span>Code Master</span></h1>
+    <p>91 section codes — plain language, rates, thresholds, who deducts and who pays. IT Act 1961 ↔ IT Act 2025 mapping. Finance Bill 2026 rates included.</p>
+    <div class="hero-meta">
+      <span><span class="dot2"></span>Tax Year 2026-27</span>
+      <span><span class="dot2"></span>Finance Bill 2026 Rates</span>
+      <span><span class="dot2"></span>IT Act 1961 ↔ IT Act 2025</span>
+      <span><span class="dot2"></span>66 TDS + 25 TCS = 91 Codes</span>
     </div>
   </div>
 </section>
 
-<!-- SEARCH -->
-<div class="search-sec">
+<!-- STATS -->
+<div class="page-stats">
   <div class="container">
-    <div class="search-big">
-      <span class="search-icon">🔍</span>
-      <input type="text" id="srch" placeholder="Search — e.g. 'rent', 'salary', '194C', '10%', 'contractor'..." autocomplete="off">
-      <button class="clr-btn" id="clrBtn" onclick="clearSrch()">✕ Clear</button>
-    </div>
-    <div class="hints">
-      <span class="hint" onclick="doSearch('salary')">👔 Salary</span>
-      <span class="hint" onclick="doSearch('rent')">🏠 Rent</span>
-      <span class="hint" onclick="doSearch('contractor')">🔧 Contractor</span>
-      <span class="hint" onclick="doSearch('interest')">💰 Interest</span>
-      <span class="hint" onclick="doSearch('dividend')">📊 Dividend</span>
-      <span class="hint" onclick="doSearch('lottery winning')">🎰 Winnings</span>
-      <span class="hint" onclick="doSearch('property')">🏗️ Property</span>
-      <span class="hint" onclick="doSearch('virtual digital')">₿ VDA/Crypto</span>
-      <span class="hint" onclick="doSearch('non-resident')">🌏 Non-Resident</span>
-      <span class="hint" onclick="doSearch('tcs')">🏷️ TCS Only</span>
+    <div class="page-stats-row">
+      <div class="ps"><span class="v">91</span><span class="l">Total Codes</span></div>
+      <div class="ps"><span class="v" style="color:var(--blue)">66</span><span class="l">TDS Sections</span></div>
+      <div class="ps"><span class="v" style="color:var(--green)">25</span><span class="l">TCS Sections</span></div>
+      <div class="ps"><span class="v" style="color:var(--amber)">2026-27</span><span class="l">Tax Year</span></div>
+      <div class="ps"><span class="v" style="color:var(--red)">FB 2026</span><span class="l">Amendments</span></div>
     </div>
   </div>
 </div>
 
-<!-- CATEGORIES -->
-<div class="cat-sec">
+<!-- FILTERS BAR -->
+<div class="filters-bar">
   <div class="container">
-    <div class="cat-row" id="catRow">
-      <button class="cat-pill active" data-cat="" onclick="selCat(this,'')">All <span class="cnt" id="allCnt">91</span></button>
-    </div>
-  </div>
-</div>
-
-<!-- RESULTS BAR -->
-<div class="res-bar">
-  <div class="container">
-    <div class="res-inner">
-      <span class="res-count">Showing <strong id="shownCnt">91</strong> of 91 sections</span>
-      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-        <div class="view-btns">
-          <button class="vbtn active" id="cardBtn" onclick="setView('card')">⊞ Cards</button>
-          <button class="vbtn" id="tableBtn" onclick="setView('table')">☰ Table</button>
-        </div>
-        <button class="exp-btn" onclick="exportCSV()">⬇ Export CSV</button>
+    <div class="filters-row">
+      <!-- Search -->
+      <div class="search-box">
+        <svg width="14" height="14" fill="none" stroke="var(--gray-4)" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" id="srch" placeholder="Search section, nature, rate..." autocomplete="off">
       </div>
+      <!-- Type -->
+      <select class="fsel" id="typeF" onchange="render()">
+        <option value="">TDS + TCS</option>
+        <option value="TDS">TDS Only</option>
+        <option value="TCS">TCS Only</option>
+      </select>
+      <!-- Rate -->
+      <select class="fsel" id="rateF" onchange="render()">
+        <option value="">All Rates</option>
+        <option value="Slab">Slab Rates</option>
+        <option value="0.1">0.1%</option>
+        <option value="1%">1%</option>
+        <option value="2%">2%</option>
+        <option value="5%">5%</option>
+        <option value="10%">10%</option>
+        <option value="20%">20%</option>
+        <option value="30%">30%</option>
+      </select>
+      <!-- Form -->
+      <select class="fsel" id="formF" onchange="render()">
+        <option value="">All Forms</option>
+        <option value="138">Form 138 (Salary)</option>
+        <option value="140">Form 140 (Regular)</option>
+        <option value="141">Form 141</option>
+        <option value="143">Form 143 (TCS)</option>
+        <option value="144">Form 144 (NR)</option>
+      </select>
+      <!-- Results -->
+      <div class="res-badge">
+        <span>Showing <strong id="shownCnt">91</strong> of 91</span>
+      </div>
+      <!-- Actions -->
+      <div class="action-btns">
+        <div class="view-toggle">
+          <button class="vtbtn active" id="cardBtn" onclick="setView('card')">⊞ Cards</button>
+          <button class="vtbtn" id="tblBtn" onclick="setView('table')">☰ Table</button>
+        </div>
+        <button class="export-btn" onclick="exportCSV()">⬇ CSV</button>
+        <button class="reset-btn" onclick="resetAll()">↺</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CATEGORY PILLS -->
+<div class="cat-bar">
+  <div class="container">
+    <div class="cat-scroll" id="catRow">
+      <button class="cpill active" data-cat="" onclick="selCat(this,'')">All <span class="n">91</span></button>
     </div>
   </div>
 </div>
 
 <!-- MAIN -->
-<div style="background:var(--cream);padding:24px 0 60px;">
+<div style="background:var(--light);padding:20px 0 60px;">
   <div class="container">
 
-    <!-- SECTION LOOKUP -->
+    <!-- Section Quick Lookup -->
     <div class="sec-lookup">
-      <label>🔎 Jump to Section Number:</label>
-      <input type="text" id="secInp" placeholder="e.g. 192, 194C, 206C..." maxlength="20">
+      <label>🔎 Section Lookup:</label>
+      <input type="text" id="secInp" placeholder="e.g. 192, 194C, 206C(1F)..." maxlength="20">
       <button onclick="secLookup()">Find</button>
-      <span style="font-size:0.78rem;color:#92400E">Enter IT Act 1961 section number to find it instantly</span>
+      <span class="sec-hint">Type IT Act 1961 section → jumps to matching codes</span>
     </div>
 
-    <div class="cards-grid" id="cardsGrid"></div>
+    <!-- Disclaimer -->
+    <div class="disc">
+      ⓘ <strong>Reference only.</strong> Rates applicable from Tax Year 2026-27 under IT Act 2025 (effective 1 April 2026). Finance Bill 2026 amendments included. Verify from official CBDT notifications before use in compliance.
+    </div>
+
+    <!-- Cards -->
+    <div class="tds-grid" id="cardsGrid"></div>
+
+    <!-- Table -->
     <div class="tbl-wrap" id="tblWrap">
       <table class="mtbl">
-        <thead><tr><th>Code</th><th>Type</th><th>Nature</th><th>Deductor</th><th>Payee</th><th>1961 Sec</th><th>2025 Sec</th><th>Rate</th><th>Threshold</th><th>Form</th></tr></thead>
+        <thead>
+          <tr>
+            <th>Code</th><th>Type</th><th>Nature of Payment / Receipt</th>
+            <th>Who Deducts</th><th>Payee</th>
+            <th>IT Act 1961</th><th>IT Act 2025</th>
+            <th>Rate</th><th>Threshold</th><th>Form</th><th>Note</th>
+          </tr>
+        </thead>
         <tbody id="tblBody"></tbody>
       </table>
     </div>
 
-    <div class="no-res" id="noRes">
-      <div style="font-size:2.5rem;margin-bottom:12px">🔍</div>
-      <p style="color:var(--gray-600);font-size:1rem;margin-bottom:6px">No sections match your search.</p>
-      <p style="color:var(--gray-400);font-size:0.86rem">Try keywords like "rent", "salary", "194C" or browse by category.</p>
-      <button onclick="clearSrch()" style="margin-top:16px;padding:8px 20px;background:var(--navy);color:white;border-radius:8px;cursor:pointer;font-family:var(--font-body)">Clear Search</button>
+    <!-- Empty -->
+    <div class="empty" id="emptyState">
+      <div style="font-size:2rem;margin-bottom:10px">🔍</div>
+      <p style="color:var(--gray-5);font-size:0.95rem;margin-bottom:6px">No sections match your filters.</p>
+      <p style="color:var(--gray-4);font-size:0.82rem">Try different keywords or reset filters.</p>
+      <button onclick="resetAll()" class="btn btn-navy btn-sm" style="margin-top:14px">Reset Filters</button>
     </div>
   </div>
 </div>
 
 <!-- NOTE MODAL -->
-<div class="note-modal" id="noteModal">
-  <div class="note-box">
-    <div class="note-head">
-      <h3 id="noteTitle"></h3>
-      <button class="note-close" onclick="closeNote()">✕</button>
+<div class="modal-wrap" id="modal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3 id="modalTitle"></h3>
+      <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
-    <div class="note-body" id="noteBody"></div>
-    <div class="note-tags" id="noteTags"></div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-tags" id="modalTags"></div>
   </div>
 </div>
 
+<!-- NEWSLETTER -->
 <section class="newsletter-section">
   <div class="container">
     <div class="newsletter-inner">
-      <h2>Get TDS/TCS Update Alerts</h2>
-      <p>CBDT circulars, Finance Bill amendments, rate changes — weekly from TrustFactON.</p>
+      <span class="sec-label">Stay Updated</span>
+      <h2 class="sec-title" style="margin-bottom:8px">TDS/TCS Rate Change Alerts</h2>
+      <p class="sec-sub" style="margin-bottom:24px">CBDT circulars, Finance Bill amendments — weekly from TrustFactON.</p>
       <div class="newsletter-form">
         <input type="email" placeholder="your@email.com">
         <button onclick="window.open('https://trustfacton.beehiiv.com/subscribe','_blank')">Subscribe →</button>
@@ -242,104 +302,119 @@
 <script src="components.js"></script>
 <script src="tds-data.js"></script>
 <script>
-const CBDT = "https://www.incometaxindia.gov.in/tax-deductes-at-source-tds";
+const CBDT_URL = 'https://www.incometaxindia.gov.in/tax-deductes-at-source-tds';
+const EMO = {Salary:'👔',Rent:'🏠',Interest:'💰',Contractor:'🔧',Professional:'📋',Dividend:'📊',Winnings:'🎰',Property:'🏗️','VDA/Crypto':'₿','Cash Withdrawal':'🏧','E-Commerce':'🛒','Goods Purchase':'📦','Non-Resident':'🌏','Securities & Funds':'📈',TCS:'🏷️',Commission:'💼','Benefit/Perquisite':'🎁',Insurance:'🛡️',Partnership:'🤝',Other:'📄'};
+const STRIP_COLORS = {Salary:'#2563EB',Rent:'#16A34A',Interest:'#D97706',Contractor:'#7C3AED',Professional:'#0D9488',Dividend:'#2563EB',Winnings:'#DC2626',Property:'#92400E','VDA/Crypto':'#1D4ED8','Cash Withdrawal':'#374151','E-Commerce':'#0891B2','Goods Purchase':'#4F46E5','Non-Resident':'#9F1239','Securities & Funds':'#047857',TCS:'#16A34A',Commission:'#6B21A8','Benefit/Perquisite':'#B45309',Insurance:'#0369A1',Partnership:'#374151',Other:'#6B7280'};
+
 let curView='card', curCat='', curSrch='';
 
-const EMO = {Salary:'👔',Rent:'🏠',Interest:'💰',Contractor:'🔧',Professional:'📋',Dividend:'📊',Winnings:'🎰',Property:'🏗️','VDA/Crypto':'₿','Cash Withdrawal':'🏧','E-Commerce':'🛒','Goods Purchase':'📦','Non-Resident':'🌏','Securities & Funds':'📈',TCS:'🏷️',Commission:'💼','Benefit/Perquisite':'🎁',Insurance:'🛡️',Partnership:'🤝',Other:'📄'};
-
+// Build category pills
 function buildCats() {
   const counts={};
   TDS_DATA.forEach(d=>{counts[d.cat]=(counts[d.cat]||0)+1;});
-  const cats=[...new Set(TDS_DATA.map(d=>d.cat))].sort();
   const row=document.getElementById('catRow');
-  cats.forEach(c=>{
+  [...new Set(TDS_DATA.map(d=>d.cat))].sort().forEach(c=>{
     const b=document.createElement('button');
-    b.className='cat-pill'; b.dataset.cat=c;
-    b.innerHTML=`${EMO[c]||'📄'} ${c} <span class="cnt">${counts[c]}</span>`;
+    b.className='cpill'; b.dataset.cat=c;
+    b.innerHTML=`${EMO[c]||'📄'} ${c} <span class="n">${counts[c]}</span>`;
     b.onclick=()=>selCat(b,c);
     row.appendChild(b);
   });
-  document.getElementById('allCnt').textContent=TDS_DATA.length;
 }
 
 function selCat(btn,cat){
-  document.querySelectorAll('.cat-pill').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.cpill').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active'); curCat=cat; render();
 }
 
-function doSearch(q){document.getElementById('srch').value=q;curSrch=q.toLowerCase();document.getElementById('clrBtn').classList.add('show');render();}
-function clearSrch(){document.getElementById('srch').value='';curSrch='';document.getElementById('clrBtn').classList.remove('show');render();}
-
+// Search
 document.getElementById('srch').addEventListener('input',function(){
   curSrch=this.value.trim().toLowerCase();
-  this.value.trim()?document.getElementById('clrBtn').classList.add('show'):document.getElementById('clrBtn').classList.remove('show');
-  clearTimeout(window._st);window._st=setTimeout(render,180);
+  clearTimeout(window._st); window._st=setTimeout(render,180);
 });
 
 function secLookup(){
   const v=document.getElementById('secInp').value.trim().toLowerCase();
   if(!v)return;
-  document.querySelectorAll('.cat-pill').forEach(b=>b.classList.remove('active'));
-  document.querySelector('.cat-pill[data-cat=""]').classList.add('active');
-  curCat=''; doSearch(v);
+  document.querySelectorAll('.cpill').forEach(b=>b.classList.remove('active'));
+  document.querySelector('.cpill[data-cat=""]').classList.add('active');
+  curCat=''; curSrch=v;
+  document.getElementById('srch').value=v;
+  render();
 }
 document.getElementById('secInp').addEventListener('keydown',e=>{if(e.key==='Enter')secLookup();});
 
 function getFiltered(){
+  const type=document.getElementById('typeF').value;
+  const rate=document.getElementById('rateF').value;
+  const form=document.getElementById('formF').value;
   return TDS_DATA.filter(d=>{
     const mCat=!curCat||d.cat===curCat;
+    const mType=!type||d.type===type;
+    const mRate=!rate||d.rate.toLowerCase().includes(rate.toLowerCase());
+    const mForm=!form||d.form.includes(form);
     const mSrch=!curSrch||[d.code,d.nature,d.plain,d.deductor,d.payee,d.s61,d.s25,d.rate,d.thresh,d.form,d.cat].join(' ').toLowerCase().includes(curSrch);
-    return mCat&&mSrch;
+    return mCat&&mType&&mRate&&mForm&&mSrch;
   });
 }
 
 function buildCard(d){
   const isTCS=d.type==='TCS';
   const hasNote=d.note&&d.note.trim().length>5;
+  const color=STRIP_COLORS[d.cat]||'#6B7280';
   const el=document.createElement('div');
   el.className='tds-card';
   el.innerHTML=`
+    <div class="card-strip" style="background:${color}"></div>
     <div class="card-top">
-      <div class="card-badges">
-        <span class="b-code">${d.code}</span>
-        <span class="${isTCS?'b-tcs':'b-tds'}">${d.type}</span>
-        <span class="b-cat">${EMO[d.cat]||'📄'} ${d.cat}</span>
-        <span class="b-form">Form ${d.form}</span>
+      <div class="card-meta">
+        <span class="m-code">${d.code}</span>
+        <span class="${isTCS?'m-tcs':'m-tds'}">${d.type}</span>
+        <span class="m-cat">${EMO[d.cat]||'📄'} ${d.cat}</span>
+        <span class="m-form">Form ${d.form}</span>
       </div>
       <div class="card-nature">${d.nature}</div>
-      <div class="card-plain">💡 ${d.plain}</div>
+      <div class="card-plain" style="margin-top:8px">${d.plain}</div>
     </div>
     <div class="card-mid">
-      <div class="cf"><label>Base Rate</label><div class="cf-rate">${d.rate}</div></div>
-      <div class="cf"><label>Threshold</label><div class="cf-thresh">${d.thresh||'—'}</div></div>
+      <div class="card-mid-cell">
+        <label>Base Rate</label>
+        <div class="cell-rate">${d.rate}</div>
+      </div>
+      <div class="card-mid-cell">
+        <label>Threshold</label>
+        <div class="cell-thresh">${d.thresh||'—'}</div>
+      </div>
     </div>
     <div class="card-bot">
       <div class="who-row">
-        <div class="who-tag ded"><label>${isTCS?'Collector':'Deductor'}</label>${d.deductor}</div>
-        <div class="who-tag pay"><label>${isTCS?'Buyer/Collectee':'Deductee/Payee'}</label>${d.payee}</div>
+        <div class="who-box who-ded"><label>${isTCS?'Collector':'Deductor'}</label>${d.deductor}</div>
+        <div class="who-box who-pay"><label>${isTCS?'Buyer':'Deductee / Payee'}</label>${d.payee}</div>
       </div>
       <div class="card-actions">
-        <span class="sec-tag">${d.s61}<span class="sec-arr">→</span>${d.s25}</span>
-        <a href="${CBDT}" target="_blank" class="cbdt-lnk">🔗 CBDT Source</a>
-        ${hasNote?`<button class="note-btn3" onclick="openNote('${d.code}')">📋 TY 2026-27 Note</button>`:''}
+        <span class="sec-map">${d.s61}<span class="sec-arr">→</span>${d.s25}</span>
+        <a href="${CBDT_URL}" target="_blank" class="cbdt-btn">🔗 CBDT</a>
+        ${hasNote?`<button class="note-btn" onclick="openModal('${d.code}')">📋 2026-27 Note</button>`:''}
       </div>
     </div>`;
   return el;
 }
 
-function buildTblRow(d){
+function buildRow(d){
+  const hasNote=d.note&&d.note.trim().length>5;
   const tr=document.createElement('tr');
   tr.innerHTML=`
-    <td style="font-family:var(--font-mono);font-weight:700;font-size:0.78rem;color:var(--navy)">${d.code}</td>
-    <td><span class="${d.type==='TDS'?'b-tds':'b-tcs'}">${d.type}</span></td>
-    <td style="font-size:0.8rem;max-width:240px;line-height:1.4">${d.nature}</td>
-    <td style="font-size:0.75rem;color:var(--gray-600);max-width:160px">${d.deductor}</td>
-    <td style="font-size:0.75rem;color:var(--gray-600)">${d.payee}</td>
-    <td style="font-family:var(--font-mono);font-size:0.75rem;color:var(--gray-600)">${d.s61}</td>
-    <td style="font-family:var(--font-mono);font-size:0.75rem;color:var(--amber);font-weight:700">${d.s25}</td>
-    <td style="font-weight:700;color:var(--red);font-size:0.8rem">${d.rate}</td>
-    <td style="font-size:0.76rem;color:var(--gray-600)">${d.thresh||'—'}</td>
-    <td><span class="b-form">${d.form}</span></td>`;
+    <td style="font-family:monospace;font-weight:700;font-size:0.76rem;color:var(--navy)">${d.code}</td>
+    <td><span class="${d.type==='TDS'?'m-tds':'m-tcs'}">${d.type}</span></td>
+    <td style="font-size:0.78rem;max-width:240px;line-height:1.4;color:var(--black)">${d.nature}</td>
+    <td style="font-size:0.74rem;color:var(--gray-5);max-width:160px;line-height:1.3">${d.deductor}</td>
+    <td style="font-size:0.74rem;color:var(--gray-5)">${d.payee}</td>
+    <td style="font-family:monospace;font-size:0.74rem;color:var(--gray-5)">${d.s61}</td>
+    <td style="font-family:monospace;font-size:0.74rem;color:var(--blue);font-weight:600">${d.s25}</td>
+    <td style="font-weight:700;color:var(--red);font-size:0.78rem;white-space:nowrap">${d.rate}</td>
+    <td style="font-size:0.74rem;color:var(--gray-5);min-width:100px">${d.thresh||'—'}</td>
+    <td><span class="m-form">${d.form}</span></td>
+    <td>${hasNote?`<button class="note-btn" onclick="openModal('${d.code}')">View</button>`:'—'}</td>`;
   return tr;
 }
 
@@ -348,11 +423,8 @@ function render(){
   const grid=document.getElementById('cardsGrid');
   const tbody=document.getElementById('tblBody');
   grid.innerHTML=''; tbody.innerHTML='';
-  if(f.length===0){document.getElementById('noRes').classList.add('show');}
-  else{
-    document.getElementById('noRes').classList.remove('show');
-    f.forEach(d=>{grid.appendChild(buildCard(d));tbody.appendChild(buildTblRow(d));});
-  }
+  document.getElementById('emptyState').classList.toggle('show',f.length===0);
+  f.forEach(d=>{grid.appendChild(buildCard(d));tbody.appendChild(buildRow(d));});
   document.getElementById('shownCnt').textContent=f.length;
 }
 
@@ -362,30 +434,40 @@ function setView(v){
     document.getElementById('cardsGrid').style.display='grid';
     document.getElementById('tblWrap').classList.remove('show');
     document.getElementById('cardBtn').classList.add('active');
-    document.getElementById('tableBtn').classList.remove('active');
+    document.getElementById('tblBtn').classList.remove('active');
   }else{
     document.getElementById('cardsGrid').style.display='none';
     document.getElementById('tblWrap').classList.add('show');
     document.getElementById('cardBtn').classList.remove('active');
-    document.getElementById('tableBtn').classList.add('active');
+    document.getElementById('tblBtn').classList.add('active');
   }
 }
 
-function openNote(code){
+function resetAll(){
+  curSrch=''; curCat='';
+  document.getElementById('srch').value='';
+  document.getElementById('secInp').value='';
+  ['typeF','rateF','formF'].forEach(id=>document.getElementById(id).value='');
+  document.querySelectorAll('.cpill').forEach(b=>b.classList.remove('active'));
+  document.querySelector('.cpill[data-cat=""]').classList.add('active');
+  render();
+}
+
+function openModal(code){
   const d=TDS_DATA.find(x=>x.code===code);
   if(!d||!d.note)return;
-  document.getElementById('noteTitle').textContent=d.nature;
-  document.getElementById('noteBody').textContent=d.note;
-  document.getElementById('noteTags').innerHTML=`
-    <span class="ntag" style="background:#DBEAFE;color:var(--navy)">Code: ${d.code}</span>
-    <span class="ntag" style="background:#FEF3C7;color:#92400E">1961: ${d.s61}</span>
-    <span class="ntag" style="background:#D1FAE5;color:var(--green-dark)">2025: ${d.s25}</span>
-    <span class="ntag" style="background:#FEE2E2;color:var(--red)">Rate: ${d.rate}</span>
-    <span class="ntag" style="background:var(--gray-100);color:var(--gray-600)">Form: ${d.form}</span>`;
-  document.getElementById('noteModal').classList.add('open');
+  document.getElementById('modalTitle').textContent=d.nature;
+  document.getElementById('modalBody').textContent=d.note;
+  document.getElementById('modalTags').innerHTML=`
+    <span class="mtag" style="background:#DBEAFE;color:#1E40AF">Code: ${d.code}</span>
+    <span class="mtag" style="background:#FFFBEB;color:#92400E">1961: ${d.s61}</span>
+    <span class="mtag" style="background:#DCFCE7;color:#166534">2025: ${d.s25}</span>
+    <span class="mtag" style="background:#FEE2E2;color:#991B1B">Rate: ${d.rate}</span>
+    <span class="mtag" style="background:var(--gray-2);color:var(--gray-5)">Form: ${d.form}</span>`;
+  document.getElementById('modal').classList.add('open');
 }
-function closeNote(){document.getElementById('noteModal').classList.remove('open');}
-document.getElementById('noteModal').addEventListener('click',e=>{if(e.target.id==='noteModal')closeNote();});
+function closeModal(){document.getElementById('modal').classList.remove('open');}
+document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal();});
 
 function exportCSV(){
   const f=getFiltered();
@@ -393,13 +475,14 @@ function exportCSV(){
   const rows=f.map(d=>[d.code,d.type,d.cat,`"${d.nature}"`,`"${d.plain}"`,`"${d.deductor}"`,`"${d.payee}"`,d.s61,`"${d.s25}"`,`"${d.rate}"`,`"${d.thresh}"`,d.form,`"${d.note}"`].join(','));
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([[hdr.join(','),...rows].join('\n')],{type:'text/csv'}));
-  a.download=`TDS-TCS-TY2026-27.csv`; a.click(); showToast('CSV exported ✓');
+  a.download='TDS-TCS-Master-TY2026-27.csv'; a.click(); showToast('CSV exported ✓');
 }
 
 document.addEventListener('keydown',e=>{
   if(e.key==='/'&&document.activeElement.tagName!=='INPUT'){e.preventDefault();document.getElementById('srch').focus();}
-  if(e.key==='Escape'){closeNote();clearSrch();}
+  if(e.key==='Escape'){closeModal();resetAll();}
 });
+
 document.addEventListener('DOMContentLoaded',()=>{buildCats();render();});
 </script>
 </body>

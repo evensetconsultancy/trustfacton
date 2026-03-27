@@ -3,355 +3,215 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Income Tax Act 1961 / 2025 — TrustFactON</title>
+  <title>Income Tax Act — TrustFactON</title>
   <link rel="stylesheet" href="style.css">
-  <style>:root{--act-color:#D97706;}</style>
+  <style>:root{--act-color:#2563EB;}</style>
 </head>
 <body>
 <div id="nav-placeholder"></div>
 
-<!-- HERO -->
 <section class="act-hero">
   <div class="container">
-    <div class="act-hero-badge">📊 Direct Taxation — CBDT</div>
+    <div class="act-hero-badge">Income Tax Act</div>
     <h1>Income Tax Act <span>1961 / 2025</span></h1>
-    <p>Complete reference — IT Act 1961 (up to AY 2025-26) and IT Act 2025 (from AY 2026-27). Select any topic below.</p>
+    <p>Tax rates, salary, capital gains, TDS, deductions, and ITR filing — IT Act 1961 (up to AY 2025-26) and IT Act 2025 (from AY 2026-27).</p>
     <div class="act-hero-stats">
-      <div class="act-hero-stat"><span class="val">536</span><span class="lbl">Clauses IT Act 2025</span></div>
-      <div class="act-hero-stat"><span class="val">Apr 2026</span><span class="lbl">IT Act 2025 Effective</span></div>
-      <div class="act-hero-stat"><span class="val">CBDT</span><span class="lbl">Administering Body</span></div>
-      <div class="act-hero-stat"><span class="val">5 Heads</span><span class="lbl">of Income</span></div>
+      <div class="act-stat"><span class="v">536</span><span class="l">Clauses IT Act 2025</span></div> <div class="act-stat"><span class="v">Apr 2026</span><span class="l">2025 Effective</span></div> <div class="act-stat"><span class="v">CBDT</span><span class="l">Administering</span></div> <div class="act-stat"><span class="v">5</span><span class="l">Heads of Income</span></div>
     </div>
   </div>
 </section>
 
-<!-- TOPIC SELECTOR -->
 <div class="topic-bar">
   <div class="container">
     <div class="topic-bar-inner">
-      <span class="topic-bar-label">📌 Select Topic:</span>
+      <span class="topic-label">Select Topic:</span>
       <div class="topic-select-wrap">
         <select class="topic-select" id="topicSelect" onchange="showTopic(this.value)">
           <option value="">— Choose a topic —</option>
-          <option value="slabs">💰 Tax Slabs & Rates</option>
-          <option value="corporate">🏢 Corporate Tax Rates</option>
-          <option value="salary">👔 Salary Income</option>
-          <option value="house">🏠 House Property</option>
-          <option value="business">💼 Business & Profession</option>
-          <option value="capital">📈 Capital Gains</option>
-          <option value="other">💡 Other Sources</option>
-          <option value="deductions">🧾 Deductions (80C–80U)</option>
-          <option value="tds">✂️ TDS Rate Table</option>
-          <option value="itr">📋 ITR Forms</option>
-          <option value="advance">🗓️ Advance Tax</option>
-          <option value="calendar">📅 Compliance Calendar</option>
-          <option value="penalties">⚠️ Penalties</option>
-          <option value="official">🔗 Official Government Links</option>
-          <option value="chat">🤖 Ask AI Assistant</option>
+          <option value="slabs">Tax Slabs & Rates</option>
+<option value="salary">Salary Income</option>
+<option value="business">Business & Profession</option>
+<option value="capital">Capital Gains</option>
+<option value="deductions">Deductions 80C–80U</option>
+<option value="tds">TDS Rates</option>
+<option value="itr">ITR Forms</option>
+<option value="advance">Advance Tax</option>
+<option value="calendar">Compliance Calendar</option>
+          <option value="links">🔗 Official Links</option>
+          <option value="chat">🤖 Ask AI</option>
         </select>
-        <span class="topic-select-arrow">▼</span>
+        <span class="topic-arrow">▼</span>
       </div>
       <div class="topic-chips">
-        <button class="topic-chip" onclick="showTopic('slabs')">💰 Slabs</button>
-        <button class="topic-chip" onclick="showTopic('tds')">✂️ TDS</button>
-        <button class="topic-chip" onclick="showTopic('deductions')">🧾 Deductions</button>
-        <button class="topic-chip" onclick="showTopic('capital')">📈 Capital Gains</button>
-        <button class="topic-chip" onclick="showTopic('itr')">📋 ITR Forms</button>
-        <button class="topic-chip" onclick="showTopic('calendar')">📅 Calendar</button>
+        <button class="topic-chip" onclick="showTopic('slabs')">Tax Slabs & Rates</button> <button class="topic-chip" onclick="showTopic('salary')">Salary Income</button> <button class="topic-chip" onclick="showTopic('business')">Business & Profession</button> <button class="topic-chip" onclick="showTopic('capital')">Capital Gains</button> <button class="topic-chip" onclick="showTopic('deductions')">Deductions 80C–80U</button>
+        <button class="topic-chip" onclick="showTopic('links')">🔗 Links</button>
         <button class="topic-chip" onclick="showTopic('chat')">🤖 Ask AI</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- PANELS -->
-<div id="panels-wrap" style="background:var(--cream);min-height:500px;">
+<div id="panels-wrap" style="background:var(--light);min-height:480px;">
   <div class="container">
 
-    <!-- WELCOME -->
-    <div class="topic-panel active" id="panel-welcome">
-      <div class="welcome-panel">
-        <div class="welcome-icon">📊</div>
-        <h2>What would you like to know about Income Tax Act?</h2>
-        <p>Pick a topic from the dropdown above — or click a quick topic below.</p>
-        <div class="quick-topics-grid">
-          <div class="quick-topic-card" onclick="showTopic('slabs')"><div class="icon">💰</div><div><h4>Tax Slabs & Rates</h4><p>Tap to explore</p></div></div>
-          <div class="quick-topic-card" onclick="showTopic('corporate')"><div class="icon">🏢</div><div><h4>Corporate Tax Rates</h4><p>Tap to explore</p></div></div>
-          <div class="quick-topic-card" onclick="showTopic('salary')"><div class="icon">👔</div><div><h4>Salary Income</h4><p>Tap to explore</p></div></div>
-          <div class="quick-topic-card" onclick="showTopic('house')"><div class="icon">🏠</div><div><h4>House Property</h4><p>Tap to explore</p></div></div>
-          <div class="quick-topic-card" onclick="showTopic('business')"><div class="icon">💼</div><div><h4>Business & Profession</h4><p>Tap to explore</p></div></div>
-          <div class="quick-topic-card" onclick="showTopic('capital')"><div class="icon">📈</div><div><h4>Capital Gains</h4><p>Tap to explore</p></div></div>
-          <div class="quick-topic-card" onclick="showTopic('other')"><div class="icon">💡</div><div><h4>Other Sources</h4><p>Tap to explore</p></div></div>
-          <div class="quick-topic-card" onclick="showTopic('deductions')"><div class="icon">🧾</div><div><h4>Deductions (80C–80U)</h4><p>Tap to explore</p></div></div>
-          <div class="quick-topic-card" onclick="showTopic('tds')"><div class="icon">✂️</div><div><h4>TDS Rate Table</h4><p>Tap to explore</p></div></div>
-          <div class="quick-topic-card" onclick="showTopic('itr')"><div class="icon">📋</div><div><h4>ITR Forms</h4><p>Tap to explore</p></div></div>
-          <div class="quick-topic-card" onclick="showTopic('advance')"><div class="icon">🗓️</div><div><h4>Advance Tax</h4><p>Tap to explore</p></div></div>
-          <div class="quick-topic-card" onclick="showTopic('calendar')"><div class="icon">📅</div><div><h4>Compliance Calendar</h4><p>Tap to explore</p></div></div>
-          <div class="quick-topic-card" onclick="showTopic('penalties')"><div class="icon">⚠️</div><div><h4>Penalties</h4><p>Tap to explore</p></div></div>
-          <div class="quick-topic-card" onclick="showTopic('official')"><div class="icon">🔗</div><div><h4>Official Links</h4><p>Government portals</p></div></div>
-          <div class="quick-topic-card" onclick="showTopic('chat')"><div class="icon">🤖</div><div><h4>Ask AI</h4><p>Instant answers</p></div></div>
-        </div>
+    <div class="topic-panel active" id="panel-welcome" style="padding:48px 0;text-align:center">
+      <h2 style="color:var(--black);margin-bottom:10px">What would you like to know about Income Tax Act?</h2>
+      <p style="color:var(--gray-5);max-width:440px;margin:0 auto 32px">Choose a topic from the dropdown above or click a quick topic below.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;max-width:840px;margin:0 auto;text-align:left">
+        <div class="quick-card" onclick="showTopic('slabs')"><div class="icon">📄</div><div><h4>Tax Slabs & Rates</h4><p>Tap to explore</p></div></div>
+<div class="quick-card" onclick="showTopic('salary')"><div class="icon">📄</div><div><h4>Salary Income</h4><p>Tap to explore</p></div></div>
+<div class="quick-card" onclick="showTopic('business')"><div class="icon">📄</div><div><h4>Business & Profession</h4><p>Tap to explore</p></div></div>
+<div class="quick-card" onclick="showTopic('capital')"><div class="icon">📄</div><div><h4>Capital Gains</h4><p>Tap to explore</p></div></div>
+<div class="quick-card" onclick="showTopic('deductions')"><div class="icon">📄</div><div><h4>Deductions 80C–80U</h4><p>Tap to explore</p></div></div>
+<div class="quick-card" onclick="showTopic('tds')"><div class="icon">📄</div><div><h4>TDS Rates</h4><p>Tap to explore</p></div></div>
+<div class="quick-card" onclick="showTopic('itr')"><div class="icon">📄</div><div><h4>ITR Forms</h4><p>Tap to explore</p></div></div>
+<div class="quick-card" onclick="showTopic('advance')"><div class="icon">📄</div><div><h4>Advance Tax</h4><p>Tap to explore</p></div></div>
+<div class="quick-card" onclick="showTopic('calendar')"><div class="icon">📄</div><div><h4>Compliance Calendar</h4><p>Tap to explore</p></div></div>
+        <div class="quick-card" onclick="showTopic('links')"><div class="icon">🔗</div><div><h4>Official Links</h4><p>Government portals</p></div></div>
+        <div class="quick-card" onclick="showTopic('chat')"><div class="icon">🤖</div><div><h4>Ask AI</h4><p>Get instant answer</p></div></div>
       </div>
     </div>
 
-    <!-- PLACEHOLDER TOPIC PANELS (content injected by AI on demand) -->
-        <div class="topic-panel" id="panel-slabs">
-      <div class="panel-header">
+    
+    <div class="topic-panel" id="panel-slabs">
+      <div style="padding:32px 0">
         <span class="panel-label">Tax Slabs & Rates</span>
-        <h2>Tax Slabs & Rates</h2>
-        <p>Key provisions, thresholds, and compliance requirements under Income Tax Act 1961 / 2025.</p>
-      </div>
-      <div class="info-box navy">
-        <strong>Quick Reference</strong>
-        Use the AI assistant below for detailed answers on Tax Slabs & Rates under Income Tax Act. Or visit the official government portal using the "Official Links" tab above.
-      </div>
-      <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
-        <button class="btn btn-primary" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Tax Slabs & Rates under Income Tax Act 1961 / 2025';window._tfChat.send();}},300)">Ask AI about Tax Slabs & Rates →</button>
-        <a href="#" onclick="showTopic('official');return false" class="btn btn-navy">Official Sources →</a>
-      </div>
-    </div>
-
-    <div class="topic-panel" id="panel-corporate">
-      <div class="panel-header">
-        <span class="panel-label">Corporate Tax Rates</span>
-        <h2>Corporate Tax Rates</h2>
-        <p>Key provisions, thresholds, and compliance requirements under Income Tax Act 1961 / 2025.</p>
-      </div>
-      <div class="info-box navy">
-        <strong>Quick Reference</strong>
-        Use the AI assistant below for detailed answers on Corporate Tax Rates under Income Tax Act. Or visit the official government portal using the "Official Links" tab above.
-      </div>
-      <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
-        <button class="btn btn-primary" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Corporate Tax Rates under Income Tax Act 1961 / 2025';window._tfChat.send();}},300)">Ask AI about Corporate Tax Rates →</button>
-        <a href="#" onclick="showTopic('official');return false" class="btn btn-navy">Official Sources →</a>
+        <div class="panel-header"><h2>Tax Slabs & Rates</h2><p style="color:var(--gray-5);margin-top:6px">Key provisions under Income Tax Act.</p></div>
+        <div class="info-box blue" style="margin-top:16px">Use the AI assistant for detailed answers on Tax Slabs & Rates, or visit Official Links above for the complete statutory text.</div>
+        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+          <button class="btn btn-blue" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Tax Slabs & Rates under Income Tax Act';window._tfChat.send();}},300)">Ask AI about Tax Slabs & Rates →</button>
+          <button class="btn btn-white" onclick="showTopic('links')">Official Sources →</button>
+        </div>
       </div>
     </div>
 
     <div class="topic-panel" id="panel-salary">
-      <div class="panel-header">
+      <div style="padding:32px 0">
         <span class="panel-label">Salary Income</span>
-        <h2>Salary Income</h2>
-        <p>Key provisions, thresholds, and compliance requirements under Income Tax Act 1961 / 2025.</p>
-      </div>
-      <div class="info-box navy">
-        <strong>Quick Reference</strong>
-        Use the AI assistant below for detailed answers on Salary Income under Income Tax Act. Or visit the official government portal using the "Official Links" tab above.
-      </div>
-      <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
-        <button class="btn btn-primary" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Salary Income under Income Tax Act 1961 / 2025';window._tfChat.send();}},300)">Ask AI about Salary Income →</button>
-        <a href="#" onclick="showTopic('official');return false" class="btn btn-navy">Official Sources →</a>
-      </div>
-    </div>
-
-    <div class="topic-panel" id="panel-house">
-      <div class="panel-header">
-        <span class="panel-label">House Property</span>
-        <h2>House Property</h2>
-        <p>Key provisions, thresholds, and compliance requirements under Income Tax Act 1961 / 2025.</p>
-      </div>
-      <div class="info-box navy">
-        <strong>Quick Reference</strong>
-        Use the AI assistant below for detailed answers on House Property under Income Tax Act. Or visit the official government portal using the "Official Links" tab above.
-      </div>
-      <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
-        <button class="btn btn-primary" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain House Property under Income Tax Act 1961 / 2025';window._tfChat.send();}},300)">Ask AI about House Property →</button>
-        <a href="#" onclick="showTopic('official');return false" class="btn btn-navy">Official Sources →</a>
+        <div class="panel-header"><h2>Salary Income</h2><p style="color:var(--gray-5);margin-top:6px">Key provisions under Income Tax Act.</p></div>
+        <div class="info-box blue" style="margin-top:16px">Use the AI assistant for detailed answers on Salary Income, or visit Official Links above for the complete statutory text.</div>
+        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+          <button class="btn btn-blue" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Salary Income under Income Tax Act';window._tfChat.send();}},300)">Ask AI about Salary Income →</button>
+          <button class="btn btn-white" onclick="showTopic('links')">Official Sources →</button>
+        </div>
       </div>
     </div>
 
     <div class="topic-panel" id="panel-business">
-      <div class="panel-header">
+      <div style="padding:32px 0">
         <span class="panel-label">Business & Profession</span>
-        <h2>Business & Profession</h2>
-        <p>Key provisions, thresholds, and compliance requirements under Income Tax Act 1961 / 2025.</p>
-      </div>
-      <div class="info-box navy">
-        <strong>Quick Reference</strong>
-        Use the AI assistant below for detailed answers on Business & Profession under Income Tax Act. Or visit the official government portal using the "Official Links" tab above.
-      </div>
-      <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
-        <button class="btn btn-primary" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Business & Profession under Income Tax Act 1961 / 2025';window._tfChat.send();}},300)">Ask AI about Business & Profession →</button>
-        <a href="#" onclick="showTopic('official');return false" class="btn btn-navy">Official Sources →</a>
+        <div class="panel-header"><h2>Business & Profession</h2><p style="color:var(--gray-5);margin-top:6px">Key provisions under Income Tax Act.</p></div>
+        <div class="info-box blue" style="margin-top:16px">Use the AI assistant for detailed answers on Business & Profession, or visit Official Links above for the complete statutory text.</div>
+        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+          <button class="btn btn-blue" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Business & Profession under Income Tax Act';window._tfChat.send();}},300)">Ask AI about Business & Profession →</button>
+          <button class="btn btn-white" onclick="showTopic('links')">Official Sources →</button>
+        </div>
       </div>
     </div>
 
     <div class="topic-panel" id="panel-capital">
-      <div class="panel-header">
+      <div style="padding:32px 0">
         <span class="panel-label">Capital Gains</span>
-        <h2>Capital Gains</h2>
-        <p>Key provisions, thresholds, and compliance requirements under Income Tax Act 1961 / 2025.</p>
-      </div>
-      <div class="info-box navy">
-        <strong>Quick Reference</strong>
-        Use the AI assistant below for detailed answers on Capital Gains under Income Tax Act. Or visit the official government portal using the "Official Links" tab above.
-      </div>
-      <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
-        <button class="btn btn-primary" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Capital Gains under Income Tax Act 1961 / 2025';window._tfChat.send();}},300)">Ask AI about Capital Gains →</button>
-        <a href="#" onclick="showTopic('official');return false" class="btn btn-navy">Official Sources →</a>
-      </div>
-    </div>
-
-    <div class="topic-panel" id="panel-other">
-      <div class="panel-header">
-        <span class="panel-label">Other Sources</span>
-        <h2>Other Sources</h2>
-        <p>Key provisions, thresholds, and compliance requirements under Income Tax Act 1961 / 2025.</p>
-      </div>
-      <div class="info-box navy">
-        <strong>Quick Reference</strong>
-        Use the AI assistant below for detailed answers on Other Sources under Income Tax Act. Or visit the official government portal using the "Official Links" tab above.
-      </div>
-      <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
-        <button class="btn btn-primary" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Other Sources under Income Tax Act 1961 / 2025';window._tfChat.send();}},300)">Ask AI about Other Sources →</button>
-        <a href="#" onclick="showTopic('official');return false" class="btn btn-navy">Official Sources →</a>
+        <div class="panel-header"><h2>Capital Gains</h2><p style="color:var(--gray-5);margin-top:6px">Key provisions under Income Tax Act.</p></div>
+        <div class="info-box blue" style="margin-top:16px">Use the AI assistant for detailed answers on Capital Gains, or visit Official Links above for the complete statutory text.</div>
+        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+          <button class="btn btn-blue" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Capital Gains under Income Tax Act';window._tfChat.send();}},300)">Ask AI about Capital Gains →</button>
+          <button class="btn btn-white" onclick="showTopic('links')">Official Sources →</button>
+        </div>
       </div>
     </div>
 
     <div class="topic-panel" id="panel-deductions">
-      <div class="panel-header">
-        <span class="panel-label">Deductions (80C–80U)</span>
-        <h2>Deductions (80C–80U)</h2>
-        <p>Key provisions, thresholds, and compliance requirements under Income Tax Act 1961 / 2025.</p>
-      </div>
-      <div class="info-box navy">
-        <strong>Quick Reference</strong>
-        Use the AI assistant below for detailed answers on Deductions (80C–80U) under Income Tax Act. Or visit the official government portal using the "Official Links" tab above.
-      </div>
-      <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
-        <button class="btn btn-primary" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Deductions (80C–80U) under Income Tax Act 1961 / 2025';window._tfChat.send();}},300)">Ask AI about Deductions (80C–80U) →</button>
-        <a href="#" onclick="showTopic('official');return false" class="btn btn-navy">Official Sources →</a>
+      <div style="padding:32px 0">
+        <span class="panel-label">Deductions 80C–80U</span>
+        <div class="panel-header"><h2>Deductions 80C–80U</h2><p style="color:var(--gray-5);margin-top:6px">Key provisions under Income Tax Act.</p></div>
+        <div class="info-box blue" style="margin-top:16px">Use the AI assistant for detailed answers on Deductions 80C–80U, or visit Official Links above for the complete statutory text.</div>
+        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+          <button class="btn btn-blue" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Deductions 80C–80U under Income Tax Act';window._tfChat.send();}},300)">Ask AI about Deductions 80C–80U →</button>
+          <button class="btn btn-white" onclick="showTopic('links')">Official Sources →</button>
+        </div>
       </div>
     </div>
 
     <div class="topic-panel" id="panel-tds">
-      <div class="panel-header">
-        <span class="panel-label">TDS Rate Table</span>
-        <h2>TDS Rate Table</h2>
-        <p>Key provisions, thresholds, and compliance requirements under Income Tax Act 1961 / 2025.</p>
-      </div>
-      <div class="info-box navy">
-        <strong>Quick Reference</strong>
-        Use the AI assistant below for detailed answers on TDS Rate Table under Income Tax Act. Or visit the official government portal using the "Official Links" tab above.
-      </div>
-      <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
-        <button class="btn btn-primary" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain TDS Rate Table under Income Tax Act 1961 / 2025';window._tfChat.send();}},300)">Ask AI about TDS Rate Table →</button>
-        <a href="#" onclick="showTopic('official');return false" class="btn btn-navy">Official Sources →</a>
+      <div style="padding:32px 0">
+        <span class="panel-label">TDS Rates</span>
+        <div class="panel-header"><h2>TDS Rates</h2><p style="color:var(--gray-5);margin-top:6px">Key provisions under Income Tax Act.</p></div>
+        <div class="info-box blue" style="margin-top:16px">Use the AI assistant for detailed answers on TDS Rates, or visit Official Links above for the complete statutory text.</div>
+        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+          <button class="btn btn-blue" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain TDS Rates under Income Tax Act';window._tfChat.send();}},300)">Ask AI about TDS Rates →</button>
+          <button class="btn btn-white" onclick="showTopic('links')">Official Sources →</button>
+        </div>
       </div>
     </div>
 
     <div class="topic-panel" id="panel-itr">
-      <div class="panel-header">
+      <div style="padding:32px 0">
         <span class="panel-label">ITR Forms</span>
-        <h2>ITR Forms</h2>
-        <p>Key provisions, thresholds, and compliance requirements under Income Tax Act 1961 / 2025.</p>
-      </div>
-      <div class="info-box navy">
-        <strong>Quick Reference</strong>
-        Use the AI assistant below for detailed answers on ITR Forms under Income Tax Act. Or visit the official government portal using the "Official Links" tab above.
-      </div>
-      <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
-        <button class="btn btn-primary" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain ITR Forms under Income Tax Act 1961 / 2025';window._tfChat.send();}},300)">Ask AI about ITR Forms →</button>
-        <a href="#" onclick="showTopic('official');return false" class="btn btn-navy">Official Sources →</a>
+        <div class="panel-header"><h2>ITR Forms</h2><p style="color:var(--gray-5);margin-top:6px">Key provisions under Income Tax Act.</p></div>
+        <div class="info-box blue" style="margin-top:16px">Use the AI assistant for detailed answers on ITR Forms, or visit Official Links above for the complete statutory text.</div>
+        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+          <button class="btn btn-blue" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain ITR Forms under Income Tax Act';window._tfChat.send();}},300)">Ask AI about ITR Forms →</button>
+          <button class="btn btn-white" onclick="showTopic('links')">Official Sources →</button>
+        </div>
       </div>
     </div>
 
     <div class="topic-panel" id="panel-advance">
-      <div class="panel-header">
+      <div style="padding:32px 0">
         <span class="panel-label">Advance Tax</span>
-        <h2>Advance Tax</h2>
-        <p>Key provisions, thresholds, and compliance requirements under Income Tax Act 1961 / 2025.</p>
-      </div>
-      <div class="info-box navy">
-        <strong>Quick Reference</strong>
-        Use the AI assistant below for detailed answers on Advance Tax under Income Tax Act. Or visit the official government portal using the "Official Links" tab above.
-      </div>
-      <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
-        <button class="btn btn-primary" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Advance Tax under Income Tax Act 1961 / 2025';window._tfChat.send();}},300)">Ask AI about Advance Tax →</button>
-        <a href="#" onclick="showTopic('official');return false" class="btn btn-navy">Official Sources →</a>
+        <div class="panel-header"><h2>Advance Tax</h2><p style="color:var(--gray-5);margin-top:6px">Key provisions under Income Tax Act.</p></div>
+        <div class="info-box blue" style="margin-top:16px">Use the AI assistant for detailed answers on Advance Tax, or visit Official Links above for the complete statutory text.</div>
+        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+          <button class="btn btn-blue" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Advance Tax under Income Tax Act';window._tfChat.send();}},300)">Ask AI about Advance Tax →</button>
+          <button class="btn btn-white" onclick="showTopic('links')">Official Sources →</button>
+        </div>
       </div>
     </div>
 
     <div class="topic-panel" id="panel-calendar">
-      <div class="panel-header">
+      <div style="padding:32px 0">
         <span class="panel-label">Compliance Calendar</span>
-        <h2>Compliance Calendar</h2>
-        <p>Key provisions, thresholds, and compliance requirements under Income Tax Act 1961 / 2025.</p>
-      </div>
-      <div class="info-box navy">
-        <strong>Quick Reference</strong>
-        Use the AI assistant below for detailed answers on Compliance Calendar under Income Tax Act. Or visit the official government portal using the "Official Links" tab above.
-      </div>
-      <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
-        <button class="btn btn-primary" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Compliance Calendar under Income Tax Act 1961 / 2025';window._tfChat.send();}},300)">Ask AI about Compliance Calendar →</button>
-        <a href="#" onclick="showTopic('official');return false" class="btn btn-navy">Official Sources →</a>
-      </div>
-    </div>
-
-    <div class="topic-panel" id="panel-penalties">
-      <div class="panel-header">
-        <span class="panel-label">Penalties</span>
-        <h2>Penalties</h2>
-        <p>Key provisions, thresholds, and compliance requirements under Income Tax Act 1961 / 2025.</p>
-      </div>
-      <div class="info-box navy">
-        <strong>Quick Reference</strong>
-        Use the AI assistant below for detailed answers on Penalties under Income Tax Act. Or visit the official government portal using the "Official Links" tab above.
-      </div>
-      <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
-        <button class="btn btn-primary" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Penalties under Income Tax Act 1961 / 2025';window._tfChat.send();}},300)">Ask AI about Penalties →</button>
-        <a href="#" onclick="showTopic('official');return false" class="btn btn-navy">Official Sources →</a>
-      </div>
-    </div>
-
-    <!-- OFFICIAL LINKS PANEL -->
-    <div class="topic-panel" id="panel-official">
-      <div class="panel-header">
-        <span class="panel-label">Official Government Sources</span>
-        <h2>Direct Links to Official Portals</h2>
-        <p>All information on this page is based on these official sources. Visit them for the most current and complete data.</p>
-      </div>
-      <div class="official-links">
-        <div class="official-links-grid">
-          <a href="https://www.incometaxindia.gov.in/tax-rates" target="_blank" class="official-link">Tax Rates <span class="ext">↗</span></a>
-          <a href="https://www.incometaxindia.gov.in/tax-calendar" target="_blank" class="official-link">Tax Calendar <span class="ext">↗</span></a>
-          <a href="https://www.incometaxindia.gov.in/income-tax-returns" target="_blank" class="official-link">ITR Forms <span class="ext">↗</span></a>
-          <a href="https://www.incometaxindia.gov.in/tax-deductes-at-source-tds" target="_blank" class="official-link">TDS Info <span class="ext">↗</span></a>
-          <a href="https://www.incometaxindia.gov.in/circulars" target="_blank" class="official-link">CBDT Circulars <span class="ext">↗</span></a>
-          <a href="https://www.incometaxindia.gov.in/income-tax-act-20251" target="_blank" class="official-link">IT Act 2025 <span class="ext">↗</span></a>
-          <a href="https://www.incometaxindia.gov.in/frequently-asked-questions" target="_blank" class="official-link">Official FAQs <span class="ext">↗</span></a>
+        <div class="panel-header"><h2>Compliance Calendar</h2><p style="color:var(--gray-5);margin-top:6px">Key provisions under Income Tax Act.</p></div>
+        <div class="info-box blue" style="margin-top:16px">Use the AI assistant for detailed answers on Compliance Calendar, or visit Official Links above for the complete statutory text.</div>
+        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+          <button class="btn btn-blue" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Compliance Calendar under Income Tax Act';window._tfChat.send();}},300)">Ask AI about Compliance Calendar →</button>
+          <button class="btn btn-white" onclick="showTopic('links')">Official Sources →</button>
         </div>
       </div>
-      <div class="info-box navy" style="margin-top:24px">
-        <strong>About TrustFactON</strong>
-        TrustFactON summarises and simplifies information from these official sources. For the complete text of law, notifications, and circulars, always refer to the official government portals linked above. Built by Evenset Consultancy Services, Bengaluru.
+    </div>
+
+    <div class="topic-panel" id="panel-links">
+      <div style="padding:32px 0">
+        <span class="panel-label">Official Sources</span>
+        <div class="panel-header"><h2>Government Portals</h2><p style="color:var(--gray-5);margin-top:6px">All information is sourced from these official portals. Visit for complete and current data.</p></div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:20px">
+          <a href="https://www.incometaxindia.gov.in" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:white;border:1px solid var(--gray-3);border-radius:var(--radius);font-size:0.8rem;color:var(--navy);font-weight:500;transition:all 0.15s;text-decoration:none" onmouseover="this.style.borderColor='var(--blue)';this.style.color='var(--blue)'" onmouseout="this.style.borderColor='var(--gray-3)';this.style.color='var(--navy)'">Income Tax Dept ↗</a> <a href="https://eportal.incometax.gov.in" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:white;border:1px solid var(--gray-3);border-radius:var(--radius);font-size:0.8rem;color:var(--navy);font-weight:500;transition:all 0.15s;text-decoration:none" onmouseover="this.style.borderColor='var(--blue)';this.style.color='var(--blue)'" onmouseout="this.style.borderColor='var(--gray-3)';this.style.color='var(--navy)'">e-Filing Portal ↗</a> <a href="https://www.incometaxindia.gov.in/tax-rates" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:white;border:1px solid var(--gray-3);border-radius:var(--radius);font-size:0.8rem;color:var(--navy);font-weight:500;transition:all 0.15s;text-decoration:none" onmouseover="this.style.borderColor='var(--blue)';this.style.color='var(--blue)'" onmouseout="this.style.borderColor='var(--gray-3)';this.style.color='var(--navy)'">Tax Rates ↗</a> <a href="https://www.incometaxindia.gov.in/tax-deductes-at-source-tds" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:white;border:1px solid var(--gray-3);border-radius:var(--radius);font-size:0.8rem;color:var(--navy);font-weight:500;transition:all 0.15s;text-decoration:none" onmouseover="this.style.borderColor='var(--blue)';this.style.color='var(--blue)'" onmouseout="this.style.borderColor='var(--gray-3)';this.style.color='var(--navy)'">TDS Info ↗</a> <a href="https://www.incometaxindia.gov.in/income-tax-act-20251" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:white;border:1px solid var(--gray-3);border-radius:var(--radius);font-size:0.8rem;color:var(--navy);font-weight:500;transition:all 0.15s;text-decoration:none" onmouseover="this.style.borderColor='var(--blue)';this.style.color='var(--blue)'" onmouseout="this.style.borderColor='var(--gray-3)';this.style.color='var(--navy)'">IT Act 2025 ↗</a>
+        </div>
+        <div class="info-box blue" style="margin-top:20px"><strong>About TrustFactON</strong>We summarise official government content in plain language. For the full text of law, always refer to official portals above. Built by Evenset Consultancy Services, Bengaluru.</div>
       </div>
     </div>
 
-    <!-- AI CHAT PANEL -->
     <div class="topic-panel" id="panel-chat">
-      <div class="panel-header">
+      <div style="padding:32px 0">
         <span class="panel-label">AI Assistant</span>
-        <h2>Ask About Income Tax Act</h2>
-        <p>Get instant answers powered by Google Gemini — free for all users, no login required.</p>
-      </div>
-      <div class="chat-container" id="chat-widget" data-act="Income Tax Act 1961 and Income Tax Act 2025">
-        <div class="chat-header">
-          <div class="chat-avatar">TF</div>
-          <div class="chat-header-info">
-            <h4>Income Tax Act AI Assistant</h4>
-            <span><span class="online-dot"></span>Powered by Google Gemini · Free · No login needed</span>
+        <div class="panel-header"><h2>Ask About Income Tax Act</h2><p style="color:var(--gray-5);margin-top:6px">Free for all users. No login required. Powered by Google Gemini.</p></div>
+        <div class="chat-container" id="chat-widget" data-act="Income Tax Act 1961 and IT Act 2025" style="max-width:760px;margin-top:24px">
+          <div class="chat-header">
+            <div class="chat-avatar">TF</div>
+            <div class="chat-header-info">
+              <h4>Income Tax Act AI</h4>
+              <span><span class="online-dot"></span>Powered by Google Gemini · Free · No login</span>
+            </div>
           </div>
-        </div>
-        <div class="chat-messages"></div>
-        <div class="chat-suggestions">
-          <button class="chat-suggest-btn">New vs Old regime — which is better?</button>
-          <button class="chat-suggest-btn">LTCG on property — how to save tax?</button>
-          <button class="chat-suggest-btn">TDS on rent under 194IB?</button>
-          <button class="chat-suggest-btn">How to file revised return u/s 139(5)?</button>
-        </div>
-        <div class="chat-input-row">
-          <textarea class="chat-input" rows="1" placeholder="Ask anything about Income Tax Act..."></textarea>
-          <button class="chat-send-btn"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+          <div class="chat-messages"></div>
+          <div class="chat-suggestions">
+            <button class="chat-suggest-btn">New vs Old tax regime — which is better?</button> <button class="chat-suggest-btn">LTCG on property — how to save tax?</button> <button class="chat-suggest-btn">TDS on rent u/s 194IB?</button> <button class="chat-suggest-btn">How to file revised return u/s 139(5)?</button>
+          </div>
+          <div class="chat-input-row">
+            <textarea class="chat-input" rows="1" placeholder="Ask anything about Income Tax Act..."></textarea>
+            <button class="chat-send-btn"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+          </div>
         </div>
       </div>
     </div>
@@ -359,12 +219,12 @@
   </div>
 </div>
 
-<!-- NEWSLETTER -->
 <section class="newsletter-section">
   <div class="container">
     <div class="newsletter-inner">
-      <h2>Stay Updated on Income Tax Act</h2>
-      <p>Law changes, circulars, and compliance alerts — weekly from TrustFactON.</p>
+      <span class="sec-label">Stay Updated</span>
+      <h2 class="sec-title" style="margin-bottom:8px">Income Tax Act Updates</h2>
+      <p class="sec-sub" style="margin-bottom:24px">Law changes, circulars, and compliance alerts weekly.</p>
       <div class="newsletter-form">
         <input type="email" placeholder="your@email.com">
         <button onclick="window.open('https://trustfacton.beehiiv.com/subscribe','_blank')">Subscribe →</button>
