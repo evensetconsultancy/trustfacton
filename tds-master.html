@@ -1,489 +1,506 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TDS/TCS Section Master | Tax Year 2026-27 — TrustFactON</title>
-  <meta name="description" content="TDS/TCS Section Code Master — 91 codes, plain language, IT Act 1961 to IT Act 2025 mapping. Finance Bill 2026 rates.">
-  <link rel="stylesheet" href="style.css">
-  <style>
-    /* ── PAGE SHELL ── */
-    .page-hero { background: var(--navy); padding: 36px 0 28px; }
-    .page-hero h1 { color: white; font-size: clamp(1.4rem,3vw,2rem); margin-bottom:6px; }
-    .page-hero h1 span { color: #60A5FA; }
-    .page-hero p { color: rgba(255,255,255,0.6); font-size:0.9rem; max-width:640px; }
-    .hero-meta { display:flex;gap:20px;flex-wrap:wrap;margin-top:16px; }
-    .hero-meta span { font-size:0.75rem;color:rgba(255,255,255,0.45);display:flex;align-items:center;gap:5px; }
-    .hero-meta .dot2 { width:5px;height:5px;border-radius:50%;background:#4ADE80; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TDS/TCS Section Master | Tax Year 2026-27 — TrustFactON</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.page-hero{background:var(--navy);padding:32px 0 24px;}
+.page-hero h1{color:white;font-size:clamp(1.3rem,2.5vw,1.9rem);margin-bottom:6px;}
+.page-hero h1 span{color:#60A5FA;}
+.page-hero p{color:rgba(255,255,255,0.6);font-size:0.875rem;max-width:640px;}
+.hero-meta{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;}
+.hero-meta span{font-size:0.72rem;color:rgba(255,255,255,0.45);display:flex;align-items:center;gap:4px;}
+.hm-dot{width:5px;height:5px;border-radius:50%;background:#4ADE80;display:inline-block;}
 
-    /* ── HERO STATS ── */
-    .page-stats { background:white;border-bottom:1px solid var(--gray-3);padding:14px 0; }
-    .page-stats-row { display:flex;gap:32px;align-items:center;flex-wrap:wrap; }
-    .ps { text-align:center; }
-    .ps .v { font-size:1.3rem;font-weight:700;color:var(--navy);display:block;line-height:1;font-family:'Playfair Display',serif; }
-    .ps .l { font-size:0.7rem;color:var(--gray-4);margin-top:2px; }
+/* Metrics */
+.metrics-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.mc{background:white;border-radius:var(--radius);padding:14px 16px;border:1px solid var(--gray-3);display:flex;align-items:center;gap:12px;}
+.mc-icon{width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.mc-val{font-size:1.5rem;font-weight:700;color:var(--black);line-height:1;font-family:'Playfair Display',serif;}
+.mc-lbl{font-size:0.7rem;color:var(--gray-4);margin-top:1px;}
 
-    /* ── SEARCH + FILTERS ── */
-    .filters-bar { background:white;border-bottom:2px solid var(--gray-3);padding:14px 0;position:sticky;top:60px;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.04); }
-    .filters-row { display:flex;gap:8px;align-items:center;flex-wrap:wrap; }
-    .search-box { display:flex;align-items:center;gap:8px;background:var(--gray-1);border:1.5px solid var(--gray-3);border-radius:var(--radius);padding:8px 12px;flex:1;min-width:180px;max-width:320px; }
-    .search-box:focus-within { border-color:var(--blue);background:white; }
-    .search-box input { flex:1;background:transparent;font-size:0.86rem;color:var(--black);font-family:'Inter',sans-serif; }
-    .search-box input::placeholder { color:var(--gray-4); }
-    .fsel { padding:8px 10px;border:1.5px solid var(--gray-3);border-radius:var(--radius);font-size:0.8rem;font-family:'Inter',sans-serif;color:var(--black);background:white;cursor:pointer; }
-    .fsel:focus { outline:none;border-color:var(--blue); }
-    .action-btns { display:flex;gap:6px;margin-left:auto; }
-    .res-badge { display:flex;align-items:center;gap:6px; }
-    .res-badge span { font-size:0.8rem;color:var(--gray-5); }
-    .res-badge strong { color:var(--navy); }
-    .view-toggle { display:flex;border:1.5px solid var(--gray-3);border-radius:var(--radius);overflow:hidden; }
-    .vtbtn { padding:7px 12px;font-size:0.76rem;cursor:pointer;font-family:'Inter',sans-serif;color:var(--gray-5);background:white;border:none;transition:all 0.15s; }
-    .vtbtn.active { background:var(--navy);color:white; }
-    .export-btn { padding:7px 14px;background:var(--navy);color:white;border-radius:var(--radius);font-size:0.76rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:background 0.15s; }
-    .export-btn:hover { background:var(--blue); }
-    .reset-btn { padding:7px 14px;background:var(--gray-2);color:var(--gray-5);border-radius:var(--radius);font-size:0.76rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif; }
+/* Toolbar */
+.toolbar{background:white;border-bottom:2px solid var(--gray-3);padding:10px 0;position:sticky;top:60px;z-index:200;box-shadow:0 2px 8px rgba(0,0,0,0.04);}
+.tb-r1{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px;}
+.tb-r2{display:flex;gap:5px;align-items:center;flex-wrap:wrap;}
 
-    /* ── CATEGORY PILLS ── */
-    .cat-bar { background:var(--gray-1);border-bottom:1px solid var(--gray-3);padding:10px 0;overflow-x:auto; }
-    .cat-scroll { display:flex;gap:6px;white-space:nowrap; }
-    .cpill { padding:5px 14px;border-radius:20px;border:1.5px solid var(--gray-3);background:white;font-size:0.76rem;font-weight:500;color:var(--gray-5);cursor:pointer;transition:all 0.15s;font-family:'Inter',sans-serif;white-space:nowrap;flex-shrink:0; }
-    .cpill:hover { border-color:var(--blue);color:var(--blue); }
-    .cpill.active { background:var(--navy);color:white;border-color:var(--navy); }
-    .cpill .n { font-size:0.65rem;opacity:0.7;margin-left:3px; }
+.sbx{position:relative;flex:1;min-width:180px;max-width:340px;}
+.sbx input{width:100%;padding:8px 34px 8px 34px;border:1.5px solid var(--gray-3);border-radius:var(--radius);font-size:0.85rem;font-family:'Inter',sans-serif;background:var(--gray-1);color:var(--black);transition:all 0.15s;}
+.sbx input:focus{outline:none;border-color:var(--blue);background:white;box-shadow:0 0 0 3px rgba(37,99,235,0.08);}
+.sbx input::placeholder{color:var(--gray-4);}
+.sbx .si{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--gray-4);pointer-events:none;font-size:0.85rem;}
+.sbx .sc{position:absolute;right:9px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--gray-4);cursor:pointer;display:none;font-size:0.85rem;}
+.sbx .sc.show{display:block;}
 
-    /* ── SECTION QUICK LOOKUP ── */
-    .sec-lookup { background:#FFFBEB;border:1px solid #FDE68A;border-radius:var(--radius);padding:12px 16px;margin-bottom:16px;display:flex;gap:8px;align-items:center;flex-wrap:wrap; }
-    .sec-lookup label { font-size:0.82rem;font-weight:600;color:#92400E;white-space:nowrap; }
-    .sec-lookup input { padding:7px 12px;border:1.5px solid #FCD34D;border-radius:var(--radius);font-size:0.84rem;font-family:'Inter',sans-serif;background:white;min-width:160px; }
-    .sec-lookup input:focus { outline:none;border-color:var(--amber); }
-    .sec-lookup button { padding:7px 16px;background:var(--amber);color:white;border-radius:var(--radius);font-size:0.82rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif; }
-    .sec-hint { font-size:0.76rem;color:#92400E;opacity:0.7; }
+.fsel{padding:7px 9px;border:1.5px solid var(--gray-3);border-radius:var(--radius);font-size:0.78rem;font-family:'Inter',sans-serif;color:var(--black);background:white;cursor:pointer;}
+.fsel:focus{outline:none;border-color:var(--blue);}
+.fsel.on{border-color:var(--blue);background:#EFF6FF;color:var(--blue);}
 
-    /* ── DISCLAIMER ── */
-    .disc { background:#EFF6FF;border:1px solid #BFDBFE;border-radius:var(--radius);padding:10px 14px;font-size:0.78rem;color:#1E40AF;margin-bottom:16px;line-height:1.6; }
+.qf-row{display:flex;gap:5px;flex-wrap:wrap;align-items:center;}
+.qf-lbl{font-size:0.7rem;font-weight:600;color:var(--gray-4);white-space:nowrap;}
+.qp{padding:4px 10px;border-radius:16px;border:1px solid var(--gray-3);background:white;font-size:0.72rem;font-weight:500;color:var(--gray-5);cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;transition:all 0.15s;}
+.qp:hover{border-color:var(--blue);color:var(--blue);}
+.qp.on{background:var(--navy);color:white;border-color:var(--navy);}
+.qp.amber.on{background:var(--amber);color:white;border-color:var(--amber);}
 
-    /* ── CARDS ── */
-    .tds-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px; }
+.ags{display:flex;gap:5px;margin-left:auto;flex-wrap:wrap;}
+.tbtn{padding:6px 11px;border-radius:var(--radius);border:1.5px solid var(--gray-3);background:white;font-size:0.74rem;font-weight:500;color:var(--gray-5);cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.15s;white-space:nowrap;}
+.tbtn:hover{border-color:var(--blue);color:var(--blue);}
+.tbtn.on{background:var(--navy);color:white;border-color:var(--navy);}
 
-    .tds-card { background:white;border-radius:var(--radius-lg);border:1px solid var(--gray-3);display:flex;flex-direction:column;transition:all 0.2s; }
-    .tds-card:hover { box-shadow:var(--shadow-md);transform:translateY(-2px);border-color:var(--blue); }
+/* Status */
+.sbar{background:var(--gray-1);border-bottom:1px solid var(--gray-3);padding:7px 0;}
+.sb-in{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;}
+.sb-txt{font-size:0.76rem;color:var(--gray-5);}
+.sb-txt strong{color:var(--navy);}
 
-    /* Card header strip */
-    .card-strip { height:3px;border-radius:var(--radius-lg) var(--radius-lg) 0 0; }
+/* Table */
+.tbl-out{overflow-x:auto;background:white;}
+.mtbl{width:100%;border-collapse:collapse;min-width:960px;font-size:0.78rem;}
+.mtbl thead th{background:var(--navy);color:white;padding:9px 11px;text-align:left;font-weight:600;font-size:0.72rem;white-space:nowrap;user-select:none;cursor:pointer;}
+.mtbl thead th:hover{background:#1E4080;}
+.mtbl thead th.asc::after{content:' ↑';}
+.mtbl thead th.desc::after{content:' ↓';}
+.mtbl thead th.ns{cursor:default;}
+.mtbl thead th.ns:hover{background:var(--navy);}
+.mtbl tbody tr{border-bottom:1px solid var(--gray-2);transition:background 0.1s;}
+.mtbl tbody tr:hover{background:#F8FAFF;}
+.mtbl td{padding:9px 11px;vertical-align:middle;}
 
-    /* Card top */
-    .card-top { padding:14px 16px 10px; }
-    .card-meta { display:flex;gap:5px;align-items:center;flex-wrap:wrap;margin-bottom:8px; }
-    .m-code { font-family:monospace;font-size:0.7rem;font-weight:700;background:var(--gray-2);color:var(--navy);padding:2px 7px;border-radius:4px; }
-    .m-tds  { background:#DBEAFE;color:#1E40AF;font-size:0.68rem;font-weight:700;padding:2px 7px;border-radius:4px; }
-    .m-tcs  { background:#DCFCE7;color:#166534;font-size:0.68rem;font-weight:700;padding:2px 7px;border-radius:4px; }
-    .m-cat  { font-size:0.66rem;background:var(--gray-2);color:var(--gray-5);padding:2px 7px;border-radius:4px; }
-    .m-form { font-family:monospace;font-size:0.66rem;background:#DCFCE7;color:#166534;padding:2px 7px;border-radius:4px; }
+.cc{font-family:monospace;font-weight:700;font-size:0.72rem;color:var(--navy);}
+.bt{background:#DBEAFE;color:#1E40AF;padding:2px 6px;border-radius:4px;font-size:0.66rem;font-weight:700;}
+.bc{background:#DCFCE7;color:#166534;padding:2px 6px;border-radius:4px;font-size:0.66rem;font-weight:700;}
+.so{font-family:monospace;font-size:0.72rem;color:var(--gray-5);}
+.sn{font-family:monospace;font-size:0.72rem;color:var(--blue);font-weight:600;}
+.cr{font-weight:700;color:var(--red);font-size:0.78rem;white-space:nowrap;}
+.ct{font-size:0.74rem;color:var(--gray-6);}
+.cd{font-size:0.72rem;color:var(--gray-5);line-height:1.3;max-width:130px;}
+.fb{font-family:monospace;font-size:0.66rem;background:#DCFCE7;color:#166534;padding:1px 5px;border-radius:4px;}
+.mdot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--amber);margin-left:3px;vertical-align:middle;}
+.eb{width:24px;height:24px;border-radius:5px;border:1px solid var(--gray-3);background:white;cursor:pointer;font-size:0.85rem;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
+.eb:hover,.eb.on{background:var(--blue);color:white;border-color:var(--blue);}
+.ccb{width:14px;height:14px;cursor:pointer;accent-color:var(--blue);}
 
-    .card-nature { font-size:0.86rem;font-weight:600;color:var(--black);line-height:1.4;margin-bottom:5px; }
-    .card-plain  { font-size:0.78rem;color:var(--gray-5);line-height:1.5;padding:7px 10px;background:var(--gray-1);border-radius:6px;border-left:2px solid var(--blue); }
+/* Detail row */
+.dr{display:none;}
+.dr.on{display:table-row;}
+.dtd{padding:0!important;background:#F0F7FF!important;}
+.din{padding:14px 18px;border-top:2px solid var(--blue);}
+.dg{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px;}
+.df label{font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.7px;color:var(--gray-4);display:block;margin-bottom:2px;}
+.df .v{font-size:0.82rem;color:var(--black);line-height:1.4;}
+.d-plain{background:#EFF6FF;border:1px solid #BFDBFE;border-radius:var(--radius);padding:9px 12px;font-size:0.8rem;color:#1E40AF;margin-bottom:8px;}
+.d-plain label{font-size:0.62rem;font-weight:700;text-transform:uppercase;display:block;margin-bottom:3px;}
+.d-note{background:#FFFBEB;border:1px solid #FDE68A;border-radius:var(--radius);padding:9px 12px;font-size:0.78rem;color:#92400E;line-height:1.6;}
+.d-note label{font-size:0.62rem;font-weight:700;text-transform:uppercase;display:block;margin-bottom:3px;color:#D97706;}
+.dl{display:inline-flex;align-items:center;gap:4px;font-size:0.74rem;color:var(--blue);border:1px solid #BFDBFE;border-radius:var(--radius);padding:4px 10px;text-decoration:none;margin-top:8px;transition:all 0.15s;}
+.dl:hover{background:var(--blue);color:white;}
 
-    /* Card middle — rate + threshold */
-    .card-mid { display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--gray-3);margin:10px 0 0; }
-    .card-mid-cell { background:white;padding:10px 14px; }
-    .card-mid-cell label { font-size:0.62rem;font-weight:600;text-transform:uppercase;letter-spacing:0.8px;color:var(--gray-4);display:block;margin-bottom:3px; }
-    .cell-rate   { font-size:0.95rem;font-weight:700;color:var(--red); }
-    .cell-thresh { font-size:0.8rem;color:var(--gray-6);font-weight:500; }
+/* Pagination */
+.pgbar{background:white;border-top:1px solid var(--gray-3);padding:10px 0;}
+.pg-in{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.pb{padding:5px 11px;border:1.5px solid var(--gray-3);border-radius:var(--radius);background:white;font-size:0.76rem;cursor:pointer;font-family:'Inter',sans-serif;color:var(--gray-6);transition:all 0.15s;}
+.pb:hover:not(:disabled){border-color:var(--blue);color:var(--blue);}
+.pb:disabled{opacity:0.4;cursor:not-allowed;}
+.pb.on{background:var(--navy);color:white;border-color:var(--navy);}
+.pgnums{display:flex;gap:3px;flex-wrap:wrap;}
 
-    /* Card bottom */
-    .card-bot { padding:10px 14px;display:flex;flex-direction:column;gap:7px;margin-top:auto; }
-    .who-row { display:grid;grid-template-columns:1fr 1fr;gap:6px; }
-    .who-box { padding:6px 10px;border-radius:6px;font-size:0.74rem;line-height:1.4; }
-    .who-box label { font-size:0.58rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;display:block;opacity:0.6;margin-bottom:2px; }
-    .who-ded { background:#EFF6FF;color:var(--navy); }
-    .who-pay { background:#F0FDF4;color:#166534; }
-    .card-actions { display:flex;gap:5px;align-items:center;flex-wrap:wrap;padding-top:6px;border-top:1px solid var(--gray-2); }
-    .sec-map { font-family:monospace;font-size:0.7rem;color:var(--gray-4);padding:2px 8px;background:var(--gray-1);border-radius:4px; }
-    .sec-arr { color:var(--blue);margin:0 3px; }
-    .cbdt-btn { font-size:0.72rem;color:var(--blue);padding:2px 8px;border:1px solid #BFDBFE;border-radius:4px;text-decoration:none;transition:all 0.15s; }
-    .cbdt-btn:hover { background:var(--blue);color:white; }
-    .note-btn { font-size:0.72rem;color:var(--amber);padding:2px 8px;border:1px solid #FDE68A;border-radius:4px;cursor:pointer;background:none;font-family:'Inter',sans-serif;transition:all 0.15s; }
-    .note-btn:hover { background:var(--amber);color:white;border-color:var(--amber); }
+/* Compare panel */
+.cpanel{display:none;position:fixed;bottom:0;left:0;right:0;background:white;border-top:2px solid var(--blue);box-shadow:0 -4px 20px rgba(0,0,0,0.12);z-index:500;padding:14px 0;max-height:55vh;overflow-y:auto;}
+.cpanel.on{display:block;}
+.cp-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.cp-grid{display:grid;gap:12px;}
+.cp-card{background:var(--gray-1);border:1px solid var(--gray-3);border-radius:var(--radius);padding:12px;}
+.cp-card h5{font-size:0.82rem;color:var(--navy);margin-bottom:8px;}
+.cp-row{display:flex;flex-direction:column;gap:6px;font-size:0.78rem;}
+.cp-field label{font-size:0.62rem;font-weight:700;text-transform:uppercase;color:var(--gray-4);display:block;}
+.diff-up{background:#FEE2E2;color:#991B1B;padding:1px 6px;border-radius:4px;font-size:0.66rem;font-weight:700;margin-left:4px;}
+.diff-ok{background:#DCFCE7;color:#166534;padding:1px 6px;border-radius:4px;font-size:0.66rem;font-weight:700;margin-left:4px;}
 
-    /* ── TABLE VIEW ── */
-    .tbl-wrap { overflow-x:auto;border-radius:var(--radius);border:1px solid var(--gray-3);background:white;display:none; }
-    .tbl-wrap.show { display:block; }
-    .mtbl { width:100%;border-collapse:collapse;font-size:0.8rem;min-width:960px; }
-    .mtbl thead th { background:var(--navy);color:white;padding:10px 12px;text-align:left;font-weight:600;font-size:0.76rem;white-space:nowrap; }
-    .mtbl tbody tr { border-bottom:1px solid var(--gray-2);transition:background 0.12s; }
-    .mtbl tbody tr:hover { background:var(--gray-1); }
-    .mtbl td { padding:9px 12px;vertical-align:middle; }
+/* Dropdowns */
+.drop-wrap{position:relative;}
+.drop-menu{display:none;position:absolute;top:calc(100%+4px);right:0;background:white;border:1px solid var(--gray-3);border-radius:var(--radius);box-shadow:var(--shadow-lg);padding:4px;z-index:300;min-width:160px;}
+.drop-menu.on{display:block;}
+.di{display:flex;align-items:center;gap:7px;padding:7px 11px;border-radius:6px;font-size:0.8rem;color:var(--gray-6);cursor:pointer;transition:background 0.12s;}
+.di:hover{background:var(--gray-1);color:var(--navy);}
+.col-panel{min-width:190px;}
+.col-item{display:flex;align-items:center;gap:7px;padding:4px 0;font-size:0.8rem;color:var(--gray-6);cursor:pointer;}
+.saved-panel{min-width:230px;left:0;right:auto;}
+.sv-item{display:flex;align-items:center;justify-content:space-between;padding:5px 7px;border-radius:6px;cursor:pointer;}
+.sv-item:hover{background:var(--gray-1);}
+.sv-del{color:var(--gray-4);cursor:pointer;padding:2px 5px;font-size:0.75rem;}
+.sv-del:hover{color:var(--red);}
+.sv-inp{display:flex;gap:5px;margin-top:8px;padding-top:8px;border-top:1px solid var(--gray-3);}
+.sv-inp input{flex:1;padding:5px 9px;border:1px solid var(--gray-3);border-radius:6px;font-size:0.78rem;font-family:'Inter',sans-serif;}
+.sv-inp button{padding:5px 11px;background:var(--blue);color:white;border-radius:6px;font-size:0.76rem;cursor:pointer;font-family:'Inter',sans-serif;}
 
-    /* ── NOTE MODAL ── */
-    .modal-wrap { display:none;position:fixed;inset:0;background:rgba(15,23,42,0.5);z-index:9000;align-items:center;justify-content:center;backdrop-filter:blur(3px); }
-    .modal-wrap.open { display:flex; }
-    .modal-box { background:white;border-radius:var(--radius-lg);padding:24px;max-width:560px;width:92%;max-height:80vh;overflow-y:auto;box-shadow:var(--shadow-lg);animation:modalIn 0.2s ease; }
-    @keyframes modalIn { from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;} }
-    .modal-head { display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--gray-3); }
-    .modal-head h3 { font-size:0.95rem;color:var(--black);line-height:1.4; }
-    .modal-close { background:var(--gray-2);border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:0.9rem;color:var(--gray-5); }
-    .modal-body { font-size:0.84rem;color:var(--gray-5);line-height:1.7; }
-    .modal-tags { display:flex;gap:6px;flex-wrap:wrap;margin-top:14px;padding-top:12px;border-top:1px solid var(--gray-3); }
-    .mtag { font-size:0.7rem;font-weight:600;padding:2px 9px;border-radius:4px; }
+/* Empty */
+.empty-st{text-align:center;padding:56px;display:none;}
+.empty-st.on{display:block;}
 
-    /* ── EMPTY STATE ── */
-    .empty { text-align:center;padding:60px;display:none; }
-    .empty.show { display:block; }
-
-    @media(max-width:640px){.tds-grid{grid-template-columns:1fr;}.card-mid{grid-template-columns:1fr;}.who-row{grid-template-columns:1fr;}.filters-row{flex-direction:column;align-items:stretch;}.action-btns{margin-left:0;}.search-box{max-width:100%;}}
-  </style>
+@media(max-width:900px){.metrics-row{grid-template-columns:repeat(2,1fr);}.dg{grid-template-columns:1fr 1fr;}}
+@media(max-width:640px){.metrics-row{grid-template-columns:1fr 1fr;}.tb-r1{flex-direction:column;align-items:stretch;}.ags{margin-left:0;}.sbx{max-width:100%;}.dg{grid-template-columns:1fr;}}
+</style>
 </head>
 <body>
 <div id="nav-placeholder"></div>
 
-<!-- PAGE HERO -->
+<!-- HERO -->
 <section class="page-hero">
   <div class="container">
-    <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);padding:4px 14px;border-radius:20px;font-size:0.76rem;color:rgba(255,255,255,0.7);margin-bottom:12px;">✂️ TDS / TCS Reference · Tax Year 2026-27</div>
+    <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);padding:3px 12px;border-radius:16px;font-size:0.71rem;color:rgba(255,255,255,0.65);margin-bottom:10px;">✂️ TDS / TCS Reference · Tax Year 2026-27 · Finance Bill 2026</div>
     <h1>TDS / TCS Section <span>Code Master</span></h1>
-    <p>91 section codes — plain language, rates, thresholds, who deducts and who pays. IT Act 1961 ↔ IT Act 2025 mapping. Finance Bill 2026 rates included.</p>
+    <p>Complete reference — 91 section codes with plain language explanations, rates, thresholds, who deducts and who pays. IT Act 1961 ↔ IT Act 2025. Finance Bill 2026 amendments included.</p>
     <div class="hero-meta">
-      <span><span class="dot2"></span>Tax Year 2026-27</span>
-      <span><span class="dot2"></span>Finance Bill 2026 Rates</span>
-      <span><span class="dot2"></span>IT Act 1961 ↔ IT Act 2025</span>
-      <span><span class="dot2"></span>66 TDS + 25 TCS = 91 Codes</span>
+      <span><span class="hm-dot"></span>Tax Year 2026-27</span>
+      <span><span class="hm-dot"></span>Finance Bill 2026 Rates</span>
+      <span><span class="hm-dot"></span>IT Act 1961 ↔ IT Act 2025</span>
     </div>
   </div>
 </section>
 
-<!-- STATS -->
-<div class="page-stats">
+<!-- METRICS -->
+<div style="background:var(--light);border-bottom:1px solid var(--gray-3);padding:14px 0;">
   <div class="container">
-    <div class="page-stats-row">
-      <div class="ps"><span class="v">91</span><span class="l">Total Codes</span></div>
-      <div class="ps"><span class="v" style="color:var(--blue)">66</span><span class="l">TDS Sections</span></div>
-      <div class="ps"><span class="v" style="color:var(--green)">25</span><span class="l">TCS Sections</span></div>
-      <div class="ps"><span class="v" style="color:var(--amber)">2026-27</span><span class="l">Tax Year</span></div>
-      <div class="ps"><span class="v" style="color:var(--red)">FB 2026</span><span class="l">Amendments</span></div>
+    <div class="metrics-row">
+      <div class="mc"><div class="mc-icon" style="background:#EFF6FF;">📋</div><div><div class="mc-val" id="m1">91</div><div class="mc-lbl">Total Sections</div></div></div>
+      <div class="mc"><div class="mc-icon" style="background:#DBEAFE;">✂️</div><div><div class="mc-val" style="color:var(--blue)" id="m2">66</div><div class="mc-lbl">TDS Sections</div></div></div>
+      <div class="mc"><div class="mc-icon" style="background:#DCFCE7;">🏷️</div><div><div class="mc-val" style="color:var(--green)" id="m3">25</div><div class="mc-lbl">TCS Sections</div></div></div>
+      <div class="mc"><div class="mc-icon" style="background:#FFFBEB;">⚡</div><div><div class="mc-val" style="color:var(--amber)" id="m4">33</div><div class="mc-lbl">Updated (FB 2026)</div></div></div>
     </div>
   </div>
 </div>
 
-<!-- FILTERS BAR -->
-<div class="filters-bar">
+<!-- TOOLBAR -->
+<div class="toolbar">
   <div class="container">
-    <div class="filters-row">
-      <!-- Search -->
-      <div class="search-box">
-        <svg width="14" height="14" fill="none" stroke="var(--gray-4)" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-        <input type="text" id="srch" placeholder="Search section, nature, rate..." autocomplete="off">
+    <div class="tb-r1">
+      <div class="sbx">
+        <span class="si">🔍</span>
+        <input type="text" id="srch" placeholder="Search section, nature, rate, deductor..." autocomplete="off">
+        <button class="sc" id="sc" onclick="clrSrch()">✕</button>
       </div>
-      <!-- Type -->
-      <select class="fsel" id="typeF" onchange="render()">
-        <option value="">TDS + TCS</option>
-        <option value="TDS">TDS Only</option>
-        <option value="TCS">TCS Only</option>
-      </select>
-      <!-- Rate -->
-      <select class="fsel" id="rateF" onchange="render()">
-        <option value="">All Rates</option>
-        <option value="Slab">Slab Rates</option>
-        <option value="0.1">0.1%</option>
-        <option value="1%">1%</option>
-        <option value="2%">2%</option>
-        <option value="5%">5%</option>
-        <option value="10%">10%</option>
-        <option value="20%">20%</option>
-        <option value="30%">30%</option>
-      </select>
-      <!-- Form -->
-      <select class="fsel" id="formF" onchange="render()">
-        <option value="">All Forms</option>
-        <option value="138">Form 138 (Salary)</option>
-        <option value="140">Form 140 (Regular)</option>
-        <option value="141">Form 141</option>
-        <option value="143">Form 143 (TCS)</option>
-        <option value="144">Form 144 (NR)</option>
-      </select>
-      <!-- Results -->
-      <div class="res-badge">
-        <span>Showing <strong id="shownCnt">91</strong> of 91</span>
-      </div>
-      <!-- Actions -->
-      <div class="action-btns">
-        <div class="view-toggle">
-          <button class="vtbtn active" id="cardBtn" onclick="setView('card')">⊞ Cards</button>
-          <button class="vtbtn" id="tblBtn" onclick="setView('table')">☰ Table</button>
+      <select class="fsel" id="ft" onchange="go()"><option value="">TDS + TCS</option><option value="TDS">TDS Only</option><option value="TCS">TCS Only</option></select>
+      <select class="fsel" id="fr" onchange="go()"><option value="">All Rates</option><option value="slab">Slab Rates</option><option value="0.1">0.1%</option><option value="1">1%</option><option value="2">2%</option><option value="5">5%</option><option value="10">10%</option><option value="20">20%</option><option value="30">30%</option></select>
+      <select class="fsel" id="ff" onchange="go()"><option value="">All Forms</option><option value="138">Form 138</option><option value="140">Form 140</option><option value="141">Form 141</option><option value="143">Form 143</option><option value="144">Form 144</option></select>
+      <select class="fsel" id="ps" onchange="chPS()"><option value="15">15/page</option><option value="25" selected>25/page</option><option value="50">50/page</option><option value="91">All</option></select>
+      <div class="ags">
+        <div class="drop-wrap">
+          <button class="tbtn" onclick="tog('savedP')">💾 Saved</button>
+          <div class="drop-menu saved-panel" id="savedP">
+            <div style="font-size:0.72rem;font-weight:700;color:var(--gray-4);text-transform:uppercase;margin-bottom:6px;">Saved Filters</div>
+            <div id="svList"></div>
+            <div class="sv-inp"><input id="svName" placeholder="Name this filter..."><button onclick="svSave()">Save</button></div>
+          </div>
         </div>
-        <button class="export-btn" onclick="exportCSV()">⬇ CSV</button>
-        <button class="reset-btn" onclick="resetAll()">↺</button>
+        <div class="drop-wrap">
+          <button class="tbtn" onclick="tog('colP')">⊞ Columns</button>
+          <div class="drop-menu col-panel" id="colP">
+            <div style="font-size:0.72rem;font-weight:700;color:var(--gray-4);text-transform:uppercase;margin-bottom:6px;">Show / Hide</div>
+            <div id="colT"></div>
+          </div>
+        </div>
+        <button class="tbtn" id="cmpBtn" onclick="doCompare()" style="display:none;">⇄ Compare</button>
+        <div class="drop-wrap">
+          <button class="tbtn" onclick="tog('expM')">⬇ Export</button>
+          <div class="drop-menu" id="expM">
+            <div class="di" onclick="xCSV()">📄 CSV / Excel</div>
+            <div class="di" onclick="xPDF()">📑 PDF Print</div>
+          </div>
+        </div>
+        <button class="tbtn" onclick="rst()" style="color:var(--red)">↺ Reset</button>
+      </div>
+    </div>
+    <div class="tb-r2">
+      <span class="qf-lbl">Quick:</span>
+      <div class="qf-row">
+        <button class="qp amber" id="qm" onclick="tqf('m',this)">⚡ Updated (33)</button>
+        <button class="qp" id="qp" onclick="tqf('p',this)">⭐ Popular</button>
+        <button class="qp" id="qs" onclick="tqf('s',this)">👔 Salary</button>
+        <button class="qp" id="qr" onclick="tqf('r',this)">🏠 Rent</button>
+        <button class="qp" id="qi" onclick="tqf('i',this)">💰 Interest</button>
+        <button class="qp" id="qc" onclick="tqf('c',this)">🔧 Contractor</button>
+        <button class="qp" id="qf2" onclick="tqf('f',this)">📋 Professional</button>
+        <button class="qp" id="qt" onclick="tqf('t',this)">🏷️ TCS</button>
+        <button class="qp" id="qn" onclick="tqf('n',this)">🌏 Non-Resident</button>
+        <button class="qp" id="qv" onclick="tqf('v',this)">₿ VDA/Crypto</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- CATEGORY PILLS -->
-<div class="cat-bar">
+<!-- STATUS BAR -->
+<div class="sbar">
   <div class="container">
-    <div class="cat-scroll" id="catRow">
-      <button class="cpill active" data-cat="" onclick="selCat(this,'')">All <span class="n">91</span></button>
+    <div class="sb-in">
+      <span class="sb-txt">Showing <strong id="sh">25</strong> of <strong id="fc">91</strong> · Page <strong id="cp">1</strong> of <strong id="tp">4</strong></span>
+      <span class="sb-txt" id="selInfo">Select rows with checkboxes to compare sections</span>
     </div>
   </div>
 </div>
 
-<!-- MAIN -->
-<div style="background:var(--light);padding:20px 0 60px;">
+<!-- TABLE -->
+<div class="tbl-out">
+  <table class="mtbl" id="tbl">
+    <thead>
+      <tr>
+        <th class="ns" style="width:34px"><input type="checkbox" id="sa" onchange="togAll(this)" style="accent-color:white;width:13px;height:13px;"></th>
+        <th class="ns" style="width:28px"></th>
+        <th id="hc" onclick="srt('code')">Code</th>
+        <th id="ht" onclick="srt('type')">Type</th>
+        <th id="hn" onclick="srt('nature')" style="min-width:200px">Nature of Payment / Receipt</th>
+        <th id="h61" onclick="srt('s61')">IT Act 1961</th>
+        <th id="h25" onclick="srt('s25')">IT Act 2025</th>
+        <th id="hr" onclick="srt('rateNum')">Rate</th>
+        <th id="hth" onclick="srt('threshNum')">Threshold</th>
+        <th id="hd" onclick="srt('deductor')">Deductor</th>
+        <th id="hp" onclick="srt('payee')">Payee</th>
+        <th id="hf" class="ns">Form</th>
+        <th class="ns" style="width:60px">Details</th>
+      </tr>
+    </thead>
+    <tbody id="tb"></tbody>
+  </table>
+  <div class="empty-st" id="est">
+    <div style="font-size:2rem;margin-bottom:8px">🔍</div>
+    <p style="color:var(--gray-5);margin-bottom:4px">No sections match your filters.</p>
+    <button onclick="rst()" class="btn btn-navy btn-sm" style="margin-top:12px">Reset Filters</button>
+  </div>
+</div>
+
+<!-- PAGINATION -->
+<div class="pgbar">
   <div class="container">
-
-    <!-- Section Quick Lookup -->
-    <div class="sec-lookup">
-      <label>🔎 Section Lookup:</label>
-      <input type="text" id="secInp" placeholder="e.g. 192, 194C, 206C(1F)..." maxlength="20">
-      <button onclick="secLookup()">Find</button>
-      <span class="sec-hint">Type IT Act 1961 section → jumps to matching codes</span>
-    </div>
-
-    <!-- Disclaimer -->
-    <div class="disc">
-      ⓘ <strong>Reference only.</strong> Rates applicable from Tax Year 2026-27 under IT Act 2025 (effective 1 April 2026). Finance Bill 2026 amendments included. Verify from official CBDT notifications before use in compliance.
-    </div>
-
-    <!-- Cards -->
-    <div class="tds-grid" id="cardsGrid"></div>
-
-    <!-- Table -->
-    <div class="tbl-wrap" id="tblWrap">
-      <table class="mtbl">
-        <thead>
-          <tr>
-            <th>Code</th><th>Type</th><th>Nature of Payment / Receipt</th>
-            <th>Who Deducts</th><th>Payee</th>
-            <th>IT Act 1961</th><th>IT Act 2025</th>
-            <th>Rate</th><th>Threshold</th><th>Form</th><th>Note</th>
-          </tr>
-        </thead>
-        <tbody id="tblBody"></tbody>
-      </table>
-    </div>
-
-    <!-- Empty -->
-    <div class="empty" id="emptyState">
-      <div style="font-size:2rem;margin-bottom:10px">🔍</div>
-      <p style="color:var(--gray-5);font-size:0.95rem;margin-bottom:6px">No sections match your filters.</p>
-      <p style="color:var(--gray-4);font-size:0.82rem">Try different keywords or reset filters.</p>
-      <button onclick="resetAll()" class="btn btn-navy btn-sm" style="margin-top:14px">Reset Filters</button>
+    <div class="pg-in">
+      <button class="pb" id="pprev" onclick="chPg(-1)">← Prev</button>
+      <div class="pgnums" id="pgnums"></div>
+      <button class="pb" id="pnext" onclick="chPg(1)">Next →</button>
     </div>
   </div>
 </div>
 
-<!-- NOTE MODAL -->
-<div class="modal-wrap" id="modal">
-  <div class="modal-box">
-    <div class="modal-head">
-      <h3 id="modalTitle"></h3>
-      <button class="modal-close" onclick="closeModal()">✕</button>
+<!-- COMPARE PANEL -->
+<div class="cpanel" id="cpanel">
+  <div class="container">
+    <div class="cp-head">
+      <strong>⇄ Side-by-Side Comparison</strong>
+      <button onclick="cmpClose()" style="padding:5px 12px;background:var(--red);color:white;border-radius:var(--radius);cursor:pointer;font-family:'Inter',sans-serif;font-size:0.78rem;">✕ Close</button>
     </div>
-    <div class="modal-body" id="modalBody"></div>
-    <div class="modal-tags" id="modalTags"></div>
+    <div class="cp-grid" id="cpgrid"></div>
   </div>
 </div>
 
-<!-- NEWSLETTER -->
-<section class="newsletter-section">
+<div style="background:var(--light);border-top:1px solid var(--gray-3);padding:12px 0;">
   <div class="container">
-    <div class="newsletter-inner">
-      <span class="sec-label">Stay Updated</span>
-      <h2 class="sec-title" style="margin-bottom:8px">TDS/TCS Rate Change Alerts</h2>
-      <p class="sec-sub" style="margin-bottom:24px">CBDT circulars, Finance Bill amendments — weekly from TrustFactON.</p>
-      <div class="newsletter-form">
-        <input type="email" placeholder="your@email.com">
-        <button onclick="window.open('https://trustfacton.beehiiv.com/subscribe','_blank')">Subscribe →</button>
-      </div>
-    </div>
+    <p style="font-size:0.74rem;color:var(--gray-4);text-align:center;">⚠ Reference only. Tax Year 2026-27 under IT Act 2025 (effective 1 April 2026). Finance Bill 2026 amendments included. Verify from official CBDT notifications before compliance use. Built by <a href="https://evensetconsultancy.com" target="_blank" style="color:var(--blue)">Evenset Consultancy Services</a>.</p>
   </div>
-</section>
+</div>
 
 <div id="footer-placeholder"></div>
 <script src="components.js"></script>
 <script src="tds-data.js"></script>
 <script>
-const CBDT_URL = 'https://www.incometaxindia.gov.in/tax-deductes-at-source-tds';
-const EMO = {Salary:'👔',Rent:'🏠',Interest:'💰',Contractor:'🔧',Professional:'📋',Dividend:'📊',Winnings:'🎰',Property:'🏗️','VDA/Crypto':'₿','Cash Withdrawal':'🏧','E-Commerce':'🛒','Goods Purchase':'📦','Non-Resident':'🌏','Securities & Funds':'📈',TCS:'🏷️',Commission:'💼','Benefit/Perquisite':'🎁',Insurance:'🛡️',Partnership:'🤝',Other:'📄'};
-const STRIP_COLORS = {Salary:'#2563EB',Rent:'#16A34A',Interest:'#D97706',Contractor:'#7C3AED',Professional:'#0D9488',Dividend:'#2563EB',Winnings:'#DC2626',Property:'#92400E','VDA/Crypto':'#1D4ED8','Cash Withdrawal':'#374151','E-Commerce':'#0891B2','Goods Purchase':'#4F46E5','Non-Resident':'#9F1239','Securities & Funds':'#047857',TCS:'#16A34A',Commission:'#6B21A8','Benefit/Perquisite':'#B45309',Insurance:'#0369A1',Partnership:'#374151',Other:'#6B7280'};
+const CBDT='https://www.incometaxindia.gov.in/tax-deductes-at-source-tds';
+const COLS=[{id:'hc',label:'Code'},{id:'ht',label:'Type'},{id:'hn',label:'Nature'},{id:'h61',label:'IT Act 1961'},{id:'h25',label:'IT Act 2025'},{id:'hr',label:'Rate'},{id:'hth',label:'Threshold'},{id:'hd',label:'Deductor'},{id:'hp',label:'Payee'},{id:'hf',label:'Form'}];
 
-let curView='card', curCat='', curSrch='';
+let fil=[...TDS_DATA],srt2=[...TDS_DATA],pg=1,pgsz=25,sk='code',sd='asc',q='',qfs=new Set(),sel=new Set(),hc=new Set();
+let saved=JSON.parse(localStorage.getItem('tf_sv')||'[]');
 
-// Build category pills
-function buildCats() {
-  const counts={};
-  TDS_DATA.forEach(d=>{counts[d.cat]=(counts[d.cat]||0)+1;});
-  const row=document.getElementById('catRow');
-  [...new Set(TDS_DATA.map(d=>d.cat))].sort().forEach(c=>{
-    const b=document.createElement('button');
-    b.className='cpill'; b.dataset.cat=c;
-    b.innerHTML=`${EMO[c]||'📄'} ${c} <span class="n">${counts[c]}</span>`;
-    b.onclick=()=>selCat(b,c);
-    row.appendChild(b);
-  });
-}
-
-function selCat(btn,cat){
-  document.querySelectorAll('.cpill').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active'); curCat=cat; render();
-}
-
-// Search
-document.getElementById('srch').addEventListener('input',function(){
-  curSrch=this.value.trim().toLowerCase();
-  clearTimeout(window._st); window._st=setTimeout(render,180);
-});
-
-function secLookup(){
-  const v=document.getElementById('secInp').value.trim().toLowerCase();
-  if(!v)return;
-  document.querySelectorAll('.cpill').forEach(b=>b.classList.remove('active'));
-  document.querySelector('.cpill[data-cat=""]').classList.add('active');
-  curCat=''; curSrch=v;
-  document.getElementById('srch').value=v;
-  render();
-}
-document.getElementById('secInp').addEventListener('keydown',e=>{if(e.key==='Enter')secLookup();});
-
-function getFiltered(){
-  const type=document.getElementById('typeF').value;
-  const rate=document.getElementById('rateF').value;
-  const form=document.getElementById('formF').value;
+// ── FILTER ──
+function getF(){
+  const ft=G('ft').value,fr=G('fr').value,ff=G('ff').value;
   return TDS_DATA.filter(d=>{
-    const mCat=!curCat||d.cat===curCat;
-    const mType=!type||d.type===type;
-    const mRate=!rate||d.rate.toLowerCase().includes(rate.toLowerCase());
-    const mForm=!form||d.form.includes(form);
-    const mSrch=!curSrch||[d.code,d.nature,d.plain,d.deductor,d.payee,d.s61,d.s25,d.rate,d.thresh,d.form,d.cat].join(' ').toLowerCase().includes(curSrch);
-    return mCat&&mType&&mRate&&mForm&&mSrch;
+    if(ft&&d.type!==ft)return false;
+    if(ff&&!d.form.includes(ff))return false;
+    if(fr==='slab'&&!d.rate.toLowerCase().includes('slab'))return false;
+    else if(fr&&fr!=='slab'){const r=parseFloat(fr);if(Math.abs(d.rateNum-r)>0.05&&!d.rate.includes(fr+'%'))return false;}
+    if(qfs.has('m')&&!d.modified)return false;
+    if(qfs.has('p')&&!d.popular)return false;
+    if(qfs.has('s')&&d.cat!=='Salary')return false;
+    if(qfs.has('r')&&d.cat!=='Rent')return false;
+    if(qfs.has('i')&&d.cat!=='Interest')return false;
+    if(qfs.has('c')&&d.cat!=='Contractor')return false;
+    if(qfs.has('f')&&d.cat!=='Professional')return false;
+    if(qfs.has('t')&&d.type!=='TCS')return false;
+    if(qfs.has('n')&&d.cat!=='Non-Resident')return false;
+    if(qfs.has('v')&&d.cat!=='VDA/Crypto')return false;
+    if(q){const s=[d.code,d.type,d.nature,d.s61,d.s25,d.rate,d.thresh,d.deductor,d.payee,d.form,d.cat,d.plain].join(' ').toLowerCase();if(!s.includes(q))return false;}
+    return true;
   });
 }
+function sortF(arr){
+  return[...arr].sort((a,b)=>{
+    const av=a[sk]||'',bv=b[sk]||'';
+    if(typeof av==='number')return sd==='asc'?av-bv:bv-av;
+    return sd==='asc'?String(av).localeCompare(String(bv)):String(bv).localeCompare(String(av));
+  });
+}
+function srt(k){
+  if(sk===k)sd=sd==='asc'?'desc':'asc';else{sk=k;sd='asc';}
+  document.querySelectorAll('.mtbl thead th').forEach(t=>{t.classList.remove('asc','desc');});
+  const th=G('h'+k.replace('Num','').replace('s6','h6').replace('s2','h2'));
+  const thMap={'hcode':'hc','htype':'ht','hnature':'hn','hs61':'h61','hs25':'h25','hrateNum':'hr','hthreshNum':'hth','hdeductor':'hd','hpayee':'hp'};
+  const el=G(thMap['h'+k]||'h'+k);
+  if(el)el.classList.add(sd);
+  go();
+}
+function go(){fil=getF();srt2=sortF(fil);pg=1;rdr();upM();}
+G('srch').addEventListener('input',function(){q=this.value.trim().toLowerCase();G('sc').classList.toggle('show',!!q);clearTimeout(window._t);window._t=setTimeout(go,180);});
+function clrSrch(){G('srch').value='';q='';G('sc').classList.remove('show');go();}
+function tqf(k,btn){if(qfs.has(k)){qfs.delete(k);btn.classList.remove('on');}else{qfs.add(k);btn.classList.add('on');}go();}
 
-function buildCard(d){
+// ── RENDER ──
+function rdr(){
+  const tb=G('tb');tb.innerHTML='';
+  const start=(pg-1)*pgsz,slice=srt2.slice(start,start+pgsz),isEmpty=srt2.length===0;
+  G('est').classList.toggle('on',isEmpty);
+  G('tbl').style.display=isEmpty?'none':'';
+  slice.forEach(d=>{
+    const tr=document.createElement('tr');tr.id='R'+d.id;
+    tr.innerHTML=mkRow(d);tb.appendChild(tr);
+    const dr=document.createElement('tr');dr.className='dr';dr.id='D'+d.id;
+    dr.innerHTML=`<td class="dtd" colspan="13">${mkDet(d)}</td>`;
+    tb.appendChild(dr);
+  });
+  pgRdr();
+  G('sh').textContent=Math.min(pgsz,srt2.length-(pg-1)*pgsz);
+  G('fc').textContent=srt2.length;
+  G('cp').textContent=pg;
+  G('tp').textContent=Math.max(1,Math.ceil(srt2.length/pgsz));
+}
+function mkRow(d){
+  const isTCS=d.type==='TCS',isOn=sel.has(d.id);
+  const ch=(id)=>hc.has(id)?'style="display:none"':'';
+  return`<td><input type="checkbox" class="ccb" ${isOn?'checked':''} onchange="togSel(${d.id},this)"></td>
+  <td><button class="eb" id="eb${d.id}" onclick="togD(${d.id})">+</button></td>
+  <td class="cc" ${ch('hc')}>${d.code}${d.modified?'<span class="mdot" title="Finance Bill 2026 updated"></span>':''}</td>
+  <td ${ch('ht')}><span class="${isTCS?'bc':'bt'}">${d.type}</span></td>
+  <td style="font-size:0.78rem;max-width:220px;line-height:1.4;color:var(--black)" ${ch('hn')}>${d.nature}</td>
+  <td class="so" ${ch('h61')}>${d.s61}</td>
+  <td class="sn" ${ch('h25')}>${d.s25}</td>
+  <td class="cr" ${ch('hr')}>${d.rate}</td>
+  <td class="ct" ${ch('hth')}>${d.thresh||'—'}</td>
+  <td class="cd" ${ch('hd')}>${d.deductor}</td>
+  <td class="cd" ${ch('hp')}>${d.payee}</td>
+  <td ${ch('hf')}><span class="fb">${d.form}</span></td>
+  <td style="text-align:center"><button onclick="togD(${d.id})" style="font-size:0.7rem;padding:3px 8px;border-radius:5px;border:1px solid var(--gray-3);background:white;cursor:pointer;color:var(--blue);font-family:'Inter',sans-serif">View</button></td>`;
+}
+function mkDet(d){
   const isTCS=d.type==='TCS';
-  const hasNote=d.note&&d.note.trim().length>5;
-  const color=STRIP_COLORS[d.cat]||'#6B7280';
-  const el=document.createElement('div');
-  el.className='tds-card';
-  el.innerHTML=`
-    <div class="card-strip" style="background:${color}"></div>
-    <div class="card-top">
-      <div class="card-meta">
-        <span class="m-code">${d.code}</span>
-        <span class="${isTCS?'m-tcs':'m-tds'}">${d.type}</span>
-        <span class="m-cat">${EMO[d.cat]||'📄'} ${d.cat}</span>
-        <span class="m-form">Form ${d.form}</span>
-      </div>
-      <div class="card-nature">${d.nature}</div>
-      <div class="card-plain" style="margin-top:8px">${d.plain}</div>
+  return`<div class="din">
+    <div class="d-plain"><label>💡 Plain Language Explanation</label>${d.plain}</div>
+    <div class="dg">
+      <div class="df"><label>Code</label><div class="v">${d.code}</div></div>
+      <div class="df"><label>Category</label><div class="v">${d.cat}</div></div>
+      <div class="df"><label>Finance Bill 2026</label><div class="v">${d.modified?'<span style="color:var(--amber);font-weight:600">⚡ Updated</span>':'<span style="color:var(--green)">✓ No change</span>'}</div></div>
+      <div class="df"><label>IT Act 1961 Section</label><div class="v" style="font-family:monospace;color:var(--gray-5)">${d.s61}</div></div>
+      <div class="df"><label>IT Act 2025 Section</label><div class="v" style="font-family:monospace;color:var(--blue);font-weight:600">${d.s25}</div></div>
+      <div class="df"><label>Form</label><div class="v"><span class="fb">${d.form}</span></div></div>
+      <div class="df"><label>Base Rate</label><div class="v" style="color:var(--red);font-weight:700">${d.rate}</div></div>
+      <div class="df"><label>Threshold</label><div class="v">${d.thresh||'—'}</div></div>
+      <div class="df"><label>${isTCS?'Collector':'Deductor'}</label><div class="v">${d.deductor}</div></div>
+      <div class="df"><label>${isTCS?'Buyer/Collectee':'Deductee/Payee'}</label><div class="v">${d.payee}</div></div>
+      <div class="df"><label>Full Nature</label><div class="v">${d.nature}</div></div>
+      <div class="df"><label>Payee Residency</label><div class="v">${d.payee}</div></div>
     </div>
-    <div class="card-mid">
-      <div class="card-mid-cell">
-        <label>Base Rate</label>
-        <div class="cell-rate">${d.rate}</div>
-      </div>
-      <div class="card-mid-cell">
-        <label>Threshold</label>
-        <div class="cell-thresh">${d.thresh||'—'}</div>
-      </div>
+    ${d.note?`<div class="d-note"><label>📋 TY 2026-27 Applicability Note (Finance Bill 2026)</label>${d.note}</div>`:''}
+    <div style="margin-top:8px;display:flex;gap:7px;flex-wrap:wrap;">
+      <a href="${CBDT}" target="_blank" class="dl">🔗 CBDT Official Source</a>
+      <a href="https://www.tdscpc.gov.in" target="_blank" class="dl">🔗 TRACES Portal</a>
+      <a href="https://eportal.incometax.gov.in" target="_blank" class="dl">🔗 e-Filing Portal</a>
     </div>
-    <div class="card-bot">
-      <div class="who-row">
-        <div class="who-box who-ded"><label>${isTCS?'Collector':'Deductor'}</label>${d.deductor}</div>
-        <div class="who-box who-pay"><label>${isTCS?'Buyer':'Deductee / Payee'}</label>${d.payee}</div>
-      </div>
-      <div class="card-actions">
-        <span class="sec-map">${d.s61}<span class="sec-arr">→</span>${d.s25}</span>
-        <a href="${CBDT_URL}" target="_blank" class="cbdt-btn">🔗 CBDT</a>
-        ${hasNote?`<button class="note-btn" onclick="openModal('${d.code}')">📋 2026-27 Note</button>`:''}
-      </div>
-    </div>`;
-  return el;
+  </div>`;
+}
+function togD(id){
+  const dr=G('D'+id),eb=G('eb'+id);
+  const isOn=dr.classList.contains('on');
+  document.querySelectorAll('.dr.on').forEach(r=>r.classList.remove('on'));
+  document.querySelectorAll('.eb.on').forEach(b=>{b.classList.remove('on');b.textContent='+';});
+  if(!isOn){dr.classList.add('on');eb.classList.add('on');eb.textContent='−';dr.scrollIntoView({behavior:'smooth',block:'nearest'});}
 }
 
-function buildRow(d){
-  const hasNote=d.note&&d.note.trim().length>5;
-  const tr=document.createElement('tr');
-  tr.innerHTML=`
-    <td style="font-family:monospace;font-weight:700;font-size:0.76rem;color:var(--navy)">${d.code}</td>
-    <td><span class="${d.type==='TDS'?'m-tds':'m-tcs'}">${d.type}</span></td>
-    <td style="font-size:0.78rem;max-width:240px;line-height:1.4;color:var(--black)">${d.nature}</td>
-    <td style="font-size:0.74rem;color:var(--gray-5);max-width:160px;line-height:1.3">${d.deductor}</td>
-    <td style="font-size:0.74rem;color:var(--gray-5)">${d.payee}</td>
-    <td style="font-family:monospace;font-size:0.74rem;color:var(--gray-5)">${d.s61}</td>
-    <td style="font-family:monospace;font-size:0.74rem;color:var(--blue);font-weight:600">${d.s25}</td>
-    <td style="font-weight:700;color:var(--red);font-size:0.78rem;white-space:nowrap">${d.rate}</td>
-    <td style="font-size:0.74rem;color:var(--gray-5);min-width:100px">${d.thresh||'—'}</td>
-    <td><span class="m-form">${d.form}</span></td>
-    <td>${hasNote?`<button class="note-btn" onclick="openModal('${d.code}')">View</button>`:'—'}</td>`;
-  return tr;
+// ── PAGINATION ──
+function pgRdr(){
+  const tot=Math.max(1,Math.ceil(srt2.length/pgsz));
+  G('tp').textContent=tot;
+  const nums=G('pgnums');nums.innerHTML='';
+  pgRange(pg,tot).forEach(p=>{
+    if(p==='...'){const s=document.createElement('span');s.textContent='…';s.style.cssText='padding:5px 3px;color:var(--gray-4);font-size:0.76rem;';nums.appendChild(s);}
+    else{const b=document.createElement('button');b.className='pb'+(p===pg?' on':'');b.textContent=p;b.onclick=()=>{pg=p;rdr();};nums.appendChild(b);}
+  });
+  G('pprev').disabled=pg<=1;G('pnext').disabled=pg>=tot;
+}
+function pgRange(c,t){if(t<=7)return Array.from({length:t},(_,i)=>i+1);if(c<=4)return[1,2,3,4,5,'...',t];if(c>=t-3)return[1,'...',t-4,t-3,t-2,t-1,t];return[1,'...',c-1,c,c+1,'...',t];}
+function chPg(d){pg=Math.max(1,Math.min(Math.ceil(srt2.length/pgsz),pg+d));rdr();window.scrollTo({top:0,behavior:'smooth'});}
+function chPS(){pgsz=parseInt(G('ps').value);pg=1;rdr();}
+
+// ── SELECT + COMPARE ──
+function togSel(id,cb){if(cb.checked)sel.add(id);else sel.delete(id);G('selInfo').textContent=sel.size>0?`${sel.size} selected — ${sel.size>=2?'click ⇄ Compare':'select 1 more to compare'}`:'Select rows to compare sections';G('cmpBtn').style.display=sel.size>=2?'block':'none';}
+function togAll(cb){const s=srt2.slice((pg-1)*pgsz,pg*pgsz);s.forEach(d=>{if(cb.checked)sel.add(d.id);else sel.delete(d.id);});document.querySelectorAll('.ccb').forEach(c=>c.checked=cb.checked);G('selInfo').textContent=sel.size+' selected';G('cmpBtn').style.display=sel.size>=2?'block':'none';}
+function doCompare(){
+  const items=TDS_DATA.filter(d=>sel.has(d.id));if(items.length<2)return;
+  G('cpgrid').style.gridTemplateColumns=`repeat(${items.length},1fr)`;
+  G('cpgrid').innerHTML=items.map(d=>`<div class="cp-card">
+    <h5>${d.code} — ${d.type} ${d.modified?'<span class="diff-up">FB 2026 Updated</span>':'<span class="diff-ok">Unchanged</span>'}</h5>
+    <div style="font-size:0.76rem;color:var(--gray-5);margin-bottom:10px;line-height:1.4">${d.nature}</div>
+    <div class="cp-row">
+      <div class="cp-field"><label>Rate</label><strong style="color:var(--red)">${d.rate}</strong></div>
+      <div class="cp-field"><label>Threshold</label>${d.thresh||'—'}</div>
+      <div class="cp-field"><label>IT Act 1961</label><span style="font-family:monospace;color:var(--gray-5)">${d.s61}</span></div>
+      <div class="cp-field"><label>IT Act 2025</label><span style="font-family:monospace;color:var(--blue)">${d.s25}</span></div>
+      <div class="cp-field"><label>Deductor</label><span style="font-size:0.74rem">${d.deductor}</span></div>
+      <div class="cp-field"><label>Form</label><span class="fb">${d.form}</span></div>
+    </div>
+    ${d.note?`<div style="margin-top:8px;padding:8px;background:#FFFBEB;border-radius:6px;font-size:0.74rem;color:#92400E">⚡ ${d.note.substring(0,100)}${d.note.length>100?'...':''}</div>`:''}
+  </div>`).join('');
+  G('cpanel').classList.add('on');
+}
+function cmpClose(){G('cpanel').classList.remove('on');}
+
+// ── COLUMNS ──
+function buildCols(){
+  G('colT').innerHTML=COLS.map(c=>`<label class="col-item"><input type="checkbox" ${!hc.has(c.id)?'checked':''} onchange="togCol('${c.id}',this)"> ${c.label}</label>`).join('');
+}
+function togCol(id,cb){if(cb.checked)hc.delete(id);else hc.add(id);const el=G(id);if(el)el.style.display=hc.has(id)?'none':'';rdr();}
+
+// ── SAVED FILTERS ──
+function getState(){return{ft:G('ft').value,fr:G('fr').value,ff:G('ff').value,q:q,qfs:[...qfs]};}
+function setState(s){G('ft').value=s.ft||'';G('fr').value=s.fr||'';G('ff').value=s.ff||'';G('srch').value=s.q||'';q=s.q||'';qfs=new Set(s.qfs||[]);document.querySelectorAll('.qp').forEach(b=>b.classList.remove('on'));qfs.forEach(k=>{const el=G('q'+k);if(el)el.classList.add('on');});go();}
+function svSave(){const n=G('svName').value.trim();if(!n)return;saved.push({n,s:getState()});localStorage.setItem('tf_sv',JSON.stringify(saved));G('svName').value='';svRdr();showToast('Filter saved: '+n);}
+function svRdr(){const l=G('svList');if(!saved.length){l.innerHTML='<p style="font-size:0.74rem;color:var(--gray-4);padding:3px 0">No saved filters.</p>';return;}l.innerHTML=saved.map((f,i)=>`<div class="sv-item"><span style="font-size:0.8rem;cursor:pointer" onclick="svLoad(${i})">${f.n}</span><span class="sv-del" onclick="svDel(${i})">✕</span></div>`).join('');}
+function svLoad(i){setState(saved[i]);tog('savedP');showToast('Loaded: '+saved[i].n);}
+function svDel(i){saved.splice(i,1);localStorage.setItem('tf_sv',JSON.stringify(saved));svRdr();}
+
+// ── EXPORT ──
+function xCSV(){
+  tog('expM');
+  const h=['Code','Type','Category','Nature','Plain Language','IT Act 1961','IT Act 2025','Rate','Threshold','Deductor','Payee','Form','FB 2026 Updated','TY 2026-27 Note'];
+  const rows=srt2.map(d=>[d.code,d.type,d.cat,`"${d.nature.replace(/"/g,'""')}"`,`"${d.plain}"`,d.s61,`"${d.s25}"`,`"${d.rate}"`,`"${d.thresh}"`,`"${d.deductor}"`,`"${d.payee}"`,d.form,d.modified?'Yes':'No',`"${d.note.replace(/"/g,'""')}"`].join(','));
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([[h.join(','),...rows].join('\n')],{type:'text/csv;charset=utf-8;'}));a.download='TDS-TCS-Master-TY2026-27.csv';a.click();showToast('CSV exported — '+srt2.length+' records');
+}
+function xPDF(){
+  tog('expM');
+  const w=window.open('','_blank');
+  const rows=srt2.map(d=>`<tr><td>${d.code}</td><td>${d.type}</td><td>${d.nature}</td><td>${d.s61}</td><td>${d.s25}</td><td>${d.rate}</td><td>${d.thresh||'—'}</td><td>${d.deductor}</td><td>${d.form}</td></tr>`).join('');
+  w.document.write(`<!DOCTYPE html><html><head><title>TDS/TCS Master — TrustFactON</title><style>*{margin:0;padding:0;box-sizing:border-box;}body{font-family:Arial,sans-serif;font-size:9.5px;padding:20px;}h2{font-size:13px;color:#1A3A6B;margin-bottom:4px;}p{font-size:8px;color:#666;margin-bottom:12px;}table{width:100%;border-collapse:collapse;}th{background:#1A3A6B;color:white;padding:5px 7px;text-align:left;font-size:8.5px;}td{padding:4px 7px;border-bottom:1px solid #eee;font-size:8.5px;vertical-align:top;}tr:nth-child(even) td{background:#f8f9fa;}@media print{body{padding:10px;}}</style></head><body><h2>TDS/TCS Section Master — Tax Year 2026-27</h2><p>TrustFactON · Evenset Consultancy Services · ${new Date().toLocaleDateString('en-IN')} · ${srt2.length} of ${TDS_DATA.length} sections · For reference only</p><table><thead><tr><th>Code</th><th>Type</th><th>Nature of Payment</th><th>IT Act 1961</th><th>IT Act 2025</th><th>Rate</th><th>Threshold</th><th>Deductor</th><th>Form</th></tr></thead><tbody>${rows}</tbody></table></body></html>`);
+  w.document.close();setTimeout(()=>w.print(),600);showToast('PDF dialog opened');
 }
 
-function render(){
-  const f=getFiltered();
-  const grid=document.getElementById('cardsGrid');
-  const tbody=document.getElementById('tblBody');
-  grid.innerHTML=''; tbody.innerHTML='';
-  document.getElementById('emptyState').classList.toggle('show',f.length===0);
-  f.forEach(d=>{grid.appendChild(buildCard(d));tbody.appendChild(buildRow(d));});
-  document.getElementById('shownCnt').textContent=f.length;
-}
+// ── METRICS ──
+function upM(){G('m1').textContent=fil.length;G('m2').textContent=fil.filter(d=>d.type==='TDS').length;G('m3').textContent=fil.filter(d=>d.type==='TCS').length;G('m4').textContent=fil.filter(d=>d.modified).length;}
 
-function setView(v){
-  curView=v;
-  if(v==='card'){
-    document.getElementById('cardsGrid').style.display='grid';
-    document.getElementById('tblWrap').classList.remove('show');
-    document.getElementById('cardBtn').classList.add('active');
-    document.getElementById('tblBtn').classList.remove('active');
-  }else{
-    document.getElementById('cardsGrid').style.display='none';
-    document.getElementById('tblWrap').classList.add('show');
-    document.getElementById('cardBtn').classList.remove('active');
-    document.getElementById('tblBtn').classList.add('active');
-  }
-}
+// ── RESET ──
+function rst(){G('srch').value='';q='';G('sc').classList.remove('show');['ft','fr','ff'].forEach(id=>G(id).value='');qfs.clear();document.querySelectorAll('.qp.on').forEach(b=>b.classList.remove('on'));sk='code';sd='asc';document.querySelectorAll('.mtbl thead th').forEach(t=>t.classList.remove('asc','desc'));sel.clear();G('selInfo').textContent='Select rows to compare';G('cmpBtn').style.display='none';G('cpanel').classList.remove('on');go();showToast('All filters reset');}
 
-function resetAll(){
-  curSrch=''; curCat='';
-  document.getElementById('srch').value='';
-  document.getElementById('secInp').value='';
-  ['typeF','rateF','formF'].forEach(id=>document.getElementById(id).value='');
-  document.querySelectorAll('.cpill').forEach(b=>b.classList.remove('active'));
-  document.querySelector('.cpill[data-cat=""]').classList.add('active');
-  render();
-}
+// ── UTILS ──
+function G(id){return document.getElementById(id);}
+function tog(id){const m=G(id);m.classList.toggle('on');['savedP','colP','expM'].filter(x=>x!==id).forEach(x=>{const el=G(x);if(el)el.classList.remove('on');});}
+document.addEventListener('click',e=>{if(!e.target.closest('.drop-wrap')&&!e.target.closest('[onclick*="tog"]')){['savedP','colP','expM'].forEach(id=>{const el=G(id);if(el)el.classList.remove('on');});}});
+document.addEventListener('keydown',e=>{if(e.key==='/'&&document.activeElement.tagName!=='INPUT'){e.preventDefault();G('srch').focus();}if(e.key==='Escape'){cmpClose();['savedP','colP','expM'].forEach(id=>{const el=G(id);if(el)el.classList.remove('on');});}});
 
-function openModal(code){
-  const d=TDS_DATA.find(x=>x.code===code);
-  if(!d||!d.note)return;
-  document.getElementById('modalTitle').textContent=d.nature;
-  document.getElementById('modalBody').textContent=d.note;
-  document.getElementById('modalTags').innerHTML=`
-    <span class="mtag" style="background:#DBEAFE;color:#1E40AF">Code: ${d.code}</span>
-    <span class="mtag" style="background:#FFFBEB;color:#92400E">1961: ${d.s61}</span>
-    <span class="mtag" style="background:#DCFCE7;color:#166534">2025: ${d.s25}</span>
-    <span class="mtag" style="background:#FEE2E2;color:#991B1B">Rate: ${d.rate}</span>
-    <span class="mtag" style="background:var(--gray-2);color:var(--gray-5)">Form: ${d.form}</span>`;
-  document.getElementById('modal').classList.add('open');
-}
-function closeModal(){document.getElementById('modal').classList.remove('open');}
-document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal();});
-
-function exportCSV(){
-  const f=getFiltered();
-  const hdr=['Code','Type','Category','Nature','Plain Language','Deductor','Payee','IT Act 1961','IT Act 2025','Rate','Threshold','Form','TY 2026-27 Note'];
-  const rows=f.map(d=>[d.code,d.type,d.cat,`"${d.nature}"`,`"${d.plain}"`,`"${d.deductor}"`,`"${d.payee}"`,d.s61,`"${d.s25}"`,`"${d.rate}"`,`"${d.thresh}"`,d.form,`"${d.note}"`].join(','));
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob([[hdr.join(','),...rows].join('\n')],{type:'text/csv'}));
-  a.download='TDS-TCS-Master-TY2026-27.csv'; a.click(); showToast('CSV exported ✓');
-}
-
-document.addEventListener('keydown',e=>{
-  if(e.key==='/'&&document.activeElement.tagName!=='INPUT'){e.preventDefault();document.getElementById('srch').focus();}
-  if(e.key==='Escape'){closeModal();resetAll();}
-});
-
-document.addEventListener('DOMContentLoaded',()=>{buildCats();render();});
+document.addEventListener('DOMContentLoaded',()=>{buildCols();svRdr();go();});
 </script>
 </body>
 </html>
