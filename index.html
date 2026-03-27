@@ -4,197 +4,125 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TrustFactON — India's Tax & Compliance Reference Platform</title>
-  <meta name="description" content="GSTIN verifier, HSN/SAC code search, live forex rates, Income Tax, Goods & Service Tax, Companies Act guides. Free. No login. Built by Evenset Consultancy.">
+  <meta name="description" content="GSTIN verifier, HSN/SAC code search, live forex rates. Income Tax, Goods & Service Tax, Companies Act guides. Free. No login.">
   <link rel="stylesheet" href="style.css">
   <style>
-  /* ── TOOLS STRIP ── */
-  .tools-strip {
-    background: white;
-    padding: 52px 0 60px;
-    border-bottom: 1px solid var(--gray-3);
-  }
-  .tools-header { text-align: center; margin-bottom: 36px; }
-  .tools-header h2 { font-size: clamp(1.4rem,2.5vw,1.9rem); color: var(--black); margin-bottom: 6px; }
-  .tools-header p  { font-size: 0.9rem; color: var(--gray-5); }
+  /* ── HERO tweaks ── */
+  .hero-eyebrow .dot { margin-right: 6px; }
 
-  .tools-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 18px;
-    align-items: start;
-  }
+  /* ── TOOLS SECTION ── */
+  .tools-section { background: white; padding: 54px 0 60px; border-bottom: 1px solid var(--gray-3); }
+  .tools-head { text-align: center; margin-bottom: 36px; }
+  .tools-head h2 { font-size: clamp(1.4rem,2.2vw,1.85rem); color: var(--black); margin-bottom: 6px; }
+  .tools-head p  { font-size: 0.88rem; color: var(--gray-5); }
+  .tools-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; align-items: start; }
 
   /* ── TOOL CARD ── */
-  .tc {
-    background: var(--gray-1);
-    border: 1px solid var(--gray-3);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    display: flex; flex-direction: column;
-  }
-  .tc-head {
-    padding: 14px 18px 12px;
-    background: white;
-    border-bottom: 1px solid var(--gray-3);
-    display: flex; align-items: center; gap: 10px;
-  }
-  .tc-icon {
-    width: 36px; height: 36px; border-radius: 9px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.1rem; flex-shrink: 0;
-  }
-  .tc-head h3 { font-size: 0.88rem; color: var(--black); margin: 0 0 2px; font-weight: 700; }
-  .tc-head p  { font-size: 0.72rem; color: var(--gray-4); margin: 0; }
-  .tc-body { padding: 14px 16px 16px; flex: 1; }
+  .tc { background: #FAFBFC; border: 1px solid var(--gray-3); border-radius: 12px; overflow: hidden; }
+  .tc-head { background: white; border-bottom: 1px solid var(--gray-3); padding: 14px 18px 13px; display: flex; align-items: center; gap: 11px; }
+  .tc-icon { width: 38px; height: 38px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+  .tc-head h3 { font-size: 0.9rem; color: var(--black); margin: 0 0 2px; font-weight: 700; }
+  .tc-head p  { font-size: 0.71rem; color: var(--gray-4); margin: 0; line-height: 1.4; }
+  .tc-body { padding: 14px 16px 16px; }
 
-  /* Input base */
-  .t-inp {
-    width: 100%; padding: 9px 12px;
-    border: 1.5px solid var(--gray-3);
-    border-radius: var(--radius);
-    font-size: 0.84rem;
-    font-family: 'Inter', sans-serif;
-    color: var(--black);
-    background: white;
-    transition: border-color 0.15s, box-shadow 0.15s;
-    box-sizing: border-box;
-  }
-  .t-inp:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,0.07); }
-  .t-inp::placeholder { color: var(--gray-4); }
+  /* Shared input style */
+  .ti { width: 100%; padding: 9px 12px; border: 1.5px solid var(--gray-3); border-radius: 8px; font-size: 0.84rem; font-family: 'Inter', sans-serif; background: white; box-sizing: border-box; transition: border-color 0.15s, box-shadow 0.15s; color: var(--black); }
+  .ti:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,0.07); }
+  .ti::placeholder { color: var(--gray-4); }
+  .tb { padding: 9px 16px; border-radius: 8px; font-size: 0.82rem; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; border: none; transition: all 0.15s; white-space: nowrap; flex-shrink: 0; }
+  .tb-blue { background: var(--blue); color: white; }
+  .tb-blue:hover { background: #1D4ED8; }
+  .tb-blue:disabled { background: var(--gray-3); color: white; cursor: not-allowed; }
+  .t-note { font-size: 0.69rem; color: var(--gray-4); margin-top: 8px; line-height: 1.5; }
+  .t-note a { color: var(--blue); }
 
-  .t-btn {
-    padding: 9px 16px;
-    border-radius: var(--radius);
-    font-size: 0.82rem; font-weight: 600;
-    cursor: pointer;
-    font-family: 'Inter', sans-serif;
-    border: none;
-    transition: all 0.15s;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-  .t-btn-blue  { background: var(--blue); color: white; }
-  .t-btn-blue:hover  { background: #1D4ED8; }
-  .t-btn-blue:disabled { background: var(--gray-3); cursor: not-allowed; }
+  /* ── GSTIN ── */
+  .g-row { display: flex; gap: 7px; }
+  .g-mono { font-family: monospace; font-size: 0.9rem; letter-spacing: 1px; text-transform: uppercase; }
+  .g-mono::placeholder { font-family: 'Inter',sans-serif; font-size: 0.84rem; letter-spacing: 0; text-transform: none; }
 
-  .t-note { font-size: 0.7rem; color: var(--gray-4); margin-top: 8px; line-height: 1.5; }
+  .g-spinner { display: none; align-items: center; justify-content: center; gap: 8px; padding: 10px; font-size: 0.8rem; color: var(--gray-5); }
+  .g-spinner.on { display: flex; }
+  .g-spinner::before { content:''; width:14px; height:14px; border:2px solid var(--gray-3); border-top-color:var(--blue); border-radius:50%; animation: spin 0.7s linear infinite; flex-shrink:0; }
+  @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* ── GSTIN TOOL ── */
-  .gstin-row  { display: flex; gap: 7px; }
-  .gstin-mono { font-family: monospace; text-transform: uppercase; letter-spacing: 1px; }
-  .gstin-mono::placeholder { text-transform: none; font-family: 'Inter',sans-serif; letter-spacing: 0; }
-
-  .g-loading { display: none; text-align: center; padding: 10px; font-size: 0.82rem; color: var(--gray-4); }
-  .g-loading.on { display: block; }
-
-  .g-err { display: none; margin-top: 10px; padding: 10px 13px; background: #FEF2F2; border: 1px solid #FECACA; border-radius: var(--radius); font-size: 0.8rem; color: #991B1B; line-height: 1.6; }
+  .g-err { display: none; margin-top: 10px; padding: 10px 13px; background: #FEF2F2; border: 1px solid #FECACA; border-radius: 8px; font-size: 0.8rem; color: #991B1B; line-height: 1.6; }
   .g-err.on { display: block; }
 
   .g-result { display: none; margin-top: 10px; }
   .g-result.on { display: block; }
-  .g-card { background: white; border: 1px solid var(--gray-3); border-radius: var(--radius); padding: 12px 14px; }
-  .g-lname { font-size: 0.9rem; font-weight: 700; color: var(--black); margin-bottom: 2px; }
-  .g-gstin { font-family: monospace; font-size: 0.76rem; color: var(--blue); font-weight: 600; margin-bottom: 6px; }
-  .g-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 9px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; margin-bottom: 10px; }
+  .g-card { background: white; border: 1px solid var(--gray-3); border-radius: 8px; padding: 12px 14px; }
+  .g-lname { font-size: 0.92rem; font-weight: 700; color: var(--black); margin-bottom: 2px; }
+  .g-num   { font-family: monospace; font-size: 0.76rem; color: var(--blue); font-weight: 600; letter-spacing: 1px; margin-bottom: 7px; }
+  .g-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; margin-bottom: 10px; }
   .g-active   { background: #DCFCE7; color: #166534; }
   .g-inactive { background: #FEE2E2; color: #991B1B; }
   .g-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .g-f label { font-size: 0.59rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--gray-4); display: block; margin-bottom: 1px; }
-  .g-f .v { font-size: 0.78rem; color: var(--gray-6); line-height: 1.4; }
+  .gf label { font-size: 0.59rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--gray-4); display: block; margin-bottom: 2px; }
+  .gf .v    { font-size: 0.78rem; color: var(--gray-6); line-height: 1.4; }
 
-  .g-portal-link {
-    display: inline-flex; align-items: center; gap: 5px;
-    margin-top: 8px; padding: 6px 12px;
-    border: 1px solid #BFDBFE; border-radius: var(--radius);
-    font-size: 0.76rem; color: var(--blue);
-    text-decoration: none; background: #EFF6FF;
-    transition: all 0.15s;
-  }
-  .g-portal-link:hover { background: var(--blue); color: white; }
+  .g-portal { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; padding: 7px 13px; border: 1px solid #BFDBFE; border-radius: 8px; font-size: 0.77rem; color: var(--blue); text-decoration: none; background: #EFF6FF; transition: all 0.15s; font-weight: 500; }
+  .g-portal:hover { background: var(--blue); color: white; border-color: var(--blue); }
 
-  /* ── HSN TOOL ── */
-  .hsn-tabs { display: flex; gap: 5px; margin-bottom: 9px; }
-  .hsn-tab {
-    padding: 4px 13px; border-radius: 20px;
-    border: 1.5px solid var(--gray-3); background: white;
-    font-size: 0.74rem; font-weight: 500;
-    cursor: pointer; color: var(--gray-5);
-    font-family: 'Inter', sans-serif;
-    transition: all 0.15s;
-  }
-  .hsn-tab.on { background: var(--navy); color: white; border-color: var(--navy); }
+  /* ── HSN SEARCH ── */
+  .h-tabs { display: flex; gap: 5px; margin-bottom: 9px; }
+  .h-tab { padding: 5px 13px; border-radius: 20px; border: 1.5px solid var(--gray-3); background: white; font-size: 0.74rem; font-weight: 500; cursor: pointer; color: var(--gray-5); font-family: 'Inter', sans-serif; transition: all 0.15s; }
+  .h-tab.on { background: var(--navy); color: white; border-color: var(--navy); }
 
-  .hsn-results { margin-top: 8px; max-height: 260px; overflow-y: auto; }
-  .hsn-item {
-    background: white; border: 1px solid var(--gray-3); border-radius: var(--radius);
-    padding: 9px 12px; margin-bottom: 5px;
-    transition: border-color 0.15s;
-  }
-  .hsn-item:hover { border-color: var(--navy); }
-  .hsn-item:last-child { margin-bottom: 0; }
-  .hi-code { font-family: monospace; font-size: 0.78rem; font-weight: 700; color: var(--navy); }
-  .hi-desc { font-size: 0.77rem; color: var(--gray-5); margin: 2px 0; line-height: 1.4; }
-  .hi-rate {
-    display: inline-block; margin-top: 4px;
-    padding: 2px 8px; border-radius: 4px;
-    font-size: 0.69rem; font-weight: 700;
-    background: #FEF3C7; color: #92400E;
-  }
-  .hi-rate.nil  { background: #DCFCE7; color: #166534; }
-  .hi-rate.r40  { background: #FEE2E2; color: #991B1B; }
-  .hi-rate.r18  { background: #DBEAFE; color: #1E40AF; }
-  .hi-rate.r5   { background: #F0FDF4; color: #166534; }
-  .hsn-empty { text-align: center; padding: 20px 10px; color: var(--gray-4); font-size: 0.82rem; }
+  .h-results { margin-top: 8px; max-height: 280px; overflow-y: auto; scrollbar-width: thin; }
+  .h-item { background: white; border: 1px solid var(--gray-3); border-radius: 8px; padding: 9px 12px; margin-bottom: 5px; transition: border-color 0.12s; }
+  .h-item:hover { border-color: var(--blue); }
+  .h-item:last-child { margin-bottom: 0; }
+  .h-code { font-family: monospace; font-size: 0.77rem; font-weight: 700; color: var(--navy); }
+  .h-desc { font-size: 0.77rem; color: var(--gray-5); margin: 2px 0; line-height: 1.4; }
+  .h-rate { display: inline-block; margin-top: 5px; padding: 2px 8px; border-radius: 4px; font-size: 0.69rem; font-weight: 700; }
+  .h-nil  { background: #DCFCE7; color: #166534; }
+  .h-5    { background: #F0FDF4; color: #15803D; }
+  .h-12   { background: #FEF3C7; color: #92400E; }
+  .h-18   { background: #DBEAFE; color: #1E40AF; }
+  .h-28   { background: #FEE2E2; color: #991B1B; }
+  .h-40   { background: #FEE2E2; color: #7F1D1D; font-weight: 800; }
+  .h-3    { background: #FEF9C3; color: #713F12; }
+  .h-sp   { background: #F5F3FF; color: #5B21B6; }
+  .h-empty { text-align: center; padding: 22px 10px; color: var(--gray-4); font-size: 0.82rem; }
 
-  /* ── FOREX TOOL ── */
-  .fx-topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-  .fx-time { font-size: 0.7rem; color: var(--gray-4); }
-  .fx-refresh {
-    padding: 3px 10px; border: 1px solid var(--gray-3); border-radius: 6px;
-    font-size: 0.69rem; color: var(--gray-5); cursor: pointer;
-    font-family: 'Inter', sans-serif; background: white; transition: all 0.15s;
-  }
-  .fx-refresh:hover { border-color: var(--blue); color: var(--blue); }
+  /* ── FOREX ── */
+  .fx-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .fx-time { font-size: 0.69rem; color: var(--gray-4); }
+  .fx-btn  { padding: 3px 10px; border: 1px solid var(--gray-3); border-radius: 6px; font-size: 0.69rem; color: var(--gray-5); cursor: pointer; font-family: 'Inter', sans-serif; background: white; transition: all 0.15s; }
+  .fx-btn:hover { border-color: var(--blue); color: var(--blue); }
   .fx-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
-  .fx-row {
-    background: white; border: 1px solid var(--gray-3); border-radius: var(--radius);
-    padding: 8px 11px;
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .fx-ccy { display: flex; align-items: center; gap: 7px; }
+  .fx-row  { background: white; border: 1px solid var(--gray-3); border-radius: 8px; padding: 8px 11px; display: flex; align-items: center; justify-content: space-between; }
+  .fx-left { display: flex; align-items: center; gap: 7px; }
   .fx-flag { font-size: 1rem; line-height: 1; }
-  .fx-code { font-family: monospace; font-size: 0.75rem; font-weight: 700; color: var(--navy); display: block; }
-  .fx-name { font-size: 0.62rem; color: var(--gray-4); }
-  .fx-amount .big { font-size: 0.9rem; font-weight: 700; color: var(--black); display: block; text-align: right; }
-  .fx-amount .sm  { font-size: 0.62rem; color: var(--gray-4); text-align: right; display: block; }
-  .fx-skeleton { background: var(--gray-2); border-radius: var(--radius); height: 50px; animation: pulse 1.4s ease-in-out infinite; }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
-  .fx-err { font-size: 0.79rem; color: var(--gray-4); text-align: center; padding: 12px; grid-column: 1/-1; }
-  .fx-rbi { font-size: 0.68rem; color: var(--gray-4); margin-top: 8px; text-align: center; }
+  .fx-code { font-family: monospace; font-size: 0.76rem; font-weight: 700; color: var(--navy); display: block; }
+  .fx-name { font-size: 0.61rem; color: var(--gray-4); }
+  .fx-right .big { font-size: 0.9rem; font-weight: 700; color: var(--black); display: block; text-align: right; }
+  .fx-right .sm  { font-size: 0.61rem; color: var(--gray-4); text-align: right; display: block; }
+  .fx-sk { background: var(--gray-2); border-radius: 8px; height: 48px; animation: sk 1.4s ease-in-out infinite; }
+  @keyframes sk { 0%,100%{opacity:1} 50%{opacity:.45} }
+  .fx-err  { font-size: 0.78rem; color: var(--gray-4); text-align: center; padding: 10px; grid-column: 1/-1; }
+  .fx-foot { font-size: 0.67rem; color: var(--gray-4); margin-top: 7px; text-align: center; }
 
-  /* ── BROWSE SECTION ── */
-  .browse-section { background: var(--gray-1); padding: 56px 0 60px; }
-  .browse-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px; margin-top: 32px; }
-  .bc {
-    background: white; border-radius: var(--radius-lg);
-    border: 1px solid var(--gray-3);
-    transition: all 0.2s; text-decoration: none;
-    display: flex; flex-direction: column; overflow: hidden;
-  }
-  .bc:hover { box-shadow: 0 8px 28px rgba(0,0,0,0.09); transform: translateY(-3px); border-color: transparent; }
-  .bc-bar { height: 3px; }
-  .bc-body { padding: 18px 20px; flex: 1; }
-  .bc-icon { width: 38px; height: 38px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; margin-bottom: 10px; }
-  .bc-body h3 { font-size: 0.92rem; color: var(--black); margin-bottom: 5px; font-weight: 700; }
-  .bc-body p  { font-size: 0.8rem; color: var(--gray-5); line-height: 1.6; }
-  .bc-foot { padding: 10px 20px; border-top: 1px solid var(--gray-2); display: flex; align-items: center; justify-content: space-between; }
-  .bc-tags { display: flex; gap: 4px; flex-wrap: wrap; }
-  .bc-tag { font-size: 0.66rem; padding: 2px 7px; border-radius: 4px; background: var(--gray-2); color: var(--gray-5); font-weight: 500; }
-  .bc-arrow { font-size: 0.78rem; font-weight: 600; }
+  /* ── TOPIC CARDS ── */
+  .topics-section { background: var(--gray-1); padding: 52px 0 58px; }
+  .topics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 32px; }
+  .tp-card { background: white; border-radius: 12px; border: 1px solid var(--gray-3); text-decoration: none; display: flex; flex-direction: column; overflow: hidden; transition: all 0.18s; }
+  .tp-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.08); transform: translateY(-3px); border-color: transparent; }
+  .tp-bar  { height: 3px; }
+  .tp-body { padding: 18px; flex: 1; }
+  .tp-icon { width: 38px; height: 38px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; margin-bottom: 10px; }
+  .tp-body h3 { font-size: 0.9rem; color: var(--black); margin-bottom: 5px; font-weight: 700; }
+  .tp-body p  { font-size: 0.79rem; color: var(--gray-5); line-height: 1.6; }
+  .tp-foot { padding: 9px 18px; border-top: 1px solid var(--gray-2); display: flex; align-items: center; justify-content: space-between; }
+  .tp-tags { display: flex; gap: 4px; flex-wrap: wrap; }
+  .tp-tag  { font-size: 0.65rem; padding: 2px 6px; border-radius: 4px; background: var(--gray-2); color: var(--gray-5); font-weight: 500; }
+  .tp-arrow { font-size: 0.78rem; font-weight: 700; }
 
-  /* Responsive */
-  @media (max-width: 900px) { .tools-grid { grid-template-columns: 1fr; } }
-  @media (max-width: 600px) { .fx-grid { grid-template-columns: 1fr; } .browse-grid { grid-template-columns: 1fr; } }
+  @media (max-width:1024px) { .topics-grid { grid-template-columns: repeat(2,1fr); } }
+  @media (max-width:900px)  { .tools-grid  { grid-template-columns: 1fr; } }
+  @media (max-width:600px)  { .fx-grid { grid-template-columns: 1fr; } .topics-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width:420px)  { .topics-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -204,30 +132,30 @@
 <section class="hero">
   <div class="container">
     <div class="hero-content">
-      <div class="hero-eyebrow"><span class="dot"></span>Income Tax · Goods & Service Tax · Companies · TDS/TCS</div>
+      <div class="hero-eyebrow"><span class="dot"></span>Free Tools · No Login · Updated March 2026</div>
       <h1>India's Tax &<br><span class="hl">Compliance Platform</span></h1>
-      <p class="sub">Verify GSTIN, search HSN/SAC codes, track live forex rates — and explore Income Tax, Goods & Service Tax and Companies in plain language. Free, no login.</p>
+      <p class="sub">Verify GSTIN, search HSN/SAC codes, track live forex rates. Explore Income Tax, Goods &amp; Service Tax and Companies Act in plain language.</p>
       <div class="hero-actions">
-        <a href="#tools" class="btn btn-blue btn-lg">Try Free Tools ↓</a>
+        <a href="#tools" class="btn btn-blue btn-lg">Free Tools ↓</a>
         <a href="chat.html" class="btn btn-ghost btn-lg">Ask AI →</a>
       </div>
       <div class="hero-stats">
-        <div class="hero-stat"><span class="v">GSTIN</span><span class="l">Live Verification</span></div>
+        <div class="hero-stat"><span class="v">GSTIN</span><span class="l">Live Verify</span></div>
         <div class="hero-stat"><span class="v">HSN</span><span class="l">Code Search</span></div>
         <div class="hero-stat"><span class="v">Forex</span><span class="l">Live Rates</span></div>
-        <div class="hero-stat"><span class="v">AI</span><span class="l">Compliance Chat</span></div>
+        <div class="hero-stat"><span class="v">91</span><span class="l">TDS/TCS Codes</span></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ════════════════════ TOOLS ════════════════════ -->
-<section class="tools-strip" id="tools">
+<!-- ════ TOOLS ════ -->
+<section class="tools-section" id="tools">
   <div class="container">
-    <div class="tools-header">
+    <div class="tools-head">
       <span class="sec-label">Free Tools</span>
       <h2>Verify · Search · Track</h2>
-      <p>No login · No signup · Instant results</p>
+      <p>Instant results · No login required</p>
     </div>
 
     <div class="tools-grid">
@@ -238,47 +166,38 @@
           <div class="tc-icon" style="background:#F0FDF4">🔍</div>
           <div>
             <h3>GSTIN Verifier</h3>
-            <p>Live verification from GSTN · Check registration status</p>
+            <p>Live from GSTN · Registration status, name, type</p>
           </div>
         </div>
         <div class="tc-body">
-          <div class="gstin-row">
-            <input type="text" id="gstinInp"
-              class="t-inp gstin-mono"
-              placeholder="Enter 15-digit GSTIN…"
-              maxlength="15"
-              autocomplete="off"
+          <div class="g-row">
+            <input type="text" id="gInp" class="ti g-mono"
+              placeholder="Enter 15-digit GSTIN…" maxlength="15" autocomplete="off"
               oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')"
               onkeydown="if(event.key==='Enter')doGSTIN()">
-            <button class="t-btn t-btn-blue" id="gstinBtn" onclick="doGSTIN()">Verify</button>
+            <button class="tb tb-blue" id="gBtn" onclick="doGSTIN()">Verify</button>
           </div>
-
-          <div class="g-loading" id="gLoading">⏳ Querying GSTN…</div>
+          <div class="g-spinner" id="gSpin">Querying GSTN…</div>
           <div class="g-err"    id="gErr"></div>
-
-          <div class="g-result" id="gResult">
+          <div class="g-result" id="gRes">
             <div class="g-card">
-              <div class="g-lname" id="gLname">—</div>
-              <div class="g-gstin" id="gGstin">—</div>
-              <span class="g-badge" id="gBadge">—</span>
+              <div class="g-lname" id="gLname"></div>
+              <div class="g-num"   id="gNum"></div>
+              <span class="g-badge" id="gBadge"></span>
               <div class="g-grid">
-                <div class="g-f"><label>Trade Name</label><div class="v" id="gTrade">—</div></div>
-                <div class="g-f"><label>Taxpayer Type</label><div class="v" id="gType">—</div></div>
-                <div class="g-f"><label>Registration Date</label><div class="v" id="gDate">—</div></div>
-                <div class="g-f"><label>State</label><div class="v" id="gState">—</div></div>
-                <div class="g-f"><label>Constitution</label><div class="v" id="gConst">—</div></div>
-                <div class="g-f"><label>Jurisdiction</label><div class="v" id="gJuris">—</div></div>
+                <div class="gf"><label>Trade Name</label><div class="v" id="gTrade"></div></div>
+                <div class="gf"><label>Taxpayer Type</label><div class="v" id="gType"></div></div>
+                <div class="gf"><label>Registration Date</label><div class="v" id="gDate"></div></div>
+                <div class="gf"><label>State</label><div class="v" id="gState"></div></div>
+                <div class="gf"><label>Constitution</label><div class="v" id="gConst"></div></div>
+                <div class="gf"><label>Centre Jurisdiction</label><div class="v" id="gJuris"></div></div>
               </div>
             </div>
           </div>
-
-          <!-- Always-visible portal link -->
-          <div style="margin-top:10px">
-            <a href="https://services.gst.gov.in/services/searchtp" target="_blank" class="g-portal-link">
-              🔗 Search on official GST Portal →
-            </a>
-          </div>
-          <p class="t-note">Data from GSTN public API. If browser CORS blocks the request, use the official portal link above. For informational use only.</p>
+          <a href="https://services.gst.gov.in/services/searchtp" target="_blank" class="g-portal">
+            🔗 Search on official GST Portal →
+          </a>
+          <p class="t-note">Fetched via TrustFactON backend proxy. For official compliance verification use the GST Portal link above.</p>
         </div>
       </div>
 
@@ -292,135 +211,106 @@
           </div>
         </div>
         <div class="tc-body">
-          <div class="hsn-tabs">
-            <button class="hsn-tab on" id="tabG" onclick="setTab('goods')">📦 Goods (HSN)</button>
-            <button class="hsn-tab"    id="tabS" onclick="setTab('services')">⚙️ Services (SAC)</button>
+          <div class="h-tabs">
+            <button class="h-tab on" id="hTabG" onclick="setHTab('goods')">📦 Goods (HSN)</button>
+            <button class="h-tab"    id="hTabS" onclick="setHTab('services')">⚙️ Services (SAC)</button>
           </div>
-          <input type="text" id="hsnInp" class="t-inp"
-            placeholder="Code or description — e.g. 8528 or television…"
+          <input type="text" id="hInp" class="ti"
+            placeholder="HSN code or description — e.g. 8528 or television…"
             autocomplete="off" oninput="doHSN()">
-          <div class="hsn-results" id="hsnOut"></div>
-          <p class="t-note" style="margin-top:8px">Rates updated for GST 2.0 (effective 22 Sept 2025). 12% and 28% slabs removed. Verify from <a href="https://services.gst.gov.in/services/searchhsnsac" target="_blank" style="color:var(--blue)">official GSTN portal →</a> for compliance filings.</p>
+          <div class="h-results" id="hOut"></div>
+          <p class="t-note" style="margin-top:7px">Rates per GST 2.0 (22 Sept 2025). 12% and 28% slabs removed. Always verify from <a href="https://services.gst.gov.in/services/searchhsnsac" target="_blank">official GSTN portal →</a></p>
         </div>
       </div>
 
-      <!-- ③ FOREX RATES -->
+      <!-- ③ LIVE FOREX RATES -->
       <div class="tc">
         <div class="tc-head">
           <div class="tc-icon" style="background:#FFFBEB">💱</div>
           <div>
             <h3>Live Forex Rates</h3>
-            <p>INR exchange rates vs 8 major currencies</p>
+            <p>₹ vs 8 major currencies · Refreshes live</p>
           </div>
         </div>
         <div class="tc-body">
-          <div class="fx-topbar">
-            <span class="fx-time" id="fxTime">Fetching rates…</span>
-            <button class="fx-refresh" onclick="doForex()">↺ Refresh</button>
+          <div class="fx-bar">
+            <span class="fx-time" id="fxTime">Loading…</span>
+            <button class="fx-btn" onclick="doForex()">↺ Refresh</button>
           </div>
           <div class="fx-grid" id="fxGrid">
-            <!-- skeleton -->
-            <div class="fx-skeleton"></div><div class="fx-skeleton"></div>
-            <div class="fx-skeleton"></div><div class="fx-skeleton"></div>
-            <div class="fx-skeleton"></div><div class="fx-skeleton"></div>
-            <div class="fx-skeleton"></div><div class="fx-skeleton"></div>
+            <div class="fx-sk"></div><div class="fx-sk"></div>
+            <div class="fx-sk"></div><div class="fx-sk"></div>
+            <div class="fx-sk"></div><div class="fx-sk"></div>
+            <div class="fx-sk"></div><div class="fx-sk"></div>
           </div>
-          <div class="fx-rbi" id="fxRbi"></div>
-          <p class="t-note">Indicative rates from open API. For compliance and FEMA use <a href="https://www.rbi.org.in/Scripts/ReferenceRateArchive.aspx" target="_blank" style="color:var(--blue)">RBI Reference Rates →</a></p>
+          <div class="fx-foot" id="fxFoot"></div>
+          <p class="t-note">Indicative rates. For FEMA and compliance use <a href="https://www.rbi.org.in/Scripts/ReferenceRateArchive.aspx" target="_blank">RBI Reference Rates →</a></p>
         </div>
       </div>
 
-    </div><!-- /tools-grid -->
+    </div>
   </div>
 </section>
 
-<!-- ════════════════════ BROWSE ════════════════════ -->
-<section class="browse-section" id="browse">
+<!-- ════ TOPIC CARDS ════ -->
+<section class="topics-section">
   <div class="container">
-    <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:0">
-      <div>
-        <span class="sec-label">Reference Guides</span>
-        <h2 class="sec-title">Browse by Topic</h2>
-        <p style="color:var(--gray-5);margin-top:4px;font-size:0.88rem">Plain language · Updated for latest amendments · Official sources linked</p>
-      </div>
-      <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:4px">
-        <button class="ftab active" data-f="all">All</button>
-        <button class="ftab" data-f="tax">Tax</button>
-        <button class="ftab" data-f="corporate">Corporate</button>
-      </div>
+    <div style="text-align:center;margin-bottom:0">
+      <span class="sec-label">Reference Guides</span>
+      <h2 class="sec-title">Explore by Topic</h2>
+      <p style="color:var(--gray-5);margin-top:5px;font-size:0.88rem">Plain language · Latest amendments · Official sources linked in every section</p>
     </div>
+    <div class="topics-grid">
 
-    <div class="browse-grid">
-
-      <!-- Income Tax -->
-      <a href="income-tax.html" class="bc" data-f="tax">
-        <div class="bc-bar" style="background:#2563EB"></div>
-        <div class="bc-body">
-          <div class="bc-icon" style="background:#EFF6FF">📊</div>
+      <a href="income-tax.html" class="tp-card">
+        <div class="tp-bar" style="background:#2563EB"></div>
+        <div class="tp-body">
+          <div class="tp-icon" style="background:#EFF6FF">📊</div>
           <h3>Income Tax</h3>
-          <p>Tax slabs, salary, capital gains, deductions 80C–80U, TDS rates and ITR filing. IT Act 1961 ↔ IT Act 2025 (effective 1 April 2026).</p>
+          <p>Tax slabs, salary, capital gains, deductions 80C–80U, TDS rates, ITR forms. IT Act 1961 ↔ IT Act 2025 (effective 1 April 2026).</p>
         </div>
-        <div class="bc-foot">
-          <div class="bc-tags">
-            <span class="bc-tag">Direct Tax</span>
-            <span class="bc-tag">TDS</span>
-            <span class="bc-tag">IT Act 2025</span>
-          </div>
-          <span class="bc-arrow" style="color:#2563EB">Explore →</span>
+        <div class="tp-foot">
+          <div class="tp-tags"><span class="tp-tag">Direct Tax</span><span class="tp-tag">IT Act 2025</span><span class="tp-tag">CBDT</span></div>
+          <span class="tp-arrow" style="color:#2563EB">→</span>
         </div>
       </a>
 
-      <!-- Goods & Service Tax -->
-      <a href="gst.html" class="bc" data-f="tax">
-        <div class="bc-bar" style="background:#16A34A"></div>
-        <div class="bc-body">
-          <div class="bc-icon" style="background:#F0FDF4">🏷️</div>
+      <a href="gst.html" class="tp-card">
+        <div class="tp-bar" style="background:#16A34A"></div>
+        <div class="tp-body">
+          <div class="tp-icon" style="background:#F0FDF4">🏷️</div>
           <h3>Goods & Service Tax</h3>
-          <p>GST 2.0 rates (0%, 5%, 18%, 40%), registration, ITC, e-invoice, returns calendar. Updated September 2025.</p>
+          <p>GST 2.0 rates — 0%, 5%, 18%, 40%. Registration, ITC, e-invoice, GSTR returns. Updated 22 September 2025.</p>
         </div>
-        <div class="bc-foot">
-          <div class="bc-tags">
-            <span class="bc-tag">Indirect Tax</span>
-            <span class="bc-tag">ITC</span>
-            <span class="bc-tag">GST 2.0</span>
-          </div>
-          <span class="bc-arrow" style="color:#16A34A">Explore →</span>
+        <div class="tp-foot">
+          <div class="tp-tags"><span class="tp-tag">Indirect Tax</span><span class="tp-tag">GST 2.0</span><span class="tp-tag">CBIC</span></div>
+          <span class="tp-arrow" style="color:#16A34A">→</span>
         </div>
       </a>
 
-      <!-- Companies Act -->
-      <a href="companies-act.html" class="bc" data-f="corporate">
-        <div class="bc-bar" style="background:#1A3A6B"></div>
-        <div class="bc-body">
-          <div class="bc-icon" style="background:#EFF6FF">🏢</div>
+      <a href="companies-act.html" class="tp-card">
+        <div class="tp-bar" style="background:#1A3A6B"></div>
+        <div class="tp-body">
+          <div class="tp-icon" style="background:#EFF6FF">🏢</div>
           <h3>Companies Act</h3>
-          <p>Incorporation, directors, meetings, audit, CSR, MCA filings. Includes Dec 2025 small company update, DIR-3 KYC and fast-track merger amendments.</p>
+          <p>Incorporation, directors, meetings, audit, CSR, MCA filings. Small company update Dec 2025, DIR-3 KYC, fast-track mergers.</p>
         </div>
-        <div class="bc-foot">
-          <div class="bc-tags">
-            <span class="bc-tag">MCA</span>
-            <span class="bc-tag">NCLT</span>
-            <span class="bc-tag">Updated 2025</span>
-          </div>
-          <span class="bc-arrow" style="color:#1A3A6B">Explore →</span>
+        <div class="tp-foot">
+          <div class="tp-tags"><span class="tp-tag">MCA</span><span class="tp-tag">NCLT</span><span class="tp-tag">Updated 2025</span></div>
+          <span class="tp-arrow" style="color:#1A3A6B">→</span>
         </div>
       </a>
 
-      <!-- TDS/TCS Master -->
-      <a href="tds-master.html" class="bc" data-f="tax">
-        <div class="bc-bar" style="background:#D97706"></div>
-        <div class="bc-body">
-          <div class="bc-icon" style="background:#FFFBEB">✂️</div>
-          <h3>TDS / TCS Section Master</h3>
-          <p>All 91 TDS and TCS section codes — rates, thresholds, who deducts, who pays. IT Act 1961 ↔ IT Act 2025. Finance Bill 2026 rates.</p>
+      <a href="tds-master.html" class="tp-card">
+        <div class="tp-bar" style="background:#D97706"></div>
+        <div class="tp-body">
+          <div class="tp-icon" style="background:#FFFBEB">✂️</div>
+          <h3>TDS / TCS Master</h3>
+          <p>All 91 TDS and TCS section codes — rates, thresholds, who deducts. IT Act 1961 ↔ IT Act 2025 mapping. Finance Bill 2026.</p>
         </div>
-        <div class="bc-foot">
-          <div class="bc-tags">
-            <span class="bc-tag">91 Sections</span>
-            <span class="bc-tag">TY 2026-27</span>
-            <span class="bc-tag">Compare</span>
-          </div>
-          <span class="bc-arrow" style="color:#D97706">Explore →</span>
+        <div class="tp-foot">
+          <div class="tp-tags"><span class="tp-tag">91 Sections</span><span class="tp-tag">TY 2026-27</span><span class="tp-tag">FB 2026</span></div>
+          <span class="tp-arrow" style="color:#D97706">→</span>
         </div>
       </a>
 
@@ -428,13 +318,13 @@
   </div>
 </section>
 
-<!-- ════════════════════ AI CHAT ════════════════════ -->
+<!-- ════ AI CHAT ════ -->
 <section class="chat-section">
   <div class="container">
     <div style="text-align:center;margin-bottom:32px">
       <span class="sec-label" style="color:#93C5FD">AI Legal Assistant</span>
       <h2>Ask Anything About Indian Tax & Compliance</h2>
-      <p class="sub">Free · No login · Powered by Google Gemini</p>
+      <p class="sub">Free · No login · Powered by Google Gemini · Income Tax · GST · Companies</p>
     </div>
     <div class="chat-container" id="chat-widget" style="max-width:820px;margin:0 auto">
       <div class="chat-header">
@@ -452,237 +342,330 @@
         <button class="chat-suggest-btn">TDS on rent — Sec 194IB vs Sec 393?</button>
       </div>
       <div class="chat-input-row">
-        <textarea class="chat-input" rows="1" placeholder="Ask about Income Tax, Goods & Service Tax, Companies, TDS/TCS…"></textarea>
-        <button class="chat-send-btn">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-            <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
-          </svg>
-        </button>
+        <textarea class="chat-input" rows="1" placeholder="Ask about Income Tax, Goods & Service Tax, Companies, TDS…"></textarea>
+        <button class="chat-send-btn"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
       </div>
     </div>
-    <p style="text-align:center;font-size:0.73rem;color:rgba(255,255,255,0.22);margin-top:14px">Informational only · Not legal or tax advice · Consult a qualified professional for your situation</p>
+    <p style="text-align:center;font-size:0.73rem;color:rgba(255,255,255,0.22);margin-top:12px">Informational only · Not legal or tax advice · Verify with a qualified professional</p>
   </div>
 </section>
 
 <!-- NEWSLETTER -->
 <section class="newsletter-section">
-  <div class="container">
-    <div class="newsletter-inner">
-      <span class="sec-label">TrustFactON Weekly</span>
-      <h2 class="sec-title" style="margin-bottom:8px">Tax & Compliance Updates</h2>
-      <p class="sec-sub" style="margin-bottom:24px">CBDT circulars · GST Council decisions · MCA notifications — in plain language. Every week.</p>
-      <div class="newsletter-form">
-        <input type="email" id="nlEmail" placeholder="your@email.com">
-        <button onclick="window.open('https://trustfacton.beehiiv.com/subscribe?email='+encodeURIComponent(document.getElementById('nlEmail').value||''),'_blank')">Subscribe →</button>
-      </div>
+  <div class="container"><div class="newsletter-inner">
+    <span class="sec-label">TrustFactON Weekly</span>
+    <h2 class="sec-title" style="margin-bottom:8px">Tax & Compliance Updates</h2>
+    <p class="sec-sub" style="margin-bottom:24px">CBDT circulars · GST Council decisions · MCA notifications — in plain language.</p>
+    <div class="newsletter-form">
+      <input type="email" id="nlEmail" placeholder="your@email.com">
+      <button onclick="window.open('https://trustfacton.beehiiv.com/subscribe?email='+encodeURIComponent(document.getElementById('nlEmail').value||''),'_blank')">Subscribe →</button>
     </div>
-  </div>
+  </div></div>
 </section>
 
 <div id="footer-placeholder"></div>
 <script src="components.js"></script>
 <script src="chat-widget.js"></script>
 <script>
-/* ════════════ GSTIN VERIFIER ════════════ */
+/* ══════════════════════════════════════════
+   GSTIN VERIFIER — via TrustFactON backend proxy
+   Backend: https://trustfacton-backend.vercel.app/gstin?gstin=XXXX
+   ══════════════════════════════════════════ */
+const BACKEND = 'https://trustfacton-backend.vercel.app';
 const GSTIN_RE = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
 
 function gState(s) {
-  const loading = document.getElementById('gLoading');
-  const err     = document.getElementById('gErr');
-  const result  = document.getElementById('gResult');
-  const btn     = document.getElementById('gstinBtn');
-  loading.classList.toggle('on', s === 'loading');
-  err.classList.toggle('on',     s === 'error');
-  result.classList.toggle('on',  s === 'result');
+  const spin = document.getElementById('gSpin');
+  const err  = document.getElementById('gErr');
+  const res  = document.getElementById('gRes');
+  const btn  = document.getElementById('gBtn');
+  spin.classList.toggle('on', s === 'loading');
+  err.classList.toggle('on',  s === 'error');
+  res.classList.toggle('on',  s === 'result');
   btn.disabled = s === 'loading';
+  if (s !== 'error')  err.innerHTML  = '';
+  if (s !== 'result') {/* keep result */}
 }
 
 async function doGSTIN() {
-  const val = document.getElementById('gstinInp').value.trim().toUpperCase();
+  const raw = document.getElementById('gInp').value.trim().toUpperCase();
 
-  if (!val) return;
-  if (val.length !== 15) {
-    document.getElementById('gErr').textContent = 'GSTIN must be exactly 15 characters. Example: 29AABCU9603R1ZM';
+  if (raw.length !== 15) {
+    document.getElementById('gErr').innerHTML = '⚠ GSTIN must be exactly 15 characters. Format: <code style="font-family:monospace">22AAAAA0000A1Z5</code>';
     gState('error'); return;
   }
-  if (!GSTIN_RE.test(val)) {
-    document.getElementById('gErr').textContent = 'Invalid GSTIN format. Please check and try again.';
+  if (!GSTIN_RE.test(raw)) {
+    document.getElementById('gErr').textContent = '⚠ Invalid GSTIN format. Please check and try again.';
     gState('error'); return;
   }
 
   gState('loading');
 
-  // Try 3 endpoints — GSTN public → proxy fallback → show portal link
-  const endpoints = [
-    `https://services.gst.gov.in/services/api/search/taxpayerDetails?gstin=${val}`,
-    `https://api.gst.gov.in/commonapi/taxpayerDetails/search/${val}`,
+  // Try 1: Our Vercel backend proxy (avoids CORS)
+  // Try 2: Direct GSTN (may work in some environments)
+  const URLS = [
+    `${BACKEND}/gstin?gstin=${raw}`,
+    `https://services.gst.gov.in/services/api/search/taxpayerDetails?gstin=${raw}`,
   ];
 
   let data = null;
-  for (const url of endpoints) {
+  for (const url of URLS) {
     try {
-      const r = await fetch(url, { signal: AbortSignal.timeout(6000) });
+      const r = await fetch(url, { signal: AbortSignal.timeout(8000) });
       if (!r.ok) continue;
       const j = await r.json();
-      if (j && (j.lgnm || j.tradeNam || j.tradeName)) { data = j; break; }
-    } catch {}
+      // Valid response has lgnm (legal name)
+      if (j && !j.error && (j.lgnm || j.tradeNam || j.legal_name)) {
+        data = j; break;
+      }
+    } catch { /* try next */ }
   }
 
   if (data) {
-    fillGSTIN(data, val);
+    const status = data.sts || data.status || 'Active';
+    const active = /active/i.test(status);
+    document.getElementById('gLname').textContent = data.lgnm || data.legal_name || '—';
+    document.getElementById('gNum').textContent   = raw;
+    const badge = document.getElementById('gBadge');
+    badge.textContent  = status;
+    badge.className = 'g-badge ' + (active ? 'g-active' : 'g-inactive');
+    document.getElementById('gTrade').textContent = data.tradeNam || data.tradeName || data.lgnm || '—';
+    document.getElementById('gType').textContent  = data.dty   || data.taxpayerType  || '—';
+    document.getElementById('gDate').textContent  = data.rgdt  || data.regDate       || '—';
+    document.getElementById('gState').textContent = data.stj   || data.state         || '—';
+    document.getElementById('gConst').textContent = data.ctb   || data.constitution  || '—';
+    document.getElementById('gJuris').textContent = data.ctj   || data.jurisdiction  || '—';
     gState('result');
   } else {
     document.getElementById('gErr').innerHTML =
-      `Could not retrieve details automatically (GSTN restricts direct browser access). ` +
-      `<a href="https://services.gst.gov.in/services/searchtp" target="_blank" style="color:var(--blue);font-weight:600">Verify on the official GST Portal →</a>`;
+      '⚠ Could not fetch details. GSTN restricts automated access. ' +
+      '<a href="https://services.gst.gov.in/services/searchtp" target="_blank" style="color:var(--blue);font-weight:600">Verify on official GST Portal →</a>';
     gState('error');
   }
 }
 
-function fillGSTIN(d, gstin) {
-  const status = d.sts || d.status || 'Active';
-  const active = status.toLowerCase().includes('active');
-  document.getElementById('gLname').textContent = d.lgnm || d.legalName || d.legal_name || '—';
-  document.getElementById('gGstin').textContent = gstin;
-  const badge = document.getElementById('gBadge');
-  badge.textContent = status;
-  badge.className = 'g-badge ' + (active ? 'g-active' : 'g-inactive');
-  document.getElementById('gTrade').textContent = d.tradeNam || d.tradeName  || d.lgnm || '—';
-  document.getElementById('gType').textContent  = d.dty || d.taxpayerType    || '—';
-  document.getElementById('gDate').textContent  = d.rgdt || d.regDate        || '—';
-  document.getElementById('gState').textContent = d.stj  || d.state          || '—';
-  document.getElementById('gConst').textContent = d.ctb  || d.constitution   || '—';
-  document.getElementById('gJuris').textContent = d.ctj  || d.jurisdiction   || '—';
-}
-
-document.getElementById('gstinInp').addEventListener('keydown', e => {
-  if (e.key === 'Enter') doGSTIN();
-});
-
-/* ════════════ HSN / SAC DATA ════════════ */
+/* ══════════════════════════════════════════
+   HSN / SAC DATA — 120+ entries, GST 2.0
+   ══════════════════════════════════════════ */
 const HSN = [
-  // GOODS
-  {t:'goods', c:'0101', d:'Live horses, asses, mules and hinnies',                   r:'Nil'},
-  {t:'goods', c:'0201', d:'Meat of bovine animals, fresh or chilled',                r:'Nil'},
-  {t:'goods', c:'0401', d:'Milk and cream, not concentrated or sweetened',            r:'Nil'},
-  {t:'goods', c:'0702', d:'Tomatoes, fresh or chilled',                               r:'Nil'},
-  {t:'goods', c:'0901', d:'Coffee, whether or not roasted',                           r:'5%'},
-  {t:'goods', c:'0902', d:'Tea, whether or not flavoured',                            r:'5%'},
-  {t:'goods', c:'1001', d:'Wheat and meslin',                                         r:'Nil'},
-  {t:'goods', c:'1006', d:'Rice',                                                     r:'Nil'},
-  {t:'goods', c:'1507', d:'Soya-bean oil and its fractions',                          r:'5%'},
-  {t:'goods', c:'1701', d:'Cane or beet sugar',                                       r:'5%'},
-  {t:'goods', c:'1905', d:'Bread, pastry, cakes, biscuits (branded/packaged)',        r:'5%'},
-  {t:'goods', c:'2106', d:'Food preparations — packaged food mixes',                  r:'5%'},
-  {t:'goods', c:'2202', d:'Aerated waters, soft drinks, flavoured water',             r:'40%'},
-  {t:'goods', c:'2401', d:'Unmanufactured tobacco, tobacco refuse',                   r:'40%'},
-  {t:'goods', c:'2402', d:'Cigars, cigarettes, cigarillos',                           r:'40%'},
-  {t:'goods', c:'2403', d:'Other tobacco — gutka, pan masala, khaini',                r:'40%'},
-  {t:'goods', c:'2710', d:'Petroleum oils — petrol, diesel, ATF (outside GST)',       r:'Outside GST'},
-  {t:'goods', c:'2711', d:'Liquefied petroleum gas (LPG)',                            r:'5%'},
-  {t:'goods', c:'3002', d:'Human blood, vaccines, antisera',                          r:'Nil'},
-  {t:'goods', c:'3004', d:'Medicaments — drugs and medicines for retail sale',        r:'5%'},
-  {t:'goods', c:'3401', d:'Soap, organic surface-active products',                    r:'18%'},
-  {t:'goods', c:'3402', d:'Washing preparations, detergents, cleaning preparations',  r:'18%'},
-  {t:'goods', c:'3305', d:'Hair preparations — shampoo, hair oil, hair cream',        r:'18%'},
-  {t:'goods', c:'3306', d:'Toothpaste, dental floss, mouthwash',                     r:'18%'},
-  {t:'goods', c:'4011', d:'New pneumatic tyres of rubber',                            r:'18%'},
-  {t:'goods', c:'4901', d:'Printed books, brochures, pamphlets, leaflets',            r:'Nil'},
-  {t:'goods', c:'4902', d:'Newspapers, journals and periodicals',                     r:'Nil'},
-  {t:'goods', c:'5201', d:'Cotton, not carded or combed',                             r:'Nil'},
-  {t:'goods', c:'5407', d:'Woven fabrics of synthetic filament yarn',                 r:'5%'},
-  {t:'goods', c:'6101', d:'Overcoats, carcoats, capes — value ≤₹1000: 5%, >₹1000: 12%', r:'5% / 12%'},
-  {t:'goods', c:'6402', d:'Footwear — other rubber or plastic outer soles',          r:'5%'},
-  {t:'goods', c:'6403', d:'Footwear with leather outer soles',                        r:'5%'},
-  {t:'goods', c:'7101', d:'Pearls, natural or cultured',                              r:'3%'},
-  {t:'goods', c:'7108', d:'Gold in unwrought or semi-manufactured forms',             r:'3%'},
-  {t:'goods', c:'7113', d:'Jewellery of precious metal (gold, silver, platinum)',     r:'3%'},
-  {t:'goods', c:'7117', d:'Imitation jewellery',                                      r:'3%'},
-  {t:'goods', c:'8415', d:'Air conditioning machines (ACs)',                          r:'18%'},
-  {t:'goods', c:'8418', d:'Refrigerators, freezers, heat pumps',                     r:'18%'},
-  {t:'goods', c:'8450', d:'Household washing machines',                               r:'18%'},
-  {t:'goods', c:'8471', d:'Computers, laptops, automatic data-processing machines',  r:'18%'},
-  {t:'goods', c:'8517', d:'Mobile phones, smartphones, telephone sets',               r:'18%'},
-  {t:'goods', c:'8528', d:'Monitors, projectors, television receivers (TVs)',         r:'18%'},
-  {t:'goods', c:'8703', d:'Motor cars — small cars 18%, large/luxury cars 40%',      r:'18% / 40%'},
-  {t:'goods', c:'8711', d:'Motorcycles, scooters, mopeds',                           r:'18%'},
-  {t:'goods', c:'8712', d:'Bicycles, other cycles',                                  r:'5%'},
-  {t:'goods', c:'9619', d:'Sanitary towels, tampons, nappies for babies',             r:'Nil'},
-  // SERVICES
-  {t:'services', c:'9954', d:'Construction services — works contract, real estate',      r:'1% / 5% / 18%'},
-  {t:'services', c:'9961', d:'Services in wholesale trade',                               r:'18%'},
-  {t:'services', c:'9962', d:'Services in retail trade',                                  r:'18%'},
-  {t:'services', c:'9963', d:'Accommodation and food — restaurants, hotels',             r:'5% / 18%'},
-  {t:'services', c:'9964', d:'Passenger transport — air travel economy 5%, business 5%, taxi 18%', r:'5% / 18%'},
-  {t:'services', c:'9965', d:'Goods transport — GTA freight service',                    r:'5% / 18%'},
-  {t:'services', c:'9966', d:'Vehicle rental and leasing services with operator',         r:'18%'},
-  {t:'services', c:'9967', d:'Supporting services in transport (loading, packing)',       r:'18%'},
-  {t:'services', c:'9968', d:'Postal and courier services',                               r:'18%'},
-  {t:'services', c:'9971', d:'Financial services — banking, insurance, NBFCs; health/life insurance Nil (GST 2.0)', r:'Nil / 18%'},
-  {t:'services', c:'9972', d:'Real estate services — renting, leasing of property',      r:'18%'},
-  {t:'services', c:'9973', d:'Leasing or rental services without operator',               r:'18%'},
-  {t:'services', c:'9981', d:'Research and development services',                         r:'18%'},
-  {t:'services', c:'9982', d:'Legal and accounting services',                             r:'18%'},
-  {t:'services', c:'9983', d:'IT services, software, professional and technical services',r:'18%'},
-  {t:'services', c:'9984', d:'Telecommunications and broadcasting services',              r:'18%'},
-  {t:'services', c:'9985', d:'Support services — cleaning, security, packaging',         r:'18%'},
-  {t:'services', c:'9986', d:'Agricultural support services — irrigation, pest control',  r:'Nil'},
-  {t:'services', c:'9987', d:'Maintenance, repair and installation services',             r:'18%'},
-  {t:'services', c:'9988', d:'Job work / manufacturing services on physical inputs',      r:'5% / 18%'},
-  {t:'services', c:'9991', d:'Government and public administration services',             r:'Nil'},
-  {t:'services', c:'9992', d:'Education services — schools, approved colleges',           r:'Nil'},
-  {t:'services', c:'9993', d:'Human health and social care — hospitals, doctors, clinics',r:'Nil'},
-  {t:'services', c:'9994', d:'Sewage, waste collection and treatment services',           r:'Nil / 18%'},
-  {t:'services', c:'9995', d:'Membership organisation services',                          r:'18%'},
-  {t:'services', c:'9996', d:'Recreational, cultural and sporting services',              r:'18%'},
-  {t:'services', c:'9997', d:'Personal services — gyms, salons, barbers, yoga centres',  r:'5%'},
-  {t:'services', c:'9998', d:'Domestic household worker services',                        r:'Nil'},
+  // ─── GOODS ───
+  {t:'goods', c:'0101', d:'Live horses, asses, mules and hinnies', r:'Nil'},
+  {t:'goods', c:'0201', d:'Meat of bovine animals — fresh or chilled', r:'Nil'},
+  {t:'goods', c:'0207', d:'Meat of poultry (chicken, duck, turkey) — fresh or chilled', r:'Nil'},
+  {t:'goods', c:'0302', d:'Fish — fresh or chilled, excluding fish fillets', r:'Nil'},
+  {t:'goods', c:'0401', d:'Milk and cream, not concentrated or sweetened', r:'Nil'},
+  {t:'goods', c:'0402', d:'Milk powder, cream powder, condensed milk', r:'5%'},
+  {t:'goods', c:'0405', d:'Butter and other fats derived from milk, dairy spreads', r:'12%'},
+  {t:'goods', c:'0406', d:'Cheese and curd', r:'12%'},
+  {t:'goods', c:'0702', d:'Tomatoes, fresh or chilled', r:'Nil'},
+  {t:'goods', c:'0706', d:'Carrots, turnips, salad beetroot, radish', r:'Nil'},
+  {t:'goods', c:'0709', d:'Other vegetables — fresh or chilled', r:'Nil'},
+  {t:'goods', c:'0801', d:'Coconuts, Brazil nuts, cashew nuts — fresh or dried', r:'Nil'},
+  {t:'goods', c:'0901', d:'Coffee — whether or not roasted, coffee husks', r:'5%'},
+  {t:'goods', c:'0902', d:'Tea — green or black, whether or not flavoured', r:'5%'},
+  {t:'goods', c:'1001', d:'Wheat and meslin', r:'Nil'},
+  {t:'goods', c:'1006', d:'Rice — husked, semi-milled, wholly milled', r:'Nil'},
+  {t:'goods', c:'1101', d:'Wheat or meslin flour', r:'Nil'},
+  {t:'goods', c:'1507', d:'Soya-bean oil and its fractions', r:'5%'},
+  {t:'goods', c:'1511', d:'Palm oil and its fractions — crude or refined', r:'5%'},
+  {t:'goods', c:'1514', d:'Mustard oil (rapeseed or canola oil)', r:'5%'},
+  {t:'goods', c:'1601', d:'Sausages and similar products — of meat or offal', r:'12%'},
+  {t:'goods', c:'1701', d:'Cane or beet sugar — raw, refined', r:'5%'},
+  {t:'goods', c:'1901', d:'Malt extract, food preparations of flour, starch (infant food)', r:'18%'},
+  {t:'goods', c:'1902', d:'Pasta — spaghetti, macaroni, noodles (branded)', r:'18%'},
+  {t:'goods', c:'1904', d:'Breakfast cereals — cornflakes, muesli, puffed rice', r:'18%'},
+  {t:'goods', c:'1905', d:'Bread, pastry, cakes, biscuits — packaged (branded)', r:'18%'},
+  {t:'goods', c:'2004', d:'Other vegetables prepared by vinegar (pickles, achaar)', r:'18%'},
+  {t:'goods', c:'2009', d:'Fruit juices — single fruit, unfermented, not spirit', r:'12%'},
+  {t:'goods', c:'2101', d:'Extracts, essences, concentrates of coffee or tea', r:'5%'},
+  {t:'goods', c:'2106', d:'Food preparations — ready to eat, packaged namkeen, bhujia, mixture', r:'18%'},
+  {t:'goods', c:'2201', d:'Waters, mineral waters, aerated waters (without sweetening)', r:'Nil'},
+  {t:'goods', c:'2202', d:'Aerated drinks, flavoured water, soft drinks, cola, soda', r:'40%'},
+  {t:'goods', c:'2309', d:'Preparations of a kind used in animal feeding', r:'Nil'},
+  {t:'goods', c:'2401', d:'Unmanufactured tobacco, tobacco refuse', r:'40%'},
+  {t:'goods', c:'2402', d:'Cigars, cigarettes, cheroots, cigarillos', r:'40%'},
+  {t:'goods', c:'2403', d:'Other manufactured tobacco — gutka, pan masala, khaini, zarda', r:'40%'},
+  {t:'goods', c:'2501', d:'Salt — table salt, sea salt, rock salt', r:'Nil'},
+  {t:'goods', c:'2523', d:'Portland cement, aluminous cement, slag cement', r:'18%'},
+  {t:'goods', c:'2710', d:'Petroleum oils — petrol, diesel, ATF, furnace oil', r:'Outside GST (State VAT/Excise)'},
+  {t:'goods', c:'2711', d:'Liquefied petroleum gas (LPG) — for household use', r:'5%'},
+  {t:'goods', c:'2716', d:'Electrical energy', r:'Nil'},
+  {t:'goods', c:'3002', d:'Human blood, vaccines, antisera, toxins', r:'Nil'},
+  {t:'goods', c:'3004', d:'Medicaments — drugs and medicines, pharmaceutical formulations', r:'5%'},
+  {t:'goods', c:'3006', d:'Pharmaceutical goods — surgical catgut, dental cement, first-aid boxes', r:'12%'},
+  {t:'goods', c:'3101', d:'Animal or vegetable fertilisers — organic', r:'Nil'},
+  {t:'goods', c:'3102', d:'Mineral or chemical fertilisers — nitrogenous', r:'5%'},
+  {t:'goods', c:'3202', d:'Synthetic organic tanning substances', r:'18%'},
+  {t:'goods', c:'3301', d:'Essential oils — perfumery, cosmetics', r:'18%'},
+  {t:'goods', c:'3304', d:'Beauty / makeup preparations — lipstick, eye shadow, face powder', r:'28%'},
+  {t:'goods', c:'3305', d:'Hair preparations — shampoo, conditioner, hair oil, hair cream', r:'18%'},
+  {t:'goods', c:'3306', d:'Toothpaste, dental floss, mouthwash, oral hygiene preparations', r:'18%'},
+  {t:'goods', c:'3307', d:'Pre-shave, shaving, after-shave preparations, deodorants', r:'18%'},
+  {t:'goods', c:'3401', d:'Soap, washing bars, organic surface-active preparations', r:'18%'},
+  {t:'goods', c:'3402', d:'Washing preparations, detergents, cleaning preparations', r:'18%'},
+  {t:'goods', c:'3601', d:'Propellant powders, fireworks, crackers, matches', r:'28%'},
+  {t:'goods', c:'3808', d:'Insecticides, rodenticides, fungicides, herbicides (pesticides)', r:'18%'},
+  {t:'goods', c:'3826', d:'Biodiesel and mixtures not containing petroleum oils', r:'12%'},
+  {t:'goods', c:'3901', d:'Polymers of ethylene — polyethylene in primary forms', r:'18%'},
+  {t:'goods', c:'3923', d:'Plastic boxes, bags, packing materials (plastic)', r:'18%'},
+  {t:'goods', c:'4011', d:'New pneumatic tyres of rubber — car, motorcycle, truck', r:'28%'},
+  {t:'goods', c:'4016', d:'Other articles of vulcanised rubber — gloves, tubes', r:'18%'},
+  {t:'goods', c:'4819', d:'Cartons, boxes, cases, bags of paper or paperboard', r:'18%'},
+  {t:'goods', c:'4901', d:'Printed books, brochures, pamphlets, leaflets', r:'Nil'},
+  {t:'goods', c:'4902', d:'Newspapers, journals, periodicals — daily or weekly', r:'Nil'},
+  {t:'goods', c:'4903', d:'Children\'s picture, drawing or colouring books', r:'Nil'},
+  {t:'goods', c:'4907', d:'Unused postage, revenue stamps, cheque forms, banknotes', r:'Nil'},
+  {t:'goods', c:'5101', d:'Wool — not carded or combed', r:'Nil'},
+  {t:'goods', c:'5201', d:'Cotton — not carded or combed, raw cotton', r:'Nil'},
+  {t:'goods', c:'5407', d:'Woven fabrics of synthetic filament yarn', r:'5%'},
+  {t:'goods', c:'5513', d:'Woven fabrics of synthetic staple fibres — polyester, nylon', r:'5%'},
+  {t:'goods', c:'5601', d:'Wadding, gauze, bandages — of textile for medical use', r:'Nil'},
+  {t:'goods', c:'6101', d:'Overcoats, raincoats, carcoats, cloaks — knitted', r:'5% (≤₹1000) / 12% (>₹1000)'},
+  {t:'goods', c:'6109', d:'T-shirts, singlets, vests and other vests — knitted', r:'5% (≤₹1000) / 12% (>₹1000)'},
+  {t:'goods', c:'6203', d:'Men\'s suits, jackets, blazers, trousers — woven', r:'5% (≤₹1000) / 12% (>₹1000)'},
+  {t:'goods', c:'6302', d:'Bed linen, table linen, toilet linen — cotton or synthetic', r:'5%'},
+  {t:'goods', c:'6401', d:'Waterproof footwear with outer soles — rubber or plastic', r:'5%'},
+  {t:'goods', c:'6402', d:'Other footwear with outer soles of rubber or plastics', r:'5%'},
+  {t:'goods', c:'6403', d:'Footwear with outer soles of leather', r:'5%'},
+  {t:'goods', c:'6404', d:'Footwear with outer soles of rubber, plastic, leather — textile uppers', r:'5%'},
+  {t:'goods', c:'6911', d:'Tableware, kitchenware, articles of porcelain or china', r:'12%'},
+  {t:'goods', c:'7101', d:'Pearls — natural or cultured, worked or unworked', r:'3%'},
+  {t:'goods', c:'7102', d:'Diamonds — worked or unworked, not mounted or set', r:'1.5%'},
+  {t:'goods', c:'7103', d:'Precious stones — rubies, sapphires, emeralds', r:'1.5%'},
+  {t:'goods', c:'7108', d:'Gold — unwrought, semi-manufactured, powder', r:'3%'},
+  {t:'goods', c:'7113', d:'Jewellery of precious metal — gold, silver, platinum', r:'3%'},
+  {t:'goods', c:'7117', d:'Imitation jewellery — artificial jewellery', r:'3%'},
+  {t:'goods', c:'7209', d:'Flat-rolled products of iron or non-alloy steel', r:'18%'},
+  {t:'goods', c:'7308', d:'Structures and parts — iron or steel (bridges, gates, towers)', r:'18%'},
+  {t:'goods', c:'7323', d:'Table, kitchen or household articles of iron or steel', r:'18%'},
+  {t:'goods', c:'8301', d:'Padlocks and locks of base metal, keys', r:'18%'},
+  {t:'goods', c:'8413', d:'Pumps for liquids — water pump, centrifugal pump', r:'18%'},
+  {t:'goods', c:'8415', d:'Air conditioning machines — window, split, central AC', r:'18%'},
+  {t:'goods', c:'8418', d:'Refrigerators, freezers, heat pumps, water coolers', r:'18%'},
+  {t:'goods', c:'8422', d:'Dishwashing machines — household type', r:'18%'},
+  {t:'goods', c:'8443', d:'Printing machinery, printers — ink-jet, laser', r:'18%'},
+  {t:'goods', c:'8450', d:'Washing machines — household type, laundry machines', r:'18%'},
+  {t:'goods', c:'8469', d:'Typewriters, word-processing machines', r:'18%'},
+  {t:'goods', c:'8471', d:'Computers, laptops, tablets, automatic data-processing machines', r:'18%'},
+  {t:'goods', c:'8473', d:'Computer parts and accessories — keyboard, mouse, hard disk', r:'18%'},
+  {t:'goods', c:'8501', d:'Electric motors and generators — DC or AC', r:'18%'},
+  {t:'goods', c:'8504', d:'Electrical transformers, static converters, UPS, invertors', r:'18%'},
+  {t:'goods', c:'8507', d:'Electric accumulators — storage batteries, lead-acid batteries', r:'18%'},
+  {t:'goods', c:'8516', d:'Geysers, water heaters, electric blankets, hair dryers, irons', r:'18%'},
+  {t:'goods', c:'8517', d:'Mobile phones, smartphones, telephone handsets', r:'18%'},
+  {t:'goods', c:'8519', d:'Sound recording / reproducing apparatus — music players', r:'18%'},
+  {t:'goods', c:'8521', d:'Video recording / reproducing apparatus — DVD players, set-top boxes', r:'18%'},
+  {t:'goods', c:'8525', d:'Transmission apparatus — CCTV cameras, webcams', r:'18%'},
+  {t:'goods', c:'8528', d:'Monitors, projectors, television sets (LED TV, smart TV)', r:'18%'},
+  {t:'goods', c:'8544', d:'Insulated wire, cable — electric wires, cables', r:'18%'},
+  {t:'goods', c:'8603', d:'Railway passenger coaches, freight wagons', r:'5%'},
+  {t:'goods', c:'8703', d:'Motor cars, sedans, SUVs — passenger vehicles', r:'18% (small) / 40% (large/luxury)'},
+  {t:'goods', c:'8704', d:'Motor vehicles for transport of goods — trucks, lorries', r:'18%'},
+  {t:'goods', c:'8706', d:'Chassis fitted with engines for motor vehicles', r:'28%'},
+  {t:'goods', c:'8711', d:'Motorcycles, scooters, mopeds — two-wheelers', r:'18%'},
+  {t:'goods', c:'8712', d:'Bicycles, cycles with or without motor', r:'5%'},
+  {t:'goods', c:'8716', d:'Trailers, semi-trailers, handcarts, auto-rickshaws', r:'18%'},
+  {t:'goods', c:'8802', d:'Aircraft — aeroplanes, helicopters, gliders', r:'5%'},
+  {t:'goods', c:'8901', d:'Cruise ships, ferries, cargo vessels, fishing vessels', r:'5%'},
+  {t:'goods', c:'9003', d:'Frames and mountings for spectacles, goggles', r:'18%'},
+  {t:'goods', c:'9004', d:'Spectacles, goggles and the like — corrective, protective', r:'5%'},
+  {t:'goods', c:'9018', d:'Medical instruments — surgical, dental, veterinary instruments', r:'12%'},
+  {t:'goods', c:'9021', d:'Orthopaedic appliances, artificial body parts, hearing aids', r:'5%'},
+  {t:'goods', c:'9030', d:'Oscilloscopes, spectrum analysers, multimeters, electrical measuring instruments', r:'18%'},
+  {t:'goods', c:'9401', d:'Seats and chairs — office chairs, sofas, settees', r:'18%'},
+  {t:'goods', c:'9403', d:'Other furniture — tables, cupboards, wardrobes', r:'18%'},
+  {t:'goods', c:'9406', d:'Prefabricated buildings, portable cabins', r:'18%'},
+  {t:'goods', c:'9503', d:'Tricycles, scooters, pedal cars and similar toys', r:'12%'},
+  {t:'goods', c:'9504', d:'Video game consoles, gaming machines', r:'28%'},
+  {t:'goods', c:'9507', d:'Fishing rods, fish-hooks, fishing lines and accessories', r:'12%'},
+  {t:'goods', c:'9619', d:'Sanitary towels, tampons, diapers, napkins for babies', r:'Nil'},
+  {t:'goods', c:'9705', d:'Collections and collectors\' pieces — coins, stamps, archaeology', r:'12%'},
+
+  // ─── SERVICES ───
+  {t:'services', c:'9954', d:'Construction services — works contract, real estate construction, civil works', r:'1% / 5% / 18%'},
+  {t:'services', c:'9961', d:'Services in wholesale trade — wholesale dealers, distributors', r:'18%'},
+  {t:'services', c:'9962', d:'Services in retail trade — retail shops, supermarkets', r:'18%'},
+  {t:'services', c:'9963', d:'Accommodation and food services — restaurants, hotels, catering', r:'5% (restaurants) / 18% (AC/alcohol)'},
+  {t:'services', c:'9964', d:'Passenger transport — air travel, railways, bus, taxi, cab', r:'5% / 18%'},
+  {t:'services', c:'9965', d:'Goods transport — GTA, freight forwarders, courier logistics', r:'5% (no ITC) / 18% (with ITC)'},
+  {t:'services', c:'9966', d:'Vehicle rental and leasing services with operator — bus hire, car rental', r:'18%'},
+  {t:'services', c:'9967', d:'Supporting services in transport — loading, unloading, packing, clearing', r:'18%'},
+  {t:'services', c:'9968', d:'Postal and courier activities — speed post, private courier', r:'18%'},
+  {t:'services', c:'9971', d:'Financial and insurance services — banking fees, brokerage; health/life insurance: NIL (GST 2.0)', r:'Nil (insurance) / 18% (others)'},
+  {t:'services', c:'9972', d:'Real estate services — renting commercial property, property management', r:'18%'},
+  {t:'services', c:'9973', d:'Leasing or rental services without operator — machinery hire, equipment leasing', r:'18%'},
+  {t:'services', c:'9981', d:'Research and development services — scientific, technical research', r:'18%'},
+  {t:'services', c:'9982', d:'Legal services — lawyers, advocates, legal consulting', r:'18%'},
+  {t:'services', c:'9983', d:'IT services, software development, cloud services, SaaS, data processing', r:'18%'},
+  {t:'services', c:'9984', d:'Telecommunications and broadcasting — internet, mobile data, cable TV', r:'18%'},
+  {t:'services', c:'9985', d:'Support services — cleaning, security guards, packaging, event management', r:'18%'},
+  {t:'services', c:'9986', d:'Agricultural support services — irrigation, harvesting, pest control, warehouse', r:'Nil'},
+  {t:'services', c:'9987', d:'Maintenance and repair services — AC repair, vehicle servicing, computer repair', r:'18%'},
+  {t:'services', c:'9988', d:'Manufacturing services on physical inputs (job work) — textile, leather, printing', r:'5% / 18%'},
+  {t:'services', c:'9989', d:'Other manufacturing services — photography, printing, engraving', r:'18%'},
+  {t:'services', c:'9991', d:'Government and public administration services — public utilities', r:'Nil'},
+  {t:'services', c:'9992', d:'Education services — schools, colleges, vocational training, coaching institutes', r:'Nil'},
+  {t:'services', c:'9993', d:'Human health and social care — hospitals, doctors, clinics, diagnostic labs', r:'Nil'},
+  {t:'services', c:'9994', d:'Sewage, waste collection, treatment and disposal services', r:'Nil'},
+  {t:'services', c:'9995', d:'Membership organisation services — trade associations, clubs, unions', r:'18%'},
+  {t:'services', c:'9996', d:'Recreational, cultural and sporting services — cinema, events, sport facilities', r:'18%'},
+  {t:'services', c:'9997', d:'Other services — gyms, fitness centres, salons, barbers, spas, yoga centres', r:'5%'},
+  {t:'services', c:'9998', d:'Domestic household worker services — maids, cooks, drivers', r:'Nil'},
+  {t:'services', c:'9999', d:'Services provided by Central or State Government — regulatory fees, fines', r:'Nil'},
 ];
 
-function rateClass(r) {
-  if (!r || r === 'Nil') return 'nil';
-  if (r.includes('40'))  return 'r40';
-  if (r.includes('18'))  return 'r18';
-  if (r.includes('5'))   return 'r5';
-  return '';
+function rClass(r) {
+  if (!r) return '';
+  if (/nil/i.test(r) || r === '0%')  return 'h-nil';
+  if (/40/.test(r))  return 'h-40';
+  if (/28/.test(r))  return 'h-28';
+  if (/18/.test(r))  return 'h-18';
+  if (/12/.test(r))  return 'h-12';
+  if (/5/.test(r))   return 'h-5';
+  if (/3/.test(r))   return 'h-3';
+  return 'h-sp';
 }
 
-let hsnTab = 'goods';
-function setTab(t) {
-  hsnTab = t;
-  document.getElementById('tabG').classList.toggle('on', t === 'goods');
-  document.getElementById('tabS').classList.toggle('on', t === 'services');
-  document.getElementById('hsnInp').placeholder = t === 'goods'
+let hTab = 'goods';
+function setHTab(t) {
+  hTab = t;
+  document.getElementById('hTabG').classList.toggle('on', t === 'goods');
+  document.getElementById('hTabS').classList.toggle('on', t === 'services');
+  const inp = document.getElementById('hInp');
+  inp.placeholder = t === 'goods'
     ? 'HSN code or description — e.g. 8528 or television…'
     : 'SAC code or description — e.g. 9983 or software…';
-  document.getElementById('hsnInp').value = '';
-  document.getElementById('hsnOut').innerHTML = '';
+  inp.value = '';
+  document.getElementById('hOut').innerHTML = '';
+  inp.focus();
 }
 
 function doHSN() {
-  const q   = document.getElementById('hsnInp').value.trim().toLowerCase();
-  const out = document.getElementById('hsnOut');
+  const q   = document.getElementById('hInp').value.trim().toLowerCase();
+  const out = document.getElementById('hOut');
   if (q.length < 2) { out.innerHTML = ''; return; }
 
   const hits = HSN
-    .filter(h => h.t === hsnTab)
-    .filter(h => h.c.startsWith(q) || h.d.toLowerCase().includes(q))
-    .slice(0, 7);
+    .filter(h => h.t === hTab)
+    .filter(h => h.c.includes(q) || h.d.toLowerCase().includes(q))
+    .slice(0, 8);
 
   if (!hits.length) {
-    out.innerHTML = `<div class="hsn-empty">No results for "<b>${q}</b>". Try a broader term or use the <a href="https://services.gst.gov.in/services/searchhsnsac" target="_blank" style="color:var(--blue)">official GSTN search</a>.</div>`;
+    out.innerHTML = `<div class="h-empty">No results for "<b>${q}</b>". Try a broader term or check <a href="https://services.gst.gov.in/services/searchhsnsac" target="_blank" style="color:var(--blue)">official GSTN search →</a></div>`;
     return;
   }
 
   out.innerHTML = hits.map(h => `
-    <div class="hsn-item">
-      <div class="hi-code">${h.t === 'goods' ? 'HSN' : 'SAC'} ${h.c}</div>
-      <div class="hi-desc">${h.d}</div>
-      <span class="hi-rate ${rateClass(h.r)}">GST: ${h.r}</span>
+    <div class="h-item">
+      <span class="h-code">${h.t === 'goods' ? 'HSN' : 'SAC'} ${h.c}</span>
+      <div class="h-desc">${h.d}</div>
+      <span class="h-rate ${rClass(h.r)}">GST: ${h.r}</span>
     </div>`).join('');
 }
 
-/* ════════════ FOREX RATES ════════════ */
+/* ══════════════════════════════════════════
+   LIVE FOREX RATES
+   ══════════════════════════════════════════ */
 const CCYS = [
   {code:'USD', name:'US Dollar',     flag:'🇺🇸'},
   {code:'EUR', name:'Euro',          flag:'🇪🇺'},
@@ -697,10 +680,8 @@ const CCYS = [
 async function doForex() {
   const grid   = document.getElementById('fxGrid');
   const timeEl = document.getElementById('fxTime');
-  const rbiEl  = document.getElementById('fxRbi');
-
-  // Show skeletons
-  grid.innerHTML = Array(8).fill('<div class="fx-skeleton"></div>').join('');
+  const foot   = document.getElementById('fxFoot');
+  grid.innerHTML = Array(8).fill('<div class="fx-sk"></div>').join('');
   timeEl.textContent = 'Fetching live rates…';
 
   const syms = CCYS.map(c => c.code).join(',');
@@ -721,61 +702,34 @@ async function doForex() {
   }
 
   if (!rates) {
-    grid.innerHTML = `<div class="fx-err">
-      Could not load live rates. Check
-      <a href="https://www.rbi.org.in/Scripts/ReferenceRateArchive.aspx" target="_blank" style="color:var(--blue)">RBI Reference Rates →</a>
-    </div>`;
+    grid.innerHTML = `<div class="fx-err">Could not load rates. Try <a href="https://www.rbi.org.in/Scripts/ReferenceRateArchive.aspx" target="_blank" style="color:var(--blue)">RBI Reference Rates →</a></div>`;
     timeEl.textContent = 'Rates unavailable';
     return;
   }
 
   const now = new Date();
   timeEl.textContent = `Updated ${now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})} IST`;
-  rbiEl.innerHTML = `Indicative only · <a href="https://www.rbi.org.in/Scripts/ReferenceRateArchive.aspx" target="_blank" style="color:var(--blue)">Official RBI Rates ↗</a>`;
+  foot.innerHTML = `Indicative only · <a href="https://www.rbi.org.in/Scripts/ReferenceRateArchive.aspx" target="_blank" style="color:var(--blue)">Official RBI Rates ↗</a>`;
 
+  // Frankfurter from=INR: rates[USD] = how many USD per 1 INR → invert for ₹ per 1 USD
   grid.innerHTML = CCYS.map(c => {
-    const rawRate = rates[c.code];
-    if (!rawRate) return '';
-    // API gives INR per 1 foreign: 1/rawRate if from=INR
-    // Frankfurter from=INR gives how much of target you get per 1 INR
-    // So 1 USD = 1/rate INR
-    const inrPer1 = (1 / rawRate);
-    const display = c.code === 'JPY'
-      ? inrPer1.toFixed(3)
-      : inrPer1.toFixed(2);
-
+    const r = rates[c.code];
+    if (!r) return '';
+    const inrPer1 = (1 / r).toFixed(c.code === 'JPY' ? 3 : 2);
     return `<div class="fx-row">
-      <div class="fx-ccy">
+      <div class="fx-left">
         <span class="fx-flag">${c.flag}</span>
-        <div>
-          <span class="fx-code">${c.code}</span>
-          <span class="fx-name">${c.name}</span>
-        </div>
+        <div><span class="fx-code">${c.code}</span><span class="fx-name">${c.name}</span></div>
       </div>
-      <div class="fx-amount">
-        <span class="big">₹${display}</span>
+      <div class="fx-right">
+        <span class="big">₹${inrPer1}</span>
         <span class="sm">per 1 ${c.code}</span>
       </div>
     </div>`;
   }).join('');
 }
 
-/* ════════════ FILTER TABS ════════════ */
-document.querySelectorAll('.ftab').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.ftab').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    const f = btn.dataset.f;
-    document.querySelectorAll('.bc').forEach(c => {
-      c.style.display = (f === 'all' || c.dataset.f === f) ? '' : 'none';
-    });
-  });
-});
-
-/* ════════════ INIT ════════════ */
-document.addEventListener('DOMContentLoaded', () => {
-  doForex();
-});
+document.addEventListener('DOMContentLoaded', () => doForex());
 </script>
 </body>
 </html>
