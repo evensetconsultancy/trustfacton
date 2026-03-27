@@ -4,19 +4,56 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Companies Act 2013 — TrustFactON</title>
+  <meta name="description" content="Companies Act 2013 — incorporation, directors, meetings, audit, CSR, MCA filings. Plain language guide for CA, CS, CFO and business owners.">
   <link rel="stylesheet" href="style.css">
-  <style>:root{--act-color:#1A3A6B;}</style>
+  <style>
+    :root { --act-color: #1A3A6B; }
+    .tbl-wrap{overflow-x:auto;border-radius:var(--radius);border:1px solid var(--gray-3);margin-top:14px;}
+    .atbl{width:100%;border-collapse:collapse;font-size:0.82rem;min-width:500px;}
+    .atbl thead th{background:var(--navy);color:white;padding:9px 12px;text-align:left;font-weight:600;font-size:0.76rem;}
+    .atbl tbody td{padding:8px 12px;border-bottom:1px solid var(--gray-2);color:var(--gray-6);vertical-align:top;line-height:1.5;}
+    .atbl tbody tr:hover td{background:var(--gray-1);}
+    .atbl tbody tr:last-child td{border-bottom:none;}
+    .atbl .hl td{background:#EFF6FF!important;}
+    .rate-cell{font-weight:700;color:var(--red);}
+    .nil-cell{color:var(--green);font-weight:600;}
+    .sec-ref{font-family:monospace;font-size:0.72rem;background:var(--gray-2);color:var(--gray-5);padding:1px 6px;border-radius:4px;}
+    .panel-content{padding:32px 0;}
+    .panel-intro{color:var(--gray-5);margin-top:6px;max-width:720px;font-size:0.9rem;line-height:1.7;}
+    .ib{padding:10px 14px;border-radius:var(--radius);margin:10px 0;font-size:0.82rem;border-left:3px solid;line-height:1.7;}
+    .ib.blue{background:#EFF6FF;border-color:var(--blue);color:#1E40AF;}
+    .ib.green{background:#F0FDF4;border-color:var(--green);color:#166534;}
+    .ib.amber{background:#FFFBEB;border-color:var(--amber);color:#92400E;}
+    .ib.red{background:#FEF2F2;border-color:var(--red);color:#991B1B;}
+    .ib strong{display:block;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;}
+    .two-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;}
+    .three-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:14px;}
+    .info-card{background:white;border:1px solid var(--gray-3);border-radius:var(--radius);padding:15px;}
+    .info-card h4{font-size:0.88rem;color:var(--black);margin-bottom:8px;}
+    .info-card p,.info-card li{font-size:0.81rem;color:var(--gray-5);line-height:1.7;}
+    .info-card ul{padding-left:15px;margin-top:4px;}
+    .sh{margin-top:24px;margin-bottom:8px;color:var(--black);font-size:1rem;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+    .src-box{background:var(--gray-1);border:1px solid var(--gray-3);border-radius:var(--radius);padding:13px 15px;margin-top:28px;}
+    .src-box h4{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--gray-5);margin-bottom:8px;}
+    .src-links{display:flex;flex-wrap:wrap;gap:7px;}
+    .src-link{display:inline-flex;align-items:center;gap:4px;font-size:0.77rem;color:var(--blue);border:1px solid #BFDBFE;border-radius:var(--radius);padding:4px 11px;text-decoration:none;background:white;transition:all 0.15s;}
+    .src-link:hover{background:var(--blue);color:white;}
+    @media(max-width:768px){.two-grid,.three-grid{grid-template-columns:1fr;}}
+  </style>
 </head>
 <body>
 <div id="nav-placeholder"></div>
 
 <section class="act-hero">
   <div class="container">
-    <div class="act-hero-badge">Companies Act 2013</div>
-    <h1>Companies Act 2013 <span>MCA · NCLT</span></h1>
-    <p>Incorporation, directors, meetings, audit, CSR, and annual filings — all MCA compliance in plain language.</p>
+    <div class="act-hero-badge">🏢 Corporate Law · MCA · NCLT</div>
+    <h1>Companies Act <span>2013</span></h1>
+    <p>Governs incorporation, management, governance, audit, CSR, and winding up of companies in India. Administered by Ministry of Corporate Affairs (MCA). NCLT is the adjudicating authority.</p>
     <div class="act-hero-stats">
-      <div class="act-stat"><span class="v">470</span><span class="l">Sections</span></div> <div class="act-stat"><span class="v">MCA21</span><span class="l">Filing Portal</span></div> <div class="act-stat"><span class="v">NCLT</span><span class="l">Adjudicating</span></div> <div class="act-stat"><span class="v">7</span><span class="l">Schedules</span></div>
+      <div class="act-stat"><span class="v">470</span><span class="l">Sections</span></div>
+      <div class="act-stat"><span class="v">MCA21</span><span class="l">Filing Portal</span></div>
+      <div class="act-stat"><span class="v">NCLT</span><span class="l">Adjudicating Authority</span></div>
+      <div class="act-stat"><span class="v">7</span><span class="l">Schedules</span></div>
     </div>
   </div>
 </section>
@@ -28,22 +65,26 @@
       <div class="topic-select-wrap">
         <select class="topic-select" id="topicSelect" onchange="showTopic(this.value)">
           <option value="">— Choose a topic —</option>
-          <option value="types">Types of Companies</option>
-<option value="incorporation">Incorporation Process</option>
-<option value="directors">Directors & KMPs</option>
-<option value="meetings">Board & General Meetings</option>
-<option value="audit">Audit & Accounts</option>
-<option value="csr">CSR Obligations</option>
-<option value="filings">Annual MCA Filings</option>
-<option value="penalties">Penalties & Offences</option>
+          <option value="types">🏢 Types of Companies</option>
+          <option value="incorporation">📝 Incorporation Process</option>
+          <option value="directors">👤 Directors & KMPs</option>
+          <option value="meetings">📅 Board & General Meetings</option>
+          <option value="audit">📊 Audit & Accounts</option>
+          <option value="csr">🌱 CSR Obligations</option>
+          <option value="filings">📋 Annual MCA Filings</option>
+          <option value="penalties">⚠️ Penalties & Offences</option>
           <option value="links">🔗 Official Links</option>
           <option value="chat">🤖 Ask AI</option>
         </select>
         <span class="topic-arrow">▼</span>
       </div>
       <div class="topic-chips">
-        <button class="topic-chip" onclick="showTopic('types')">Types of Companies</button> <button class="topic-chip" onclick="showTopic('incorporation')">Incorporation Process</button> <button class="topic-chip" onclick="showTopic('directors')">Directors & KMPs</button> <button class="topic-chip" onclick="showTopic('meetings')">Board & General Meetings</button> <button class="topic-chip" onclick="showTopic('audit')">Audit & Accounts</button>
-        <button class="topic-chip" onclick="showTopic('links')">🔗 Links</button>
+        <button class="topic-chip" onclick="showTopic('types')">🏢 Co Types</button>
+        <button class="topic-chip" onclick="showTopic('directors')">👤 Directors</button>
+        <button class="topic-chip" onclick="showTopic('meetings')">📅 Meetings</button>
+        <button class="topic-chip" onclick="showTopic('audit')">📊 Audit</button>
+        <button class="topic-chip" onclick="showTopic('csr')">🌱 CSR</button>
+        <button class="topic-chip" onclick="showTopic('filings')">📋 Filings</button>
         <button class="topic-chip" onclick="showTopic('chat')">🤖 Ask AI</button>
       </div>
     </div>
@@ -51,172 +92,523 @@
 </div>
 
 <div id="panels-wrap" style="background:var(--light);min-height:480px;">
-  <div class="container">
+<div class="container">
 
-    <div class="topic-panel active" id="panel-welcome" style="padding:48px 0;text-align:center">
-      <h2 style="color:var(--black);margin-bottom:10px">What would you like to know about Companies Act 2013?</h2>
-      <p style="color:var(--gray-5);max-width:440px;margin:0 auto 32px">Choose a topic from the dropdown above or click a quick topic below.</p>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;max-width:840px;margin:0 auto;text-align:left">
-        <div class="quick-card" onclick="showTopic('types')"><div class="icon">📄</div><div><h4>Types of Companies</h4><p>Tap to explore</p></div></div>
-<div class="quick-card" onclick="showTopic('incorporation')"><div class="icon">📄</div><div><h4>Incorporation Process</h4><p>Tap to explore</p></div></div>
-<div class="quick-card" onclick="showTopic('directors')"><div class="icon">📄</div><div><h4>Directors & KMPs</h4><p>Tap to explore</p></div></div>
-<div class="quick-card" onclick="showTopic('meetings')"><div class="icon">📄</div><div><h4>Board & General Meetings</h4><p>Tap to explore</p></div></div>
-<div class="quick-card" onclick="showTopic('audit')"><div class="icon">📄</div><div><h4>Audit & Accounts</h4><p>Tap to explore</p></div></div>
-<div class="quick-card" onclick="showTopic('csr')"><div class="icon">📄</div><div><h4>CSR Obligations</h4><p>Tap to explore</p></div></div>
-<div class="quick-card" onclick="showTopic('filings')"><div class="icon">📄</div><div><h4>Annual MCA Filings</h4><p>Tap to explore</p></div></div>
-<div class="quick-card" onclick="showTopic('penalties')"><div class="icon">📄</div><div><h4>Penalties & Offences</h4><p>Tap to explore</p></div></div>
-        <div class="quick-card" onclick="showTopic('links')"><div class="icon">🔗</div><div><h4>Official Links</h4><p>Government portals</p></div></div>
-        <div class="quick-card" onclick="showTopic('chat')"><div class="icon">🤖</div><div><h4>Ask AI</h4><p>Get instant answer</p></div></div>
-      </div>
-    </div>
-
-    
-    <div class="topic-panel" id="panel-types">
-      <div style="padding:32px 0">
-        <span class="panel-label">Types of Companies</span>
-        <div class="panel-header"><h2>Types of Companies</h2><p style="color:var(--gray-5);margin-top:6px">Key provisions under Companies Act 2013.</p></div>
-        <div class="info-box blue" style="margin-top:16px">Use the AI assistant for detailed answers on Types of Companies, or visit Official Links above for the complete statutory text.</div>
-        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
-          <button class="btn btn-blue" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Types of Companies under Companies Act 2013';window._tfChat.send();}},300)">Ask AI about Types of Companies →</button>
-          <button class="btn btn-white" onclick="showTopic('links')">Official Sources →</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="topic-panel" id="panel-incorporation">
-      <div style="padding:32px 0">
-        <span class="panel-label">Incorporation Process</span>
-        <div class="panel-header"><h2>Incorporation Process</h2><p style="color:var(--gray-5);margin-top:6px">Key provisions under Companies Act 2013.</p></div>
-        <div class="info-box blue" style="margin-top:16px">Use the AI assistant for detailed answers on Incorporation Process, or visit Official Links above for the complete statutory text.</div>
-        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
-          <button class="btn btn-blue" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Incorporation Process under Companies Act 2013';window._tfChat.send();}},300)">Ask AI about Incorporation Process →</button>
-          <button class="btn btn-white" onclick="showTopic('links')">Official Sources →</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="topic-panel" id="panel-directors">
-      <div style="padding:32px 0">
-        <span class="panel-label">Directors & KMPs</span>
-        <div class="panel-header"><h2>Directors & KMPs</h2><p style="color:var(--gray-5);margin-top:6px">Key provisions under Companies Act 2013.</p></div>
-        <div class="info-box blue" style="margin-top:16px">Use the AI assistant for detailed answers on Directors & KMPs, or visit Official Links above for the complete statutory text.</div>
-        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
-          <button class="btn btn-blue" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Directors & KMPs under Companies Act 2013';window._tfChat.send();}},300)">Ask AI about Directors & KMPs →</button>
-          <button class="btn btn-white" onclick="showTopic('links')">Official Sources →</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="topic-panel" id="panel-meetings">
-      <div style="padding:32px 0">
-        <span class="panel-label">Board & General Meetings</span>
-        <div class="panel-header"><h2>Board & General Meetings</h2><p style="color:var(--gray-5);margin-top:6px">Key provisions under Companies Act 2013.</p></div>
-        <div class="info-box blue" style="margin-top:16px">Use the AI assistant for detailed answers on Board & General Meetings, or visit Official Links above for the complete statutory text.</div>
-        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
-          <button class="btn btn-blue" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Board & General Meetings under Companies Act 2013';window._tfChat.send();}},300)">Ask AI about Board & General Meetings →</button>
-          <button class="btn btn-white" onclick="showTopic('links')">Official Sources →</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="topic-panel" id="panel-audit">
-      <div style="padding:32px 0">
-        <span class="panel-label">Audit & Accounts</span>
-        <div class="panel-header"><h2>Audit & Accounts</h2><p style="color:var(--gray-5);margin-top:6px">Key provisions under Companies Act 2013.</p></div>
-        <div class="info-box blue" style="margin-top:16px">Use the AI assistant for detailed answers on Audit & Accounts, or visit Official Links above for the complete statutory text.</div>
-        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
-          <button class="btn btn-blue" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Audit & Accounts under Companies Act 2013';window._tfChat.send();}},300)">Ask AI about Audit & Accounts →</button>
-          <button class="btn btn-white" onclick="showTopic('links')">Official Sources →</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="topic-panel" id="panel-csr">
-      <div style="padding:32px 0">
-        <span class="panel-label">CSR Obligations</span>
-        <div class="panel-header"><h2>CSR Obligations</h2><p style="color:var(--gray-5);margin-top:6px">Key provisions under Companies Act 2013.</p></div>
-        <div class="info-box blue" style="margin-top:16px">Use the AI assistant for detailed answers on CSR Obligations, or visit Official Links above for the complete statutory text.</div>
-        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
-          <button class="btn btn-blue" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain CSR Obligations under Companies Act 2013';window._tfChat.send();}},300)">Ask AI about CSR Obligations →</button>
-          <button class="btn btn-white" onclick="showTopic('links')">Official Sources →</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="topic-panel" id="panel-filings">
-      <div style="padding:32px 0">
-        <span class="panel-label">Annual MCA Filings</span>
-        <div class="panel-header"><h2>Annual MCA Filings</h2><p style="color:var(--gray-5);margin-top:6px">Key provisions under Companies Act 2013.</p></div>
-        <div class="info-box blue" style="margin-top:16px">Use the AI assistant for detailed answers on Annual MCA Filings, or visit Official Links above for the complete statutory text.</div>
-        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
-          <button class="btn btn-blue" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Annual MCA Filings under Companies Act 2013';window._tfChat.send();}},300)">Ask AI about Annual MCA Filings →</button>
-          <button class="btn btn-white" onclick="showTopic('links')">Official Sources →</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="topic-panel" id="panel-penalties">
-      <div style="padding:32px 0">
-        <span class="panel-label">Penalties & Offences</span>
-        <div class="panel-header"><h2>Penalties & Offences</h2><p style="color:var(--gray-5);margin-top:6px">Key provisions under Companies Act 2013.</p></div>
-        <div class="info-box blue" style="margin-top:16px">Use the AI assistant for detailed answers on Penalties & Offences, or visit Official Links above for the complete statutory text.</div>
-        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
-          <button class="btn btn-blue" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Penalties & Offences under Companies Act 2013';window._tfChat.send();}},300)">Ask AI about Penalties & Offences →</button>
-          <button class="btn btn-white" onclick="showTopic('links')">Official Sources →</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="topic-panel" id="panel-links">
-      <div style="padding:32px 0">
-        <span class="panel-label">Official Sources</span>
-        <div class="panel-header"><h2>Government Portals</h2><p style="color:var(--gray-5);margin-top:6px">All information is sourced from these official portals. Visit for complete and current data.</p></div>
-        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:20px">
-          <a href="https://www.mca.gov.in" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:white;border:1px solid var(--gray-3);border-radius:var(--radius);font-size:0.8rem;color:var(--navy);font-weight:500;transition:all 0.15s;text-decoration:none" onmouseover="this.style.borderColor='var(--blue)';this.style.color='var(--blue)'" onmouseout="this.style.borderColor='var(--gray-3)';this.style.color='var(--navy)'">MCA Portal ↗</a> <a href="https://www.mca.gov.in/content/mca/global/en/mca/e-filing/e-filing.html" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:white;border:1px solid var(--gray-3);border-radius:var(--radius);font-size:0.8rem;color:var(--navy);font-weight:500;transition:all 0.15s;text-decoration:none" onmouseover="this.style.borderColor='var(--blue)';this.style.color='var(--blue)'" onmouseout="this.style.borderColor='var(--gray-3)';this.style.color='var(--navy)'">MCA E-Filing ↗</a> <a href="https://www.mca.gov.in/content/mca/global/en/acts-rules/ebooks/acts.html" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:white;border:1px solid var(--gray-3);border-radius:var(--radius);font-size:0.8rem;color:var(--navy);font-weight:500;transition:all 0.15s;text-decoration:none" onmouseover="this.style.borderColor='var(--blue)';this.style.color='var(--blue)'" onmouseout="this.style.borderColor='var(--gray-3)';this.style.color='var(--navy)'">Companies Act Text ↗</a>
-        </div>
-        <div class="info-box blue" style="margin-top:20px"><strong>About TrustFactON</strong>We summarise official government content in plain language. For the full text of law, always refer to official portals above. Built by Evenset Consultancy Services, Bengaluru.</div>
-      </div>
-    </div>
-
-    <div class="topic-panel" id="panel-chat">
-      <div style="padding:32px 0">
-        <span class="panel-label">AI Assistant</span>
-        <div class="panel-header"><h2>Ask About Companies Act 2013</h2><p style="color:var(--gray-5);margin-top:6px">Free for all users. No login required. Powered by Google Gemini.</p></div>
-        <div class="chat-container" id="chat-widget" data-act="Companies Act 2013 and MCA Rules" style="max-width:760px;margin-top:24px">
-          <div class="chat-header">
-            <div class="chat-avatar">TF</div>
-            <div class="chat-header-info">
-              <h4>Companies Act 2013 AI</h4>
-              <span><span class="online-dot"></span>Powered by Google Gemini · Free · No login</span>
-            </div>
-          </div>
-          <div class="chat-messages"></div>
-          <div class="chat-suggestions">
-            <button class="chat-suggest-btn">Due date for MGT-7 annual return?</button> <button class="chat-suggest-btn">Director disqualification u/s 164?</button> <button class="chat-suggest-btn">CSR applicability — which companies?</button> <button class="chat-suggest-btn">OPC vs Private Limited — key differences?</button>
-          </div>
-          <div class="chat-input-row">
-            <textarea class="chat-input" rows="1" placeholder="Ask anything about Companies Act 2013..."></textarea>
-            <button class="chat-send-btn"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
-          </div>
-        </div>
-      </div>
-    </div>
-
+<!-- WELCOME -->
+<div class="topic-panel active" id="panel-welcome" style="padding:48px 0;text-align:center">
+  <h2 style="color:var(--black);margin-bottom:10px">What would you like to know about Companies Act?</h2>
+  <p style="color:var(--gray-5);max-width:440px;margin:0 auto 32px">Select a topic above or click a quick card below.</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:10px;max-width:860px;margin:0 auto;text-align:left">
+    <div class="quick-card" onclick="showTopic('types')"><div class="icon">🏢</div><div><h4>Types of Companies</h4><p>OPC, Pvt, Public, LLP</p></div></div>
+    <div class="quick-card" onclick="showTopic('incorporation')"><div class="icon">📝</div><div><h4>Incorporation Process</h4><p>Step-by-step</p></div></div>
+    <div class="quick-card" onclick="showTopic('directors')"><div class="icon">👤</div><div><h4>Directors & KMPs</h4><p>Appointment, removal</p></div></div>
+    <div class="quick-card" onclick="showTopic('meetings')"><div class="icon">📅</div><div><h4>Meetings</h4><p>Board, AGM, EGM rules</p></div></div>
+    <div class="quick-card" onclick="showTopic('audit')"><div class="icon">📊</div><div><h4>Audit & Accounts</h4><p>Mandatory audit rules</p></div></div>
+    <div class="quick-card" onclick="showTopic('csr')"><div class="icon">🌱</div><div><h4>CSR Obligations</h4><p>Who must spend & how</p></div></div>
+    <div class="quick-card" onclick="showTopic('filings')"><div class="icon">📋</div><div><h4>Annual MCA Filings</h4><p>All e-forms & due dates</p></div></div>
+    <div class="quick-card" onclick="showTopic('penalties')"><div class="icon">⚠️</div><div><h4>Penalties & Offences</h4><p>Default consequences</p></div></div>
+    <div class="quick-card" onclick="showTopic('links')"><div class="icon">🔗</div><div><h4>Official Links</h4><p>MCA portals</p></div></div>
+    <div class="quick-card" onclick="showTopic('chat')"><div class="icon">🤖</div><div><h4>Ask AI</h4><p>Instant answers</p></div></div>
   </div>
 </div>
 
-<section class="newsletter-section">
-  <div class="container">
-    <div class="newsletter-inner">
-      <span class="sec-label">Stay Updated</span>
-      <h2 class="sec-title" style="margin-bottom:8px">Companies Act 2013 Updates</h2>
-      <p class="sec-sub" style="margin-bottom:24px">Law changes, circulars, and compliance alerts weekly.</p>
-      <div class="newsletter-form">
-        <input type="email" placeholder="your@email.com">
-        <button onclick="window.open('https://trustfacton.beehiiv.com/subscribe','_blank')">Subscribe →</button>
-      </div>
+<!-- TYPES OF COMPANIES -->
+<div class="topic-panel" id="panel-types">
+<div class="panel-content">
+  <span class="panel-label">Companies Act 2013</span>
+  <h2>Types of Companies</h2>
+  <p class="panel-intro">Companies in India can be incorporated in various forms under the Companies Act 2013. Each type has different requirements for members, directors, capital, and compliance.</p>
+
+  <div class="tbl-wrap">
+    <table class="atbl">
+      <thead><tr><th>Type</th><th>Min Members</th><th>Max Members</th><th>Min Directors</th><th>Key Feature</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td>One Person Company (OPC) <span class="sec-ref">Sec 2(62)</span></td><td>1</td><td>1</td><td>1</td><td>Single person company; nominee mandatory; automatic conversion if turnover &gt; ₹2 Cr or paid-up capital &gt; ₹50L</td></tr>
+        <tr><td>Private Limited Company <span class="sec-ref">Sec 2(68)</span></td><td>2</td><td>200</td><td>2</td><td>Restricted share transfer; most common startup structure; private placement of shares</td></tr>
+        <tr class="hl"><td>Public Limited Company <span class="sec-ref">Sec 2(71)</span></td><td>7</td><td>Unlimited</td><td>3</td><td>Shares freely transferable; can be listed on stock exchange; more disclosures required</td></tr>
+        <tr><td>Section 8 Company (NGO) <span class="sec-ref">Sec 8</span></td><td>2 (Pvt) / 7 (Public)</td><td>Per type</td><td>2 / 3</td><td>Formed for charitable purposes; profits must go back to the purpose; no dividend</td></tr>
+        <tr class="hl"><td>Producer Company <span class="sec-ref">Sec 378A</span></td><td>10 individuals / 2 institutions</td><td>Unlimited</td><td>5</td><td>For farmers, producers of primary produce; cooperative-like structure</td></tr>
+        <tr><td>Nidhi Company <span class="sec-ref">Sec 406</span></td><td>200 within 1 year</td><td>—</td><td>3</td><td>Mutual benefit society; borrows and lends only among members</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sh">OPC vs Private Limited — Quick Comparison</h3>
+  <div class="two-grid">
+    <div class="info-card">
+      <h4>🏢 OPC (One Person Company)</h4>
+      <ul>
+        <li>Single founder — complete control</li>
+        <li>Limited liability protection</li>
+        <li>No AGM required</li>
+        <li>Board meeting — minimum 1 per half year</li>
+        <li>Automatic conversion if turnover &gt; ₹2 crore</li>
+        <li>Cannot do NBFC, investment company activity</li>
+        <li>Cannot issue shares to public</li>
+        <li>Nominee mandatory at incorporation</li>
+      </ul>
+    </div>
+    <div class="info-card">
+      <h4>🏢 Private Limited Company</h4>
+      <ul>
+        <li>Minimum 2 shareholders / 2 directors</li>
+        <li>Max 200 shareholders</li>
+        <li>Limited liability for all members</li>
+        <li>Easier to raise funding (Angels, VCs)</li>
+        <li>AGM mandatory every year</li>
+        <li>Board meeting — min 4 per year</li>
+        <li>Shares cannot be listed on stock exchange</li>
+        <li>Preferred structure for startups</li>
+      </ul>
     </div>
   </div>
+
+  <div class="src-box"><h4>📎 Official Sources</h4><div class="src-links">
+    <a href="https://www.mca.gov.in" target="_blank" class="src-link">MCA Portal ↗</a>
+    <a href="https://www.mca.gov.in/content/mca/global/en/acts-rules/ebooks/acts.html" target="_blank" class="src-link">Companies Act 2013 Text ↗</a>
+  </div></div>
+</div></div>
+
+<!-- INCORPORATION -->
+<div class="topic-panel" id="panel-incorporation">
+<div class="panel-content">
+  <span class="panel-label">Companies Act 2013</span>
+  <h2>Incorporation Process</h2>
+  <p class="panel-intro">Incorporating a company in India is done entirely online through the MCA21 portal. The process typically takes 7–15 working days.</p>
+
+  <h3 class="sh">Step-by-Step Incorporation <span class="sec-ref">Sec 3–22 Companies Act 2013</span></h3>
+  <div class="tbl-wrap">
+    <table class="atbl">
+      <thead><tr><th>Step</th><th>What to Do</th><th>Form / Portal</th><th>Time</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Obtain DSC (Digital Signature Certificate) for all directors</td><td>MCA-approved agencies (eMudhra, Sify etc.)</td><td>1–2 days</td></tr>
+        <tr class="hl"><td>2</td><td>Apply for DIN (Director Identification Number) or use existing</td><td>Included in SPICe+ form</td><td>—</td></tr>
+        <tr><td>3</td><td>Name approval (optional — if using RUN form) or directly in SPICe+</td><td>RUN (Reserve Unique Name) or SPICe+</td><td>1–3 days</td></tr>
+        <tr class="hl"><td>4</td><td>File SPICe+ (Simplified Proforma for Incorporating Company Electronically)</td><td>SPICe+ (Form INC-32) on MCA portal</td><td>3–7 days</td></tr>
+        <tr><td>5</td><td>Draft MoA (Memorandum of Association) & AoA (Articles of Association)</td><td>eMoA (INC-33) + eAoA (INC-34) — linked to SPICe+</td><td>Part of SPICe+</td></tr>
+        <tr class="hl"><td>6</td><td>Apply for PAN, TAN, EPFO, ESIC, Bank account, GST (via AGILE-PRO-S)</td><td>AGILE-PRO-S (Form INC-35) — linked to SPICe+</td><td>Part of SPICe+</td></tr>
+        <tr><td>7</td><td>Certificate of Incorporation issued</td><td>Emailed by RoC; CIN allotted</td><td>1–3 days</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sh">Documents Required for Incorporation</h3>
+  <div class="two-grid">
+    <div class="info-card">
+      <h4>📋 For Directors / Shareholders</h4>
+      <ul>
+        <li>PAN card (mandatory)</li>
+        <li>Aadhaar card</li>
+        <li>Passport-size photograph</li>
+        <li>Address proof (bank statement / utility bill — not older than 2 months)</li>
+        <li>Identity proof (passport / voter ID / driving licence)</li>
+        <li>Email ID and mobile number</li>
+      </ul>
+    </div>
+    <div class="info-card">
+      <h4>🏢 For Registered Office</h4>
+      <ul>
+        <li>Proof of ownership or rental agreement of premises</li>
+        <li>NOC from property owner (if rented)</li>
+        <li>Utility bill (electricity / water) of registered office</li>
+        <li>Address must be in India with complete PIN code</li>
+        <li>Can be a residential address initially</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="ib green"><strong>CIN — Corporate Identity Number</strong>Every company gets a unique 21-character CIN on incorporation. Format: L/U + 5-digit industry code + 2-letter state code + year of incorporation + PLC/PTC/OPC + 6-digit number. Example: U74999MH2020OPC123456.</div>
+
+  <div class="src-box"><h4>📎 Official Sources</h4><div class="src-links">
+    <a href="https://www.mca.gov.in/content/mca/global/en/mca/e-filing/e-filing.html" target="_blank" class="src-link">MCA e-Filing (SPICe+) ↗</a>
+    <a href="https://www.mca.gov.in" target="_blank" class="src-link">MCA Portal ↗</a>
+  </div></div>
+</div></div>
+
+<!-- DIRECTORS -->
+<div class="topic-panel" id="panel-directors">
+<div class="panel-content">
+  <span class="panel-label">Companies Act 2013</span>
+  <h2>Directors & Key Managerial Personnel (KMP)</h2>
+  <p class="panel-intro">Directors are responsible for managing the company. Key Managerial Personnel are the top executives. Companies Act 2013 defines roles, obligations, and liabilities of each.</p>
+
+  <h3 class="sh">Minimum Director Requirements</h3>
+  <div class="tbl-wrap">
+    <table class="atbl">
+      <thead><tr><th>Company Type</th><th>Min Directors</th><th>Max Directors</th><th>Special Requirement</th></tr></thead>
+      <tbody>
+        <tr><td>Private Limited</td><td>2</td><td>15 (more by special resolution)</td><td>At least 1 resident director (stayed 182+ days in India in previous calendar year)</td></tr>
+        <tr class="hl"><td>Public Limited</td><td>3</td><td>15</td><td>At least 1 resident director; at least 1 woman director (listed or turnover &gt; ₹300 Cr or paid-up capital &gt; ₹100 Cr)</td></tr>
+        <tr><td>OPC</td><td>1</td><td>15</td><td>Nominee must be designated at incorporation</td></tr>
+        <tr class="hl"><td>Listed Company</td><td>3</td><td>15</td><td>Min 1/3rd independent directors; at least 1 woman director; at least 1 resident director</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sh">Types of Directors <span class="sec-ref">Sec 149–165 Companies Act</span></h3>
+  <div class="two-grid">
+    <div class="info-card">
+      <h4>Types of Directors</h4>
+      <ul>
+        <li><strong>Executive Director</strong> — whole-time involvement, draws salary</li>
+        <li><strong>Non-Executive Director</strong> — part-time, not employed</li>
+        <li><strong>Independent Director</strong> — no material relationship with company, tenure 5+5 years</li>
+        <li><strong>Nominee Director</strong> — appointed by financial institution or lender</li>
+        <li><strong>Additional Director</strong> — holds office till next AGM</li>
+        <li><strong>Alternate Director</strong> — acts in place of original director during absence</li>
+      </ul>
+    </div>
+    <div class="info-card">
+      <h4>Key Managerial Personnel (KMPs) <span class="sec-ref">Sec 203</span></h4>
+      <ul>
+        <li>CEO / Managing Director / Manager</li>
+        <li>Company Secretary (mandatory if paid-up capital ≥ ₹5 crore for Pvt Ltd; all Public Ltd)</li>
+        <li>CFO (Chief Financial Officer)</li>
+        <li>Whole-Time Director</li>
+        <li>KMP appointment / resignation must be filed in MCA Form MGT-14 within 30 days</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 class="sh">Director Disqualification <span class="sec-ref">Sec 164 Companies Act</span></h3>
+  <div class="tbl-wrap">
+    <table class="atbl">
+      <thead><tr><th>Ground for Disqualification</th><th>Period</th></tr></thead>
+      <tbody>
+        <tr><td>Adjudged insolvent / declared unsound mind by court</td><td>Permanent (until restored)</td></tr>
+        <tr class="hl"><td>Convicted of offence involving moral turpitude (≥ 6 months imprisonment)</td><td>5 years from release</td></tr>
+        <tr><td>Convicted of offence under Companies Act 2013</td><td>Period of conviction + 5 years</td></tr>
+        <tr class="hl"><td>Company failed to file financial statements or annual return for 3 consecutive FYs</td><td>5 years from date of disqualification</td></tr>
+        <tr><td>Company failed to repay deposits / interest / debenture / dividend for 1+ year</td><td>5 years</td></tr>
+        <tr class="hl"><td>Not obtained DIN</td><td>Until DIN obtained</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="ib amber"><strong>⚠ MCA Disqualification Drive</strong>MCA periodically publishes lists of disqualified directors u/s 164(2). Directors of companies that have not filed financial statements / annual returns for 3 consecutive years are disqualified. Check your DIN status on the MCA portal regularly.</div>
+
+  <div class="src-box"><h4>📎 Official Sources</h4><div class="src-links">
+    <a href="https://www.mca.gov.in" target="_blank" class="src-link">MCA — DIN Search ↗</a>
+    <a href="https://www.mca.gov.in/content/mca/global/en/acts-rules/ebooks/acts.html" target="_blank" class="src-link">Companies Act Text ↗</a>
+  </div></div>
+</div></div>
+
+<!-- MEETINGS -->
+<div class="topic-panel" id="panel-meetings">
+<div class="panel-content">
+  <span class="panel-label">Companies Act 2013</span>
+  <h2>Board & General Meetings</h2>
+  <p class="panel-intro">Companies Act 2013 mandates regular board meetings and annual general meetings. Non-compliance attracts penalties on the company and its officers.</p>
+
+  <h3 class="sh">Board Meetings <span class="sec-ref">Sec 173 Companies Act</span></h3>
+  <div class="tbl-wrap">
+    <table class="atbl">
+      <thead><tr><th>Company Type</th><th>Minimum Meetings</th><th>Gap Between Meetings</th><th>Notice Period</th></tr></thead>
+      <tbody>
+        <tr><td>All companies (generally)</td><td>4 per year</td><td>Not more than 120 days between two meetings</td><td>7 days' notice (shorter with consent)</td></tr>
+        <tr class="hl"><td>OPC, Small company, Dormant company</td><td>2 per year (one in each half of calendar year)</td><td>Not less than 90 days between meetings</td><td>7 days</td></tr>
+        <tr><td>Section 8 Company (NGO)</td><td>1 per quarter</td><td>—</td><td>7 days</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="ib blue"><strong>What requires Board Resolution?</strong>Borrowing money, investments, granting loans, issuing securities, approval of financial statements, appointment/removal of KMPs, related party transactions (below threshold), CSR policy, director appointments, major capital expenditure decisions.</div>
+
+  <h3 class="sh">Annual General Meeting (AGM) <span class="sec-ref">Sec 96–99 Companies Act</span></h3>
+  <div class="tbl-wrap">
+    <table class="atbl">
+      <thead><tr><th>Requirement</th><th>Rule</th></tr></thead>
+      <tbody>
+        <tr><td>First AGM</td><td>Within 9 months from the end of first financial year</td></tr>
+        <tr class="hl"><td>Subsequent AGMs</td><td>Within 6 months from end of financial year (i.e. by 30 September)</td></tr>
+        <tr><td>Gap between two AGMs</td><td>Not more than 15 months</td></tr>
+        <tr class="hl"><td>Notice period</td><td>21 clear days' notice (shorter with 95%+ member consent)</td></tr>
+        <tr><td>Quorum</td><td>2 members personally present (for companies with ≤ 1,000 members); 5 members (1,000–5,000); 30 members (5,000+)</td></tr>
+        <tr class="hl"><td>OPC</td><td>AGM not required — deemed conducted</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sh">Ordinary vs Special Resolution</h3>
+  <div class="two-grid">
+    <div class="info-card">
+      <h4>Ordinary Resolution <span class="sec-ref">Sec 114(1)</span></h4>
+      <p>Passed by simple majority (more than 50% of votes cast). Used for: appointment of auditor, appointment of directors, approval of financial statements, dividend declaration, remuneration of directors.</p>
+    </div>
+    <div class="info-card">
+      <h4>Special Resolution <span class="sec-ref">Sec 114(2)</span></h4>
+      <p>Passed by 75% or more votes cast. Required for: alteration of MoA or AoA, change of registered office (state), voluntary winding up, reduction of share capital, buy-back of shares, appointing more than 15 directors.</p>
+    </div>
+  </div>
+
+  <div class="src-box"><h4>📎 Official Sources</h4><div class="src-links">
+    <a href="https://www.mca.gov.in" target="_blank" class="src-link">MCA Portal ↗</a>
+    <a href="https://www.icsi.edu" target="_blank" class="src-link">ICSI — Secretarial Standards ↗</a>
+  </div></div>
+</div></div>
+
+<!-- AUDIT & ACCOUNTS -->
+<div class="topic-panel" id="panel-audit">
+<div class="panel-content">
+  <span class="panel-label">Companies Act 2013</span>
+  <h2>Audit & Accounts</h2>
+  <p class="panel-intro">Every company must maintain books of accounts and get them audited by a Chartered Accountant. Financial statements must be filed with MCA annually.</p>
+
+  <h3 class="sh">Statutory Audit <span class="sec-ref">Sec 139–148 Companies Act</span></h3>
+  <div class="tbl-wrap">
+    <table class="atbl">
+      <thead><tr><th>Requirement</th><th>Rule</th></tr></thead>
+      <tbody>
+        <tr><td>Who must get audited</td><td>Every company — without exception. Even a dormant company must have an auditor.</td></tr>
+        <tr class="hl"><td>Who can be appointed as Auditor</td><td>Only a Chartered Accountant (individual or firm) holding a valid CoP from ICAI</td></tr>
+        <tr><td>First auditor appointment</td><td>By Board within 30 days of incorporation; ratified at first AGM</td></tr>
+        <tr class="hl"><td>Tenure — Public company</td><td>Max 5 years (individual CA) / 10 years (CA firm); mandatory rotation after each term</td></tr>
+        <tr><td>Tenure — Private company / OPC</td><td>5 years (individual CA) / 5 years (CA firm); rotation mandatory for certain private companies</td></tr>
+        <tr class="hl"><td>Form to file</td><td>ADT-1 — within 15 days of AGM where auditor is appointed</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sh">Financial Statements <span class="sec-ref">Sec 129–134 Companies Act</span></h3>
+  <div class="two-grid">
+    <div class="info-card">
+      <h4>📊 Components of Financial Statements</h4>
+      <ul>
+        <li>Balance Sheet</li>
+        <li>Statement of Profit & Loss</li>
+        <li>Cash Flow Statement (mandatory for all except OPC, small companies, dormant)</li>
+        <li>Statement of Changes in Equity (Ind AS companies)</li>
+        <li>Notes to Accounts</li>
+        <li>Directors' Report (Sec 134)</li>
+      </ul>
+    </div>
+    <div class="info-card">
+      <h4>📅 Financial Statement Signing & Filing</h4>
+      <ul>
+        <li>Signed by: 2 directors (including MD where applicable) + CFO + CS (if applicable)</li>
+        <li>Approved at Board Meeting first</li>
+        <li>Adopted at AGM (within 6 months of FY end)</li>
+        <li>Filed with MCA within 30 days of AGM in Form AOC-4</li>
+        <li>Small companies / OPC: Simplified format allowed</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 class="sh">Secretarial Audit <span class="sec-ref">Sec 204 Companies Act</span></h3>
+  <div class="ib blue"><strong>Who needs Secretarial Audit:</strong>
+    • Listed companies<br>
+    • Public companies with paid-up share capital ≥ ₹50 crore OR turnover ≥ ₹250 crore<br>
+    • Companies with outstanding loans / borrowings ≥ ₹100 crore<br><br>
+    Conducted by a Practising Company Secretary (PCS). Filed in Form MR-3 as annexure to Board's Report.
+  </div>
+
+  <div class="src-box"><h4>📎 Official Sources</h4><div class="src-links">
+    <a href="https://www.mca.gov.in" target="_blank" class="src-link">MCA Portal ↗</a>
+    <a href="https://www.icai.org" target="_blank" class="src-link">ICAI (CA Institute) ↗</a>
+    <a href="https://www.icsi.edu" target="_blank" class="src-link">ICSI (CS Institute) ↗</a>
+  </div></div>
+</div></div>
+
+<!-- CSR -->
+<div class="topic-panel" id="panel-csr">
+<div class="panel-content">
+  <span class="panel-label">Companies Act 2013</span>
+  <h2>Corporate Social Responsibility (CSR)</h2>
+  <p class="panel-intro">Section 135 of Companies Act 2013 mandates eligible companies to spend a minimum of 2% of average net profits on CSR activities. India is one of the few countries with statutory CSR.</p>
+
+  <h3 class="sh">CSR Applicability <span class="sec-ref">Sec 135 Companies Act</span></h3>
+  <div class="ib blue"><strong>CSR mandatory if ANY ONE of these criteria is met (in preceding financial year):</strong>
+    1. Net worth ≥ ₹500 crore<br>
+    2. Turnover ≥ ₹1,000 crore<br>
+    3. Net profit ≥ ₹5 crore<br><br>
+    Once triggered, company must spend at least <strong>2% of average net profits</strong> of preceding 3 financial years on CSR. If unable to spend — unspent CSR must be transferred to specified funds (PM National Relief Fund etc.) within 6 months of FY end.
+  </div>
+
+  <h3 class="sh">CSR Committee <span class="sec-ref">Sec 135(1)</span></h3>
+  <div class="tbl-wrap">
+    <table class="atbl">
+      <thead><tr><th>Requirement</th><th>Rule</th></tr></thead>
+      <tbody>
+        <tr><td>CSR Committee mandatory for companies with CSR obligation ≥ ₹50 lakh</td><td>Min 3 directors including at least 1 Independent Director</td></tr>
+        <tr class="hl"><td>CSR obligation below ₹50 lakh</td><td>No CSR Committee needed — Board can discharge CSR function directly</td></tr>
+        <tr><td>Committee functions</td><td>Formulate CSR Policy; recommend CSR activities; monitor implementation</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sh">Eligible CSR Activities <span class="sec-ref">Schedule VII — Companies Act</span></h3>
+  <div class="two-grid">
+    <div class="info-card">
+      <h4>✅ Eligible CSR Activities</h4>
+      <ul>
+        <li>Eradicating hunger, poverty, malnutrition</li>
+        <li>Promoting education, skill development</li>
+        <li>Promoting gender equality, women empowerment</li>
+        <li>Environmental sustainability, ecological balance</li>
+        <li>Protection of national heritage, art, culture</li>
+        <li>Measures for armed forces veterans, war widows</li>
+        <li>Rural development, slum area development</li>
+        <li>Technology incubators in academic institutions</li>
+        <li>Disaster management, relief and rehabilitation</li>
+        <li>PM National Relief Fund / approved fund contributions</li>
+      </ul>
+    </div>
+    <div class="info-card">
+      <h4>❌ Not Eligible as CSR</h4>
+      <ul>
+        <li>Activities that benefit only employees and their families</li>
+        <li>Contribution to political parties</li>
+        <li>Activities performed outside India (except for training of Indian sports persons)</li>
+        <li>Expenses incurred for compliance with any other law</li>
+        <li>Corpus donation to non-approved entities</li>
+        <li>CSR activities through unregistered implementing agencies</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="ib amber"><strong>CSR Registration — Form CSR-1</strong>All implementing agencies (NGOs, trusts, foundations) receiving CSR funds must be registered with MCA in Form CSR-1 and have a unique CSR Registration Number. Mandatory since 1 April 2021.</div>
+
+  <div class="src-box"><h4>📎 Official Sources</h4><div class="src-links">
+    <a href="https://www.mca.gov.in" target="_blank" class="src-link">MCA CSR Portal ↗</a>
+    <a href="https://csr.gov.in" target="_blank" class="src-link">National CSR Portal ↗</a>
+  </div></div>
+</div></div>
+
+<!-- ANNUAL FILINGS -->
+<div class="topic-panel" id="panel-filings">
+<div class="panel-content">
+  <span class="panel-label">Companies Act 2013</span>
+  <h2>Annual MCA Filings</h2>
+  <p class="panel-intro">Every company must file annual returns and financial statements with the Registrar of Companies (RoC) through the MCA21 portal. Failure attracts significant penalties.</p>
+
+  <div class="tbl-wrap">
+    <table class="atbl">
+      <thead><tr><th>Form</th><th>Purpose</th><th>Who Files</th><th>Due Date</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td>AOC-4</td><td>Filing of Financial Statements</td><td>All companies</td><td>Within 30 days of AGM (or 180 days from FY end for OPC)</td></tr>
+        <tr><td>AOC-4 XBRL</td><td>Financial Statements in XBRL format</td><td>Listed companies; companies with paid-up capital &gt; ₹5 Cr or turnover &gt; ₹100 Cr</td><td>Same as AOC-4</td></tr>
+        <tr class="hl"><td>MGT-7</td><td>Annual Return</td><td>All companies except OPC and small companies</td><td>Within 60 days of AGM</td></tr>
+        <tr><td>MGT-7A</td><td>Annual Return (simplified)</td><td>OPC and Small Companies</td><td>Within 60 days of AGM</td></tr>
+        <tr class="hl"><td>ADT-1</td><td>Auditor Appointment / Reappointment</td><td>All companies</td><td>Within 15 days of AGM</td></tr>
+        <tr><td>MR-3</td><td>Secretarial Audit Report</td><td>Applicable companies (see Audit section)</td><td>Annexure to Board Report (with AOC-4)</td></tr>
+        <tr class="hl"><td>MGT-14</td><td>Filing Board/Special Resolutions with RoC</td><td>All companies (for specified resolutions)</td><td>Within 30 days of passing resolution</td></tr>
+        <tr><td>DIR-3 KYC</td><td>KYC of Directors</td><td>All directors with a DIN</td><td>30 September every year</td></tr>
+        <tr class="hl"><td>DPT-3</td><td>Return of Deposits / Outstanding Loans</td><td>Companies that have received loans / deposits</td><td>30 June every year</td></tr>
+        <tr><td>MSME-1</td><td>Return for outstanding payments to MSMEs</td><td>Companies with outstanding MSME dues &gt; 45 days</td><td>Half-yearly: 30 April and 31 October</td></tr>
+        <tr class="hl"><td>BEN-2</td><td>Register of Significant Beneficial Owners</td><td>Companies with SBOs (individuals holding &gt; 10% beneficial interest)</td><td>Within 30 days of SBO becoming identified</td></tr>
+        <tr><td>PAS-6</td><td>Reconciliation of Share Capital Audit</td><td>Unlisted public companies</td><td>Within 60 days of end of each half-year</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="ib amber"><strong>⚠ Additional Fee for Late Filing</strong>Filing delay up to 30 days: 2× normal fee. 30–60 days: 4× fee. 60–90 days: 6× fee. 90–180 days: 10× fee. Beyond 180 days: 12× fee. For some forms — also subject to prosecution / penalty under the Act. File on time to avoid compounding costs.</div>
+
+  <div class="ib blue"><strong>Active Company Tagging — INC-22A (ACTIVE)</strong>Companies incorporated before 31 December 2017 must file ACTIVE (Annual Compliance Tagging) Form INC-22A (if not already filed). Non-compliance marks company as "ACTIVE non-compliant" — further filings may be restricted.</div>
+
+  <div class="src-box"><h4>📎 Official Sources</h4><div class="src-links">
+    <a href="https://www.mca.gov.in/content/mca/global/en/mca/e-filing/e-filing.html" target="_blank" class="src-link">MCA e-Filing Portal ↗</a>
+    <a href="https://efiling.mca.gov.in" target="_blank" class="src-link">MCA21 Portal ↗</a>
+  </div></div>
+</div></div>
+
+<!-- PENALTIES -->
+<div class="topic-panel" id="panel-penalties">
+<div class="panel-content">
+  <span class="panel-label">Companies Act 2013</span>
+  <h2>Penalties & Offences</h2>
+  <p class="panel-intro">Companies Act 2013 prescribes specific penalties for defaults. The Companies (Amendment) Act 2020 decriminalised many offences — converting them from criminal offences to civil defaults with monetary penalties.</p>
+
+  <h3 class="sh">Common Penalties</h3>
+  <div class="tbl-wrap">
+    <table class="atbl">
+      <thead><tr><th>Default</th><th>Section</th><th>Penalty on Company</th><th>Penalty on Officer</th></tr></thead>
+      <tbody>
+        <tr><td>Non-filing of annual return (MGT-7)</td><td><span class="sec-ref">Sec 92</span></td><td>₹50,000 + ₹100/day continuing default</td><td>₹50,000 + ₹100/day</td></tr>
+        <tr class="hl"><td>Non-filing of financial statements (AOC-4)</td><td><span class="sec-ref">Sec 137</span></td><td>₹10,000 + ₹100/day (max ₹2 lakh)</td><td>₹10,000 + ₹100/day (max ₹50,000)</td></tr>
+        <tr><td>Not holding AGM</td><td><span class="sec-ref">Sec 99</span></td><td>Up to ₹1 lakh</td><td>Up to ₹1 lakh</td></tr>
+        <tr class="hl"><td>Non-compliance with board meeting requirements</td><td><span class="sec-ref">Sec 173</span></td><td>₹25,000</td><td>₹25,000 per officer</td></tr>
+        <tr><td>Failure to appoint auditor</td><td><span class="sec-ref">Sec 147</span></td><td>₹25,000 to ₹5 lakh</td><td>₹10,000 to ₹1 lakh</td></tr>
+        <tr class="hl"><td>Failure to file CSR report / non-spending</td><td><span class="sec-ref">Sec 135</span></td><td>2× unspent amount or ₹1 crore — whichever is less</td><td>₹2 lakh to ₹10 lakh</td></tr>
+        <tr><td>Related party transaction without approval</td><td><span class="sec-ref">Sec 188</span></td><td>₹25 lakh</td><td>₹25 lakh</td></tr>
+        <tr class="hl"><td>Not maintaining registered office</td><td><span class="sec-ref">Sec 12</span></td><td>₹1,000/day (max ₹1 lakh)</td><td>₹1,000/day (max ₹1 lakh)</td></tr>
+        <tr><td>Non-disclosure of interest by director</td><td><span class="sec-ref">Sec 184</span></td><td>Up to ₹1 lakh</td><td>Up to ₹1 lakh</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sh">Compounding of Offences <span class="sec-ref">Sec 441 Companies Act</span></h3>
+  <div class="ib blue"><strong>Compounding option:</strong>Certain defaults can be compounded (settled by paying a sum) before or after prosecution is initiated. Compounding application made to RoC (for offences punishable with fine only) or NCLT (for offences punishable with imprisonment or fine). Once compounded — deemed no offence and no criminal prosecution.</div>
+
+  <div class="src-box"><h4>📎 Official Sources</h4><div class="src-links">
+    <a href="https://www.mca.gov.in" target="_blank" class="src-link">MCA Portal ↗</a>
+    <a href="https://nclt.gov.in" target="_blank" class="src-link">NCLT Portal ↗</a>
+    <a href="https://www.mca.gov.in/content/mca/global/en/acts-rules/ebooks/acts.html" target="_blank" class="src-link">Companies Act 2013 ↗</a>
+  </div></div>
+</div></div>
+
+<!-- OFFICIAL LINKS -->
+<div class="topic-panel" id="panel-links">
+<div class="panel-content">
+  <span class="panel-label">Official Sources</span>
+  <h2>Government Portals</h2>
+  <p style="color:var(--gray-5);margin-top:6px">All TrustFactON content is sourced from these official portals. Visit for complete statutory text, notifications, and circulars.</p>
+  <div class="two-grid" style="margin-top:20px">
+    <a href="https://www.mca.gov.in" target="_blank" style="display:block;background:white;border:1px solid var(--gray-3);border-radius:var(--radius);padding:16px;text-decoration:none;transition:all 0.2s" onmouseover="this.style.borderColor='var(--blue)'" onmouseout="this.style.borderColor='var(--gray-3)'">
+      <div style="font-size:1.2rem;margin-bottom:6px">🏛️</div><h4 style="color:var(--black);font-size:0.9rem;margin-bottom:4px">MCA Portal — mca.gov.in</h4><p style="font-size:0.78rem;color:var(--gray-5)">Company search, director search, e-filing, forms, notifications ↗</p>
+    </a>
+    <a href="https://efiling.mca.gov.in" target="_blank" style="display:block;background:white;border:1px solid var(--gray-3);border-radius:var(--radius);padding:16px;text-decoration:none;transition:all 0.2s" onmouseover="this.style.borderColor='var(--blue)'" onmouseout="this.style.borderColor='var(--gray-3)'">
+      <div style="font-size:1.2rem;margin-bottom:6px">💻</div><h4 style="color:var(--black);font-size:0.9rem;margin-bottom:4px">MCA21 e-Filing Portal</h4><p style="font-size:0.78rem;color:var(--gray-5)">File AOC-4, MGT-7, ADT-1, SPICe+ and all company e-forms ↗</p>
+    </a>
+    <a href="https://nclt.gov.in" target="_blank" style="display:block;background:white;border:1px solid var(--gray-3);border-radius:var(--radius);padding:16px;text-decoration:none;transition:all 0.2s" onmouseover="this.style.borderColor='var(--blue)'" onmouseout="this.style.borderColor='var(--gray-3)'">
+      <div style="font-size:1.2rem;margin-bottom:6px">⚖️</div><h4 style="color:var(--black);font-size:0.9rem;margin-bottom:4px">NCLT Portal</h4><p style="font-size:0.78rem;color:var(--gray-5)">National Company Law Tribunal — orders, cases, bench details ↗</p>
+    </a>
+    <a href="https://www.icsi.edu" target="_blank" style="display:block;background:white;border:1px solid var(--gray-3);border-radius:var(--radius);padding:16px;text-decoration:none;transition:all 0.2s" onmouseover="this.style.borderColor='var(--blue)'" onmouseover="this.style.borderColor='var(--blue)'" onmouseout="this.style.borderColor='var(--gray-3)'">
+      <div style="font-size:1.2rem;margin-bottom:6px">📚</div><h4 style="color:var(--black);font-size:0.9rem;margin-bottom:4px">ICSI — CS Institute</h4><p style="font-size:0.78rem;color:var(--gray-5)">Secretarial Standards (SS-1, SS-2), guidance notes, circulars ↗</p>
+    </a>
+  </div>
+  <div class="ib blue" style="margin-top:20px"><strong>About TrustFactON</strong>Plain-language summaries for educational purposes only. For binding text and latest notifications, always refer to official portals above. Not a substitute for professional advice. Built by Evenset Consultancy Services, Bengaluru.</div>
+</div></div>
+
+<!-- AI CHAT -->
+<div class="topic-panel" id="panel-chat">
+<div class="panel-content">
+  <span class="panel-label">AI Assistant</span>
+  <h2>Ask About Companies Act</h2>
+  <p style="color:var(--gray-5);margin-top:6px">Free for all users. No login. Powered by Google Gemini.</p>
+  <div class="chat-container" id="chat-widget" data-act="Companies Act 2013 and MCA Rules" style="max-width:760px;margin-top:20px">
+    <div class="chat-header">
+      <div class="chat-avatar">TF</div>
+      <div class="chat-header-info">
+        <h4>Companies Act AI</h4>
+        <span><span class="online-dot"></span>Companies Act 2013 · MCA · NCLT · Powered by Google Gemini</span>
+      </div>
+    </div>
+    <div class="chat-messages"></div>
+    <div class="chat-suggestions">
+      <button class="chat-suggest-btn">Due date for MGT-7 annual return?</button>
+      <button class="chat-suggest-btn">Director disqualification u/s 164?</button>
+      <button class="chat-suggest-btn">CSR applicability — which companies?</button>
+      <button class="chat-suggest-btn">OPC vs Private Limited — key differences?</button>
+    </div>
+    <div class="chat-input-row">
+      <textarea class="chat-input" rows="1" placeholder="Ask anything about Companies Act 2013..."></textarea>
+      <button class="chat-send-btn"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+    </div>
+  </div>
+</div></div>
+
+</div></div>
+
+<section class="newsletter-section">
+  <div class="container"><div class="newsletter-inner">
+    <span class="sec-label">Stay Updated</span>
+    <h2 class="sec-title" style="margin-bottom:8px">MCA Updates & Company Law Alerts</h2>
+    <p class="sec-sub" style="margin-bottom:24px">MCA notifications, amendment rules, filing deadline alerts — weekly from TrustFactON.</p>
+    <div class="newsletter-form">
+      <input type="email" placeholder="your@email.com">
+      <button onclick="window.open('https://trustfacton.beehiiv.com/subscribe','_blank')">Subscribe →</button>
+    </div>
+  </div></div>
 </section>
 
 <div id="footer-placeholder"></div>

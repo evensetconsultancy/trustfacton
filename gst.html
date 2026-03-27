@@ -4,19 +4,59 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GST Act 2017 — TrustFactON</title>
+  <meta name="description" content="GST Act 2017 — registration, ITC, returns, e-invoice, rates, composition scheme. Plain language. Updated for FY 2025-26.">
   <link rel="stylesheet" href="style.css">
-  <style>:root{--act-color:#16A34A;}</style>
+  <style>
+    :root { --act-color: #16A34A; }
+    .tbl-wrap{overflow-x:auto;border-radius:var(--radius);border:1px solid var(--gray-3);margin-top:14px;}
+    .atbl{width:100%;border-collapse:collapse;font-size:0.82rem;min-width:500px;}
+    .atbl thead th{background:var(--navy);color:white;padding:9px 12px;text-align:left;font-weight:600;font-size:0.76rem;}
+    .atbl tbody td{padding:8px 12px;border-bottom:1px solid var(--gray-2);color:var(--gray-6);vertical-align:top;line-height:1.5;}
+    .atbl tbody tr:hover td{background:var(--gray-1);}
+    .atbl tbody tr:last-child td{border-bottom:none;}
+    .atbl .hl td{background:#F0FDF4!important;}
+    .rate-cell{font-weight:700;color:var(--red);}
+    .nil-cell{color:var(--green);font-weight:600;}
+    .sec-ref{font-family:monospace;font-size:0.72rem;background:var(--gray-2);color:var(--gray-5);padding:1px 6px;border-radius:4px;}
+    .panel-content{padding:32px 0;}
+    .panel-intro{color:var(--gray-5);margin-top:6px;max-width:720px;font-size:0.9rem;line-height:1.7;}
+    .ib{padding:10px 14px;border-radius:var(--radius);margin:10px 0;font-size:0.82rem;border-left:3px solid;line-height:1.7;}
+    .ib.blue{background:#EFF6FF;border-color:var(--blue);color:#1E40AF;}
+    .ib.green{background:#F0FDF4;border-color:var(--green);color:#166534;}
+    .ib.amber{background:#FFFBEB;border-color:var(--amber);color:#92400E;}
+    .ib.red{background:#FEF2F2;border-color:var(--red);color:#991B1B;}
+    .ib strong{display:block;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;}
+    .two-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;}
+    .three-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:14px;}
+    .info-card{background:white;border:1px solid var(--gray-3);border-radius:var(--radius);padding:15px;}
+    .info-card h4{font-size:0.88rem;color:var(--black);margin-bottom:8px;}
+    .info-card p,.info-card li{font-size:0.81rem;color:var(--gray-5);line-height:1.7;}
+    .info-card ul{padding-left:15px;margin-top:4px;}
+    .sh{margin-top:24px;margin-bottom:8px;color:var(--black);font-size:1rem;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+    .src-box{background:var(--gray-1);border:1px solid var(--gray-3);border-radius:var(--radius);padding:13px 15px;margin-top:28px;}
+    .src-box h4{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--gray-5);margin-bottom:8px;}
+    .src-links{display:flex;flex-wrap:wrap;gap:7px;}
+    .src-link{display:inline-flex;align-items:center;gap:4px;font-size:0.77rem;color:var(--blue);border:1px solid #BFDBFE;border-radius:var(--radius);padding:4px 11px;text-decoration:none;background:white;transition:all 0.15s;}
+    .src-link:hover{background:var(--blue);color:white;}
+    .rate-box{background:white;border:1px solid var(--gray-3);border-radius:var(--radius);padding:14px;text-align:center;}
+    .rate-box .rv{font-size:2rem;font-weight:700;font-family:'Playfair Display',serif;color:var(--navy);}
+    .rate-box .rl{font-size:0.72rem;color:var(--gray-4);margin-top:2px;}
+    @media(max-width:768px){.two-grid,.three-grid{grid-template-columns:1fr;}}
+  </style>
 </head>
 <body>
 <div id="nav-placeholder"></div>
 
 <section class="act-hero">
   <div class="container">
-    <div class="act-hero-badge">GST Act 2017</div>
-    <h1>GST Act 2017 <span>CGST · SGST · IGST</span></h1>
-    <p>India's unified indirect tax — registration, ITC, returns, e-invoice, composition scheme, and rate classification.</p>
+    <div class="act-hero-badge">🏷️ Indirect Tax · CBIC · GST Council</div>
+    <h1>GST Act <span>2017</span></h1>
+    <p>Goods and Services Tax — India's unified indirect tax on supply of goods and services, effective 1 July 2017. Covers CGST, SGST, IGST and UTGST Acts.</p>
     <div class="act-hero-stats">
-      <div class="act-stat"><span class="v">Jul 2017</span><span class="l">Effective Date</span></div> <div class="act-stat"><span class="v">CGST+IGST</span><span class="l">Two Key Acts</span></div> <div class="act-stat"><span class="v">GSTN</span><span class="l">IT Backbone</span></div> <div class="act-stat"><span class="v">GST Council</span><span class="l">Governance</span></div>
+      <div class="act-stat"><span class="v">1 Jul 2017</span><span class="l">Effective Date</span></div>
+      <div class="act-stat"><span class="v">4 Acts</span><span class="l">CGST·SGST·IGST·UTGST</span></div>
+      <div class="act-stat"><span class="v">GST Council</span><span class="l">Governing Body</span></div>
+      <div class="act-stat"><span class="v">GSTN</span><span class="l">Technology Backbone</span></div>
     </div>
   </div>
 </section>
@@ -28,23 +68,27 @@
       <div class="topic-select-wrap">
         <select class="topic-select" id="topicSelect" onchange="showTopic(this.value)">
           <option value="">— Choose a topic —</option>
-          <option value="overview">GST Overview & Structure</option>
-<option value="rates">GST Rate Finder</option>
-<option value="registration">Registration & Thresholds</option>
-<option value="itc">Input Tax Credit (ITC)</option>
-<option value="returns">Return Filing Calendar</option>
-<option value="einvoice">E-Invoice & E-Way Bill</option>
-<option value="rcm">Reverse Charge (RCM)</option>
-<option value="composition">Composition Scheme</option>
-<option value="penalties">Penalties & Interest</option>
+          <option value="overview">📋 GST Overview & Structure</option>
+          <option value="rates">💰 GST Rate Structure</option>
+          <option value="registration">📝 Registration & Thresholds</option>
+          <option value="itc">🔄 Input Tax Credit (ITC)</option>
+          <option value="returns">📊 Return Filing Calendar</option>
+          <option value="einvoice">🧾 E-Invoice & E-Way Bill</option>
+          <option value="rcm">↩️ Reverse Charge (RCM)</option>
+          <option value="composition">🏪 Composition Scheme</option>
+          <option value="penalties">⚠️ Penalties & Interest</option>
           <option value="links">🔗 Official Links</option>
           <option value="chat">🤖 Ask AI</option>
         </select>
         <span class="topic-arrow">▼</span>
       </div>
       <div class="topic-chips">
-        <button class="topic-chip" onclick="showTopic('overview')">GST Overview & Structure</button> <button class="topic-chip" onclick="showTopic('rates')">GST Rate Finder</button> <button class="topic-chip" onclick="showTopic('registration')">Registration & Thresholds</button> <button class="topic-chip" onclick="showTopic('itc')">Input Tax Credit (ITC)</button> <button class="topic-chip" onclick="showTopic('returns')">Return Filing Calendar</button>
-        <button class="topic-chip" onclick="showTopic('links')">🔗 Links</button>
+        <button class="topic-chip" onclick="showTopic('rates')">💰 Rates</button>
+        <button class="topic-chip" onclick="showTopic('registration')">📝 Registration</button>
+        <button class="topic-chip" onclick="showTopic('itc')">🔄 ITC</button>
+        <button class="topic-chip" onclick="showTopic('returns')">📊 Returns</button>
+        <button class="topic-chip" onclick="showTopic('einvoice')">🧾 E-Invoice</button>
+        <button class="topic-chip" onclick="showTopic('rcm')">↩️ RCM</button>
         <button class="topic-chip" onclick="showTopic('chat')">🤖 Ask AI</button>
       </div>
     </div>
@@ -52,185 +96,560 @@
 </div>
 
 <div id="panels-wrap" style="background:var(--light);min-height:480px;">
-  <div class="container">
+<div class="container">
 
-    <div class="topic-panel active" id="panel-welcome" style="padding:48px 0;text-align:center">
-      <h2 style="color:var(--black);margin-bottom:10px">What would you like to know about GST Act 2017?</h2>
-      <p style="color:var(--gray-5);max-width:440px;margin:0 auto 32px">Choose a topic from the dropdown above or click a quick topic below.</p>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;max-width:840px;margin:0 auto;text-align:left">
-        <div class="quick-card" onclick="showTopic('overview')"><div class="icon">📄</div><div><h4>GST Overview & Structure</h4><p>Tap to explore</p></div></div>
-<div class="quick-card" onclick="showTopic('rates')"><div class="icon">📄</div><div><h4>GST Rate Finder</h4><p>Tap to explore</p></div></div>
-<div class="quick-card" onclick="showTopic('registration')"><div class="icon">📄</div><div><h4>Registration & Thresholds</h4><p>Tap to explore</p></div></div>
-<div class="quick-card" onclick="showTopic('itc')"><div class="icon">📄</div><div><h4>Input Tax Credit (ITC)</h4><p>Tap to explore</p></div></div>
-<div class="quick-card" onclick="showTopic('returns')"><div class="icon">📄</div><div><h4>Return Filing Calendar</h4><p>Tap to explore</p></div></div>
-<div class="quick-card" onclick="showTopic('einvoice')"><div class="icon">📄</div><div><h4>E-Invoice & E-Way Bill</h4><p>Tap to explore</p></div></div>
-<div class="quick-card" onclick="showTopic('rcm')"><div class="icon">📄</div><div><h4>Reverse Charge (RCM)</h4><p>Tap to explore</p></div></div>
-<div class="quick-card" onclick="showTopic('composition')"><div class="icon">📄</div><div><h4>Composition Scheme</h4><p>Tap to explore</p></div></div>
-<div class="quick-card" onclick="showTopic('penalties')"><div class="icon">📄</div><div><h4>Penalties & Interest</h4><p>Tap to explore</p></div></div>
-        <div class="quick-card" onclick="showTopic('links')"><div class="icon">🔗</div><div><h4>Official Links</h4><p>Government portals</p></div></div>
-        <div class="quick-card" onclick="showTopic('chat')"><div class="icon">🤖</div><div><h4>Ask AI</h4><p>Get instant answer</p></div></div>
-      </div>
-    </div>
-
-    
-    <div class="topic-panel" id="panel-overview">
-      <div style="padding:32px 0">
-        <span class="panel-label">GST Overview & Structure</span>
-        <div class="panel-header"><h2>GST Overview & Structure</h2><p style="color:var(--gray-5);margin-top:6px">Key provisions under GST Act 2017.</p></div>
-        <div class="info-box blue" style="margin-top:16px">Use the AI assistant for detailed answers on GST Overview & Structure, or visit Official Links above for the complete statutory text.</div>
-        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
-          <button class="btn btn-blue" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain GST Overview & Structure under GST Act 2017';window._tfChat.send();}},300)">Ask AI about GST Overview & Structure →</button>
-          <button class="btn btn-white" onclick="showTopic('links')">Official Sources →</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="topic-panel" id="panel-rates">
-      <div style="padding:32px 0">
-        <span class="panel-label">GST Rate Finder</span>
-        <div class="panel-header"><h2>GST Rate Finder</h2><p style="color:var(--gray-5);margin-top:6px">Key provisions under GST Act 2017.</p></div>
-        <div class="info-box blue" style="margin-top:16px">Use the AI assistant for detailed answers on GST Rate Finder, or visit Official Links above for the complete statutory text.</div>
-        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
-          <button class="btn btn-blue" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain GST Rate Finder under GST Act 2017';window._tfChat.send();}},300)">Ask AI about GST Rate Finder →</button>
-          <button class="btn btn-white" onclick="showTopic('links')">Official Sources →</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="topic-panel" id="panel-registration">
-      <div style="padding:32px 0">
-        <span class="panel-label">Registration & Thresholds</span>
-        <div class="panel-header"><h2>Registration & Thresholds</h2><p style="color:var(--gray-5);margin-top:6px">Key provisions under GST Act 2017.</p></div>
-        <div class="info-box blue" style="margin-top:16px">Use the AI assistant for detailed answers on Registration & Thresholds, or visit Official Links above for the complete statutory text.</div>
-        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
-          <button class="btn btn-blue" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Registration & Thresholds under GST Act 2017';window._tfChat.send();}},300)">Ask AI about Registration & Thresholds →</button>
-          <button class="btn btn-white" onclick="showTopic('links')">Official Sources →</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="topic-panel" id="panel-itc">
-      <div style="padding:32px 0">
-        <span class="panel-label">Input Tax Credit (ITC)</span>
-        <div class="panel-header"><h2>Input Tax Credit (ITC)</h2><p style="color:var(--gray-5);margin-top:6px">Key provisions under GST Act 2017.</p></div>
-        <div class="info-box blue" style="margin-top:16px">Use the AI assistant for detailed answers on Input Tax Credit (ITC), or visit Official Links above for the complete statutory text.</div>
-        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
-          <button class="btn btn-blue" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Input Tax Credit (ITC) under GST Act 2017';window._tfChat.send();}},300)">Ask AI about Input Tax Credit (ITC) →</button>
-          <button class="btn btn-white" onclick="showTopic('links')">Official Sources →</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="topic-panel" id="panel-returns">
-      <div style="padding:32px 0">
-        <span class="panel-label">Return Filing Calendar</span>
-        <div class="panel-header"><h2>Return Filing Calendar</h2><p style="color:var(--gray-5);margin-top:6px">Key provisions under GST Act 2017.</p></div>
-        <div class="info-box blue" style="margin-top:16px">Use the AI assistant for detailed answers on Return Filing Calendar, or visit Official Links above for the complete statutory text.</div>
-        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
-          <button class="btn btn-blue" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Return Filing Calendar under GST Act 2017';window._tfChat.send();}},300)">Ask AI about Return Filing Calendar →</button>
-          <button class="btn btn-white" onclick="showTopic('links')">Official Sources →</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="topic-panel" id="panel-einvoice">
-      <div style="padding:32px 0">
-        <span class="panel-label">E-Invoice & E-Way Bill</span>
-        <div class="panel-header"><h2>E-Invoice & E-Way Bill</h2><p style="color:var(--gray-5);margin-top:6px">Key provisions under GST Act 2017.</p></div>
-        <div class="info-box blue" style="margin-top:16px">Use the AI assistant for detailed answers on E-Invoice & E-Way Bill, or visit Official Links above for the complete statutory text.</div>
-        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
-          <button class="btn btn-blue" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain E-Invoice & E-Way Bill under GST Act 2017';window._tfChat.send();}},300)">Ask AI about E-Invoice & E-Way Bill →</button>
-          <button class="btn btn-white" onclick="showTopic('links')">Official Sources →</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="topic-panel" id="panel-rcm">
-      <div style="padding:32px 0">
-        <span class="panel-label">Reverse Charge (RCM)</span>
-        <div class="panel-header"><h2>Reverse Charge (RCM)</h2><p style="color:var(--gray-5);margin-top:6px">Key provisions under GST Act 2017.</p></div>
-        <div class="info-box blue" style="margin-top:16px">Use the AI assistant for detailed answers on Reverse Charge (RCM), or visit Official Links above for the complete statutory text.</div>
-        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
-          <button class="btn btn-blue" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Reverse Charge (RCM) under GST Act 2017';window._tfChat.send();}},300)">Ask AI about Reverse Charge (RCM) →</button>
-          <button class="btn btn-white" onclick="showTopic('links')">Official Sources →</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="topic-panel" id="panel-composition">
-      <div style="padding:32px 0">
-        <span class="panel-label">Composition Scheme</span>
-        <div class="panel-header"><h2>Composition Scheme</h2><p style="color:var(--gray-5);margin-top:6px">Key provisions under GST Act 2017.</p></div>
-        <div class="info-box blue" style="margin-top:16px">Use the AI assistant for detailed answers on Composition Scheme, or visit Official Links above for the complete statutory text.</div>
-        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
-          <button class="btn btn-blue" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Composition Scheme under GST Act 2017';window._tfChat.send();}},300)">Ask AI about Composition Scheme →</button>
-          <button class="btn btn-white" onclick="showTopic('links')">Official Sources →</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="topic-panel" id="panel-penalties">
-      <div style="padding:32px 0">
-        <span class="panel-label">Penalties & Interest</span>
-        <div class="panel-header"><h2>Penalties & Interest</h2><p style="color:var(--gray-5);margin-top:6px">Key provisions under GST Act 2017.</p></div>
-        <div class="info-box blue" style="margin-top:16px">Use the AI assistant for detailed answers on Penalties & Interest, or visit Official Links above for the complete statutory text.</div>
-        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
-          <button class="btn btn-blue" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Penalties & Interest under GST Act 2017';window._tfChat.send();}},300)">Ask AI about Penalties & Interest →</button>
-          <button class="btn btn-white" onclick="showTopic('links')">Official Sources →</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="topic-panel" id="panel-links">
-      <div style="padding:32px 0">
-        <span class="panel-label">Official Sources</span>
-        <div class="panel-header"><h2>Government Portals</h2><p style="color:var(--gray-5);margin-top:6px">All information is sourced from these official portals. Visit for complete and current data.</p></div>
-        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:20px">
-          <a href="https://www.gst.gov.in" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:white;border:1px solid var(--gray-3);border-radius:var(--radius);font-size:0.8rem;color:var(--navy);font-weight:500;transition:all 0.15s;text-decoration:none" onmouseover="this.style.borderColor='var(--blue)';this.style.color='var(--blue)'" onmouseout="this.style.borderColor='var(--gray-3)';this.style.color='var(--navy)'">GST Portal ↗</a> <a href="https://services.gst.gov.in/services/searchhsnsac" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:white;border:1px solid var(--gray-3);border-radius:var(--radius);font-size:0.8rem;color:var(--navy);font-weight:500;transition:all 0.15s;text-decoration:none" onmouseover="this.style.borderColor='var(--blue)';this.style.color='var(--blue)'" onmouseout="this.style.borderColor='var(--gray-3)';this.style.color='var(--navy)'">HSN/SAC Search ↗</a> <a href="https://cbic-gst.gov.in/gst-goods-services-rates.html" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:white;border:1px solid var(--gray-3);border-radius:var(--radius);font-size:0.8rem;color:var(--navy);font-weight:500;transition:all 0.15s;text-decoration:none" onmouseover="this.style.borderColor='var(--blue)';this.style.color='var(--blue)'" onmouseout="this.style.borderColor='var(--gray-3)';this.style.color='var(--navy)'">GST Rates ↗</a> <a href="https://cbic-gst.gov.in" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:white;border:1px solid var(--gray-3);border-radius:var(--radius);font-size:0.8rem;color:var(--navy);font-weight:500;transition:all 0.15s;text-decoration:none" onmouseover="this.style.borderColor='var(--blue)';this.style.color='var(--blue)'" onmouseout="this.style.borderColor='var(--gray-3)';this.style.color='var(--navy)'">CBIC Portal ↗</a>
-        </div>
-        <div class="info-box blue" style="margin-top:20px"><strong>About TrustFactON</strong>We summarise official government content in plain language. For the full text of law, always refer to official portals above. Built by Evenset Consultancy Services, Bengaluru.</div>
-      </div>
-    </div>
-
-    <div class="topic-panel" id="panel-chat">
-      <div style="padding:32px 0">
-        <span class="panel-label">AI Assistant</span>
-        <div class="panel-header"><h2>Ask About GST Act 2017</h2><p style="color:var(--gray-5);margin-top:6px">Free for all users. No login required. Powered by Google Gemini.</p></div>
-        <div class="chat-container" id="chat-widget" data-act="GST Act 2017 — CGST, IGST, SGST, UTGST" style="max-width:760px;margin-top:24px">
-          <div class="chat-header">
-            <div class="chat-avatar">TF</div>
-            <div class="chat-header-info">
-              <h4>GST Act 2017 AI</h4>
-              <span><span class="online-dot"></span>Powered by Google Gemini · Free · No login</span>
-            </div>
-          </div>
-          <div class="chat-messages"></div>
-          <div class="chat-suggestions">
-            <button class="chat-suggest-btn">GST rate on IT / software services?</button> <button class="chat-suggest-btn">When is e-invoice mandatory?</button> <button class="chat-suggest-btn">How to calculate ITC reversal?</button> <button class="chat-suggest-btn">Difference between GSTR-1 and GSTR-3B?</button>
-          </div>
-          <div class="chat-input-row">
-            <textarea class="chat-input" rows="1" placeholder="Ask anything about GST Act 2017..."></textarea>
-            <button class="chat-send-btn"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
-          </div>
-        </div>
-      </div>
-    </div>
-
+<!-- WELCOME -->
+<div class="topic-panel active" id="panel-welcome" style="padding:48px 0;text-align:center">
+  <h2 style="color:var(--black);margin-bottom:10px">What would you like to know about GST?</h2>
+  <p style="color:var(--gray-5);max-width:440px;margin:0 auto 32px">Select a topic above or click a quick card below.</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:10px;max-width:860px;margin:0 auto;text-align:left">
+    <div class="quick-card" onclick="showTopic('overview')"><div class="icon">📋</div><div><h4>GST Overview</h4><p>Structure & concepts</p></div></div>
+    <div class="quick-card" onclick="showTopic('rates')"><div class="icon">💰</div><div><h4>Rate Structure</h4><p>0%, 5%, 12%, 18%, 28%</p></div></div>
+    <div class="quick-card" onclick="showTopic('registration')"><div class="icon">📝</div><div><h4>Registration</h4><p>Thresholds & process</p></div></div>
+    <div class="quick-card" onclick="showTopic('itc')"><div class="icon">🔄</div><div><h4>Input Tax Credit</h4><p>Eligibility & conditions</p></div></div>
+    <div class="quick-card" onclick="showTopic('returns')"><div class="icon">📊</div><div><h4>Return Calendar</h4><p>GSTR-1, 3B, 9, 9C</p></div></div>
+    <div class="quick-card" onclick="showTopic('einvoice')"><div class="icon">🧾</div><div><h4>E-Invoice & E-Way Bill</h4><p>Applicability & limits</p></div></div>
+    <div class="quick-card" onclick="showTopic('rcm')"><div class="icon">↩️</div><div><h4>Reverse Charge</h4><p>When buyer pays GST</p></div></div>
+    <div class="quick-card" onclick="showTopic('composition')"><div class="icon">🏪</div><div><h4>Composition Scheme</h4><p>Small business option</p></div></div>
+    <div class="quick-card" onclick="showTopic('penalties')"><div class="icon">⚠️</div><div><h4>Penalties & Interest</h4><p>Default consequences</p></div></div>
+    <div class="quick-card" onclick="showTopic('links')"><div class="icon">🔗</div><div><h4>Official Links</h4><p>Govt portals</p></div></div>
+    <div class="quick-card" onclick="showTopic('chat')"><div class="icon">🤖</div><div><h4>Ask AI</h4><p>Instant answers</p></div></div>
   </div>
 </div>
 
-<section class="newsletter-section">
-  <div class="container">
-    <div class="newsletter-inner">
-      <span class="sec-label">Stay Updated</span>
-      <h2 class="sec-title" style="margin-bottom:8px">GST Act 2017 Updates</h2>
-      <p class="sec-sub" style="margin-bottom:24px">Law changes, circulars, and compliance alerts weekly.</p>
-      <div class="newsletter-form">
-        <input type="email" placeholder="your@email.com">
-        <button onclick="window.open('https://trustfacton.beehiiv.com/subscribe','_blank')">Subscribe →</button>
-      </div>
+<!-- GST OVERVIEW -->
+<div class="topic-panel" id="panel-overview">
+<div class="panel-content">
+  <span class="panel-label">GST Act 2017</span>
+  <h2>GST Overview & Structure</h2>
+  <p class="panel-intro">GST is a comprehensive, destination-based, multi-stage indirect tax levied on every value addition in the supply chain. It replaced over 17 central and state indirect taxes from 1 July 2017.</p>
+
+  <div class="three-grid" style="margin-top:20px">
+    <div class="rate-box"><div class="rv">CGST</div><div class="rl">Central GST — Central Govt</div></div>
+    <div class="rate-box"><div class="rv">SGST</div><div class="rl">State GST — State Govt</div></div>
+    <div class="rate-box"><div class="rv">IGST</div><div class="rl">Integrated GST — Interstate</div></div>
+  </div>
+
+  <h3 class="sh">When CGST+SGST vs IGST applies</h3>
+  <div class="tbl-wrap">
+    <table class="atbl">
+      <thead><tr><th>Supply Type</th><th>Tax Applied</th><th>Revenue Goes To</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td>Within same state (intrastate)</td><td>CGST + SGST (equal halves)</td><td>Centre + State equally</td></tr>
+        <tr><td>Between two states (interstate)</td><td>IGST (full rate)</td><td>Centre collects; distributes to destination state</td></tr>
+        <tr class="hl"><td>Imports into India</td><td>IGST + BCD + other levies</td><td>Centre</td></tr>
+        <tr><td>Exports from India</td><td>Zero-rated (GST = 0)</td><td>Refund of ITC available</td></tr>
+        <tr class="hl"><td>Special Economic Zones (SEZ)</td><td>Zero-rated supply</td><td>ITC refund available</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sh">Taxable Event — Supply <span class="sec-ref">Sec 7 CGST</span></h3>
+  <div class="ib blue"><strong>What is Supply?</strong>Supply includes all forms of supply of goods or services — sale, transfer, barter, exchange, licence, rental, lease, disposal — made or agreed to be made for consideration in the course or furtherance of business. Also includes import of services even without consideration (between related parties).</div>
+
+  <h3 class="sh">Place of Supply — Key Rules</h3>
+  <div class="tbl-wrap">
+    <table class="atbl">
+      <thead><tr><th>Type of Supply</th><th>Place of Supply</th><th>Reference</th></tr></thead>
+      <tbody>
+        <tr><td>Goods (with movement)</td><td>Where goods are delivered</td><td><span class="sec-ref">Sec 10 IGST</span></td></tr>
+        <tr class="hl"><td>Services — general</td><td>Location of recipient</td><td><span class="sec-ref">Sec 12/13 IGST</span></td></tr>
+        <tr><td>Immovable property services</td><td>Location of property</td><td><span class="sec-ref">Sec 12(3)</span></td></tr>
+        <tr class="hl"><td>Restaurant / food services</td><td>Where service is actually performed</td><td><span class="sec-ref">Sec 12(4)</span></td></tr>
+        <tr><td>Online / digital services (B2C)</td><td>Location of recipient</td><td><span class="sec-ref">Sec 13(12)</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="src-box"><h4>📎 Official Sources</h4><div class="src-links">
+    <a href="https://www.gst.gov.in" target="_blank" class="src-link">GST Portal ↗</a>
+    <a href="https://cbic-gst.gov.in" target="_blank" class="src-link">CBIC Portal ↗</a>
+  </div></div>
+</div></div>
+
+<!-- GST RATES -->
+<div class="topic-panel" id="panel-rates">
+<div class="panel-content">
+  <span class="panel-label">GST Act 2017</span>
+  <h2>GST Rate Structure</h2>
+  <p class="panel-intro">GST rates are set by the GST Council. Goods and services are classified into 5 main rate slabs. Classification is based on HSN code (goods) and SAC code (services).</p>
+
+  <div class="three-grid" style="margin-top:20px">
+    <div class="rate-box"><div class="rv" style="color:var(--green)">0%</div><div class="rl">Essential goods</div></div>
+    <div class="rate-box"><div class="rv" style="color:#2563EB">5%</div><div class="rl">Basic necessities</div></div>
+    <div class="rate-box"><div class="rv" style="color:#7C3AED">12%</div><div class="rl">Standard goods/services</div></div>
+    <div class="rate-box"><div class="rv" style="color:#D97706">18%</div><div class="rl">Most services & goods</div></div>
+    <div class="rate-box"><div class="rv" style="color:var(--red)">28%</div><div class="rl">Luxury / sin goods</div></div>
+    <div class="rate-box"><div class="rv" style="color:#6B7280">Cess</div><div class="rl">Additional on 28% items</div></div>
+  </div>
+
+  <h3 class="sh">Common Goods — GST Rate Reference</h3>
+  <div class="tbl-wrap">
+    <table class="atbl">
+      <thead><tr><th>Item</th><th>GST Rate</th><th>HSN Chapter</th></tr></thead>
+      <tbody>
+        <tr><td>Fresh vegetables, fruits, milk, eggs (unprocessed)</td><td class="nil-cell">0%</td><td>Ch 1–10</td></tr>
+        <tr class="hl"><td>Packaged food, preserved vegetables, sugar</td><td class="rate-cell">5%</td><td>Ch 4, 17, 20</td></tr>
+        <tr><td>Processed food, butter, ghee, frozen meat</td><td class="rate-cell">12%</td><td>Ch 2, 4, 21</td></tr>
+        <tr class="hl"><td>Computers, monitors, electronic equipment</td><td class="rate-cell">18%</td><td>Ch 84, 85</td></tr>
+        <tr><td>Motor vehicles (passenger, &gt; 1200cc petrol / &gt; 1500cc diesel)</td><td class="rate-cell">28% + Cess</td><td>Ch 87</td></tr>
+        <tr class="hl"><td>Cement, paints, air conditioners, dishwashers</td><td class="rate-cell">28%</td><td>Ch 25, 32, 84</td></tr>
+        <tr><td>Gold, silver jewellery</td><td class="rate-cell">3%</td><td>Ch 71</td></tr>
+        <tr class="hl"><td>Cut & polished diamonds</td><td class="rate-cell">1.5%</td><td>Ch 71</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sh">Common Services — GST Rate Reference</h3>
+  <div class="tbl-wrap">
+    <table class="atbl">
+      <thead><tr><th>Service</th><th>GST Rate</th><th>SAC</th></tr></thead>
+      <tbody>
+        <tr><td>Healthcare (hospitals, doctors)</td><td class="nil-cell">0%</td><td>9993</td></tr>
+        <tr class="hl"><td>Education (schools, colleges up to higher secondary)</td><td class="nil-cell">0%</td><td>9992</td></tr>
+        <tr><td>Restaurant services (non-AC, non-alcohol)</td><td class="rate-cell">5% (no ITC)</td><td>9963</td></tr>
+        <tr class="hl"><td>Restaurant (AC / hotel with room tariff &gt; ₹7,500)</td><td class="rate-cell">18%</td><td>9963</td></tr>
+        <tr><td>IT / software services</td><td class="rate-cell">18%</td><td>9983</td></tr>
+        <tr class="hl"><td>Legal, accounting, consulting services</td><td class="rate-cell">18%</td><td>9982, 9988</td></tr>
+        <tr><td>Construction of residential apartment (affordable)</td><td class="rate-cell">1% (no ITC)</td><td>9954</td></tr>
+        <tr class="hl"><td>Construction of residential apartment (other)</td><td class="rate-cell">5% (no ITC)</td><td>9954</td></tr>
+        <tr><td>Works contract (immovable property)</td><td class="rate-cell">18%</td><td>9954</td></tr>
+        <tr class="hl"><td>Transport of goods (GTA — freight)</td><td class="rate-cell">5% (no ITC) or 12% (with ITC)</td><td>9965</td></tr>
+        <tr><td>Air travel (economy class)</td><td class="rate-cell">5%</td><td>9964</td></tr>
+        <tr class="hl"><td>Air travel (business class)</td><td class="rate-cell">12%</td><td>9964</td></tr>
+        <tr><td>Insurance (life insurance premium)</td><td class="rate-cell">18%</td><td>9971</td></tr>
+        <tr class="hl"><td>Banking & financial services</td><td class="rate-cell">18%</td><td>9971</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="ib blue"><strong>HSN / SAC Code Search</strong>Use the official GST portal to find the exact HSN code for any good or SAC code for any service. Correct classification ensures correct rate. Misclassification attracts penalty and demand.</div>
+
+  <div class="src-box"><h4>📎 Official Sources</h4><div class="src-links">
+    <a href="https://services.gst.gov.in/services/searchhsnsac" target="_blank" class="src-link">HSN / SAC Code Search ↗</a>
+    <a href="https://cbic-gst.gov.in/gst-goods-services-rates.html" target="_blank" class="src-link">CBIC GST Rates ↗</a>
+    <a href="https://www.gst.gov.in" target="_blank" class="src-link">GST Portal ↗</a>
+  </div></div>
+</div></div>
+
+<!-- REGISTRATION -->
+<div class="topic-panel" id="panel-registration">
+<div class="panel-content">
+  <span class="panel-label">GST Act 2017</span>
+  <h2>GST Registration & Thresholds</h2>
+  <p class="panel-intro">GST registration is mandatory once turnover crosses the prescribed threshold. Certain businesses must register regardless of turnover.</p>
+
+  <h3 class="sh">Registration Thresholds <span class="sec-ref">Sec 22 CGST</span></h3>
+  <div class="tbl-wrap">
+    <table class="atbl">
+      <thead><tr><th>Business Type</th><th>Normal States</th><th>Special Category States</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td>Supply of Goods</td><td>₹40 lakh per year</td><td>₹20 lakh (some states ₹10 lakh)</td></tr>
+        <tr><td>Supply of Services</td><td>₹20 lakh per year</td><td>₹10 lakh</td></tr>
+        <tr class="hl"><td>Both Goods & Services</td><td>₹20 lakh (services limit applies)</td><td>₹10 lakh</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:0.78rem;color:var(--gray-5);margin-top:6px">Special category states: Arunachal Pradesh, Assam, J&K, Manipur, Meghalaya, Mizoram, Nagaland, Sikkim, Tripura, Himachal Pradesh, Uttarakhand.</p>
+
+  <h3 class="sh">Mandatory Registration — Regardless of Turnover <span class="sec-ref">Sec 24 CGST</span></h3>
+  <div class="tbl-wrap">
+    <table class="atbl">
+      <thead><tr><th>Category</th><th>Registration Required</th></tr></thead>
+      <tbody>
+        <tr><td>Interstate supply of goods</td><td>Yes — mandatory from first rupee</td></tr>
+        <tr class="hl"><td>E-commerce sellers (selling via Amazon, Flipkart etc.)</td><td>Yes — mandatory regardless of turnover</td></tr>
+        <tr><td>Casual taxable persons</td><td>Yes — 5 days before operations begin</td></tr>
+        <tr class="hl"><td>Non-resident taxable persons</td><td>Yes — before supplying in India</td></tr>
+        <tr><td>Persons liable to pay under RCM</td><td>Yes — mandatory</td></tr>
+        <tr class="hl"><td>Input Service Distributors (ISD)</td><td>Yes — mandatory</td></tr>
+        <tr><td>E-commerce operators collecting TCS</td><td>Yes — mandatory</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sh">Registration Process</h3>
+  <div class="ib blue"><strong>Steps for New GST Registration:</strong>
+    1. Apply on GST Portal (gst.gov.in) — Form GST REG-01<br>
+    2. Upload: PAN, Aadhaar, proof of business, bank account details, photographs<br>
+    3. ARN (Application Reference Number) generated immediately<br>
+    4. Verification by GST Officer — within 7 working days (or 30 days if physical verification required)<br>
+    5. GSTIN allotted — 15-digit PAN-based unique number<br><br>
+    <strong>GSTIN Format:</strong> 2-digit state code + 10-digit PAN + 1-digit entity number + 1 Z + 1 check digit
+  </div>
+
+  <div class="ib amber"><strong>Voluntary Registration</strong>Businesses below threshold can also voluntarily register to avail ITC benefits — especially useful if they supply to GST-registered businesses who need to claim ITC.</div>
+
+  <div class="src-box"><h4>📎 Official Sources</h4><div class="src-links">
+    <a href="https://www.gst.gov.in/webinars" target="_blank" class="src-link">GST Registration Portal ↗</a>
+    <a href="https://services.gst.gov.in/services/searchtp" target="_blank" class="src-link">Search GST Number ↗</a>
+    <a href="https://cbic-gst.gov.in" target="_blank" class="src-link">CBIC Portal ↗</a>
+  </div></div>
+</div></div>
+
+<!-- ITC -->
+<div class="topic-panel" id="panel-itc">
+<div class="panel-content">
+  <span class="panel-label">GST Act 2017</span>
+  <h2>Input Tax Credit (ITC)</h2>
+  <p class="panel-intro">ITC allows businesses to reduce their GST liability by the GST already paid on purchases used for business purposes. It avoids the cascading effect of tax on tax.</p>
+
+  <h3 class="sh">Eligibility Conditions <span class="sec-ref">Sec 16 CGST</span></h3>
+  <div class="tbl-wrap">
+    <table class="atbl">
+      <thead><tr><th>#</th><th>Condition</th><th>Details</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Registered taxpayer</td><td>Must be a registered GST taxpayer</td></tr>
+        <tr class="hl"><td>2</td><td>Tax invoice or debit note</td><td>Must possess a valid tax invoice / debit note issued by a registered supplier</td></tr>
+        <tr><td>3</td><td>Goods/services received</td><td>Goods or services must actually be received</td></tr>
+        <tr class="hl"><td>4</td><td>Tax paid by supplier</td><td>Tax charged must have been actually paid to government by supplier (verified via GSTR-2B)</td></tr>
+        <tr><td>5</td><td>Return filed</td><td>Buyer must have filed their GST return (GSTR-3B)</td></tr>
+        <tr class="hl"><td>6</td><td>Time limit</td><td>Claim ITC by 30th November of following FY or date of filing annual return — whichever is earlier</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sh">ITC — What is Blocked <span class="sec-ref">Sec 17(5) CGST</span></h3>
+  <div class="tbl-wrap">
+    <table class="atbl">
+      <thead><tr><th>Blocked ITC Item</th><th>Exception (when ITC allowed)</th></tr></thead>
+      <tbody>
+        <tr><td>Motor vehicles (up to 13-seater)</td><td>If used for transport of passengers, driving training school, further supply of vehicles</td></tr>
+        <tr class="hl"><td>Food, beverages, outdoor catering</td><td>If it is the same category of supply being made (e.g. restaurant business)</td></tr>
+        <tr><td>Club membership, health & fitness services</td><td>If it is the same category of outward supply</td></tr>
+        <tr class="hl"><td>Rent-a-cab, life insurance, health insurance</td><td>If mandatory under any law for employees; or same category of outward supply</td></tr>
+        <tr><td>Travel benefits to employees (LTA etc.)</td><td>Not allowed</td></tr>
+        <tr class="hl"><td>Works contract services (construction of immovable property)</td><td>Only allowed if it is a further supply of works contract services</td></tr>
+        <tr><td>Goods/services for personal consumption</td><td>Not allowed</td></tr>
+        <tr class="hl"><td>Goods lost, stolen, destroyed, written off</td><td>Not allowed</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sh">ITC Reversal — When ITC Must Be Reversed <span class="sec-ref">Sec 17 / Rule 42-43</span></h3>
+  <div class="ib amber"><strong>Proportional Reversal (Rule 42/43):</strong>If inputs/capital goods are used for both taxable and exempt supplies — ITC must be reversed proportionally. Formula: ITC to reverse = Total ITC × (Exempt turnover / Total turnover). This reversal must be done every month and reconciled at year-end in GSTR-9.</div>
+
+  <div class="ib red"><strong>Full Reversal — Sec 16(2)(b) amendment (w.e.f. Oct 2022)</strong>ITC claimed must match what appears in GSTR-2B (supplier's return). If supplier has not filed return or filed incorrectly — ITC may be reversed and demand raised on the buyer.</div>
+
+  <div class="src-box"><h4>📎 Official Sources</h4><div class="src-links">
+    <a href="https://www.gst.gov.in" target="_blank" class="src-link">GST Portal ↗</a>
+    <a href="https://cbic-gst.gov.in" target="_blank" class="src-link">CBIC Circulars on ITC ↗</a>
+  </div></div>
+</div></div>
+
+<!-- RETURNS -->
+<div class="topic-panel" id="panel-returns">
+<div class="panel-content">
+  <span class="panel-label">GST Act 2017</span>
+  <h2>GST Return Filing Calendar</h2>
+  <p class="panel-intro">All GST registered persons must file periodic returns on the GSTN portal, irrespective of whether there are transactions or not. Nil returns must also be filed.</p>
+
+  <div class="tbl-wrap">
+    <table class="atbl">
+      <thead><tr><th>Return</th><th>Who Files</th><th>Frequency</th><th>Due Date</th><th>Details</th></tr></thead>
+      <tbody>
+        <tr><td>GSTR-1</td><td>All regular taxpayers</td><td>Monthly / Quarterly (QRMP)</td><td>Monthly: 11th of next month; Quarterly: 13th of month after quarter</td><td>Outward supply details — all sales invoices</td></tr>
+        <tr class="hl"><td>GSTR-3B</td><td>All regular taxpayers</td><td>Monthly / Quarterly (QRMP)</td><td>Monthly: 20th / 22nd / 24th (staggered by state); Quarterly: 22nd / 24th</td><td>Summary return — tax payment, ITC claim</td></tr>
+        <tr><td>GSTR-2B</td><td>All regular taxpayers</td><td>Auto-generated monthly</td><td>Available by 14th of following month</td><td>Auto-populated ITC statement from suppliers' GSTR-1</td></tr>
+        <tr class="hl"><td>GSTR-4</td><td>Composition scheme taxpayers</td><td>Annual</td><td>30 April of following FY</td><td>Annual return for composition dealers</td></tr>
+        <tr><td>GSTR-5</td><td>Non-resident taxable persons</td><td>Monthly</td><td>20th of following month</td><td>Return for non-resident suppliers</td></tr>
+        <tr class="hl"><td>GSTR-6</td><td>Input Service Distributors (ISD)</td><td>Monthly</td><td>13th of following month</td><td>ISD return — distribution of ITC</td></tr>
+        <tr><td>GSTR-7</td><td>TDS deductors under GST</td><td>Monthly</td><td>10th of following month</td><td>TDS deducted under GST</td></tr>
+        <tr class="hl"><td>GSTR-8</td><td>E-commerce operators (TCS)</td><td>Monthly</td><td>10th of following month</td><td>TCS collected from sellers</td></tr>
+        <tr><td>GSTR-9</td><td>All regular taxpayers (turnover > ₹2 Cr)</td><td>Annual</td><td>31 December of following FY</td><td>Annual return — reconciliation of monthly returns</td></tr>
+        <tr class="hl"><td>GSTR-9C</td><td>Turnover > ₹5 crore</td><td>Annual</td><td>31 December of following FY</td><td>Reconciliation statement — certified by CA/CMA</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sh">QRMP Scheme — Quarterly Return Monthly Payment</h3>
+  <div class="ib blue"><strong>Who can opt:</strong> Taxpayers with annual turnover up to ₹5 crore in preceding FY. File GSTR-1 and GSTR-3B quarterly. Pay tax monthly (by 25th) using PMT-06 challan — pay either fixed amount (35% of last quarter tax) or self-assessed amount. IFF (Invoice Furnishing Facility) available for B2B invoices in first two months of quarter.</div>
+
+  <div class="src-box"><h4>📎 Official Sources</h4><div class="src-links">
+    <a href="https://www.gst.gov.in" target="_blank" class="src-link">File GST Returns ↗</a>
+    <a href="https://cbic-gst.gov.in" target="_blank" class="src-link">CBIC Due Date Notifications ↗</a>
+  </div></div>
+</div></div>
+
+<!-- E-INVOICE & E-WAY BILL -->
+<div class="topic-panel" id="panel-einvoice">
+<div class="panel-content">
+  <span class="panel-label">GST Act 2017</span>
+  <h2>E-Invoice & E-Way Bill</h2>
+  <p class="panel-intro">E-invoice is mandatory for B2B supplies above prescribed turnover limit. E-way bill is required for movement of goods above specified value.</p>
+
+  <h3 class="sh">E-Invoice — Applicability</h3>
+  <div class="tbl-wrap">
+    <table class="atbl">
+      <thead><tr><th>Annual Turnover</th><th>E-Invoice Applicable From</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td>Above ₹5 crore</td><td>1 August 2023 (currently mandatory)</td></tr>
+        <tr><td>₹10–₹50 crore</td><td>1 October 2022</td></tr>
+        <tr class="hl"><td>₹50–₹100 crore</td><td>1 April 2022</td></tr>
+        <tr><td>₹100–₹500 crore</td><td>1 January 2022</td></tr>
+        <tr class="hl"><td>Above ₹500 crore</td><td>1 October 2020</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="ib blue"><strong>How E-Invoice works:</strong> Supplier generates invoice in their ERP/accounting software → uploads to IRP (Invoice Registration Portal) → IRP validates and generates IRN (Invoice Reference Number) + QR code → returns digitally signed invoice → supplier sends to buyer. GSTR-1 auto-populated from e-invoice data.</div>
+
+  <h3 class="sh">Who is EXEMPT from E-Invoice</h3>
+  <div class="two-grid">
+    <div class="info-card">
+      <h4>❌ E-Invoice Not Required</h4>
+      <ul>
+        <li>B2C supplies (to unregistered buyers)</li>
+        <li>Nil-rated / exempt supplies</li>
+        <li>SEZ supplies (with payment / without payment)</li>
+        <li>Banks, NBFC, insurance companies</li>
+        <li>GTA (Goods Transport Agencies)</li>
+        <li>Passenger transport services</li>
+        <li>Multiplex cinema services</li>
+      </ul>
+    </div>
+    <div class="info-card">
+      <h4>✅ E-Invoice Mandatory For</h4>
+      <ul>
+        <li>B2B tax invoices</li>
+        <li>B2G (supply to government) invoices</li>
+        <li>Export invoices</li>
+        <li>Debit notes and credit notes</li>
+        <li>Reverse charge supplies</li>
+      </ul>
     </div>
   </div>
+
+  <h3 class="sh">E-Way Bill — Movement of Goods</h3>
+  <div class="tbl-wrap">
+    <table class="atbl">
+      <thead><tr><th>Category</th><th>E-Way Bill Required</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td>Goods value exceeding ₹50,000 (single invoice)</td><td>Yes — mandatory for inter-state movement</td></tr>
+        <tr><td>Interstate movement regardless of value</td><td>Yes — mandatory for certain notified goods</td></tr>
+        <tr class="hl"><td>Intrastate movement</td><td>As per respective state notification (most states ₹50,000 limit)</td></tr>
+        <tr><td>Goods transported by non-motorised conveyance</td><td>No</td></tr>
+        <tr class="hl"><td>Goods transported from customs port to ICD / CFS</td><td>No</td></tr>
+        <tr><td>Movement within 50 km from supplier to transporter</td><td>No (in some states)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="ib amber"><strong>E-Way Bill Validity:</strong> Up to 200 km — 1 day. Every additional 200 km — 1 extra day. Over-dimensional cargo: 20 km = 1 day. Extension can be done 4 hours before and 4 hours after expiry.</div>
+
+  <div class="src-box"><h4>📎 Official Sources</h4><div class="src-links">
+    <a href="https://einvoice1.gst.gov.in" target="_blank" class="src-link">E-Invoice Portal ↗</a>
+    <a href="https://ewaybillgst.gov.in" target="_blank" class="src-link">E-Way Bill Portal ↗</a>
+    <a href="https://www.gst.gov.in" target="_blank" class="src-link">GST Portal ↗</a>
+  </div></div>
+</div></div>
+
+<!-- RCM -->
+<div class="topic-panel" id="panel-rcm">
+<div class="panel-content">
+  <span class="panel-label">GST Act 2017</span>
+  <h2>Reverse Charge Mechanism (RCM)</h2>
+  <p class="panel-intro">Under RCM, the liability to pay GST shifts from the supplier to the recipient of goods or services. The recipient pays GST directly to the government.</p>
+
+  <div class="ib blue"><strong>Why RCM?</strong>RCM is applied when the supplier is unregistered, or for specified categories of goods/services where government wants to ensure tax compliance from the buyer (who is usually larger and more compliant). The buyer pays GST and can claim ITC of the same amount (if eligible).</div>
+
+  <h3 class="sh">RCM — Specified Services <span class="sec-ref">Sec 9(3) CGST / Notification 13/2017</span></h3>
+  <div class="tbl-wrap">
+    <table class="atbl">
+      <thead><tr><th>Service / Goods</th><th>Supplier</th><th>Recipient (pays GST)</th><th>Rate</th></tr></thead>
+      <tbody>
+        <tr><td>GTA (Goods Transport Agency) services</td><td>Any GTA</td><td>Factory, registered persons, body corporate, society, co-op</td><td>5% (no ITC) or 12% (with ITC)</td></tr>
+        <tr class="hl"><td>Legal services by advocate / firm of advocates</td><td>Individual / firm advocate</td><td>Any business entity</td><td>18%</td></tr>
+        <tr><td>Sponsorship services</td><td>Any person</td><td>Body corporate or partnership firm</td><td>18%</td></tr>
+        <tr class="hl"><td>Services by Arbitral Tribunal</td><td>Arbitral Tribunal</td><td>Any business entity</td><td>18%</td></tr>
+        <tr><td>Import of services (from outside India)</td><td>Foreign service provider</td><td>Indian recipient (registered or unregistered)</td><td>Applicable rate</td></tr>
+        <tr class="hl"><td>Director's services to a company</td><td>Director</td><td>Company (recipient)</td><td>18%</td></tr>
+        <tr><td>Insurance agent to insurance company</td><td>Insurance agent</td><td>Insurance company</td><td>18%</td></tr>
+        <tr class="hl"><td>Rent from government / local authority</td><td>Govt / local authority</td><td>Registered business entity</td><td>18%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sh">RCM — Unregistered Supplier <span class="sec-ref">Sec 9(4) CGST</span></h3>
+  <div class="ib amber"><strong>Sec 9(4) RCM on Unregistered Purchases:</strong>Currently applicable only to specific notified categories (not all unregistered purchases). A registered person purchasing specified goods/services from an unregistered supplier must pay GST under RCM. ITC of such RCM tax can be claimed in the same month of payment.</div>
+
+  <div class="src-box"><h4>📎 Official Sources</h4><div class="src-links">
+    <a href="https://cbic-gst.gov.in" target="_blank" class="src-link">CBIC Notifications on RCM ↗</a>
+    <a href="https://www.gst.gov.in" target="_blank" class="src-link">GST Portal ↗</a>
+  </div></div>
+</div></div>
+
+<!-- COMPOSITION -->
+<div class="topic-panel" id="panel-composition">
+<div class="panel-content">
+  <span class="panel-label">GST Act 2017</span>
+  <h2>Composition Scheme</h2>
+  <p class="panel-intro">A simplified compliance option for small businesses. Pay a flat rate of GST on turnover instead of regular GST — less compliance, but no ITC benefit and cannot supply interstate.</p>
+
+  <h3 class="sh">Eligibility & Rates <span class="sec-ref">Sec 10 CGST</span></h3>
+  <div class="tbl-wrap">
+    <table class="atbl">
+      <thead><tr><th>Category</th><th>Turnover Limit</th><th>GST Rate</th><th>Returns</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td>Manufacturer (goods)</td><td>≤ ₹1.5 crore (₹75L special category states)</td><td>1% (0.5% CGST + 0.5% SGST)</td><td>GSTR-4 annual; CMP-08 quarterly</td></tr>
+        <tr><td>Trader (goods)</td><td>≤ ₹1.5 crore</td><td>1%</td><td>Same</td></tr>
+        <tr class="hl"><td>Restaurant (food & drink, no alcohol)</td><td>≤ ₹1.5 crore</td><td>5%</td><td>Same</td></tr>
+        <tr><td>Service providers (Composition for services)</td><td>≤ ₹50 lakh</td><td>6% (3% CGST + 3% SGST)</td><td>Same</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="two-grid">
+    <div class="info-card">
+      <h4>✅ Advantages</h4>
+      <ul>
+        <li>Flat rate — no complex calculation</li>
+        <li>Quarterly payment (CMP-08)</li>
+        <li>Annual return (GSTR-4) instead of monthly</li>
+        <li>Less record-keeping</li>
+        <li>Lower tax rate than regular GST</li>
+      </ul>
+    </div>
+    <div class="info-card">
+      <h4>❌ Restrictions</h4>
+      <ul>
+        <li>Cannot claim ITC on purchases</li>
+        <li>Cannot supply interstate</li>
+        <li>Cannot supply non-taxable goods</li>
+        <li>Cannot issue tax invoice (issue Bill of Supply)</li>
+        <li>GST not charged to customers — absorbed by dealer</li>
+        <li>Cannot supply through e-commerce operators</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="src-box"><h4>📎 Official Sources</h4><div class="src-links">
+    <a href="https://www.gst.gov.in" target="_blank" class="src-link">GST Portal — Composition Option ↗</a>
+    <a href="https://cbic-gst.gov.in" target="_blank" class="src-link">CBIC ↗</a>
+  </div></div>
+</div></div>
+
+<!-- PENALTIES -->
+<div class="topic-panel" id="panel-penalties">
+<div class="panel-content">
+  <span class="panel-label">GST Act 2017</span>
+  <h2>Penalties & Interest</h2>
+  <p class="panel-intro">GST law prescribes interest for late payment and penalties for non-compliance. Know the consequences to avoid unnecessary costs.</p>
+
+  <h3 class="sh">Interest on Late Payment <span class="sec-ref">Sec 50 CGST</span></h3>
+  <div class="tbl-wrap">
+    <table class="atbl">
+      <thead><tr><th>Situation</th><th>Interest Rate</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td>Delayed payment of GST (regular)</td><td class="rate-cell">18% per annum</td></tr>
+        <tr><td>Undue / excess ITC claim or excess reduction in output tax liability</td><td class="rate-cell">24% per annum</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sh">Late Fee — Return Filing <span class="sec-ref">Sec 47 CGST</span></h3>
+  <div class="tbl-wrap">
+    <table class="atbl">
+      <thead><tr><th>Return</th><th>Late Fee per Day</th><th>Maximum Late Fee</th></tr></thead>
+      <tbody>
+        <tr><td>GSTR-3B / GSTR-1 (with tax liability)</td><td class="rate-cell">₹50/day (₹25 CGST + ₹25 SGST)</td><td>₹10,000 (₹5,000 CGST + ₹5,000 SGST)</td></tr>
+        <tr class="hl"><td>GSTR-3B / GSTR-1 (nil return)</td><td class="rate-cell">₹20/day (₹10 CGST + ₹10 SGST)</td><td>₹500</td></tr>
+        <tr><td>GSTR-9 Annual return</td><td class="rate-cell">₹200/day (₹100 CGST + ₹100 SGST)</td><td>0.25% of turnover in state</td></tr>
+        <tr class="hl"><td>GSTR-9C (Audit return)</td><td colspan="2">Same as GSTR-9</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sh">Key Penalties <span class="sec-ref">Sec 122–138 CGST</span></h3>
+  <div class="tbl-wrap">
+    <table class="atbl">
+      <thead><tr><th>Offence</th><th>Penalty</th></tr></thead>
+      <tbody>
+        <tr><td>Supplying goods/services without invoice</td><td class="rate-cell">₹10,000 or tax evaded — whichever is higher</td></tr>
+        <tr class="hl"><td>Issuing invoice without supply (fake invoice)</td><td class="rate-cell">₹10,000 or tax involved — whichever is higher</td></tr>
+        <tr><td>Obtaining ITC fraudulently / fake invoices</td><td class="rate-cell">100% of tax involved (+ interest)</td></tr>
+        <tr class="hl"><td>Not registering when required</td><td class="rate-cell">₹10,000 or tax evaded — whichever is higher</td></tr>
+        <tr><td>Obstructing GST officer</td><td class="rate-cell">₹25,000</td></tr>
+        <tr class="hl"><td>Minor technical errors (not tax evasion)</td><td class="rate-cell">₹10,000</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="ib green"><strong>Section 128A — Waiver of Interest & Penalty (FY 2017-20)</strong>Finance Act 2024 inserted Sec 128A providing waiver of interest and penalty for demands pertaining to FY 2017-18 to 2019-20, if taxpayer pays the full tax amount by a notified date. Applicable for cases under Sec 73 (non-fraud).</div>
+
+  <div class="src-box"><h4>📎 Official Sources</h4><div class="src-links">
+    <a href="https://cbic-gst.gov.in" target="_blank" class="src-link">CBIC — GST Acts & Rules ↗</a>
+    <a href="https://www.gst.gov.in" target="_blank" class="src-link">GST Portal ↗</a>
+  </div></div>
+</div></div>
+
+<!-- OFFICIAL LINKS -->
+<div class="topic-panel" id="panel-links">
+<div class="panel-content">
+  <span class="panel-label">Official Sources</span>
+  <h2>Government Portals</h2>
+  <p style="color:var(--gray-5);margin-top:6px">All TrustFactON content is sourced from these official portals. Visit for complete statutory text, notifications and circulars.</p>
+  <div class="two-grid" style="margin-top:20px">
+    <a href="https://www.gst.gov.in" target="_blank" style="display:block;background:white;border:1px solid var(--gray-3);border-radius:var(--radius);padding:16px;text-decoration:none;transition:all 0.2s" onmouseover="this.style.borderColor='var(--blue)'" onmouseout="this.style.borderColor='var(--gray-3)'">
+      <div style="font-size:1.2rem;margin-bottom:6px">🏛️</div><h4 style="color:var(--black);font-size:0.9rem;margin-bottom:4px">GST Portal — gst.gov.in</h4><p style="font-size:0.78rem;color:var(--gray-5)">Return filing, registration, refunds, payment, GSTR-2B ↗</p>
+    </a>
+    <a href="https://cbic-gst.gov.in" target="_blank" style="display:block;background:white;border:1px solid var(--gray-3);border-radius:var(--radius);padding:16px;text-decoration:none;transition:all 0.2s" onmouseover="this.style.borderColor='var(--blue)'" onmouseout="this.style.borderColor='var(--gray-3)'">
+      <div style="font-size:1.2rem;margin-bottom:6px">📋</div><h4 style="color:var(--black);font-size:0.9rem;margin-bottom:4px">CBIC — cbic-gst.gov.in</h4><p style="font-size:0.78rem;color:var(--gray-5)">GST Acts, rules, notifications, circulars, rates ↗</p>
+    </a>
+    <a href="https://services.gst.gov.in/services/searchhsnsac" target="_blank" style="display:block;background:white;border:1px solid var(--gray-3);border-radius:var(--radius);padding:16px;text-decoration:none;transition:all 0.2s" onmouseover="this.style.borderColor='var(--blue)'" onmouseout="this.style.borderColor='var(--gray-3)'">
+      <div style="font-size:1.2rem;margin-bottom:6px">🔍</div><h4 style="color:var(--black);font-size:0.9rem;margin-bottom:4px">HSN / SAC Search</h4><p style="font-size:0.78rem;color:var(--gray-5)">Official GST portal HSN code search for goods and SAC for services ↗</p>
+    </a>
+    <a href="https://einvoice1.gst.gov.in" target="_blank" style="display:block;background:white;border:1px solid var(--gray-3);border-radius:var(--radius);padding:16px;text-decoration:none;transition:all 0.2s" onmouseover="this.style.borderColor='var(--blue)'" onmouseout="this.style.borderColor='var(--gray-3)'">
+      <div style="font-size:1.2rem;margin-bottom:6px">🧾</div><h4 style="color:var(--black);font-size:0.9rem;margin-bottom:4px">E-Invoice Portal</h4><p style="font-size:0.78rem;color:var(--gray-5)">Generate IRN, e-invoice registration, API access ↗</p>
+    </a>
+    <a href="https://ewaybillgst.gov.in" target="_blank" style="display:block;background:white;border:1px solid var(--gray-3);border-radius:var(--radius);padding:16px;text-decoration:none;transition:all 0.2s" onmouseover="this.style.borderColor='var(--blue)'" onmouseout="this.style.borderColor='var(--gray-3)'">
+      <div style="font-size:1.2rem;margin-bottom:6px">🚛</div><h4 style="color:var(--black);font-size:0.9rem;margin-bottom:4px">E-Way Bill Portal</h4><p style="font-size:0.78rem;color:var(--gray-5)">Generate, extend, cancel e-way bills ↗</p>
+    </a>
+    <a href="https://cbic-gst.gov.in/gst-goods-services-rates.html" target="_blank" style="display:block;background:white;border:1px solid var(--gray-3);border-radius:var(--radius);padding:16px;text-decoration:none;transition:all 0.2s" onmouseover="this.style.borderColor='var(--blue)'" onmouseout="this.style.borderColor='var(--gray-3)'">
+      <div style="font-size:1.2rem;margin-bottom:6px">💰</div><h4 style="color:var(--black);font-size:0.9rem;margin-bottom:4px">GST Rate Schedule</h4><p style="font-size:0.78rem;color:var(--gray-5)">Official goods and services rate schedule from CBIC ↗</p>
+    </a>
+  </div>
+  <div class="ib blue" style="margin-top:20px"><strong>About TrustFactON</strong>Plain-language summaries for educational purposes only. For binding text and latest notifications, always refer to official portals above. Not a substitute for professional advice. Built by Evenset Consultancy Services, Bengaluru.</div>
+</div></div>
+
+<!-- AI CHAT -->
+<div class="topic-panel" id="panel-chat">
+<div class="panel-content">
+  <span class="panel-label">AI Assistant</span>
+  <h2>Ask About GST</h2>
+  <p style="color:var(--gray-5);margin-top:6px">Free for all users. No login. Powered by Google Gemini.</p>
+  <div class="chat-container" id="chat-widget" data-act="GST Act 2017 — CGST, IGST, SGST, UTGST" style="max-width:760px;margin-top:20px">
+    <div class="chat-header">
+      <div class="chat-avatar">TF</div>
+      <div class="chat-header-info">
+        <h4>GST AI Assistant</h4>
+        <span><span class="online-dot"></span>CGST · IGST · SGST · Powered by Google Gemini</span>
+      </div>
+    </div>
+    <div class="chat-messages"></div>
+    <div class="chat-suggestions">
+      <button class="chat-suggest-btn">GST rate on IT software services?</button>
+      <button class="chat-suggest-btn">When is e-invoice mandatory?</button>
+      <button class="chat-suggest-btn">How to calculate ITC reversal?</button>
+      <button class="chat-suggest-btn">GSTR-1 vs GSTR-3B difference?</button>
+    </div>
+    <div class="chat-input-row">
+      <textarea class="chat-input" rows="1" placeholder="Ask anything about GST..."></textarea>
+      <button class="chat-send-btn"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+    </div>
+  </div>
+</div></div>
+
+</div></div>
+
+<section class="newsletter-section">
+  <div class="container"><div class="newsletter-inner">
+    <span class="sec-label">Stay Updated</span>
+    <h2 class="sec-title" style="margin-bottom:8px">GST Council Updates & Alerts</h2>
+    <p class="sec-sub" style="margin-bottom:24px">GST Council decisions, CBIC circulars, rate changes — weekly from TrustFactON.</p>
+    <div class="newsletter-form">
+      <input type="email" placeholder="your@email.com">
+      <button onclick="window.open('https://trustfacton.beehiiv.com/subscribe','_blank')">Subscribe →</button>
+    </div>
+  </div></div>
 </section>
 
 <div id="footer-placeholder"></div>

@@ -3,20 +3,104 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Income Tax Act — TrustFactON</title>
+  <title>Income Tax Act 1961 / 2025 — TrustFactON</title>
+  <meta name="description" content="Income Tax Act 1961 and IT Act 2025 — tax slabs, salary, capital gains, TDS, deductions, ITR forms. Old and new section mapping. Tax Year 2026-27.">
   <link rel="stylesheet" href="style.css">
-  <style>:root{--act-color:#2563EB;}</style>
+  <style>
+    :root { --act-color: #2563EB; }
+
+    /* Act mapping banner */
+    .act-map {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #EFF6FF; border: 1px solid #BFDBFE;
+      border-radius: 6px; padding: 5px 12px;
+      font-size: 0.76rem; font-family: monospace;
+      margin-bottom: 16px; flex-wrap: wrap;
+    }
+    .act-map .old { color: var(--gray-5); }
+    .act-map .arr { color: var(--blue); font-weight: 700; margin: 0 4px; }
+    .act-map .new { color: var(--blue); font-weight: 700; }
+    .act-map .lbl { font-family: 'Inter', sans-serif; font-size: 0.68rem;
+      font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+      color: var(--gray-4); margin-right: 4px; }
+
+    /* Inline section reference */
+    .s61 { font-family: monospace; font-size: 0.72rem; background: var(--gray-2);
+      color: var(--gray-5); padding: 1px 6px; border-radius: 4px; white-space: nowrap; }
+    .s25 { font-family: monospace; font-size: 0.72rem; background: #DBEAFE;
+      color: var(--blue); padding: 1px 6px; border-radius: 4px; font-weight: 600; white-space: nowrap; }
+    .sec-pair { display: inline-flex; align-items: center; gap: 3px; }
+    .sec-pair .mini-arr { font-size: 0.65rem; color: var(--gray-4); }
+
+    /* Tables */
+    .tbl-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--gray-3); margin-top: 14px; }
+    .atbl { width: 100%; border-collapse: collapse; font-size: 0.82rem; min-width: 500px; }
+    .atbl thead th { background: var(--navy); color: white; padding: 9px 12px;
+      text-align: left; font-weight: 600; font-size: 0.76rem; }
+    .atbl thead th.blue-head { background: #1E40AF; }
+    .atbl tbody td { padding: 8px 12px; border-bottom: 1px solid var(--gray-2);
+      color: var(--gray-6); vertical-align: top; line-height: 1.5; }
+    .atbl tbody tr:hover td { background: var(--gray-1); }
+    .atbl tbody tr:last-child td { border-bottom: none; }
+    .atbl .hl td { background: #EFF6FF !important; }
+    .atbl .hl2 td { background: #F0FDF4 !important; }
+    .rate-cell { font-weight: 700; color: var(--red); }
+    .nil-cell  { color: var(--green); font-weight: 600; }
+    .new-cell  { color: var(--blue); font-weight: 600; }
+
+    /* Panels */
+    .panel-content { padding: 32px 0; }
+    .panel-intro { color: var(--gray-5); margin-top: 6px; max-width: 720px; font-size: 0.9rem; line-height: 1.7; }
+
+    /* Info boxes */
+    .ib { padding: 10px 14px; border-radius: var(--radius); margin: 10px 0;
+      font-size: 0.82rem; border-left: 3px solid; line-height: 1.7; }
+    .ib.blue  { background: #EFF6FF; border-color: var(--blue); color: #1E40AF; }
+    .ib.green { background: #F0FDF4; border-color: var(--green); color: #166534; }
+    .ib.amber { background: #FFFBEB; border-color: var(--amber); color: #92400E; }
+    .ib.red   { background: #FEF2F2; border-color: var(--red); color: #991B1B; }
+    .ib strong { display: block; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+
+    /* Grid layouts */
+    .two-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
+    .info-card { background: white; border: 1px solid var(--gray-3); border-radius: var(--radius); padding: 15px; }
+    .info-card h4 { font-size: 0.88rem; color: var(--black); margin-bottom: 8px; }
+    .info-card p, .info-card li { font-size: 0.81rem; color: var(--gray-5); line-height: 1.7; }
+    .info-card ul { padding-left: 15px; margin-top: 4px; }
+
+    /* Section heading */
+    .sh { margin-top: 24px; margin-bottom: 8px; color: var(--black); font-size: 1rem; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+    /* Source box */
+    .src-box { background: var(--gray-1); border: 1px solid var(--gray-3); border-radius: var(--radius); padding: 13px 15px; margin-top: 28px; }
+    .src-box h4 { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--gray-5); margin-bottom: 8px; }
+    .src-links { display: flex; flex-wrap: wrap; gap: 7px; }
+    .src-link { display: inline-flex; align-items: center; gap: 4px; font-size: 0.77rem; color: var(--blue); border: 1px solid #BFDBFE; border-radius: var(--radius); padding: 4px 11px; text-decoration: none; background: white; transition: all 0.15s; }
+    .src-link:hover { background: var(--blue); color: white; }
+
+    /* Act change callout */
+    .act-change { background: linear-gradient(135deg, #1A3A6B, #1E40AF); border-radius: var(--radius); padding: 14px 18px; margin-bottom: 20px; color: white; }
+    .act-change h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.7; margin-bottom: 6px; }
+    .act-change p { font-size: 0.84rem; opacity: 0.85; line-height: 1.6; }
+    .act-change .badge-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+    .abadge { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; padding: 3px 10px; font-size: 0.74rem; white-space: nowrap; }
+
+    @media(max-width:640px){.two-grid{grid-template-columns:1fr;}}
+  </style>
 </head>
 <body>
 <div id="nav-placeholder"></div>
 
 <section class="act-hero">
   <div class="container">
-    <div class="act-hero-badge">Income Tax Act</div>
+    <div class="act-hero-badge">📊 Direct Tax · CBDT</div>
     <h1>Income Tax Act <span>1961 / 2025</span></h1>
-    <p>Tax rates, salary, capital gains, TDS, deductions, and ITR filing — IT Act 1961 (up to AY 2025-26) and IT Act 2025 (from AY 2026-27).</p>
+    <p>Tax on income from salary, business, capital gains, house property and other sources. IT Act 1961 governs up to AY 2025-26 (FY 2024-25). IT Act 2025 applies from Tax Year 2026-27 (AY 2026-27 onwards), effective 1 April 2026.</p>
     <div class="act-hero-stats">
-      <div class="act-stat"><span class="v">536</span><span class="l">Clauses IT Act 2025</span></div> <div class="act-stat"><span class="v">Apr 2026</span><span class="l">2025 Effective</span></div> <div class="act-stat"><span class="v">CBDT</span><span class="l">Administering</span></div> <div class="act-stat"><span class="v">5</span><span class="l">Heads of Income</span></div>
+      <div class="act-stat"><span class="v">819→536</span><span class="l">Sections (1961→2025)</span></div>
+      <div class="act-stat"><span class="v">1 Apr 2026</span><span class="l">IT Act 2025 Effective</span></div>
+      <div class="act-stat"><span class="v">CBDT</span><span class="l">Administering Body</span></div>
+      <div class="act-stat"><span class="v">5</span><span class="l">Heads of Income</span></div>
     </div>
   </div>
 </section>
@@ -28,23 +112,28 @@
       <div class="topic-select-wrap">
         <select class="topic-select" id="topicSelect" onchange="showTopic(this.value)">
           <option value="">— Choose a topic —</option>
-          <option value="slabs">Tax Slabs & Rates</option>
-<option value="salary">Salary Income</option>
-<option value="business">Business & Profession</option>
-<option value="capital">Capital Gains</option>
-<option value="deductions">Deductions 80C–80U</option>
-<option value="tds">TDS Rates</option>
-<option value="itr">ITR Forms</option>
-<option value="advance">Advance Tax</option>
-<option value="calendar">Compliance Calendar</option>
+          <option value="slabs">💰 Tax Slabs & Rates</option>
+          <option value="salary">👔 Salary Income</option>
+          <option value="house">🏠 House Property</option>
+          <option value="business">💼 Business & Profession</option>
+          <option value="capital">📈 Capital Gains</option>
+          <option value="deductions">🧾 Deductions (Old Regime)</option>
+          <option value="tds">✂️ TDS Key Rates</option>
+          <option value="itr">📋 ITR Forms</option>
+          <option value="advance">🗓️ Advance Tax</option>
+          <option value="calendar">📅 Compliance Calendar</option>
           <option value="links">🔗 Official Links</option>
           <option value="chat">🤖 Ask AI</option>
         </select>
         <span class="topic-arrow">▼</span>
       </div>
       <div class="topic-chips">
-        <button class="topic-chip" onclick="showTopic('slabs')">Tax Slabs & Rates</button> <button class="topic-chip" onclick="showTopic('salary')">Salary Income</button> <button class="topic-chip" onclick="showTopic('business')">Business & Profession</button> <button class="topic-chip" onclick="showTopic('capital')">Capital Gains</button> <button class="topic-chip" onclick="showTopic('deductions')">Deductions 80C–80U</button>
-        <button class="topic-chip" onclick="showTopic('links')">🔗 Links</button>
+        <button class="topic-chip" onclick="showTopic('slabs')">💰 Tax Slabs</button>
+        <button class="topic-chip" onclick="showTopic('salary')">👔 Salary</button>
+        <button class="topic-chip" onclick="showTopic('capital')">📈 Capital Gains</button>
+        <button class="topic-chip" onclick="showTopic('deductions')">🧾 Deductions</button>
+        <button class="topic-chip" onclick="showTopic('tds')">✂️ TDS</button>
+        <button class="topic-chip" onclick="showTopic('itr')">📋 ITR</button>
         <button class="topic-chip" onclick="showTopic('chat')">🤖 Ask AI</button>
       </div>
     </div>
@@ -52,185 +141,706 @@
 </div>
 
 <div id="panels-wrap" style="background:var(--light);min-height:480px;">
-  <div class="container">
+<div class="container">
 
-    <div class="topic-panel active" id="panel-welcome" style="padding:48px 0;text-align:center">
-      <h2 style="color:var(--black);margin-bottom:10px">What would you like to know about Income Tax Act?</h2>
-      <p style="color:var(--gray-5);max-width:440px;margin:0 auto 32px">Choose a topic from the dropdown above or click a quick topic below.</p>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;max-width:840px;margin:0 auto;text-align:left">
-        <div class="quick-card" onclick="showTopic('slabs')"><div class="icon">📄</div><div><h4>Tax Slabs & Rates</h4><p>Tap to explore</p></div></div>
-<div class="quick-card" onclick="showTopic('salary')"><div class="icon">📄</div><div><h4>Salary Income</h4><p>Tap to explore</p></div></div>
-<div class="quick-card" onclick="showTopic('business')"><div class="icon">📄</div><div><h4>Business & Profession</h4><p>Tap to explore</p></div></div>
-<div class="quick-card" onclick="showTopic('capital')"><div class="icon">📄</div><div><h4>Capital Gains</h4><p>Tap to explore</p></div></div>
-<div class="quick-card" onclick="showTopic('deductions')"><div class="icon">📄</div><div><h4>Deductions 80C–80U</h4><p>Tap to explore</p></div></div>
-<div class="quick-card" onclick="showTopic('tds')"><div class="icon">📄</div><div><h4>TDS Rates</h4><p>Tap to explore</p></div></div>
-<div class="quick-card" onclick="showTopic('itr')"><div class="icon">📄</div><div><h4>ITR Forms</h4><p>Tap to explore</p></div></div>
-<div class="quick-card" onclick="showTopic('advance')"><div class="icon">📄</div><div><h4>Advance Tax</h4><p>Tap to explore</p></div></div>
-<div class="quick-card" onclick="showTopic('calendar')"><div class="icon">📄</div><div><h4>Compliance Calendar</h4><p>Tap to explore</p></div></div>
-        <div class="quick-card" onclick="showTopic('links')"><div class="icon">🔗</div><div><h4>Official Links</h4><p>Government portals</p></div></div>
-        <div class="quick-card" onclick="showTopic('chat')"><div class="icon">🤖</div><div><h4>Ask AI</h4><p>Get instant answer</p></div></div>
-      </div>
-    </div>
-
-    
-    <div class="topic-panel" id="panel-slabs">
-      <div style="padding:32px 0">
-        <span class="panel-label">Tax Slabs & Rates</span>
-        <div class="panel-header"><h2>Tax Slabs & Rates</h2><p style="color:var(--gray-5);margin-top:6px">Key provisions under Income Tax Act.</p></div>
-        <div class="info-box blue" style="margin-top:16px">Use the AI assistant for detailed answers on Tax Slabs & Rates, or visit Official Links above for the complete statutory text.</div>
-        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
-          <button class="btn btn-blue" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Tax Slabs & Rates under Income Tax Act';window._tfChat.send();}},300)">Ask AI about Tax Slabs & Rates →</button>
-          <button class="btn btn-white" onclick="showTopic('links')">Official Sources →</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="topic-panel" id="panel-salary">
-      <div style="padding:32px 0">
-        <span class="panel-label">Salary Income</span>
-        <div class="panel-header"><h2>Salary Income</h2><p style="color:var(--gray-5);margin-top:6px">Key provisions under Income Tax Act.</p></div>
-        <div class="info-box blue" style="margin-top:16px">Use the AI assistant for detailed answers on Salary Income, or visit Official Links above for the complete statutory text.</div>
-        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
-          <button class="btn btn-blue" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Salary Income under Income Tax Act';window._tfChat.send();}},300)">Ask AI about Salary Income →</button>
-          <button class="btn btn-white" onclick="showTopic('links')">Official Sources →</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="topic-panel" id="panel-business">
-      <div style="padding:32px 0">
-        <span class="panel-label">Business & Profession</span>
-        <div class="panel-header"><h2>Business & Profession</h2><p style="color:var(--gray-5);margin-top:6px">Key provisions under Income Tax Act.</p></div>
-        <div class="info-box blue" style="margin-top:16px">Use the AI assistant for detailed answers on Business & Profession, or visit Official Links above for the complete statutory text.</div>
-        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
-          <button class="btn btn-blue" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Business & Profession under Income Tax Act';window._tfChat.send();}},300)">Ask AI about Business & Profession →</button>
-          <button class="btn btn-white" onclick="showTopic('links')">Official Sources →</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="topic-panel" id="panel-capital">
-      <div style="padding:32px 0">
-        <span class="panel-label">Capital Gains</span>
-        <div class="panel-header"><h2>Capital Gains</h2><p style="color:var(--gray-5);margin-top:6px">Key provisions under Income Tax Act.</p></div>
-        <div class="info-box blue" style="margin-top:16px">Use the AI assistant for detailed answers on Capital Gains, or visit Official Links above for the complete statutory text.</div>
-        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
-          <button class="btn btn-blue" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Capital Gains under Income Tax Act';window._tfChat.send();}},300)">Ask AI about Capital Gains →</button>
-          <button class="btn btn-white" onclick="showTopic('links')">Official Sources →</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="topic-panel" id="panel-deductions">
-      <div style="padding:32px 0">
-        <span class="panel-label">Deductions 80C–80U</span>
-        <div class="panel-header"><h2>Deductions 80C–80U</h2><p style="color:var(--gray-5);margin-top:6px">Key provisions under Income Tax Act.</p></div>
-        <div class="info-box blue" style="margin-top:16px">Use the AI assistant for detailed answers on Deductions 80C–80U, or visit Official Links above for the complete statutory text.</div>
-        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
-          <button class="btn btn-blue" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Deductions 80C–80U under Income Tax Act';window._tfChat.send();}},300)">Ask AI about Deductions 80C–80U →</button>
-          <button class="btn btn-white" onclick="showTopic('links')">Official Sources →</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="topic-panel" id="panel-tds">
-      <div style="padding:32px 0">
-        <span class="panel-label">TDS Rates</span>
-        <div class="panel-header"><h2>TDS Rates</h2><p style="color:var(--gray-5);margin-top:6px">Key provisions under Income Tax Act.</p></div>
-        <div class="info-box blue" style="margin-top:16px">Use the AI assistant for detailed answers on TDS Rates, or visit Official Links above for the complete statutory text.</div>
-        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
-          <button class="btn btn-blue" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain TDS Rates under Income Tax Act';window._tfChat.send();}},300)">Ask AI about TDS Rates →</button>
-          <button class="btn btn-white" onclick="showTopic('links')">Official Sources →</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="topic-panel" id="panel-itr">
-      <div style="padding:32px 0">
-        <span class="panel-label">ITR Forms</span>
-        <div class="panel-header"><h2>ITR Forms</h2><p style="color:var(--gray-5);margin-top:6px">Key provisions under Income Tax Act.</p></div>
-        <div class="info-box blue" style="margin-top:16px">Use the AI assistant for detailed answers on ITR Forms, or visit Official Links above for the complete statutory text.</div>
-        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
-          <button class="btn btn-blue" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain ITR Forms under Income Tax Act';window._tfChat.send();}},300)">Ask AI about ITR Forms →</button>
-          <button class="btn btn-white" onclick="showTopic('links')">Official Sources →</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="topic-panel" id="panel-advance">
-      <div style="padding:32px 0">
-        <span class="panel-label">Advance Tax</span>
-        <div class="panel-header"><h2>Advance Tax</h2><p style="color:var(--gray-5);margin-top:6px">Key provisions under Income Tax Act.</p></div>
-        <div class="info-box blue" style="margin-top:16px">Use the AI assistant for detailed answers on Advance Tax, or visit Official Links above for the complete statutory text.</div>
-        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
-          <button class="btn btn-blue" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Advance Tax under Income Tax Act';window._tfChat.send();}},300)">Ask AI about Advance Tax →</button>
-          <button class="btn btn-white" onclick="showTopic('links')">Official Sources →</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="topic-panel" id="panel-calendar">
-      <div style="padding:32px 0">
-        <span class="panel-label">Compliance Calendar</span>
-        <div class="panel-header"><h2>Compliance Calendar</h2><p style="color:var(--gray-5);margin-top:6px">Key provisions under Income Tax Act.</p></div>
-        <div class="info-box blue" style="margin-top:16px">Use the AI assistant for detailed answers on Compliance Calendar, or visit Official Links above for the complete statutory text.</div>
-        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
-          <button class="btn btn-blue" onclick="showTopic('chat');setTimeout(()=>{if(window._tfChat){window._tfChat.inputEl.value='Explain Compliance Calendar under Income Tax Act';window._tfChat.send();}},300)">Ask AI about Compliance Calendar →</button>
-          <button class="btn btn-white" onclick="showTopic('links')">Official Sources →</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="topic-panel" id="panel-links">
-      <div style="padding:32px 0">
-        <span class="panel-label">Official Sources</span>
-        <div class="panel-header"><h2>Government Portals</h2><p style="color:var(--gray-5);margin-top:6px">All information is sourced from these official portals. Visit for complete and current data.</p></div>
-        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:20px">
-          <a href="https://www.incometaxindia.gov.in" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:white;border:1px solid var(--gray-3);border-radius:var(--radius);font-size:0.8rem;color:var(--navy);font-weight:500;transition:all 0.15s;text-decoration:none" onmouseover="this.style.borderColor='var(--blue)';this.style.color='var(--blue)'" onmouseout="this.style.borderColor='var(--gray-3)';this.style.color='var(--navy)'">Income Tax Dept ↗</a> <a href="https://eportal.incometax.gov.in" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:white;border:1px solid var(--gray-3);border-radius:var(--radius);font-size:0.8rem;color:var(--navy);font-weight:500;transition:all 0.15s;text-decoration:none" onmouseover="this.style.borderColor='var(--blue)';this.style.color='var(--blue)'" onmouseout="this.style.borderColor='var(--gray-3)';this.style.color='var(--navy)'">e-Filing Portal ↗</a> <a href="https://www.incometaxindia.gov.in/tax-rates" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:white;border:1px solid var(--gray-3);border-radius:var(--radius);font-size:0.8rem;color:var(--navy);font-weight:500;transition:all 0.15s;text-decoration:none" onmouseover="this.style.borderColor='var(--blue)';this.style.color='var(--blue)'" onmouseout="this.style.borderColor='var(--gray-3)';this.style.color='var(--navy)'">Tax Rates ↗</a> <a href="https://www.incometaxindia.gov.in/tax-deductes-at-source-tds" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:white;border:1px solid var(--gray-3);border-radius:var(--radius);font-size:0.8rem;color:var(--navy);font-weight:500;transition:all 0.15s;text-decoration:none" onmouseover="this.style.borderColor='var(--blue)';this.style.color='var(--blue)'" onmouseout="this.style.borderColor='var(--gray-3)';this.style.color='var(--navy)'">TDS Info ↗</a> <a href="https://www.incometaxindia.gov.in/income-tax-act-20251" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:white;border:1px solid var(--gray-3);border-radius:var(--radius);font-size:0.8rem;color:var(--navy);font-weight:500;transition:all 0.15s;text-decoration:none" onmouseover="this.style.borderColor='var(--blue)';this.style.color='var(--blue)'" onmouseout="this.style.borderColor='var(--gray-3)';this.style.color='var(--navy)'">IT Act 2025 ↗</a>
-        </div>
-        <div class="info-box blue" style="margin-top:20px"><strong>About TrustFactON</strong>We summarise official government content in plain language. For the full text of law, always refer to official portals above. Built by Evenset Consultancy Services, Bengaluru.</div>
-      </div>
-    </div>
-
-    <div class="topic-panel" id="panel-chat">
-      <div style="padding:32px 0">
-        <span class="panel-label">AI Assistant</span>
-        <div class="panel-header"><h2>Ask About Income Tax Act</h2><p style="color:var(--gray-5);margin-top:6px">Free for all users. No login required. Powered by Google Gemini.</p></div>
-        <div class="chat-container" id="chat-widget" data-act="Income Tax Act 1961 and IT Act 2025" style="max-width:760px;margin-top:24px">
-          <div class="chat-header">
-            <div class="chat-avatar">TF</div>
-            <div class="chat-header-info">
-              <h4>Income Tax Act AI</h4>
-              <span><span class="online-dot"></span>Powered by Google Gemini · Free · No login</span>
-            </div>
-          </div>
-          <div class="chat-messages"></div>
-          <div class="chat-suggestions">
-            <button class="chat-suggest-btn">New vs Old tax regime — which is better?</button> <button class="chat-suggest-btn">LTCG on property — how to save tax?</button> <button class="chat-suggest-btn">TDS on rent u/s 194IB?</button> <button class="chat-suggest-btn">How to file revised return u/s 139(5)?</button>
-          </div>
-          <div class="chat-input-row">
-            <textarea class="chat-input" rows="1" placeholder="Ask anything about Income Tax Act..."></textarea>
-            <button class="chat-send-btn"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
-          </div>
-        </div>
-      </div>
-    </div>
-
+<!-- WELCOME -->
+<div class="topic-panel active" id="panel-welcome" style="padding:48px 0;text-align:center">
+  <h2 style="color:var(--black);margin-bottom:10px">What would you like to know?</h2>
+  <p style="color:var(--gray-5);max-width:440px;margin:0 auto 32px">Select a topic above. All panels show both IT Act 1961 section and IT Act 2025 equivalent section.</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:10px;max-width:860px;margin:0 auto;text-align:left">
+    <div class="quick-card" onclick="showTopic('slabs')"><div class="icon">💰</div><div><h4>Tax Slabs & Rates</h4><p>Old & New regime</p></div></div>
+    <div class="quick-card" onclick="showTopic('salary')"><div class="icon">👔</div><div><h4>Salary Income</h4><p>HRA, standard deduction</p></div></div>
+    <div class="quick-card" onclick="showTopic('house')"><div class="icon">🏠</div><div><h4>House Property</h4><p>Rental income, loss</p></div></div>
+    <div class="quick-card" onclick="showTopic('business')"><div class="icon">💼</div><div><h4>Business & Profession</h4><p>Presumptive taxation</p></div></div>
+    <div class="quick-card" onclick="showTopic('capital')"><div class="icon">📈</div><div><h4>Capital Gains</h4><p>STCG, LTCG rates</p></div></div>
+    <div class="quick-card" onclick="showTopic('deductions')"><div class="icon">🧾</div><div><h4>Deductions (Old Regime)</h4><p>80C to 80U</p></div></div>
+    <div class="quick-card" onclick="showTopic('tds')"><div class="icon">✂️</div><div><h4>TDS Key Rates</h4><p>Section-wise rates</p></div></div>
+    <div class="quick-card" onclick="showTopic('itr')"><div class="icon">📋</div><div><h4>ITR Forms</h4><p>Which form to use</p></div></div>
+    <div class="quick-card" onclick="showTopic('advance')"><div class="icon">🗓️</div><div><h4>Advance Tax</h4><p>Instalments & dates</p></div></div>
+    <div class="quick-card" onclick="showTopic('calendar')"><div class="icon">📅</div><div><h4>Compliance Calendar</h4><p>All key due dates</p></div></div>
+    <div class="quick-card" onclick="showTopic('links')"><div class="icon">🔗</div><div><h4>Official Links</h4><p>Govt portals</p></div></div>
+    <div class="quick-card" onclick="showTopic('chat')"><div class="icon">🤖</div><div><h4>Ask AI</h4><p>Instant answers</p></div></div>
   </div>
 </div>
 
-<section class="newsletter-section">
-  <div class="container">
-    <div class="newsletter-inner">
-      <span class="sec-label">Stay Updated</span>
-      <h2 class="sec-title" style="margin-bottom:8px">Income Tax Act Updates</h2>
-      <p class="sec-sub" style="margin-bottom:24px">Law changes, circulars, and compliance alerts weekly.</p>
-      <div class="newsletter-form">
-        <input type="email" placeholder="your@email.com">
-        <button onclick="window.open('https://trustfacton.beehiiv.com/subscribe','_blank')">Subscribe →</button>
-      </div>
+<!-- ══════════════ TAX SLABS ══════════════ -->
+<div class="topic-panel" id="panel-slabs">
+<div class="panel-content">
+  <span class="panel-label">Income Tax</span>
+  <h2>Tax Slabs & Rates</h2>
+  <p class="panel-intro">Both regimes remain available for individuals. IT Act 2025 renumbers sections but rates are unchanged. New regime is the default from TY 2026-27.</p>
+
+  <div class="act-change">
+    <h4>IT Act 1961 → IT Act 2025 — Section Mapping</h4>
+    <p>From 1 April 2026, IT Act 2025 replaces IT Act 1961 for new transactions. The <strong>new tax regime</strong> moves from Sec 115BAC (1961) → <strong>Sec 202 (2025)</strong>. The rebate under Sec 87A (1961) → <strong>Sec 159 (2025)</strong>. Tax rates are unchanged.</p>
+    <div class="badge-row">
+      <span class="abadge">Sec 115BAC → Sec 202</span>
+      <span class="abadge">Sec 87A → Sec 159</span>
+      <span class="abadge">Sec 115BAB → Sec 204</span>
+      <span class="abadge">Effective: 1 April 2026</span>
     </div>
   </div>
+
+  <h3 class="sh">New Tax Regime — Default
+    <span class="sec-pair"><span class="s61">Sec 115BAC / IT Act 1961</span><span class="mini-arr">→</span><span class="s25">Sec 202 / IT Act 2025</span></span>
+  </h3>
+  <div class="tbl-wrap">
+    <table class="atbl">
+      <thead><tr><th>Income Slab</th><th>Rate</th><th>FY 2025-26 / IT Act 1961 (AY 2025-26)</th><th>TY 2026-27 / IT Act 2025 (AY 2026-27)</th></tr></thead>
+      <tbody>
+        <tr><td>Nil slab</td><td class="nil-cell">Nil</td><td>Up to ₹3,00,000</td><td class="new-cell">Up to ₹4,00,000</td></tr>
+        <tr class="hl"><td>5%</td><td class="rate-cell">5%</td><td>₹3,00,001 – ₹7,00,000</td><td class="new-cell">₹4,00,001 – ₹8,00,000</td></tr>
+        <tr><td>10%</td><td class="rate-cell">10%</td><td>₹7,00,001 – ₹10,00,000</td><td class="new-cell">₹8,00,001 – ₹12,00,000</td></tr>
+        <tr class="hl"><td>15%</td><td class="rate-cell">15%</td><td>₹10,00,001 – ₹12,00,000</td><td class="new-cell">₹12,00,001 – ₹16,00,000</td></tr>
+        <tr><td>20%</td><td class="rate-cell">20%</td><td>₹12,00,001 – ₹15,00,000</td><td class="new-cell">₹16,00,001 – ₹20,00,000</td></tr>
+        <tr class="hl"><td>25% (new slab)</td><td class="rate-cell">25%</td><td>—</td><td class="new-cell">₹20,00,001 – ₹24,00,000</td></tr>
+        <tr><td>30%</td><td class="rate-cell">30%</td><td>Above ₹15,00,000</td><td class="new-cell">Above ₹24,00,000</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="ib green"><strong>Rebate — Sec 87A (IT Act 1961) / Sec 159 (IT Act 2025)</strong>New regime: Full tax rebate up to ₹60,000 for income ≤ ₹12,00,000. Effective zero tax up to ₹12 lakh. Old regime: Rebate up to ₹12,500 for income ≤ ₹5,00,000.</div>
+
+  <h3 class="sh">Old Tax Regime — Optional
+    <span class="sec-pair"><span class="s61">First Schedule / IT Act 1961</span><span class="mini-arr">→</span><span class="s25">First Schedule / IT Act 2025</span></span>
+  </h3>
+  <div class="tbl-wrap">
+    <table class="atbl">
+      <thead><tr><th>Income Slab</th><th>Below 60 yrs</th><th>Senior (60–80 yrs)</th><th>Super Senior (80+)</th></tr></thead>
+      <tbody>
+        <tr><td>Up to ₹2,50,000</td><td class="nil-cell">Nil</td><td class="nil-cell">Nil</td><td class="nil-cell">Nil</td></tr>
+        <tr class="hl"><td>₹2,50,001 – ₹3,00,000</td><td class="rate-cell">5%</td><td class="nil-cell">Nil</td><td class="nil-cell">Nil</td></tr>
+        <tr><td>₹3,00,001 – ₹5,00,000</td><td class="rate-cell">5%</td><td class="rate-cell">5%</td><td class="nil-cell">Nil</td></tr>
+        <tr class="hl"><td>₹5,00,001 – ₹10,00,000</td><td class="rate-cell">20%</td><td class="rate-cell">20%</td><td class="rate-cell">20%</td></tr>
+        <tr><td>Above ₹10,00,000</td><td class="rate-cell">30%</td><td class="rate-cell">30%</td><td class="rate-cell">30%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sh">Surcharge & Cess</h3>
+  <div class="tbl-wrap">
+    <table class="atbl">
+      <thead><tr><th>Total Income</th><th>Surcharge Rate</th><th>Provision</th></tr></thead>
+      <tbody>
+        <tr><td>Up to ₹50 lakh</td><td class="nil-cell">Nil</td><td>—</td></tr>
+        <tr class="hl"><td>₹50 lakh – ₹1 crore</td><td class="rate-cell">10%</td><td><span class="s61">Sec 2(9) 1961</span> → <span class="s25">Sec 2(29) 2025</span></td></tr>
+        <tr><td>₹1 crore – ₹2 crore</td><td class="rate-cell">15%</td><td>Same</td></tr>
+        <tr class="hl"><td>₹2 crore – ₹5 crore</td><td class="rate-cell">25%</td><td>Same</td></tr>
+        <tr><td>Above ₹5 crore</td><td class="rate-cell">37% (New regime: 25%)</td><td>Same</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:0.8rem;color:var(--gray-5);margin-top:6px">Health & Education Cess: 4% on (income tax + surcharge). Applicable under both Acts.</p>
+
+  <h3 class="sh">Corporate Tax Rates</h3>
+  <div class="tbl-wrap">
+    <table class="atbl">
+      <thead><tr><th>Company Type</th><th>Rate</th><th>IT Act 1961</th><th>IT Act 2025</th></tr></thead>
+      <tbody>
+        <tr><td>Domestic (turnover ≤ ₹400 Cr)</td><td class="rate-cell">25%</td><td><span class="s61">Sec 115BA</span></td><td><span class="s25">Sec 203</span></td></tr>
+        <tr class="hl"><td>Domestic (turnover > ₹400 Cr)</td><td class="rate-cell">30%</td><td><span class="s61">Sec 4</span></td><td><span class="s25">First Schedule</span></td></tr>
+        <tr><td>New mfg. company</td><td class="rate-cell">15%</td><td><span class="s61">Sec 115BAB</span></td><td><span class="s25">Sec 204</span></td></tr>
+        <tr class="hl"><td>Foreign Company</td><td class="rate-cell">40%</td><td><span class="s61">Sec 4</span></td><td><span class="s25">First Schedule</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="src-box"><h4>📎 Official Sources</h4><div class="src-links">
+    <a href="https://www.incometaxindia.gov.in/tax-rates" target="_blank" class="src-link">Tax Rates — IT Dept ↗</a>
+    <a href="https://www.incometaxindia.gov.in/income-tax-act-20251" target="_blank" class="src-link">IT Act 2025 Full Text ↗</a>
+    <a href="https://www.incometaxindia.gov.in/frequently-asked-questions" target="_blank" class="src-link">CBDT FAQs ↗</a>
+  </div></div>
+</div></div>
+
+<!-- ══════════════ SALARY ══════════════ -->
+<div class="topic-panel" id="panel-salary">
+<div class="panel-content">
+  <span class="panel-label">Income Tax</span>
+  <h2>Salary Income</h2>
+  <p class="panel-intro">Income taxable under the head "Salaries". Sections are renumbered but provisions are identical under IT Act 2025.</p>
+
+  <div class="act-change">
+    <h4>IT Act 1961 → IT Act 2025 — Salary Section Mapping</h4>
+    <p>The substantive provisions for salary income are retained but renumbered in IT Act 2025.</p>
+    <div class="badge-row">
+      <span class="abadge">Sec 15 (Basis of charge) → Sec 15</span>
+      <span class="abadge">Sec 16 (Deductions) → Sec 20</span>
+      <span class="abadge">Sec 17 (Perquisites) → Sec 17</span>
+      <span class="abadge">Sec 10(13A) HRA → Sec 16(3)</span>
+      <span class="abadge">Sec 10(5) LTA → Sec 16(8)</span>
+      <span class="abadge">Effective: 1 April 2026</span>
+    </div>
+  </div>
+
+  <h3 class="sh">Standard Deduction
+    <span class="sec-pair"><span class="s61">Sec 16(ia) / 1961</span><span class="mini-arr">→</span><span class="s25">Sec 20(a) / 2025</span></span>
+  </h3>
+  <div class="tbl-wrap">
+    <table class="atbl">
+      <thead><tr><th>Regime</th><th>Amount</th><th>IT Act 1961</th><th>IT Act 2025</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td>New Regime (default)</td><td class="new-cell">₹75,000</td><td><span class="s61">Sec 16(ia)</span></td><td><span class="s25">Sec 20(a)</span></td></tr>
+        <tr><td>Old Regime (optional)</td><td class="rate-cell">₹50,000</td><td><span class="s61">Sec 16(ia)</span></td><td><span class="s25">Sec 20(a)</span></td></tr>
+        <tr class="hl"><td>Professional Tax</td><td class="rate-cell">Actual paid</td><td><span class="s61">Sec 16(iii)</span></td><td><span class="s25">Sec 20(c)</span></td></tr>
+        <tr><td>Entertainment Allowance (Govt only)</td><td class="rate-cell">Least of 20% salary / ₹5,000 / actual</td><td><span class="s61">Sec 16(ii)</span></td><td><span class="s25">Sec 20(b)</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sh">HRA Exemption
+    <span class="sec-pair"><span class="s61">Sec 10(13A) / 1961</span><span class="mini-arr">→</span><span class="s25">Sec 16(3) / 2025</span></span>
+  </h3>
+  <div class="ib blue"><strong>Exemption = Least of the following 3:</strong>
+    1. Actual HRA received from employer<br>
+    2. 50% of basic salary + DA (metro) or 40% (non-metro)<br>
+    3. Rent paid − 10% of basic salary + DA<br><br>
+    <strong>Metro cities:</strong> Delhi, Mumbai, Kolkata, Chennai. If rent > ₹1 lakh/year — landlord PAN mandatory.<br>
+    <strong>Note:</strong> HRA exemption is NOT available under the New Tax Regime.
+  </div>
+
+  <h3 class="sh">Leave Travel Allowance (LTA)
+    <span class="sec-pair"><span class="s61">Sec 10(5) / 1961</span><span class="mini-arr">→</span><span class="s25">Sec 16(8) / 2025</span></span>
+  </h3>
+  <div class="ib blue"><strong>Conditions for exemption:</strong> Covers actual travel cost for employee + family. Air: economy class fare. Rail/road: first-class AC fare. Claimable 2 times in a 4-year block. Current block: 2022–2025. <strong>Not available under New Regime.</strong></div>
+
+  <h3 class="sh">Key Perquisites
+    <span class="sec-pair"><span class="s61">Sec 17(2) / 1961</span><span class="mini-arr">→</span><span class="s25">Sec 17(2) / 2025</span></span>
+  </h3>
+  <div class="tbl-wrap">
+    <table class="atbl">
+      <thead><tr><th>Perquisite</th><th>Taxability</th><th>Valuation</th></tr></thead>
+      <tbody>
+        <tr><td>Rent-free accommodation (Govt)</td><td class="nil-cell">Exempt</td><td>—</td></tr>
+        <tr class="hl"><td>Rent-free accommodation (Others)</td><td class="rate-cell">Taxable</td><td>15% of salary (metro) / 7.5% (non-metro)</td></tr>
+        <tr><td>Car — provided by employer (personal use)</td><td class="rate-cell">Taxable</td><td>₹1,800/month + ₹900 (with driver)</td></tr>
+        <tr class="hl"><td>Meals in office (≤ ₹50/meal)</td><td class="nil-cell">Exempt</td><td>—</td></tr>
+        <tr><td>Gift / voucher from employer</td><td class="nil-cell">Exempt up to ₹5,000</td><td>—</td></tr>
+        <tr class="hl"><td>Laptop / computer — official use</td><td class="nil-cell">Exempt</td><td>—</td></tr>
+        <tr><td>Employee stock options (ESOP) on exercise</td><td class="rate-cell">Taxable as perquisite</td><td>FMV − exercise price at exercise date</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="src-box"><h4>📎 Official Sources</h4><div class="src-links">
+    <a href="https://www.incometaxindia.gov.in" target="_blank" class="src-link">IT Dept — Salary ↗</a>
+    <a href="https://eportal.incometax.gov.in" target="_blank" class="src-link">e-Filing Portal ↗</a>
+    <a href="https://www.incometaxindia.gov.in/tax-deductes-at-source-tds" target="_blank" class="src-link">TDS on Salary ↗</a>
+  </div></div>
+</div></div>
+
+<!-- ══════════════ HOUSE PROPERTY ══════════════ -->
+<div class="topic-panel" id="panel-house">
+<div class="panel-content">
+  <span class="panel-label">Income Tax</span>
+  <h2>House Property Income</h2>
+  <p class="panel-intro">Income from let-out or deemed let-out property taxed under "Income from House Property". Sections largely retained with minor renumbering.</p>
+
+  <div class="act-change">
+    <h4>IT Act 1961 → IT Act 2025 — House Property Section Mapping</h4>
+    <div class="badge-row">
+      <span class="abadge">Sec 22 (Basis of charge) → Sec 22</span>
+      <span class="abadge">Sec 23 (Annual value) → Sec 23</span>
+      <span class="abadge">Sec 24 (Deductions) → Sec 25</span>
+      <span class="abadge">Sec 26 (Co-owners) → Sec 26</span>
+      <span class="abadge">Effective: 1 April 2026</span>
+    </div>
+  </div>
+
+  <div class="two-grid" style="margin-top:16px">
+    <div class="info-card">
+      <h4>🏠 Self-Occupied Property (SOP)
+        <span class="sec-pair" style="font-size:0.68rem"><span class="s61">Sec 23(2) / 1961</span><span class="mini-arr">→</span><span class="s25">Sec 23(2) / 2025</span></span>
+      </h4>
+      <ul>
+        <li>Annual value = Nil</li>
+        <li>Max 2 properties treated as SOP</li>
+        <li>Home loan interest deduction — up to <strong>₹2,00,000</strong> per year (Old regime only)</li>
+        <li>New regime — <strong>NO interest deduction</strong> on SOP</li>
+        <li>Pre-construction interest: 5 equal instalments from year of completion</li>
+      </ul>
+    </div>
+    <div class="info-card">
+      <h4>🏢 Let-Out Property
+        <span class="sec-pair" style="font-size:0.68rem"><span class="s61">Sec 23(1) / 1961</span><span class="mini-arr">→</span><span class="s25">Sec 23(1) / 2025</span></span>
+      </h4>
+      <ul>
+        <li>Annual value = Gross Annual Value − Municipal taxes</li>
+        <li>Standard deduction = <strong>30%</strong> of Net Annual Value <span class="s61" style="font-size:0.68rem">Sec 24(a)</span> → <span class="s25" style="font-size:0.68rem">Sec 25(a)</span></li>
+        <li>Home loan interest — <strong>full deduction</strong> (no limit) <span class="s61" style="font-size:0.68rem">Sec 24(b)</span> → <span class="s25" style="font-size:0.68rem">Sec 25(b)</span></li>
+        <li>Municipal tax paid — fully deductible</li>
+        <li>Loss set-off against other heads — up to ₹2 lakh</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 class="sh">Set-Off and Carry Forward of Loss
+    <span class="sec-pair"><span class="s61">Sec 71 / 1961</span><span class="mini-arr">→</span><span class="s25">Sec 96 / 2025</span></span>
+  </h3>
+  <div class="tbl-wrap">
+    <table class="atbl">
+      <thead><tr><th>Loss Type</th><th>Set-Off (same year)</th><th>Carry Forward Period</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td>HP loss (both Old & New regime)</td><td>Against any income head — max ₹2 lakh</td><td>8 years — only vs HP income</td></tr>
+        <tr><td>HP loss exceeding ₹2 lakh</td><td>Not allowed in same year</td><td>8 years — only vs HP income</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="ib amber"><strong>⚠ New Regime Restriction</strong>Under new tax regime: No deduction for home loan interest on self-occupied property. House property loss CANNOT be set off against other income — only carried forward against future HP income.</div>
+
+  <div class="src-box"><h4>📎 Official Sources</h4><div class="src-links">
+    <a href="https://www.incometaxindia.gov.in" target="_blank" class="src-link">IT Dept ↗</a>
+    <a href="https://eportal.incometax.gov.in" target="_blank" class="src-link">e-Filing Portal ↗</a>
+  </div></div>
+</div></div>
+
+<!-- ══════════════ BUSINESS ══════════════ -->
+<div class="topic-panel" id="panel-business">
+<div class="panel-content">
+  <span class="panel-label">Income Tax</span>
+  <h2>Business & Profession Income</h2>
+  <p class="panel-intro">Profits from business or professional activity. Presumptive taxation schemes available for eligible taxpayers to simplify compliance.</p>
+
+  <div class="act-change">
+    <h4>IT Act 1961 → IT Act 2025 — Business Section Mapping</h4>
+    <div class="badge-row">
+      <span class="abadge">Sec 28 (Chargeable income) → Sec 28</span>
+      <span class="abadge">Sec 36 (Deductions) → Sec 36</span>
+      <span class="abadge">Sec 37 (General deductions) → Sec 37</span>
+      <span class="abadge">Sec 40A(3) (Cash limit) → Sec 40A(3)</span>
+      <span class="abadge">Sec 44AB (Audit) → Sec 44AB</span>
+      <span class="abadge">Sec 44AD → Sec 44AD</span>
+      <span class="abadge">Sec 44ADA → Sec 44ADA</span>
+      <span class="abadge">Effective: 1 April 2026</span>
+    </div>
+  </div>
+
+  <h3 class="sh">Presumptive Taxation Schemes</h3>
+  <div class="tbl-wrap">
+    <table class="atbl">
+      <thead><tr><th>Scheme</th><th>IT Act 1961</th><th>IT Act 2025</th><th>Eligible Taxpayers</th><th>Turnover Limit</th><th>Deemed Profit</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td>Business</td><td><span class="s61">Sec 44AD</span></td><td><span class="s25">Sec 44AD</span></td><td>Resident Individual, HUF, Firm</td><td>≤ ₹2 Cr (₹3 Cr if 95%+ digital)</td><td>8% (cash) / 6% (digital)</td></tr>
+        <tr><td>Profession</td><td><span class="s61">Sec 44ADA</span></td><td><span class="s25">Sec 44ADA</span></td><td>Doctor, CA, Lawyer, Engineer etc.</td><td>≤ ₹75L (₹1.5 Cr if 95%+ digital)</td><td>50% of gross receipts</td></tr>
+        <tr class="hl"><td>Goods carriage</td><td><span class="s61">Sec 44AE</span></td><td><span class="s25">Sec 44AE</span></td><td>Goods carriage owners (≤ 10 vehicles)</td><td>—</td><td>₹1,000/tonne (heavy) / ₹7,500/vehicle</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sh">Tax Audit Applicability
+    <span class="sec-pair"><span class="s61">Sec 44AB / 1961</span><span class="mini-arr">→</span><span class="s25">Sec 44AB / 2025</span></span>
+  </h3>
+  <div class="tbl-wrap">
+    <table class="atbl">
+      <thead><tr><th>Taxpayer Type</th><th>Audit Required if Turnover Exceeds</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td>Business</td><td>₹1 crore (or ₹10 crore if 95%+ transactions digital)</td></tr>
+        <tr><td>Profession</td><td>₹50 lakh</td></tr>
+        <tr class="hl"><td>Presumptive scheme opted but profit < prescribed rate</td><td>Mandatory regardless of turnover</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sh">Key Expense — Cash Payment Restriction
+    <span class="sec-pair"><span class="s61">Sec 40A(3) / 1961</span><span class="mini-arr">→</span><span class="s25">Sec 40A(3) / 2025</span></span>
+  </h3>
+  <div class="ib red"><strong>Disallowance</strong>Any single cash payment exceeding ₹10,000 in a day to a single person is 100% disallowed as business expense. Limit is ₹35,000 for payments to transporters. Always pay by cheque / digital for amounts above ₹10,000.</div>
+
+  <div class="src-box"><h4>📎 Official Sources</h4><div class="src-links">
+    <a href="https://www.incometaxindia.gov.in" target="_blank" class="src-link">IT Dept ↗</a>
+    <a href="https://eportal.incometax.gov.in" target="_blank" class="src-link">e-Filing Portal ↗</a>
+  </div></div>
+</div></div>
+
+<!-- ══════════════ CAPITAL GAINS ══════════════ -->
+<div class="topic-panel" id="panel-capital">
+<div class="panel-content">
+  <span class="panel-label">Income Tax</span>
+  <h2>Capital Gains</h2>
+  <p class="panel-intro">Tax on profit from sale of capital assets — property, shares, mutual funds, gold, bonds. Revised by Finance Bill 2024 (effective 23 July 2024).</p>
+
+  <div class="act-change">
+    <h4>IT Act 1961 → IT Act 2025 — Capital Gains Section Mapping</h4>
+    <div class="badge-row">
+      <span class="abadge">Sec 45 (Chargeability) → Sec 45</span>
+      <span class="abadge">Sec 48 (Computation) → Sec 48</span>
+      <span class="abadge">Sec 54 (Property exemption) → Sec 56</span>
+      <span class="abadge">Sec 54EC (Bond investment) → Sec 58</span>
+      <span class="abadge">Sec 54F (Non-property assets) → Sec 57</span>
+      <span class="abadge">Sec 111A (STCG listed) → Sec 114</span>
+      <span class="abadge">Sec 112A (LTCG listed) → Sec 115</span>
+      <span class="abadge">Effective: 1 April 2026</span>
+    </div>
+  </div>
+
+  <div class="ib amber"><strong>⚡ Finance Bill 2024 — Effective 23 July 2024</strong>LTCG rate changed to 12.5% for all assets (was 20% for property/gold). STCG on listed equity changed to 20% (was 15%). Indexation removed for property sold on/after 23 July 2024. For property sold before that — old rates and indexation benefit apply.</div>
+
+  <h3 class="sh">Holding Period & Tax Rates</h3>
+  <div class="tbl-wrap">
+    <table class="atbl">
+      <thead>
+        <tr>
+          <th>Asset Type</th><th>LTCG Holding Period</th>
+          <th>STCG Rate</th><th>IT Act 1961</th><th>IT Act 2025</th>
+          <th>LTCG Rate</th><th>IT Act 1961</th><th>IT Act 2025</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="hl"><td>Listed equity / equity MF</td><td>&gt; 12 months</td><td class="rate-cell">20%</td><td><span class="s61">Sec 111A</span></td><td><span class="s25">Sec 114</span></td><td class="rate-cell">12.5% (above ₹1.25L)</td><td><span class="s61">Sec 112A</span></td><td><span class="s25">Sec 115</span></td></tr>
+        <tr><td>Unlisted shares / Debt MF</td><td>&gt; 24 months</td><td class="rate-cell">Slab rates</td><td><span class="s61">Sec 48</span></td><td><span class="s25">Sec 48</span></td><td class="rate-cell">12.5%</td><td><span class="s61">Sec 112</span></td><td><span class="s25">Sec 113</span></td></tr>
+        <tr class="hl"><td>Immovable Property</td><td>&gt; 24 months</td><td class="rate-cell">Slab rates</td><td><span class="s61">Sec 48</span></td><td><span class="s25">Sec 48</span></td><td class="rate-cell">12.5% (no indexation)</td><td><span class="s61">Sec 112</span></td><td><span class="s25">Sec 113</span></td></tr>
+        <tr><td>Gold / Jewellery</td><td>&gt; 24 months</td><td class="rate-cell">Slab rates</td><td><span class="s61">Sec 48</span></td><td><span class="s25">Sec 48</span></td><td class="rate-cell">12.5%</td><td><span class="s61">Sec 112</span></td><td><span class="s25">Sec 113</span></td></tr>
+        <tr class="hl"><td>Bonds (listed)</td><td>&gt; 12 months</td><td class="rate-cell">Slab rates</td><td>—</td><td>—</td><td class="rate-cell">12.5%</td><td><span class="s61">Sec 112</span></td><td><span class="s25">Sec 113</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sh">Capital Gains Exemptions — Invest to Save Tax</h3>
+  <div class="tbl-wrap">
+    <table class="atbl">
+      <thead><tr><th>IT Act 1961</th><th>IT Act 2025</th><th>Invest in</th><th>Limit</th><th>Timeline</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td><span class="s61">Sec 54</span></td><td><span class="s25">Sec 56</span></td><td>Residential house (from property sale)</td><td>No limit (1 house only)</td><td>Buy within 2 yrs / construct 3 yrs</td></tr>
+        <tr><td><span class="s61">Sec 54F</span></td><td><span class="s25">Sec 57</span></td><td>Residential house (from non-property sale)</td><td>Full proceeds reinvested</td><td>Buy 1 yr before / 2 yrs after</td></tr>
+        <tr class="hl"><td><span class="s61">Sec 54EC</span></td><td><span class="s25">Sec 58</span></td><td>NHAI / REC bonds</td><td>₹50 lakh</td><td>Within 6 months; 5-year lock-in</td></tr>
+        <tr><td><span class="s61">Sec 54B</span></td><td><span class="s25">Sec 59</span></td><td>Agricultural land</td><td>No limit</td><td>Within 2 years</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="ib green"><strong>Capital Gains Account Scheme (CGAS)</strong>Cannot invest before ITR due date? Deposit gains in CGAS at a designated bank. Use within prescribed period to claim exemption. Governed by Sec 54 / Sec 56 (IT Act 2025).</div>
+
+  <div class="src-box"><h4>📎 Official Sources</h4><div class="src-links">
+    <a href="https://www.incometaxindia.gov.in" target="_blank" class="src-link">IT Dept — Capital Gains ↗</a>
+    <a href="https://eportal.incometax.gov.in" target="_blank" class="src-link">e-Filing Portal ↗</a>
+  </div></div>
+</div></div>
+
+<!-- ══════════════ DEDUCTIONS ══════════════ -->
+<div class="topic-panel" id="panel-deductions">
+<div class="panel-content">
+  <span class="panel-label">Income Tax — Old Regime Only</span>
+  <h2>Deductions — Chapter VI-A (80C to 80U)</h2>
+  <p class="panel-intro">Deductions reduce taxable income. Available only under Old Tax Regime. Sections are renumbered in IT Act 2025 (Chapter VIII).</p>
+
+  <div class="act-change">
+    <h4>IT Act 1961 → IT Act 2025 — Deduction Section Mapping</h4>
+    <div class="badge-row">
+      <span class="abadge">Sec 80C → Sec 123</span>
+      <span class="abadge">Sec 80CCC → Sec 124</span>
+      <span class="abadge">Sec 80CCD → Sec 125</span>
+      <span class="abadge">Sec 80D → Sec 126</span>
+      <span class="abadge">Sec 80E → Sec 128</span>
+      <span class="abadge">Sec 80G → Sec 130</span>
+      <span class="abadge">Sec 80TTA → Sec 136</span>
+      <span class="abadge">Sec 80TTB → Sec 137</span>
+      <span class="abadge">Sec 80U → Sec 144</span>
+      <span class="abadge">Chapter VI-A → Chapter VIII</span>
+      <span class="abadge">Effective: 1 April 2026</span>
+    </div>
+  </div>
+
+  <div class="ib red"><strong>⚠ New Regime Restriction</strong>Chapter VI-A deductions (80C, 80D, 80G etc.) are NOT available under new tax regime. Only exception: Sec 80CCD(2) / Sec 125(2) — employer's NPS contribution — allowed in both regimes.</div>
+
+  <div class="tbl-wrap" style="margin-top:14px">
+    <table class="atbl">
+      <thead><tr><th>IT Act 1961</th><th>IT Act 2025</th><th>Deduction For</th><th>Maximum Limit</th><th>Key Conditions</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td><span class="s61">Sec 80C</span></td><td><span class="s25">Sec 123</span></td><td>Specified investments</td><td>₹1,50,000</td><td>PPF, ELSS, NSC, Life insurance, home loan principal, EPF, SSY, tuition fees</td></tr>
+        <tr><td><span class="s61">Sec 80CCC</span></td><td><span class="s25">Sec 124</span></td><td>Pension fund premium</td><td>₹1,50,000 (within 80C)</td><td>LIC or approved pension plan</td></tr>
+        <tr class="hl"><td><span class="s61">Sec 80CCD(1)</span></td><td><span class="s25">Sec 125(1)</span></td><td>Own NPS contribution</td><td>10% of salary (within 80C total)</td><td>Tier-I NPS account only</td></tr>
+        <tr><td><span class="s61">Sec 80CCD(1B)</span></td><td><span class="s25">Sec 125(1B)</span></td><td>Additional NPS</td><td>₹50,000 (over and above 80C)</td><td>Tier-I NPS; separate from ₹1.5L cap</td></tr>
+        <tr class="hl"><td><span class="s61">Sec 80CCD(2)</span></td><td><span class="s25">Sec 125(2)</span></td><td>Employer's NPS contribution</td><td>14% of salary (Govt) / 10% (others)</td><td>✅ Available in New Regime also</td></tr>
+        <tr><td><span class="s61">Sec 80D</span></td><td><span class="s25">Sec 126</span></td><td>Health insurance premium</td><td>₹25,000 (self) + ₹25,000 (parents) = ₹50,000; ₹1,00,000 if both aged 60+</td><td>Premium paid for self, spouse, children, parents</td></tr>
+        <tr class="hl"><td><span class="s61">Sec 80E</span></td><td><span class="s25">Sec 128</span></td><td>Education loan interest</td><td>No limit — full interest</td><td>Higher education of self/spouse/children; max 8 years</td></tr>
+        <tr><td><span class="s61">Sec 80G</span></td><td><span class="s25">Sec 130</span></td><td>Donations</td><td>100% or 50% of donation</td><td>PM Relief Fund (100%), approved charitable trusts (50% with 10% ATI limit)</td></tr>
+        <tr class="hl"><td><span class="s61">Sec 80TTA</span></td><td><span class="s25">Sec 136</span></td><td>Savings bank interest</td><td>₹10,000</td><td>Individuals & HUF (below 60 yrs)</td></tr>
+        <tr><td><span class="s61">Sec 80TTB</span></td><td><span class="s25">Sec 137</span></td><td>Interest income (senior citizens)</td><td>₹50,000</td><td>Residents aged 60+; covers savings, FD, post office</td></tr>
+        <tr class="hl"><td><span class="s61">Sec 80U</span></td><td><span class="s25">Sec 144</span></td><td>Taxpayer with disability</td><td>₹75,000 (40-80%) / ₹1,25,000 (severe)</td><td>Disability certificate from prescribed authority required</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="ib green"><strong>80C Planning — Practical tip</strong>The ₹1.5L cap is shared across 80C + 80CCC + 80CCD(1). Add ₹50,000 extra via NPS 80CCD(1B). Total deductions = ₹2 lakh from NPS alone. Under IT Act 2025: same limits under Secs 123–125.</div>
+
+  <div class="src-box"><h4>📎 Official Sources</h4><div class="src-links">
+    <a href="https://www.incometaxindia.gov.in" target="_blank" class="src-link">IT Dept — Deductions ↗</a>
+    <a href="https://www.npscra.nsdl.co.in" target="_blank" class="src-link">NPS — NSDL CRA ↗</a>
+    <a href="https://www.indiapost.gov.in" target="_blank" class="src-link">PPF / NSC — India Post ↗</a>
+  </div></div>
+</div></div>
+
+<!-- ══════════════ TDS KEY RATES ══════════════ -->
+<div class="topic-panel" id="panel-tds">
+<div class="panel-content">
+  <span class="panel-label">Income Tax</span>
+  <h2>TDS — Key Rates (Tax Year 2026-27)</h2>
+  <p class="panel-intro">Commonly used TDS sections with IT Act 1961 and IT Act 2025 section mapping. For all 91 TDS/TCS codes, see the <a href="tds-master.html" style="color:var(--blue)">TDS/TCS Section Master →</a></p>
+
+  <div class="act-change">
+    <h4>IT Act 1961 → IT Act 2025 — TDS Section Renumbering</h4>
+    <p>TDS sections 192–196D (IT Act 1961) are consolidated into Sections 392–394 (IT Act 2025). All rates are unchanged for Tax Year 2026-27.</p>
+    <div class="badge-row">
+      <span class="abadge">Sec 192 (Salary) → Sec 392</span>
+      <span class="abadge">Sec 193–194X → Sec 393(1)</span>
+      <span class="abadge">Sec 195–196D → Sec 393(2)</span>
+      <span class="abadge">Special rates → Sec 393(3)</span>
+      <span class="abadge">TCS 206C → Sec 394</span>
+    </div>
+  </div>
+
+  <div class="tbl-wrap" style="margin-top:14px">
+    <table class="atbl">
+      <thead><tr><th>IT Act 1961</th><th>IT Act 2025</th><th>Nature of Payment</th><th>Rate</th><th>Threshold</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td><span class="s61">Sec 192</span></td><td><span class="s25">Sec 392</span></td><td>Salary</td><td class="rate-cell">Slab rates</td><td>As per regime opted</td></tr>
+        <tr><td><span class="s61">Sec 193</span></td><td><span class="s25">Sec 393(1) Sl.5(i)</span></td><td>Interest on securities</td><td class="rate-cell">10%</td><td>₹10,000</td></tr>
+        <tr class="hl"><td><span class="s61">Sec 194A</span></td><td><span class="s25">Sec 393(1) Sl.5(ii)(b)</span></td><td>Interest — bank (non-senior citizen)</td><td class="rate-cell">10%</td><td>₹50,000</td></tr>
+        <tr><td><span class="s61">Sec 194A</span></td><td><span class="s25">Sec 393(1) Sl.5(ii)(a)</span></td><td>Interest — bank (senior citizen)</td><td class="rate-cell">10%</td><td>₹1,00,000</td></tr>
+        <tr class="hl"><td><span class="s61">Sec 194C</span></td><td><span class="s25">Sec 393(1) Sl.6(i)(a)</span></td><td>Contractor — Individual / HUF</td><td class="rate-cell">1%</td><td>₹30,000 per / ₹1L aggregate</td></tr>
+        <tr><td><span class="s61">Sec 194C</span></td><td><span class="s25">Sec 393(1) Sl.6(i)(b)</span></td><td>Contractor — Company / Firm</td><td class="rate-cell">2%</td><td>₹30,000 per / ₹1L aggregate</td></tr>
+        <tr class="hl"><td><span class="s61">Sec 194D</span></td><td><span class="s25">Sec 393(1) Sl.1(i)</span></td><td>Insurance commission</td><td class="rate-cell">2%</td><td>₹20,000</td></tr>
+        <tr><td><span class="s61">Sec 194H</span></td><td><span class="s25">Sec 393(1) Sl.1(ii)</span></td><td>Commission / brokerage</td><td class="rate-cell">2%</td><td>₹20,000</td></tr>
+        <tr class="hl"><td><span class="s61">Sec 194-I(a)</span></td><td><span class="s25">Sec 393(1) Sl.2(ii)(D)(a)</span></td><td>Rent — machinery / plant</td><td class="rate-cell">2%</td><td>₹50,000/month</td></tr>
+        <tr><td><span class="s61">Sec 194-I(b)</span></td><td><span class="s25">Sec 393(1) Sl.2(ii)(D)(b)</span></td><td>Rent — land / building</td><td class="rate-cell">10%</td><td>₹50,000/month</td></tr>
+        <tr class="hl"><td><span class="s61">Sec 194-IB</span></td><td><span class="s25">Sec 393(1) Sl.2(i)</span></td><td>Rent paid by Individual/HUF</td><td class="rate-cell">2%</td><td>₹50,000/month</td></tr>
+        <tr><td><span class="s61">Sec 194-IA</span></td><td><span class="s25">Sec 393(1) Sl.3(i)</span></td><td>Purchase of immovable property</td><td class="rate-cell">1%</td><td>₹50,00,000</td></tr>
+        <tr class="hl"><td><span class="s61">Sec 194J(a)</span></td><td><span class="s25">Sec 393(1) Sl.6(iii)(a)</span></td><td>Technical services / royalty</td><td class="rate-cell">2%</td><td>₹50,000</td></tr>
+        <tr><td><span class="s61">Sec 194J(b)</span></td><td><span class="s25">Sec 393(1) Sl.6(iii)(b)</span></td><td>Professional services / director fees</td><td class="rate-cell">10%</td><td>₹50,000</td></tr>
+        <tr class="hl"><td><span class="s61">Sec 194Q</span></td><td><span class="s25">Sec 393(1) Sl.8(ii)</span></td><td>Purchase of goods</td><td class="rate-cell">0.1%</td><td>₹50,00,000</td></tr>
+        <tr><td><span class="s61">Sec 194S</span></td><td><span class="s25">Sec 393(1) Sl.8(vi)</span></td><td>VDA / Crypto transfer</td><td class="rate-cell">1%</td><td>Nil</td></tr>
+        <tr class="hl"><td><span class="s61">Sec 194T</span></td><td><span class="s25">Sec 393(3) Sl.7</span></td><td>Payment to partners of firm</td><td class="rate-cell">10%</td><td>₹20,000</td></tr>
+        <tr><td><span class="s61">Sec 195</span></td><td><span class="s25">Sec 393(2) Sl.17</span></td><td>Payment to non-resident (other)</td><td class="rate-cell">Rates in force</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="ib blue"><strong>Higher TDS — Sec 206AA / Sec 206AB (IT Act 1961) → Sec 396 / Sec 397 (IT Act 2025)</strong>No PAN: TDS at 20% or prescribed rate (whichever is higher). Non-filer (ITR not filed for 2 yrs and TDS > ₹50,000): Higher rate applies u/s 206AB / Sec 397 (2025).</div>
+
+  <div class="src-box"><h4>📎 Official Sources</h4><div class="src-links">
+    <a href="https://www.incometaxindia.gov.in/tax-deductes-at-source-tds" target="_blank" class="src-link">CBDT TDS Guide ↗</a>
+    <a href="https://www.tdscpc.gov.in" target="_blank" class="src-link">TRACES Portal ↗</a>
+    <a href="tds-master.html" class="src-link">TrustFactON TDS Master (All 91 codes) →</a>
+  </div></div>
+</div></div>
+
+<!-- ══════════════ ITR FORMS ══════════════ -->
+<div class="topic-panel" id="panel-itr">
+<div class="panel-content">
+  <span class="panel-label">Income Tax</span>
+  <h2>ITR Forms — Which Form to Use?</h2>
+  <p class="panel-intro">Filing the wrong ITR form makes the return defective. Under IT Act 2025, the same forms continue but references move from Sec 139 to Sec 263.</p>
+
+  <div class="act-change">
+    <h4>IT Act 1961 → IT Act 2025 — ITR Filing Section Mapping</h4>
+    <div class="badge-row">
+      <span class="abadge">Sec 139(1) (Regular ITR) → Sec 263(1)</span>
+      <span class="abadge">Sec 139(4) (Belated return) → Sec 263(4)</span>
+      <span class="abadge">Sec 139(5) (Revised return) → Sec 263(5)</span>
+      <span class="abadge">Sec 139(8A) (Updated return) → Sec 263(8)</span>
+      <span class="abadge">Sec 234F (Late fee) → Sec 276</span>
+      <span class="abadge">Effective: 1 April 2026</span>
+    </div>
+  </div>
+
+  <div class="tbl-wrap" style="margin-top:14px">
+    <table class="atbl">
+      <thead><tr><th>ITR Form</th><th>Who Should File</th><th>Income Sources Covered</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td>ITR-1 (Sahaj)</td><td>Resident individual; income ≤ ₹50 lakh</td><td>Salary, 1 house property, other sources (interest), agriculture ≤ ₹5,000</td></tr>
+        <tr><td>ITR-2</td><td>Individual/HUF — no business income</td><td>All + capital gains, foreign income, more than 1 house property</td></tr>
+        <tr class="hl"><td>ITR-3</td><td>Individual/HUF — with business/profession income</td><td>All ITR-2 sources + business/profession</td></tr>
+        <tr><td>ITR-4 (Sugam)</td><td>Individual/HUF/Firm — presumptive taxation</td><td>44AD business / 44ADA profession / 44AE transport — income ≤ ₹50 lakh</td></tr>
+        <tr class="hl"><td>ITR-5</td><td>Firms, LLPs, AOPs, BOIs, co-ops</td><td>All income (not for companies or individuals)</td></tr>
+        <tr><td>ITR-6</td><td>Companies (except Sec 11 exemption)</td><td>All company income</td></tr>
+        <tr class="hl"><td>ITR-7</td><td>Trusts, political parties, research associations</td><td>Entities u/s 139(4A/4B/4C/4D) — Sec 263(4A–4D) in IT Act 2025</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sh">ITR Filing Due Dates</h3>
+  <div class="tbl-wrap">
+    <table class="atbl">
+      <thead><tr><th>Taxpayer</th><th>Due Date</th><th>IT Act 1961</th><th>IT Act 2025</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td>Individual / HUF (no audit)</td><td>31 July</td><td><span class="s61">Sec 139(1)</span></td><td><span class="s25">Sec 263(1)</span></td></tr>
+        <tr><td>Audit cases</td><td>31 October</td><td><span class="s61">Sec 139(1)</span></td><td><span class="s25">Sec 263(1)</span></td></tr>
+        <tr class="hl"><td>Transfer pricing</td><td>30 November</td><td><span class="s61">Sec 139(1)</span></td><td><span class="s25">Sec 263(1)</span></td></tr>
+        <tr><td>Belated return</td><td>31 December of AY</td><td><span class="s61">Sec 139(4)</span></td><td><span class="s25">Sec 263(4)</span></td></tr>
+        <tr class="hl"><td>Revised return</td><td>31 December of AY</td><td><span class="s61">Sec 139(5)</span></td><td><span class="s25">Sec 263(5)</span></td></tr>
+        <tr><td>Updated return</td><td>Within 24 months from end of AY</td><td><span class="s61">Sec 139(8A)</span></td><td><span class="s25">Sec 263(8)</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="ib amber"><strong>Late Filing Fee — Sec 234F (IT Act 1961) / Sec 276 (IT Act 2025)</strong>After due date: ₹5,000 late fee. If total income ≤ ₹5 lakh: ₹1,000 only. Plus interest u/s 234A (Sec 273 in IT Act 2025) at 1% per month on unpaid tax.</div>
+
+  <div class="src-box"><h4>📎 Official Sources</h4><div class="src-links">
+    <a href="https://eportal.incometax.gov.in" target="_blank" class="src-link">e-Filing Portal — File ITR ↗</a>
+    <a href="https://www.incometaxindia.gov.in/income-tax-returns" target="_blank" class="src-link">ITR Forms Download ↗</a>
+  </div></div>
+</div></div>
+
+<!-- ══════════════ ADVANCE TAX ══════════════ -->
+<div class="topic-panel" id="panel-advance">
+<div class="panel-content">
+  <span class="panel-label">Income Tax</span>
+  <h2>Advance Tax</h2>
+  <p class="panel-intro">Pay tax in instalments during the financial year when total tax liability exceeds ₹10,000 after TDS. Identical under both Acts — only section numbers change.</p>
+
+  <div class="act-change">
+    <h4>IT Act 1961 → IT Act 2025 — Advance Tax Section Mapping</h4>
+    <div class="badge-row">
+      <span class="abadge">Sec 207 (Liability) → Sec 249</span>
+      <span class="abadge">Sec 208 (Conditions) → Sec 250</span>
+      <span class="abadge">Sec 211 (Instalments) → Sec 253</span>
+      <span class="abadge">Sec 234B (Default) → Sec 274</span>
+      <span class="abadge">Sec 234C (Deferment) → Sec 275</span>
+      <span class="abadge">Effective: 1 April 2026</span>
+    </div>
+  </div>
+
+  <h3 class="sh">Instalment Schedule
+    <span class="sec-pair"><span class="s61">Sec 211 / 1961</span><span class="mini-arr">→</span><span class="s25">Sec 253 / 2025</span></span>
+  </h3>
+  <div class="tbl-wrap">
+    <table class="atbl">
+      <thead><tr><th>Instalment</th><th>Due Date</th><th>% of Total Tax (Normal)</th><th>% of Total Tax (Presumptive 44AD/ADA)</th></tr></thead>
+      <tbody>
+        <tr><td>1st</td><td>15 June</td><td class="rate-cell">15%</td><td class="nil-cell">—</td></tr>
+        <tr class="hl"><td>2nd</td><td>15 September</td><td class="rate-cell">45% (cumulative)</td><td class="nil-cell">—</td></tr>
+        <tr><td>3rd</td><td>15 December</td><td class="rate-cell">75% (cumulative)</td><td class="nil-cell">—</td></tr>
+        <tr class="hl"><td>Final</td><td>15 March</td><td class="rate-cell">100%</td><td class="rate-cell">100% by 15 March</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="two-grid">
+    <div class="info-card">
+      <h4>Sec 234B / Sec 274 (2025) — Default</h4>
+      <p>If advance tax paid &lt; 90% of assessed tax — interest at <strong>1% per month</strong> from 1 April of AY till actual payment date.</p>
+    </div>
+    <div class="info-card">
+      <h4>Sec 234C / Sec 275 (2025) — Deferment</h4>
+      <p>If each instalment is short — interest at <strong>1% per month</strong> for 3 months (1 month for last instalment) on the shortfall.</p>
+    </div>
+  </div>
+
+  <div class="ib green"><strong>Safe harbour</strong>If advance tax paid ≥ 90% of total tax — no interest u/s 234B / Sec 274. Salaried employees: if employer deducts TDS on full salary, advance tax obligation is usually covered automatically.</div>
+
+  <div class="src-box"><h4>📎 Official Sources</h4><div class="src-links">
+    <a href="https://eportal.incometax.gov.in" target="_blank" class="src-link">Pay Advance Tax — e-Filing ↗</a>
+    <a href="https://onlineservices.tin.egov-nsdl.com" target="_blank" class="src-link">NSDL TIN (Challan 280) ↗</a>
+  </div></div>
+</div></div>
+
+<!-- ══════════════ COMPLIANCE CALENDAR ══════════════ -->
+<div class="topic-panel" id="panel-calendar">
+<div class="panel-content">
+  <span class="panel-label">Income Tax</span>
+  <h2>Compliance Calendar — Key Due Dates</h2>
+  <p class="panel-intro">Key due dates for income tax compliance. From FY 2026-27, section references shift to IT Act 2025. Always verify on the official e-filing portal as dates may be extended by CBDT notification.</p>
+
+  <div class="tbl-wrap" style="margin-top:14px">
+    <table class="atbl">
+      <thead><tr><th>Date</th><th>Compliance</th><th>Who</th><th>IT Act 1961</th><th>IT Act 2025</th></tr></thead>
+      <tbody>
+        <tr><td>15 June</td><td>1st Advance Tax Instalment (15%)</td><td>All advance tax payers</td><td><span class="s61">Sec 211</span></td><td><span class="s25">Sec 253</span></td></tr>
+        <tr class="hl"><td>31 July</td><td>ITR Filing — non-audit cases</td><td>Individuals, HUF, AOP, BOI</td><td><span class="s61">Sec 139(1)</span></td><td><span class="s25">Sec 263(1)</span></td></tr>
+        <tr><td>15 September</td><td>2nd Advance Tax Instalment (45% cumulative)</td><td>All</td><td><span class="s61">Sec 211</span></td><td><span class="s25">Sec 253</span></td></tr>
+        <tr class="hl"><td>30 September</td><td>Tax Audit Report (Form 3CA/3CB + 3CD)</td><td>Audit cases</td><td><span class="s61">Sec 44AB</span></td><td><span class="s25">Sec 44AB</span></td></tr>
+        <tr><td>31 October</td><td>ITR Filing — Audit cases</td><td>Businesses, firms, companies</td><td><span class="s61">Sec 139(1)</span></td><td><span class="s25">Sec 263(1)</span></td></tr>
+        <tr class="hl"><td>30 November</td><td>ITR Filing — Transfer pricing</td><td>International transaction entities</td><td><span class="s61">Sec 139(1)</span></td><td><span class="s25">Sec 263(1)</span></td></tr>
+        <tr><td>15 December</td><td>3rd Advance Tax Instalment (75% cumulative)</td><td>All</td><td><span class="s61">Sec 211</span></td><td><span class="s25">Sec 253</span></td></tr>
+        <tr class="hl"><td>31 December</td><td>Belated / Revised ITR</td><td>Missed July 31 deadline</td><td><span class="s61">Sec 139(4)/(5)</span></td><td><span class="s25">Sec 263(4)/(5)</span></td></tr>
+        <tr><td>15 March</td><td>Final Advance Tax Instalment (100%)</td><td>All</td><td><span class="s61">Sec 211</span></td><td><span class="s25">Sec 253</span></td></tr>
+        <tr class="hl"><td>31 March</td><td>Updated return (previous 2 AYs)</td><td>All eligible taxpayers</td><td><span class="s61">Sec 139(8A)</span></td><td><span class="s25">Sec 263(8)</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sh">TDS Deposit & Return Due Dates
+    <span class="sec-pair"><span class="s61">Sec 200 / 1961</span><span class="mini-arr">→</span><span class="s25">Sec 394A / 2025</span></span>
+  </h3>
+  <div class="tbl-wrap">
+    <table class="atbl">
+      <thead><tr><th>Deductor</th><th>Deposit Due Date</th><th>Quarterly Return</th></tr></thead>
+      <tbody>
+        <tr><td>Government offices</td><td>Same day as deduction</td><td>Q1: 31 Jul · Q2: 31 Oct · Q3: 31 Jan · Q4: 31 May</td></tr>
+        <tr class="hl"><td>Others (non-government)</td><td>7th of following month; March TDS → 30 April</td><td>Same as above</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="ib amber"><strong>⚠ Consequences of TDS Default</strong>Late deposit: Interest at 1.5%/month — Sec 201A / Sec 395A (2025). Late return: ₹200/day — Sec 234E / Sec 277A (2025). Failure to deduct: 30% of related expense disallowed — Sec 40(a)(ia) / Sec 40(a)(ia) (2025).</div>
+
+  <div class="src-box"><h4>📎 Official Sources</h4><div class="src-links">
+    <a href="https://www.incometaxindia.gov.in/tax-calendar" target="_blank" class="src-link">CBDT Tax Calendar ↗</a>
+    <a href="https://eportal.incometax.gov.in" target="_blank" class="src-link">e-Filing Portal ↗</a>
+    <a href="https://www.tdscpc.gov.in" target="_blank" class="src-link">TRACES ↗</a>
+  </div></div>
+</div></div>
+
+<!-- OFFICIAL LINKS -->
+<div class="topic-panel" id="panel-links">
+<div class="panel-content">
+  <span class="panel-label">Official Sources</span>
+  <h2>Government Portals</h2>
+  <p style="color:var(--gray-5);margin-top:6px">All TrustFactON content is sourced from these official portals. Visit for complete statutory text, latest circulars and notifications.</p>
+  <div class="two-grid" style="margin-top:20px">
+    <a href="https://www.incometaxindia.gov.in" target="_blank" style="display:block;background:white;border:1px solid var(--gray-3);border-radius:var(--radius);padding:16px;text-decoration:none;transition:all 0.2s" onmouseover="this.style.borderColor='var(--blue)'" onmouseout="this.style.borderColor='var(--gray-3)'">
+      <div style="font-size:1.2rem;margin-bottom:6px">🏛️</div><h4 style="color:var(--black);font-size:0.9rem;margin-bottom:4px">incometaxindia.gov.in</h4><p style="font-size:0.78rem;color:var(--gray-5)">Tax rates, circulars, IT Act 1961 & 2025 text, FAQs, forms ↗</p>
+    </a>
+    <a href="https://eportal.incometax.gov.in" target="_blank" style="display:block;background:white;border:1px solid var(--gray-3);border-radius:var(--radius);padding:16px;text-decoration:none;transition:all 0.2s" onmouseover="this.style.borderColor='var(--blue)'" onmouseout="this.style.borderColor='var(--gray-3)'">
+      <div style="font-size:1.2rem;margin-bottom:6px">💻</div><h4 style="color:var(--black);font-size:0.9rem;margin-bottom:4px">eportal.incometax.gov.in</h4><p style="font-size:0.78rem;color:var(--gray-5)">File ITR, pay tax, Form 26AS, AIS, TIS, AIS reports ↗</p>
+    </a>
+    <a href="https://www.tdscpc.gov.in" target="_blank" style="display:block;background:white;border:1px solid var(--gray-3);border-radius:var(--radius);padding:16px;text-decoration:none;transition:all 0.2s" onmouseover="this.style.borderColor='var(--blue)'" onmouseout="this.style.borderColor='var(--gray-3)'">
+      <div style="font-size:1.2rem;margin-bottom:6px">✂️</div><h4 style="color:var(--black);font-size:0.9rem;margin-bottom:4px">TRACES Portal</h4><p style="font-size:0.78rem;color:var(--gray-5)">TDS reconciliation, Form 16/16A download, TDS returns ↗</p>
+    </a>
+    <a href="https://onlineservices.tin.egov-nsdl.com" target="_blank" style="display:block;background:white;border:1px solid var(--gray-3);border-radius:var(--radius);padding:16px;text-decoration:none;transition:all 0.2s" onmouseover="this.style.borderColor='var(--blue)'" onmouseout="this.style.borderColor='var(--gray-3)'">
+      <div style="font-size:1.2rem;margin-bottom:6px">💳</div><h4 style="color:var(--black);font-size:0.9rem;margin-bottom:4px">NSDL TIN Portal</h4><p style="font-size:0.78rem;color:var(--gray-5)">Challan 280 tax payment, TAN, PAN services ↗</p>
+    </a>
+  </div>
+  <div class="ib blue" style="margin-top:20px"><strong>About TrustFactON</strong>Plain-language summaries for educational purposes only. For binding text and latest notifications, always refer to official portals above. Not a substitute for professional advice. Built by Evenset Consultancy Services, Bengaluru.</div>
+</div></div>
+
+<!-- AI CHAT -->
+<div class="topic-panel" id="panel-chat">
+<div class="panel-content">
+  <span class="panel-label">AI Assistant</span>
+  <h2>Ask About Income Tax</h2>
+  <p style="color:var(--gray-5);margin-top:6px">Free for all users. No login. Powered by Google Gemini. Ask about IT Act 1961 or IT Act 2025.</p>
+  <div class="chat-container" id="chat-widget" data-act="Income Tax Act 1961 and IT Act 2025" style="max-width:760px;margin-top:20px">
+    <div class="chat-header">
+      <div class="chat-avatar">TF</div>
+      <div class="chat-header-info">
+        <h4>Income Tax AI</h4>
+        <span><span class="online-dot"></span>IT Act 1961 & IT Act 2025 · Powered by Google Gemini</span>
+      </div>
+    </div>
+    <div class="chat-messages"></div>
+    <div class="chat-suggestions">
+      <button class="chat-suggest-btn">New vs Old regime — which is better for me?</button>
+      <button class="chat-suggest-btn">LTCG on property sale — new section in IT Act 2025?</button>
+      <button class="chat-suggest-btn">Sec 80C changed to which section in IT Act 2025?</button>
+      <button class="chat-suggest-btn">TDS on salary — Sec 192 vs Sec 392 difference?</button>
+    </div>
+    <div class="chat-input-row">
+      <textarea class="chat-input" rows="1" placeholder="Ask about IT Act 1961 or IT Act 2025..."></textarea>
+      <button class="chat-send-btn"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+    </div>
+  </div>
+</div></div>
+
+</div></div><!-- /container /panels-wrap -->
+
+<section class="newsletter-section">
+  <div class="container"><div class="newsletter-inner">
+    <span class="sec-label">Stay Updated</span>
+    <h2 class="sec-title" style="margin-bottom:8px">IT Act 2025 Updates & Alerts</h2>
+    <p class="sec-sub" style="margin-bottom:24px">CBDT circulars, IT Act 2025 transitions, section mapping updates — weekly from TrustFactON.</p>
+    <div class="newsletter-form">
+      <input type="email" placeholder="your@email.com">
+      <button onclick="window.open('https://trustfacton.beehiiv.com/subscribe','_blank')">Subscribe →</button>
+    </div>
+  </div></div>
 </section>
 
 <div id="footer-placeholder"></div>
