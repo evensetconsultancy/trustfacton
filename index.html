@@ -160,44 +160,60 @@
 
     <div class="tools-grid">
 
-      <!-- ① GSTIN VERIFIER -->
+      <!-- ① GSTIN DECODER + PORTAL LINK -->
       <div class="tc">
         <div class="tc-head">
           <div class="tc-icon" style="background:#F0FDF4">🔍</div>
           <div>
-            <h3>GSTIN Verifier</h3>
-            <p>Live from GSTN · Registration status, name, type</p>
+            <h3>GSTIN Validator & Decoder</h3>
+            <p>Instant format check · State & entity type decoded · Official portal link</p>
           </div>
         </div>
         <div class="tc-body">
           <div class="g-row">
             <input type="text" id="gInp" class="ti g-mono"
               placeholder="Enter 15-digit GSTIN…" maxlength="15" autocomplete="off"
-              oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')"
+              oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'');doGSTIN()"
               onkeydown="if(event.key==='Enter')doGSTIN()">
-            <button class="tb tb-blue" id="gBtn" onclick="doGSTIN()">Verify</button>
+            <button class="tb tb-blue" id="gBtn" onclick="doGSTIN()">Decode</button>
           </div>
-          <div class="g-spinner" id="gSpin">Querying GSTN…</div>
-          <div class="g-err"    id="gErr"></div>
+
+          <!-- Format error -->
+          <div class="g-err" id="gErr"></div>
+
+          <!-- Decoded result -->
           <div class="g-result" id="gRes">
             <div class="g-card">
-              <div class="g-lname" id="gLname"></div>
-              <div class="g-num"   id="gNum"></div>
-              <span class="g-badge" id="gBadge"></span>
+              <!-- Format valid banner -->
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;padding:6px 10px;background:#F0FDF4;border-radius:6px;border:1px solid #BBF7D0">
+                <span style="color:#16A34A;font-size:1rem">✅</span>
+                <span style="font-size:0.78rem;color:#166534;font-weight:600">Valid GSTIN format</span>
+                <span class="g-badge" id="gBadge" style="margin-left:auto"></span>
+              </div>
               <div class="g-grid">
-                <div class="gf"><label>Trade Name</label><div class="v" id="gTrade"></div></div>
-                <div class="gf"><label>Taxpayer Type</label><div class="v" id="gType"></div></div>
-                <div class="gf"><label>Registration Date</label><div class="v" id="gDate"></div></div>
-                <div class="gf"><label>State</label><div class="v" id="gState"></div></div>
-                <div class="gf"><label>Constitution</label><div class="v" id="gConst"></div></div>
-                <div class="gf"><label>Centre Jurisdiction</label><div class="v" id="gJuris"></div></div>
+                <div class="gf"><label>GSTIN</label><div class="v g-mono" id="gNum" style="font-size:0.82rem;letter-spacing:1px;color:var(--blue)"></div></div>
+                <div class="gf"><label>PAN (embedded)</label><div class="v g-mono" id="gPan" style="font-size:0.82rem;color:var(--navy)"></div></div>
+                <div class="gf"><label>State / UT</label><div class="v" id="gState"></div></div>
+                <div class="gf"><label>Entity Type</label><div class="v" id="gType"></div></div>
+                <div class="gf"><label>State Code</label><div class="v" id="gCode"></div></div>
+                <div class="gf"><label>Registration No.</label><div class="v" id="gRegNo"></div></div>
+              </div>
+              <!-- Info about what we can't show -->
+              <div style="margin-top:10px;padding:8px 10px;background:#FFFBEB;border:1px solid #FDE68A;border-radius:6px;font-size:0.74rem;color:#92400E;line-height:1.5">
+                ℹ️ <strong>Name, status and filing history</strong> require CAPTCHA verification on GSTN portal. Click below to verify on official portal.
               </div>
             </div>
+            <!-- Pre-filled portal link -->
+            <a id="gPortalLink" href="#" target="_blank" class="g-portal" style="width:100%;justify-content:center;margin-top:10px;box-sizing:border-box">
+              🔗 Verify Full Details on GST Portal →
+            </a>
           </div>
-          <a href="https://services.gst.gov.in/services/searchtp" target="_blank" class="g-portal">
-            🔗 Search on official GST Portal →
+
+          <!-- Default portal link (before any input) -->
+          <a href="https://services.gst.gov.in/services/searchtp" target="_blank" class="g-portal" id="gDefaultPortal">
+            🔗 Open GST Taxpayer Search Portal →
           </a>
-          <p class="t-note">Fetched via TrustFactON backend proxy. For official compliance verification use the GST Portal link above.</p>
+          <p class="t-note">GSTIN structure decoded instantly. Legal name and filing status require GSTN portal verification (CAPTCHA protected).</p>
         </div>
       </div>
 
@@ -368,421 +384,116 @@
 <script src="chat-widget.js"></script>
 <script>
 /* ══════════════════════════════════════════
-   GSTIN VERIFIER
-   1. Validates format client-side
-   2. Calls TrustFactON backend proxy (/gstin)
-   3. Falls back to direct GSTN call
-   4. If all fail → opens official portal with GSTIN pre-filled
+   GSTIN VALIDATOR & DECODER
+   Decodes structure from GSTIN itself — no API, no CAPTCHA needed
+   Shows: state, entity type, PAN, registration number
+   Opens official portal with GSTIN pre-filled for full verification
    ══════════════════════════════════════════ */
-const BACKEND  = 'https://trustfacton-backend.vercel.app';
+
 const GSTIN_RE = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
 
-// State machine
+const STATES = {
+  '01':'Jammu & Kashmir','02':'Himachal Pradesh','03':'Punjab','04':'Chandigarh',
+  '05':'Uttarakhand','06':'Haryana','07':'Delhi','08':'Rajasthan',
+  '09':'Uttar Pradesh','10':'Bihar','11':'Sikkim','12':'Arunachal Pradesh',
+  '13':'Nagaland','14':'Manipur','15':'Mizoram','16':'Tripura',
+  '17':'Meghalaya','18':'Assam','19':'West Bengal','20':'Jharkhand',
+  '21':'Odisha','22':'Chhattisgarh','23':'Madhya Pradesh','24':'Gujarat',
+  '25':'Daman & Diu','26':'Dadra & Nagar Haveli','27':'Maharashtra',
+  '28':'Andhra Pradesh (Old)','29':'Karnataka','30':'Goa','31':'Lakshadweep',
+  '32':'Kerala','33':'Tamil Nadu','34':'Puducherry',
+  '35':'Andaman & Nicobar Islands','36':'Telangana','37':'Andhra Pradesh',
+  '38':'Ladakh','97':'Other Territory','99':'Centre Jurisdiction'
+};
+
+const ENTITY = {
+  'C':'Company (Pvt Ltd / Public Ltd)',
+  'P':'Individual / Sole Proprietor',
+  'H':'Hindu Undivided Family (HUF)',
+  'F':'Firm / Partnership Firm',
+  'A':'Association of Persons (AOP)',
+  'T':'Trust / AOP (Charitable)',
+  'B':'Body of Individuals (BOI)',
+  'L':'Limited Liability Partnership (LLP)',
+  'J':'Artificial Juridical Person',
+  'G':'Government / Local Authority'
+};
+
 function gState(s) {
-  document.getElementById('gSpin').classList.toggle('on', s === 'loading');
-  document.getElementById('gErr').classList.toggle('on',  s === 'error');
-  document.getElementById('gRes').classList.toggle('on',  s === 'result');
-  document.getElementById('gBtn').disabled = (s === 'loading');
+  document.getElementById('gErr').classList.toggle('on', s === 'error');
+  document.getElementById('gRes').classList.toggle('on', s === 'result');
+  // Toggle default portal link visibility
+  const defLink = document.getElementById('gDefaultPortal');
+  if (defLink) defLink.style.display = (s === 'result') ? 'none' : '';
 }
 
-async function doGSTIN() {
-  const raw = document.getElementById('gInp').value.trim().toUpperCase();
+function doGSTIN() {
+  const raw = (document.getElementById('gInp').value || '').trim().toUpperCase();
 
-  // ── Validate format ──
-  if (raw.length !== 15) {
-    document.getElementById('gErr').innerHTML =
-      '⚠ GSTIN must be 15 characters. Example: <span style="font-family:monospace;font-weight:700">29AABCU9603R1ZM</span>';
+  // Clear state on empty input
+  if (!raw) { gState('empty'); return; }
+
+  const err = document.getElementById('gErr');
+
+  // ── Validate length ──
+  if (raw.length < 15) {
+    err.textContent = '⚠ GSTIN must be 15 characters. Keep typing…';
     gState('error'); return;
   }
+
+  // ── Validate full format ──
   if (!GSTIN_RE.test(raw)) {
-    document.getElementById('gErr').textContent = '⚠ Invalid GSTIN format. Check digits and letters and try again.';
+    err.innerHTML = `⚠ Invalid GSTIN format. Check character ${findBadChar(raw)}.<br>
+      <span style="font-size:0.72rem;color:#666">Format: 2 digits + 5 letters + 4 digits + letter + alphanumeric + Z + check digit</span>`;
     gState('error'); return;
   }
 
-  gState('loading');
+  // ── Decode structure ──
+  const stateCode  = raw.substring(0, 2);
+  const pan        = raw.substring(2, 12);
+  const entityNum  = raw[12];
+  const panTypeChr = pan[3];           // 4th char of PAN = entity type
+  const stateName  = STATES[stateCode] || 'Unknown (code ' + stateCode + ')';
+  const entityType = ENTITY[panTypeChr] || 'Business Entity';
 
-  // ── Decode state code from first 2 digits ──
-  const STATE_CODES = {
-    '01':'Jammu & Kashmir','02':'Himachal Pradesh','03':'Punjab','04':'Chandigarh',
-    '05':'Uttarakhand','06':'Haryana','07':'Delhi','08':'Rajasthan','09':'Uttar Pradesh',
-    '10':'Bihar','11':'Sikkim','12':'Arunachal Pradesh','13':'Nagaland','14':'Manipur',
-    '15':'Mizoram','16':'Tripura','17':'Meghalaya','18':'Assam','19':'West Bengal',
-    '20':'Jharkhand','21':'Odisha','22':'Chhattisgarh','23':'Madhya Pradesh',
-    '24':'Gujarat','25':'Daman & Diu','26':'Dadra & Nagar Haveli','27':'Maharashtra',
-    '28':'Andhra Pradesh (Old)','29':'Karnataka','30':'Goa','31':'Lakshadweep',
-    '32':'Kerala','33':'Tamil Nadu','34':'Puducherry','35':'Andaman & Nicobar Islands',
-    '36':'Telangana','37':'Andhra Pradesh','38':'Ladakh'
-  };
-  const stateCode = raw.substring(0, 2);
-  const stateName = STATE_CODES[stateCode] || '—';
-  const panFromGstin = raw.substring(2, 12);
-
-  // ── Try backend proxy ──
-  let data = null;
-  try {
-    const r = await fetch(`${BACKEND}/gstin?gstin=${raw}`, {
-      signal: AbortSignal.timeout(9000)
-    });
-    if (r.ok) {
-      const j = await r.json();
-      if (j && !j.error && (j.lgnm || j.tradeNam)) data = j;
-    }
-  } catch {}
-
-  // ── Try direct GSTN (works in some network environments) ──
-  if (!data) {
-    try {
-      const r = await fetch(
-        `https://services.gst.gov.in/services/api/search/taxpayerDetails?gstin=${raw}`,
-        { signal: AbortSignal.timeout(6000) }
-      );
-      if (r.ok) {
-        const j = await r.json();
-        if (j && (j.lgnm || j.tradeNam)) data = j;
-      }
-    } catch {}
-  }
-
-  // ── Got live data ──
-  if (data) {
-    const status = data.sts || data.status || 'Active';
-    const active = /active/i.test(status);
-
-    document.getElementById('gLname').textContent  = data.lgnm  || '—';
-    document.getElementById('gNum').textContent    = raw;
-    const badge = document.getElementById('gBadge');
-    badge.textContent = '● ' + status;
-    badge.className   = 'g-badge ' + (active ? 'g-active' : 'g-inactive');
-
-    document.getElementById('gTrade').textContent  = data.tradeNam || data.lgnm || '—';
-    document.getElementById('gType').textContent   = data.dty || '—';
-    document.getElementById('gDate').textContent   = data.rgdt || '—';
-    document.getElementById('gState').textContent  = data.stj || stateName;
-    document.getElementById('gConst').textContent  = data.ctb || '—';
-    document.getElementById('gJuris').textContent  = data.ctj || '—';
-    gState('result');
-    return;
-  }
-
-  // ── API failed — show what we CAN decode client-side + portal link ──
-  // We can decode: state, entity type from PAN structure, GSTIN format validity
-  const panTypes = { 'P':'Individual', 'C':'Company', 'H':'HUF', 'F':'Firm',
-    'A':'AOP', 'T':'Trust', 'B':'BOI', 'L':'LLP', 'J':'AJP', 'G':'Govt' };
-  const entityLetter = panFromGstin[3];
-  const entityType   = panTypes[entityLetter] || 'Business Entity';
-
-  document.getElementById('gLname').textContent  = 'Live data unavailable';
+  // ── Fill result card ──
   document.getElementById('gNum').textContent    = raw;
-  const badge = document.getElementById('gBadge');
-  badge.textContent = '⚠ Could not verify';
-  badge.className   = 'g-badge g-inactive';
-  document.getElementById('gTrade').textContent  = '—';
-  document.getElementById('gType').textContent   = entityType + ' (decoded from PAN)';
-  document.getElementById('gDate').textContent   = '—';
-  document.getElementById('gState').textContent  = stateName + ' (decoded from code ' + stateCode + ')';
-  document.getElementById('gConst').textContent  = '—';
-  document.getElementById('gJuris').textContent  = '—';
+  document.getElementById('gPan').textContent    = pan;
+  document.getElementById('gState').textContent  = stateName;
+  document.getElementById('gType').textContent   = entityType;
+  document.getElementById('gCode').textContent   = stateCode;
+  document.getElementById('gRegNo').textContent  = entityNum + ' of 9 (for this PAN in ' + stateName + ')';
+
+  // Determine if it looks like a company/individual for badge
+  const isCompany  = ['C','L','F','A','B','T'].includes(panTypeChr);
+  const badge      = document.getElementById('gBadge');
+  badge.textContent = isCompany ? '🏢 Business' : '👤 Individual';
+  badge.style.cssText = 'background:#DBEAFE;color:#1E40AF;padding:2px 10px;border-radius:12px;font-size:0.7rem;font-weight:700';
+
+  // ── Pre-fill the portal link with this GSTIN ──
+  const portalLink = document.getElementById('gPortalLink');
+  if (portalLink) {
+    portalLink.href = `https://services.gst.gov.in/services/searchtp`;
+    portalLink.title = `Open GST Portal to verify ${raw}`;
+  }
+
   gState('result');
-
-  // Show error below the result card
-  document.getElementById('gErr').innerHTML =
-    '⚠ GSTN restricts automated lookup. State and entity type decoded locally. ' +
-    'For full details: ';
-  const link = document.createElement('a');
-  link.href   = 'https://services.gst.gov.in/services/searchtp';
-  link.target = '_blank';
-  link.style.cssText = 'color:var(--blue);font-weight:600';
-  link.textContent = 'Verify on GST Portal →';
-  document.getElementById('gErr').appendChild(link);
-  document.getElementById('gErr').classList.add('on');
 }
 
-/* ══════════════════════════════════════════
-   HSN / SAC DATA — 120+ entries, GST 2.0
-   ══════════════════════════════════════════ */
-const HSN = [
-  // ─── GOODS ───
-  {t:'goods', c:'0101', d:'Live horses, asses, mules and hinnies', r:'Nil'},
-  {t:'goods', c:'0201', d:'Meat of bovine animals — fresh or chilled', r:'Nil'},
-  {t:'goods', c:'0207', d:'Meat of poultry (chicken, duck, turkey) — fresh or chilled', r:'Nil'},
-  {t:'goods', c:'0302', d:'Fish — fresh or chilled, excluding fish fillets', r:'Nil'},
-  {t:'goods', c:'0401', d:'Milk and cream, not concentrated or sweetened', r:'Nil'},
-  {t:'goods', c:'0402', d:'Milk powder, cream powder, condensed milk', r:'5%'},
-  {t:'goods', c:'0405', d:'Butter and other fats derived from milk, dairy spreads', r:'12%'},
-  {t:'goods', c:'0406', d:'Cheese and curd', r:'12%'},
-  {t:'goods', c:'0702', d:'Tomatoes, fresh or chilled', r:'Nil'},
-  {t:'goods', c:'0706', d:'Carrots, turnips, salad beetroot, radish', r:'Nil'},
-  {t:'goods', c:'0709', d:'Other vegetables — fresh or chilled', r:'Nil'},
-  {t:'goods', c:'0801', d:'Coconuts, Brazil nuts, cashew nuts — fresh or dried', r:'Nil'},
-  {t:'goods', c:'0901', d:'Coffee — whether or not roasted, coffee husks', r:'5%'},
-  {t:'goods', c:'0902', d:'Tea — green or black, whether or not flavoured', r:'5%'},
-  {t:'goods', c:'1001', d:'Wheat and meslin', r:'Nil'},
-  {t:'goods', c:'1006', d:'Rice — husked, semi-milled, wholly milled', r:'Nil'},
-  {t:'goods', c:'1101', d:'Wheat or meslin flour', r:'Nil'},
-  {t:'goods', c:'1507', d:'Soya-bean oil and its fractions', r:'5%'},
-  {t:'goods', c:'1511', d:'Palm oil and its fractions — crude or refined', r:'5%'},
-  {t:'goods', c:'1514', d:'Mustard oil (rapeseed or canola oil)', r:'5%'},
-  {t:'goods', c:'1601', d:'Sausages and similar products — of meat or offal', r:'12%'},
-  {t:'goods', c:'1701', d:'Cane or beet sugar — raw, refined', r:'5%'},
-  {t:'goods', c:'1901', d:'Malt extract, food preparations of flour, starch (infant food)', r:'18%'},
-  {t:'goods', c:'1902', d:'Pasta — spaghetti, macaroni, noodles (branded)', r:'18%'},
-  {t:'goods', c:'1904', d:'Breakfast cereals — cornflakes, muesli, puffed rice', r:'18%'},
-  {t:'goods', c:'1905', d:'Bread, pastry, cakes, biscuits — packaged (branded)', r:'18%'},
-  {t:'goods', c:'2004', d:'Other vegetables prepared by vinegar (pickles, achaar)', r:'18%'},
-  {t:'goods', c:'2009', d:'Fruit juices — single fruit, unfermented, not spirit', r:'12%'},
-  {t:'goods', c:'2101', d:'Extracts, essences, concentrates of coffee or tea', r:'5%'},
-  {t:'goods', c:'2106', d:'Food preparations — ready to eat, packaged namkeen, bhujia, mixture', r:'18%'},
-  {t:'goods', c:'2201', d:'Waters, mineral waters, aerated waters (without sweetening)', r:'Nil'},
-  {t:'goods', c:'2202', d:'Aerated drinks, flavoured water, soft drinks, cola, soda', r:'40%'},
-  {t:'goods', c:'2309', d:'Preparations of a kind used in animal feeding', r:'Nil'},
-  {t:'goods', c:'2401', d:'Unmanufactured tobacco, tobacco refuse', r:'40%'},
-  {t:'goods', c:'2402', d:'Cigars, cigarettes, cheroots, cigarillos', r:'40%'},
-  {t:'goods', c:'2403', d:'Other manufactured tobacco — gutka, pan masala, khaini, zarda', r:'40%'},
-  {t:'goods', c:'2501', d:'Salt — table salt, sea salt, rock salt', r:'Nil'},
-  {t:'goods', c:'2523', d:'Portland cement, aluminous cement, slag cement', r:'18%'},
-  {t:'goods', c:'2710', d:'Petroleum oils — petrol, diesel, ATF, furnace oil', r:'Outside GST (State VAT/Excise)'},
-  {t:'goods', c:'2711', d:'Liquefied petroleum gas (LPG) — for household use', r:'5%'},
-  {t:'goods', c:'2716', d:'Electrical energy', r:'Nil'},
-  {t:'goods', c:'3002', d:'Human blood, vaccines, antisera, toxins', r:'Nil'},
-  {t:'goods', c:'3004', d:'Medicaments — drugs and medicines, pharmaceutical formulations', r:'5%'},
-  {t:'goods', c:'3006', d:'Pharmaceutical goods — surgical catgut, dental cement, first-aid boxes', r:'12%'},
-  {t:'goods', c:'3101', d:'Animal or vegetable fertilisers — organic', r:'Nil'},
-  {t:'goods', c:'3102', d:'Mineral or chemical fertilisers — nitrogenous', r:'5%'},
-  {t:'goods', c:'3202', d:'Synthetic organic tanning substances', r:'18%'},
-  {t:'goods', c:'3301', d:'Essential oils — perfumery, cosmetics', r:'18%'},
-  {t:'goods', c:'3304', d:'Beauty / makeup preparations — lipstick, eye shadow, face powder', r:'28%'},
-  {t:'goods', c:'3305', d:'Hair preparations — shampoo, conditioner, hair oil, hair cream', r:'18%'},
-  {t:'goods', c:'3306', d:'Toothpaste, dental floss, mouthwash, oral hygiene preparations', r:'18%'},
-  {t:'goods', c:'3307', d:'Pre-shave, shaving, after-shave preparations, deodorants', r:'18%'},
-  {t:'goods', c:'3401', d:'Soap, washing bars, organic surface-active preparations', r:'18%'},
-  {t:'goods', c:'3402', d:'Washing preparations, detergents, cleaning preparations', r:'18%'},
-  {t:'goods', c:'3601', d:'Propellant powders, fireworks, crackers, matches', r:'28%'},
-  {t:'goods', c:'3808', d:'Insecticides, rodenticides, fungicides, herbicides (pesticides)', r:'18%'},
-  {t:'goods', c:'3826', d:'Biodiesel and mixtures not containing petroleum oils', r:'12%'},
-  {t:'goods', c:'3901', d:'Polymers of ethylene — polyethylene in primary forms', r:'18%'},
-  {t:'goods', c:'3923', d:'Plastic boxes, bags, packing materials (plastic)', r:'18%'},
-  {t:'goods', c:'4011', d:'New pneumatic tyres of rubber — car, motorcycle, truck', r:'28%'},
-  {t:'goods', c:'4016', d:'Other articles of vulcanised rubber — gloves, tubes', r:'18%'},
-  {t:'goods', c:'4819', d:'Cartons, boxes, cases, bags of paper or paperboard', r:'18%'},
-  {t:'goods', c:'4901', d:'Printed books, brochures, pamphlets, leaflets', r:'Nil'},
-  {t:'goods', c:'4902', d:'Newspapers, journals, periodicals — daily or weekly', r:'Nil'},
-  {t:'goods', c:'4903', d:'Children\'s picture, drawing or colouring books', r:'Nil'},
-  {t:'goods', c:'4907', d:'Unused postage, revenue stamps, cheque forms, banknotes', r:'Nil'},
-  {t:'goods', c:'5101', d:'Wool — not carded or combed', r:'Nil'},
-  {t:'goods', c:'5201', d:'Cotton — not carded or combed, raw cotton', r:'Nil'},
-  {t:'goods', c:'5407', d:'Woven fabrics of synthetic filament yarn', r:'5%'},
-  {t:'goods', c:'5513', d:'Woven fabrics of synthetic staple fibres — polyester, nylon', r:'5%'},
-  {t:'goods', c:'5601', d:'Wadding, gauze, bandages — of textile for medical use', r:'Nil'},
-  {t:'goods', c:'6101', d:'Overcoats, raincoats, carcoats, cloaks — knitted', r:'5% (≤₹1000) / 12% (>₹1000)'},
-  {t:'goods', c:'6109', d:'T-shirts, singlets, vests and other vests — knitted', r:'5% (≤₹1000) / 12% (>₹1000)'},
-  {t:'goods', c:'6203', d:'Men\'s suits, jackets, blazers, trousers — woven', r:'5% (≤₹1000) / 12% (>₹1000)'},
-  {t:'goods', c:'6302', d:'Bed linen, table linen, toilet linen — cotton or synthetic', r:'5%'},
-  {t:'goods', c:'6401', d:'Waterproof footwear with outer soles — rubber or plastic', r:'5%'},
-  {t:'goods', c:'6402', d:'Other footwear with outer soles of rubber or plastics', r:'5%'},
-  {t:'goods', c:'6403', d:'Footwear with outer soles of leather', r:'5%'},
-  {t:'goods', c:'6404', d:'Footwear with outer soles of rubber, plastic, leather — textile uppers', r:'5%'},
-  {t:'goods', c:'6911', d:'Tableware, kitchenware, articles of porcelain or china', r:'12%'},
-  {t:'goods', c:'7101', d:'Pearls — natural or cultured, worked or unworked', r:'3%'},
-  {t:'goods', c:'7102', d:'Diamonds — worked or unworked, not mounted or set', r:'1.5%'},
-  {t:'goods', c:'7103', d:'Precious stones — rubies, sapphires, emeralds', r:'1.5%'},
-  {t:'goods', c:'7108', d:'Gold — unwrought, semi-manufactured, powder', r:'3%'},
-  {t:'goods', c:'7113', d:'Jewellery of precious metal — gold, silver, platinum', r:'3%'},
-  {t:'goods', c:'7117', d:'Imitation jewellery — artificial jewellery', r:'3%'},
-  {t:'goods', c:'7209', d:'Flat-rolled products of iron or non-alloy steel', r:'18%'},
-  {t:'goods', c:'7308', d:'Structures and parts — iron or steel (bridges, gates, towers)', r:'18%'},
-  {t:'goods', c:'7323', d:'Table, kitchen or household articles of iron or steel', r:'18%'},
-  {t:'goods', c:'8301', d:'Padlocks and locks of base metal, keys', r:'18%'},
-  {t:'goods', c:'8413', d:'Pumps for liquids — water pump, centrifugal pump', r:'18%'},
-  {t:'goods', c:'8415', d:'Air conditioning machines — window, split, central AC', r:'18%'},
-  {t:'goods', c:'8418', d:'Refrigerators, freezers, heat pumps, water coolers', r:'18%'},
-  {t:'goods', c:'8422', d:'Dishwashing machines — household type', r:'18%'},
-  {t:'goods', c:'8443', d:'Printing machinery, printers — ink-jet, laser', r:'18%'},
-  {t:'goods', c:'8450', d:'Washing machines — household type, laundry machines', r:'18%'},
-  {t:'goods', c:'8469', d:'Typewriters, word-processing machines', r:'18%'},
-  {t:'goods', c:'8471', d:'Computers, laptops, tablets, automatic data-processing machines', r:'18%'},
-  {t:'goods', c:'8473', d:'Computer parts and accessories — keyboard, mouse, hard disk', r:'18%'},
-  {t:'goods', c:'8501', d:'Electric motors and generators — DC or AC', r:'18%'},
-  {t:'goods', c:'8504', d:'Electrical transformers, static converters, UPS, invertors', r:'18%'},
-  {t:'goods', c:'8507', d:'Electric accumulators — storage batteries, lead-acid batteries', r:'18%'},
-  {t:'goods', c:'8516', d:'Geysers, water heaters, electric blankets, hair dryers, irons', r:'18%'},
-  {t:'goods', c:'8517', d:'Mobile phones, smartphones, telephone handsets', r:'18%'},
-  {t:'goods', c:'8519', d:'Sound recording / reproducing apparatus — music players', r:'18%'},
-  {t:'goods', c:'8521', d:'Video recording / reproducing apparatus — DVD players, set-top boxes', r:'18%'},
-  {t:'goods', c:'8525', d:'Transmission apparatus — CCTV cameras, webcams', r:'18%'},
-  {t:'goods', c:'8528', d:'Monitors, projectors, television sets (LED TV, smart TV)', r:'18%'},
-  {t:'goods', c:'8544', d:'Insulated wire, cable — electric wires, cables', r:'18%'},
-  {t:'goods', c:'8603', d:'Railway passenger coaches, freight wagons', r:'5%'},
-  {t:'goods', c:'8703', d:'Motor cars, sedans, SUVs — passenger vehicles', r:'18% (small) / 40% (large/luxury)'},
-  {t:'goods', c:'8704', d:'Motor vehicles for transport of goods — trucks, lorries', r:'18%'},
-  {t:'goods', c:'8706', d:'Chassis fitted with engines for motor vehicles', r:'28%'},
-  {t:'goods', c:'8711', d:'Motorcycles, scooters, mopeds — two-wheelers', r:'18%'},
-  {t:'goods', c:'8712', d:'Bicycles, cycles with or without motor', r:'5%'},
-  {t:'goods', c:'8716', d:'Trailers, semi-trailers, handcarts, auto-rickshaws', r:'18%'},
-  {t:'goods', c:'8802', d:'Aircraft — aeroplanes, helicopters, gliders', r:'5%'},
-  {t:'goods', c:'8901', d:'Cruise ships, ferries, cargo vessels, fishing vessels', r:'5%'},
-  {t:'goods', c:'9003', d:'Frames and mountings for spectacles, goggles', r:'18%'},
-  {t:'goods', c:'9004', d:'Spectacles, goggles and the like — corrective, protective', r:'5%'},
-  {t:'goods', c:'9018', d:'Medical instruments — surgical, dental, veterinary instruments', r:'12%'},
-  {t:'goods', c:'9021', d:'Orthopaedic appliances, artificial body parts, hearing aids', r:'5%'},
-  {t:'goods', c:'9030', d:'Oscilloscopes, spectrum analysers, multimeters, electrical measuring instruments', r:'18%'},
-  {t:'goods', c:'9401', d:'Seats and chairs — office chairs, sofas, settees', r:'18%'},
-  {t:'goods', c:'9403', d:'Other furniture — tables, cupboards, wardrobes', r:'18%'},
-  {t:'goods', c:'9406', d:'Prefabricated buildings, portable cabins', r:'18%'},
-  {t:'goods', c:'9503', d:'Tricycles, scooters, pedal cars and similar toys', r:'12%'},
-  {t:'goods', c:'9504', d:'Video game consoles, gaming machines', r:'28%'},
-  {t:'goods', c:'9507', d:'Fishing rods, fish-hooks, fishing lines and accessories', r:'12%'},
-  {t:'goods', c:'9619', d:'Sanitary towels, tampons, diapers, napkins for babies', r:'Nil'},
-  {t:'goods', c:'9705', d:'Collections and collectors\' pieces — coins, stamps, archaeology', r:'12%'},
-
-  // ─── SERVICES ───
-  {t:'services', c:'9954', d:'Construction services — works contract, real estate construction, civil works', r:'1% / 5% / 18%'},
-  {t:'services', c:'9961', d:'Services in wholesale trade — wholesale dealers, distributors', r:'18%'},
-  {t:'services', c:'9962', d:'Services in retail trade — retail shops, supermarkets', r:'18%'},
-  {t:'services', c:'9963', d:'Accommodation and food services — restaurants, hotels, catering', r:'5% (restaurants) / 18% (AC/alcohol)'},
-  {t:'services', c:'9964', d:'Passenger transport — air travel, railways, bus, taxi, cab', r:'5% / 18%'},
-  {t:'services', c:'9965', d:'Goods transport — GTA, freight forwarders, courier logistics', r:'5% (no ITC) / 18% (with ITC)'},
-  {t:'services', c:'9966', d:'Vehicle rental and leasing services with operator — bus hire, car rental', r:'18%'},
-  {t:'services', c:'9967', d:'Supporting services in transport — loading, unloading, packing, clearing', r:'18%'},
-  {t:'services', c:'9968', d:'Postal and courier activities — speed post, private courier', r:'18%'},
-  {t:'services', c:'9971', d:'Financial and insurance services — banking fees, brokerage; health/life insurance: NIL (GST 2.0)', r:'Nil (insurance) / 18% (others)'},
-  {t:'services', c:'9972', d:'Real estate services — renting commercial property, property management', r:'18%'},
-  {t:'services', c:'9973', d:'Leasing or rental services without operator — machinery hire, equipment leasing', r:'18%'},
-  {t:'services', c:'9981', d:'Research and development services — scientific, technical research', r:'18%'},
-  {t:'services', c:'9982', d:'Legal services — lawyers, advocates, legal consulting', r:'18%'},
-  {t:'services', c:'9983', d:'IT services, software development, cloud services, SaaS, data processing', r:'18%'},
-  {t:'services', c:'9984', d:'Telecommunications and broadcasting — internet, mobile data, cable TV', r:'18%'},
-  {t:'services', c:'9985', d:'Support services — cleaning, security guards, packaging, event management', r:'18%'},
-  {t:'services', c:'9986', d:'Agricultural support services — irrigation, harvesting, pest control, warehouse', r:'Nil'},
-  {t:'services', c:'9987', d:'Maintenance and repair services — AC repair, vehicle servicing, computer repair', r:'18%'},
-  {t:'services', c:'9988', d:'Manufacturing services on physical inputs (job work) — textile, leather, printing', r:'5% / 18%'},
-  {t:'services', c:'9989', d:'Other manufacturing services — photography, printing, engraving', r:'18%'},
-  {t:'services', c:'9991', d:'Government and public administration services — public utilities', r:'Nil'},
-  {t:'services', c:'9992', d:'Education services — schools, colleges, vocational training, coaching institutes', r:'Nil'},
-  {t:'services', c:'9993', d:'Human health and social care — hospitals, doctors, clinics, diagnostic labs', r:'Nil'},
-  {t:'services', c:'9994', d:'Sewage, waste collection, treatment and disposal services', r:'Nil'},
-  {t:'services', c:'9995', d:'Membership organisation services — trade associations, clubs, unions', r:'18%'},
-  {t:'services', c:'9996', d:'Recreational, cultural and sporting services — cinema, events, sport facilities', r:'18%'},
-  {t:'services', c:'9997', d:'Other services — gyms, fitness centres, salons, barbers, spas, yoga centres', r:'5%'},
-  {t:'services', c:'9998', d:'Domestic household worker services — maids, cooks, drivers', r:'Nil'},
-  {t:'services', c:'9999', d:'Services provided by Central or State Government — regulatory fees, fines', r:'Nil'},
-];
-
-function rClass(r) {
-  if (!r) return '';
-  if (/nil/i.test(r) || r === '0%')  return 'h-nil';
-  if (/40/.test(r))  return 'h-40';
-  if (/28/.test(r))  return 'h-28';
-  if (/18/.test(r))  return 'h-18';
-  if (/12/.test(r))  return 'h-12';
-  if (/5/.test(r))   return 'h-5';
-  if (/3/.test(r))   return 'h-3';
-  return 'h-sp';
-}
-
-let hTab = 'goods';
-function setHTab(t) {
-  hTab = t;
-  document.getElementById('hTabG').classList.toggle('on', t === 'goods');
-  document.getElementById('hTabS').classList.toggle('on', t === 'services');
-  const inp = document.getElementById('hInp');
-  inp.placeholder = t === 'goods'
-    ? 'HSN code or description — e.g. 8528 or television…'
-    : 'SAC code or description — e.g. 9983 or software…';
-  inp.value = '';
-  document.getElementById('hOut').innerHTML = '';
-  inp.focus();
-}
-
-function doHSN() {
-  const q   = document.getElementById('hInp').value.trim().toLowerCase();
-  const out = document.getElementById('hOut');
-  if (q.length < 2) { out.innerHTML = ''; return; }
-
-  const hits = HSN
-    .filter(h => h.t === hTab)
-    .filter(h => h.c.includes(q) || h.d.toLowerCase().includes(q))
-    .slice(0, 8);
-
-  if (!hits.length) {
-    out.innerHTML = `<div class="h-empty">No results for "<b>${q}</b>". Try a broader term or check <a href="https://services.gst.gov.in/services/searchhsnsac" target="_blank" style="color:var(--blue)">official GSTN search →</a></div>`;
-    return;
-  }
-
-  out.innerHTML = hits.map(h => `
-    <div class="h-item">
-      <span class="h-code">${h.t === 'goods' ? 'HSN' : 'SAC'} ${h.c}</span>
-      <div class="h-desc">${h.d}</div>
-      <span class="h-rate ${rClass(h.r)}">GST: ${h.r}</span>
-    </div>`).join('');
-}
-
-/* ══════════════════════════════════════════
-   LIVE FOREX RATES
-   ══════════════════════════════════════════ */
-const CCYS = [
-  {code:'USD', name:'US Dollar',     flag:'🇺🇸'},
-  {code:'EUR', name:'Euro',          flag:'🇪🇺'},
-  {code:'GBP', name:'British Pound', flag:'🇬🇧'},
-  {code:'AED', name:'UAE Dirham',    flag:'🇦🇪'},
-  {code:'SGD', name:'Singapore $',   flag:'🇸🇬'},
-  {code:'JPY', name:'Japanese Yen',  flag:'🇯🇵'},
-  {code:'AUD', name:'Aus Dollar',    flag:'🇦🇺'},
-  {code:'SAR', name:'Saudi Riyal',   flag:'🇸🇦'},
-];
-
-async function doForex() {
-  const grid   = document.getElementById('fxGrid');
-  const timeEl = document.getElementById('fxTime');
-  const foot   = document.getElementById('fxFoot');
-  grid.innerHTML = Array(8).fill('<div class="fx-sk"></div>').join('');
-  timeEl.textContent = 'Fetching live rates…';
-
-  const syms = CCYS.map(c => c.code).join(',');
-  const APIS = [
-    `https://api.frankfurter.app/latest?from=INR&to=${syms}`,
-    `https://open.er-api.com/v6/latest/INR`,
-    `https://api.exchangerate-api.com/v4/latest/INR`,
-  ];
-
-  let rates = null;
-  for (const url of APIS) {
-    try {
-      const r = await fetch(url, { signal: AbortSignal.timeout(7000) });
-      if (!r.ok) continue;
-      const j = await r.json();
-      if (j && j.rates && j.rates.USD) { rates = j.rates; break; }
-    } catch {}
-  }
-
-  if (!rates) {
-    grid.innerHTML = `<div class="fx-err">Could not load rates. Try <a href="https://www.rbi.org.in/Scripts/ReferenceRateArchive.aspx" target="_blank" style="color:var(--blue)">RBI Reference Rates →</a></div>`;
-    timeEl.textContent = 'Rates unavailable';
-    return;
-  }
-
-  const now = new Date();
-  timeEl.textContent = `Updated ${now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})} IST`;
-  foot.innerHTML = `Indicative only · <a href="https://www.rbi.org.in/Scripts/ReferenceRateArchive.aspx" target="_blank" style="color:var(--blue)">Official RBI Rates ↗</a>`;
-
-  // Frankfurter from=INR: rates[USD] = how many USD per 1 INR → invert for ₹ per 1 USD
-  grid.innerHTML = CCYS.map(c => {
-    const r = rates[c.code];
-    if (!r) return '';
-    const inrPer1 = (1 / r).toFixed(c.code === 'JPY' ? 3 : 2);
-    return `<div class="fx-row">
-      <div class="fx-left">
-        <span class="fx-flag">${c.flag}</span>
-        <div><span class="fx-code">${c.code}</span><span class="fx-name">${c.name}</span></div>
-      </div>
-      <div class="fx-right">
-        <span class="big">₹${inrPer1}</span>
-        <span class="sm">per 1 ${c.code}</span>
-      </div>
-    </div>`;
-  }).join('');
+function findBadChar(gstin) {
+  // Help user find which character is wrong
+  const re = /^[0-9]{2}/;
+  if (!/^[0-9]{2}/.test(gstin))       return 'positions 1-2 (must be digits: state code)';
+  if (!/^[0-9]{2}[A-Z]{5}/.test(gstin)) return 'positions 3-7 (must be letters: PAN letters)';
+  if (!/^[0-9]{2}[A-Z]{5}[0-9]{4}/.test(gstin)) return 'positions 8-11 (must be digits: PAN digits)';
+  if (gstin[11] && !/[A-Z]/.test(gstin[11])) return 'position 12 (must be a letter)';
+  if (gstin[12] && !/[1-9A-Z]/.test(gstin[12])) return 'position 13 (must be 1-9 or A-Z)';
+  if (gstin[13] && gstin[13] !== 'Z') return 'position 14 (must be Z)';
+  return '— check all characters';
 }
 
 document.addEventListener('DOMContentLoaded', () => doForex());
+
 </script>
 </body>
 </html>
