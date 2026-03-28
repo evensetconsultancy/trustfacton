@@ -1,575 +1,676 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TrustFactON — India's Tax & Compliance Reference Platform</title>
-  <meta name="description" content="GSTIN verifier, HSN/SAC code search, live forex rates. Income Tax, Goods & Service Tax, Companies Act guides. Free. No login.">
-  <link rel="stylesheet" href="style.css">
-  <style>
-  /* ── HERO tweaks ── */
-  .hero-eyebrow .dot { margin-right: 6px; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TrustFactON — India's Tax & Compliance Reference Platform</title>
+<meta name="description" content="GSTIN verifier, HSN/SAC search, live forex rates, compliance deadlines. Income Tax, GST, Companies. Free.">
+<link rel="stylesheet" href="style.css">
+<style>
+/* ═══ TOOLS ═══ */
+.tools-section{background:white;padding:48px 0 52px;border-bottom:1px solid var(--gray-3);}
+.tools-head{text-align:center;margin-bottom:32px;}
+.tools-head h2{font-size:clamp(1.3rem,2vw,1.75rem);color:var(--black);margin-bottom:5px;}
+.tools-head p{font-size:0.87rem;color:var(--gray-5);}
+.tools-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:start;}
+.tc{background:#FAFBFC;border:1px solid var(--gray-3);border-radius:12px;overflow:hidden;}
+.tc-head{background:white;border-bottom:1px solid var(--gray-3);padding:13px 17px 12px;display:flex;align-items:center;gap:10px;}
+.tc-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.05rem;flex-shrink:0;}
+.tc-head h3{font-size:0.88rem;font-weight:700;color:var(--black);margin:0 0 2px;}
+.tc-head p{font-size:0.7rem;color:var(--gray-4);margin:0;line-height:1.4;}
+.tc-body{padding:13px 15px 15px;}
+.ti{width:100%;padding:8px 11px;border:1.5px solid var(--gray-3);border-radius:8px;font-size:0.83rem;font-family:'Inter',sans-serif;background:white;box-sizing:border-box;transition:border-color .15s,box-shadow .15s;color:var(--black);}
+.ti:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.07);}
+.ti::placeholder{color:var(--gray-4);}
+.tb{padding:8px 15px;border-radius:8px;font-size:0.8rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;border:none;transition:all .15s;white-space:nowrap;flex-shrink:0;}
+.tb-blue{background:var(--blue);color:white;}
+.tb-blue:hover{background:#1D4ED8;}
+.t-note{font-size:0.68rem;color:var(--gray-4);margin-top:7px;line-height:1.5;}
+.t-note a{color:var(--blue);}
 
-  /* ── TOOLS SECTION ── */
-  .tools-section { background: white; padding: 54px 0 60px; border-bottom: 1px solid var(--gray-3); }
-  .tools-head { text-align: center; margin-bottom: 36px; }
-  .tools-head h2 { font-size: clamp(1.4rem,2.2vw,1.85rem); color: var(--black); margin-bottom: 6px; }
-  .tools-head p  { font-size: 0.88rem; color: var(--gray-5); }
-  .tools-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; align-items: start; }
+/* GSTIN */
+.g-row{display:flex;gap:6px;}
+.g-mono{font-family:monospace;font-size:.88rem;letter-spacing:1px;text-transform:uppercase;}
+.g-mono::placeholder{font-family:'Inter',sans-serif;font-size:.83rem;letter-spacing:0;text-transform:none;}
+.g-err{display:none;margin-top:9px;padding:9px 12px;background:#FEF2F2;border:1px solid #FECACA;border-radius:7px;font-size:0.78rem;color:#991B1B;line-height:1.6;}
+.g-err.on{display:block;}
+.g-result{display:none;margin-top:9px;}
+.g-result.on{display:block;}
+.g-card{background:white;border:1px solid var(--gray-3);border-radius:8px;padding:11px 13px;}
+.g-valid{display:flex;align-items:center;gap:6px;padding:6px 9px;background:#F0FDF4;border-radius:6px;border:1px solid #BBF7D0;margin-bottom:9px;}
+.g-valid span{font-size:0.76rem;color:#166534;font-weight:600;}
+.g-badge{margin-left:auto;padding:2px 8px;border-radius:10px;font-size:0.68rem;font-weight:700;background:#DBEAFE;color:#1E40AF;}
+.g-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.gf label{font-size:0.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--gray-4);display:block;margin-bottom:2px;}
+.gf .v{font-size:0.77rem;color:var(--gray-6);line-height:1.4;}
+.g-copy-row{display:flex;align-items:center;gap:5px;}
+.g-copy-btn{padding:2px 7px;border:1px solid #BFDBFE;border-radius:5px;font-size:0.67rem;color:var(--blue);background:#EFF6FF;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;}
+.g-step{margin-top:9px;padding:9px 11px;background:#F8FAFF;border:1px solid #BFDBFE;border-radius:7px;font-size:0.76rem;color:#1E40AF;line-height:1.75;}
+.g-step strong{display:block;font-size:0.68rem;text-transform:uppercase;letter-spacing:.4px;color:var(--gray-4);margin-bottom:3px;}
+.g-open-btn{width:100%;margin-top:9px;padding:9px 14px;background:var(--navy);color:white;border:none;border-radius:8px;font-size:0.82rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;justify-content:center;gap:7px;transition:background .15s;}
+.g-open-btn:hover{background:#1E4080;}
+.g-copied{display:none;text-align:center;margin-top:5px;font-size:0.72rem;color:var(--green);font-weight:600;}
+.g-default{margin-top:9px;}
+.g-portal-link{display:inline-flex;align-items:center;gap:5px;padding:7px 12px;border:1px solid #BFDBFE;border-radius:7px;font-size:0.76rem;color:var(--blue);background:#EFF6FF;text-decoration:none;transition:all .15s;font-weight:500;width:100%;justify-content:center;box-sizing:border-box;}
+.g-portal-link:hover{background:var(--blue);color:white;}
 
-  /* ── TOOL CARD ── */
-  .tc { background: #FAFBFC; border: 1px solid var(--gray-3); border-radius: 12px; overflow: hidden; }
-  .tc-head { background: white; border-bottom: 1px solid var(--gray-3); padding: 14px 18px 13px; display: flex; align-items: center; gap: 11px; }
-  .tc-icon { width: 38px; height: 38px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
-  .tc-head h3 { font-size: 0.9rem; color: var(--black); margin: 0 0 2px; font-weight: 700; }
-  .tc-head p  { font-size: 0.71rem; color: var(--gray-4); margin: 0; line-height: 1.4; }
-  .tc-body { padding: 14px 16px 16px; }
+/* HSN */
+.h-tabs{display:flex;gap:5px;margin-bottom:8px;}
+.h-tab{padding:4px 12px;border-radius:20px;border:1.5px solid var(--gray-3);background:white;font-size:0.73rem;font-weight:500;cursor:pointer;color:var(--gray-5);font-family:'Inter',sans-serif;transition:all .15s;}
+.h-tab.on{background:var(--navy);color:white;border-color:var(--navy);}
+.h-results{margin-top:7px;max-height:272px;overflow-y:auto;scrollbar-width:thin;}
+.h-item{background:white;border:1px solid var(--gray-3);border-radius:7px;padding:8px 11px;margin-bottom:5px;transition:border-color .12s;}
+.h-item:hover{border-color:var(--blue);}
+.h-code{font-family:monospace;font-size:0.76rem;font-weight:700;color:var(--navy);}
+.h-desc{font-size:0.76rem;color:var(--gray-5);margin:2px 0;line-height:1.4;}
+.h-rate{display:inline-block;margin-top:4px;padding:2px 7px;border-radius:4px;font-size:0.67rem;font-weight:700;}
+.h-nil{background:#DCFCE7;color:#166534;}
+.h-5{background:#F0FDF4;color:#15803D;}
+.h-12{background:#FEF3C7;color:#92400E;}
+.h-18{background:#DBEAFE;color:#1E40AF;}
+.h-28{background:#FEE2E2;color:#991B1B;}
+.h-40{background:#FEE2E2;color:#7F1D1D;font-weight:800;}
+.h-3{background:#FEF9C3;color:#713F12;}
+.h-sp{background:#F5F3FF;color:#5B21B6;}
+.h-empty{text-align:center;padding:20px 8px;color:var(--gray-4);font-size:0.8rem;}
 
-  /* Shared input style */
-  .ti { width: 100%; padding: 9px 12px; border: 1.5px solid var(--gray-3); border-radius: 8px; font-size: 0.84rem; font-family: 'Inter', sans-serif; background: white; box-sizing: border-box; transition: border-color 0.15s, box-shadow 0.15s; color: var(--black); }
-  .ti:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,0.07); }
-  .ti::placeholder { color: var(--gray-4); }
-  .tb { padding: 9px 16px; border-radius: 8px; font-size: 0.82rem; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; border: none; transition: all 0.15s; white-space: nowrap; flex-shrink: 0; }
-  .tb-blue { background: var(--blue); color: white; }
-  .tb-blue:hover { background: #1D4ED8; }
-  .tb-blue:disabled { background: var(--gray-3); color: white; cursor: not-allowed; }
-  .t-note { font-size: 0.69rem; color: var(--gray-4); margin-top: 8px; line-height: 1.5; }
-  .t-note a { color: var(--blue); }
+/* FOREX */
+.fx-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;}
+.fx-time{font-size:0.68rem;color:var(--gray-4);}
+.fx-btn{padding:3px 9px;border:1px solid var(--gray-3);border-radius:5px;font-size:0.68rem;color:var(--gray-5);cursor:pointer;font-family:'Inter',sans-serif;background:white;transition:all .15s;}
+.fx-btn:hover{border-color:var(--blue);color:var(--blue);}
+.fx-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;}
+.fx-row{background:white;border:1px solid var(--gray-3);border-radius:7px;padding:7px 10px;display:flex;align-items:center;justify-content:space-between;}
+.fx-left{display:flex;align-items:center;gap:6px;}
+.fx-flag{font-size:.95rem;line-height:1;}
+.fx-code{font-family:monospace;font-size:0.74rem;font-weight:700;color:var(--navy);display:block;}
+.fx-name{font-size:0.6rem;color:var(--gray-4);}
+.fx-right .big{font-size:0.88rem;font-weight:700;color:var(--black);display:block;text-align:right;}
+.fx-right .sm{font-size:0.6rem;color:var(--gray-4);text-align:right;display:block;}
+.fx-sk{background:var(--gray-2);border-radius:7px;height:46px;animation:sk 1.4s ease-in-out infinite;}
+@keyframes sk{0%,100%{opacity:1}50%{opacity:.45}}
+.fx-err{font-size:0.77rem;color:var(--gray-4);text-align:center;padding:10px;grid-column:1/-1;}
+.fx-foot{font-size:0.66rem;color:var(--gray-4);margin-top:6px;text-align:center;}
 
-  /* ── GSTIN ── */
-  .g-row { display: flex; gap: 7px; }
-  .g-mono { font-family: monospace; font-size: 0.9rem; letter-spacing: 1px; text-transform: uppercase; }
-  .g-mono::placeholder { font-family: 'Inter',sans-serif; font-size: 0.84rem; letter-spacing: 0; text-transform: none; }
+/* ═══ COMPLIANCE CALENDAR ═══ */
+.cal-section{background:var(--gray-1);padding:48px 0 56px;}
+.cal-filters{display:flex;gap:6px;flex-wrap:wrap;margin-top:20px;margin-bottom:18px;}
+.cf{padding:5px 13px;border-radius:20px;border:1.5px solid var(--gray-3);background:white;font-size:0.76rem;font-weight:500;cursor:pointer;color:var(--gray-5);font-family:'Inter',sans-serif;transition:all .15s;}
+.cf:hover,.cf.on{background:var(--navy);color:white;border-color:var(--navy);}
+.cal-tbl-wrap{overflow-x:auto;border-radius:12px;border:1px solid var(--gray-3);background:white;}
+.cal-tbl{width:100%;border-collapse:collapse;font-size:0.82rem;min-width:700px;}
+.cal-tbl thead th{background:var(--navy);color:white;padding:10px 14px;text-align:left;font-weight:600;font-size:0.75rem;}
+.cal-tbl tbody td{padding:10px 14px;border-bottom:1px solid var(--gray-2);vertical-align:middle;}
+.cal-tbl tbody tr:last-child td{border-bottom:none;}
+.cal-tbl tbody tr:hover td{background:#F8FAFF;}
 
-  .g-spinner { display: none; align-items: center; justify-content: center; gap: 8px; padding: 10px; font-size: 0.8rem; color: var(--gray-5); }
-  .g-spinner.on { display: flex; }
-  .g-spinner::before { content:''; width:14px; height:14px; border:2px solid var(--gray-3); border-top-color:var(--blue); border-radius:50%; animation: spin 0.7s linear infinite; flex-shrink:0; }
-  @keyframes spin { to { transform: rotate(360deg); } }
+/* Row highlight by urgency */
+.row-overdue td{background:#FEF2F2 !important;}
+.row-overdue td:first-child{border-left:3px solid var(--red);}
+.row-today   td{background:#FFFBEB !important;}
+.row-today   td:first-child{border-left:3px solid var(--amber);}
+.row-soon    td{background:#FFFBEB !important;}        /* ≤7 days */
+.row-soon    td:first-child{border-left:3px solid #FCD34D;}
+.row-week    td{background:#F0FDF4 !important;}        /* ≤30 days */
+.row-week    td:first-child{border-left:3px solid var(--green);}
 
-  .g-err { display: none; margin-top: 10px; padding: 10px 13px; background: #FEF2F2; border: 1px solid #FECACA; border-radius: 8px; font-size: 0.8rem; color: #991B1B; line-height: 1.6; }
-  .g-err.on { display: block; }
+/* Category badge */
+.cat-gst{background:#DCFCE7;color:#166534;padding:2px 8px;border-radius:4px;font-size:0.68rem;font-weight:700;white-space:nowrap;}
+.cat-it {background:#DBEAFE;color:#1E40AF;padding:2px 8px;border-radius:4px;font-size:0.68rem;font-weight:700;white-space:nowrap;}
+.cat-tds{background:#FEF3C7;color:#92400E;padding:2px 8px;border-radius:4px;font-size:0.68rem;font-weight:700;white-space:nowrap;}
+.cat-pf {background:#F5F3FF;color:#5B21B6;padding:2px 8px;border-radius:4px;font-size:0.68rem;font-weight:700;white-space:nowrap;}
+.cat-roc{background:#FEE2E2;color:#991B1B;padding:2px 8px;border-radius:4px;font-size:0.68rem;font-weight:700;white-space:nowrap;}
+.cat-esi{background:#ECFDF5;color:#065F46;padding:2px 8px;border-radius:4px;font-size:0.68rem;font-weight:700;white-space:nowrap;}
 
-  .g-result { display: none; margin-top: 10px; }
-  .g-result.on { display: block; }
-  .g-card { background: white; border: 1px solid var(--gray-3); border-radius: 8px; padding: 12px 14px; }
-  .g-lname { font-size: 0.92rem; font-weight: 700; color: var(--black); margin-bottom: 2px; }
-  .g-num   { font-family: monospace; font-size: 0.76rem; color: var(--blue); font-weight: 600; letter-spacing: 1px; margin-bottom: 7px; }
-  .g-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; margin-bottom: 10px; }
-  .g-active   { background: #DCFCE7; color: #166534; }
-  .g-inactive { background: #FEE2E2; color: #991B1B; }
-  .g-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .gf label { font-size: 0.59rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--gray-4); display: block; margin-bottom: 2px; }
-  .gf .v    { font-size: 0.78rem; color: var(--gray-6); line-height: 1.4; }
+/* Days badge */
+.days-over{background:#FEE2E2;color:#991B1B;padding:3px 9px;border-radius:12px;font-size:0.72rem;font-weight:700;white-space:nowrap;}
+.days-today{background:#FEF3C7;color:#92400E;padding:3px 9px;border-radius:12px;font-size:0.72rem;font-weight:700;white-space:nowrap;}
+.days-soon{background:#FEF3C7;color:#92400E;padding:3px 9px;border-radius:12px;font-size:0.72rem;font-weight:700;white-space:nowrap;}
+.days-near{background:#DCFCE7;color:#166534;padding:3px 9px;border-radius:12px;font-size:0.72rem;font-weight:700;white-space:nowrap;}
+.days-far{background:var(--gray-2);color:var(--gray-5);padding:3px 9px;border-radius:12px;font-size:0.72rem;font-weight:600;white-space:nowrap;}
+.cal-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:0.74rem;color:var(--gray-5);}
+.leg{display:flex;align-items:center;gap:5px;}
+.leg-dot{width:10px;height:10px;border-radius:2px;}
 
-  .g-portal { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; padding: 7px 13px; border: 1px solid #BFDBFE; border-radius: 8px; font-size: 0.77rem; color: var(--blue); text-decoration: none; background: #EFF6FF; transition: all 0.15s; font-weight: 500; }
-  .g-portal:hover { background: var(--blue); color: white; border-color: var(--blue); }
+/* TOPICS */
+.topics-section{background:white;padding:48px 0 52px;}
+.topics-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-top:28px;}
+.tp-card{background:var(--gray-1);border-radius:12px;border:1px solid var(--gray-3);text-decoration:none;display:flex;flex-direction:column;overflow:hidden;transition:all .18s;}
+.tp-card:hover{box-shadow:0 5px 20px rgba(0,0,0,.08);transform:translateY(-2px);border-color:transparent;background:white;}
+.tp-bar{height:3px;}
+.tp-body{padding:16px;flex:1;}
+.tp-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.05rem;margin-bottom:9px;}
+.tp-body h3{font-size:0.88rem;color:var(--black);margin-bottom:4px;font-weight:700;}
+.tp-body p{font-size:0.78rem;color:var(--gray-5);line-height:1.6;}
+.tp-foot{padding:9px 16px;border-top:1px solid var(--gray-2);display:flex;align-items:center;justify-content:space-between;}
+.tp-tags{display:flex;gap:3px;flex-wrap:wrap;}
+.tp-tag{font-size:0.63rem;padding:2px 6px;border-radius:4px;background:var(--gray-2);color:var(--gray-5);font-weight:500;}
+.tp-arrow{font-size:0.78rem;font-weight:700;}
 
-  /* ── HSN SEARCH ── */
-  .h-tabs { display: flex; gap: 5px; margin-bottom: 9px; }
-  .h-tab { padding: 5px 13px; border-radius: 20px; border: 1.5px solid var(--gray-3); background: white; font-size: 0.74rem; font-weight: 500; cursor: pointer; color: var(--gray-5); font-family: 'Inter', sans-serif; transition: all 0.15s; }
-  .h-tab.on { background: var(--navy); color: white; border-color: var(--navy); }
-
-  .h-results { margin-top: 8px; max-height: 280px; overflow-y: auto; scrollbar-width: thin; }
-  .h-item { background: white; border: 1px solid var(--gray-3); border-radius: 8px; padding: 9px 12px; margin-bottom: 5px; transition: border-color 0.12s; }
-  .h-item:hover { border-color: var(--blue); }
-  .h-item:last-child { margin-bottom: 0; }
-  .h-code { font-family: monospace; font-size: 0.77rem; font-weight: 700; color: var(--navy); }
-  .h-desc { font-size: 0.77rem; color: var(--gray-5); margin: 2px 0; line-height: 1.4; }
-  .h-rate { display: inline-block; margin-top: 5px; padding: 2px 8px; border-radius: 4px; font-size: 0.69rem; font-weight: 700; }
-  .h-nil  { background: #DCFCE7; color: #166534; }
-  .h-5    { background: #F0FDF4; color: #15803D; }
-  .h-12   { background: #FEF3C7; color: #92400E; }
-  .h-18   { background: #DBEAFE; color: #1E40AF; }
-  .h-28   { background: #FEE2E2; color: #991B1B; }
-  .h-40   { background: #FEE2E2; color: #7F1D1D; font-weight: 800; }
-  .h-3    { background: #FEF9C3; color: #713F12; }
-  .h-sp   { background: #F5F3FF; color: #5B21B6; }
-  .h-empty { text-align: center; padding: 22px 10px; color: var(--gray-4); font-size: 0.82rem; }
-
-  /* ── FOREX ── */
-  .fx-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-  .fx-time { font-size: 0.69rem; color: var(--gray-4); }
-  .fx-btn  { padding: 3px 10px; border: 1px solid var(--gray-3); border-radius: 6px; font-size: 0.69rem; color: var(--gray-5); cursor: pointer; font-family: 'Inter', sans-serif; background: white; transition: all 0.15s; }
-  .fx-btn:hover { border-color: var(--blue); color: var(--blue); }
-  .fx-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
-  .fx-row  { background: white; border: 1px solid var(--gray-3); border-radius: 8px; padding: 8px 11px; display: flex; align-items: center; justify-content: space-between; }
-  .fx-left { display: flex; align-items: center; gap: 7px; }
-  .fx-flag { font-size: 1rem; line-height: 1; }
-  .fx-code { font-family: monospace; font-size: 0.76rem; font-weight: 700; color: var(--navy); display: block; }
-  .fx-name { font-size: 0.61rem; color: var(--gray-4); }
-  .fx-right .big { font-size: 0.9rem; font-weight: 700; color: var(--black); display: block; text-align: right; }
-  .fx-right .sm  { font-size: 0.61rem; color: var(--gray-4); text-align: right; display: block; }
-  .fx-sk { background: var(--gray-2); border-radius: 8px; height: 48px; animation: sk 1.4s ease-in-out infinite; }
-  @keyframes sk { 0%,100%{opacity:1} 50%{opacity:.45} }
-  .fx-err  { font-size: 0.78rem; color: var(--gray-4); text-align: center; padding: 10px; grid-column: 1/-1; }
-  .fx-foot { font-size: 0.67rem; color: var(--gray-4); margin-top: 7px; text-align: center; }
-
-  /* ── TOPIC CARDS ── */
-  .topics-section { background: var(--gray-1); padding: 52px 0 58px; }
-  .topics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 32px; }
-  .tp-card { background: white; border-radius: 12px; border: 1px solid var(--gray-3); text-decoration: none; display: flex; flex-direction: column; overflow: hidden; transition: all 0.18s; }
-  .tp-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.08); transform: translateY(-3px); border-color: transparent; }
-  .tp-bar  { height: 3px; }
-  .tp-body { padding: 18px; flex: 1; }
-  .tp-icon { width: 38px; height: 38px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; margin-bottom: 10px; }
-  .tp-body h3 { font-size: 0.9rem; color: var(--black); margin-bottom: 5px; font-weight: 700; }
-  .tp-body p  { font-size: 0.79rem; color: var(--gray-5); line-height: 1.6; }
-  .tp-foot { padding: 9px 18px; border-top: 1px solid var(--gray-2); display: flex; align-items: center; justify-content: space-between; }
-  .tp-tags { display: flex; gap: 4px; flex-wrap: wrap; }
-  .tp-tag  { font-size: 0.65rem; padding: 2px 6px; border-radius: 4px; background: var(--gray-2); color: var(--gray-5); font-weight: 500; }
-  .tp-arrow { font-size: 0.78rem; font-weight: 700; }
-
-  @media (max-width:1024px) { .topics-grid { grid-template-columns: repeat(2,1fr); } }
-  @media (max-width:900px)  { .tools-grid  { grid-template-columns: 1fr; } }
-  @media (max-width:600px)  { .fx-grid { grid-template-columns: 1fr; } .topics-grid { grid-template-columns: 1fr 1fr; } }
-  @media (max-width:420px)  { .topics-grid { grid-template-columns: 1fr; } }
-  </style>
+@media(max-width:1024px){.topics-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:900px){.tools-grid{grid-template-columns:1fr;}}
+@media(max-width:600px){.fx-grid{grid-template-columns:1fr;}.topics-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:420px){.topics-grid{grid-template-columns:1fr;}}
+</style>
 </head>
 <body>
 <div id="nav-placeholder"></div>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="container">
-    <div class="hero-content">
-      <div class="hero-eyebrow"><span class="dot"></span>Free Tools · No Login · Updated March 2026</div>
-      <h1>India's Tax &<br><span class="hl">Compliance Platform</span></h1>
-      <p class="sub">Verify GSTIN, search HSN/SAC codes, track live forex rates. Explore Income Tax, Goods &amp; Service Tax and Companies Act in plain language.</p>
-      <div class="hero-actions">
-        <a href="#tools" class="btn btn-blue btn-lg">Free Tools ↓</a>
-        <a href="chat.html" class="btn btn-ghost btn-lg">Ask AI →</a>
-      </div>
-      <div class="hero-stats">
-        <div class="hero-stat"><span class="v">GSTIN</span><span class="l">Live Verify</span></div>
-        <div class="hero-stat"><span class="v">HSN</span><span class="l">Code Search</span></div>
-        <div class="hero-stat"><span class="v">Forex</span><span class="l">Live Rates</span></div>
-        <div class="hero-stat"><span class="v">91</span><span class="l">TDS/TCS Codes</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ════ TOOLS ════ -->
 <section class="tools-section" id="tools">
-  <div class="container">
-    <div class="tools-head">
-      <span class="sec-label">Free Tools</span>
-      <h2>Verify · Search · Track</h2>
-      <p>Instant results · No login required</p>
-    </div>
-
-    <div class="tools-grid">
-
-      <!-- ① GSTIN VERIFIER -->
-      <div class="tc">
-        <div class="tc-head">
-          <div class="tc-icon" style="background:#F0FDF4">🔍</div>
-          <div>
-            <h3>GSTIN Verifier</h3>
-            <p>Validate format · Decode state & entity · Open GST portal to verify</p>
-          </div>
-        </div>
-        <div class="tc-body">
-
-          <!-- Input row -->
-          <div class="g-row">
-            <input type="text" id="gInp" class="ti g-mono"
-              placeholder="Enter 15-digit GSTIN…"
-              maxlength="15" autocomplete="off"
-              oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'');onGSTINInput()"
-              onkeydown="if(event.key==='Enter')openGSTNPortal()">
-            <button class="tb tb-blue" id="gBtn" onclick="openGSTNPortal()">Verify →</button>
-          </div>
-
-          <!-- Format error bar -->
-          <div class="g-err" id="gErr"></div>
-
-          <!-- Decoded info card (shows as soon as format is valid) -->
-          <div class="g-result" id="gRes">
-            <div class="g-card">
-              <div style="display:flex;align-items:center;gap:7px;margin-bottom:10px;
-                          padding:7px 10px;background:#F0FDF4;border-radius:6px;border:1px solid #BBF7D0">
-                <span style="font-size:1.1rem">✅</span>
-                <span style="font-size:0.78rem;color:#166534;font-weight:600">Valid GSTIN format</span>
-                <span id="gBadge" style="margin-left:auto;padding:2px 9px;border-radius:12px;
-                      font-size:0.7rem;font-weight:700;background:#DBEAFE;color:#1E40AF"></span>
-              </div>
-              <div class="g-grid">
-                <div class="gf">
-                  <label>GSTIN</label>
-                  <div style="display:flex;align-items:center;gap:6px">
-                    <div class="v g-mono" id="gNum" style="font-size:0.8rem;letter-spacing:1px;color:var(--blue)"></div>
-                    <button onclick="copyGSTIN()" id="gCopyBtn"
-                      style="padding:2px 7px;border:1px solid #BFDBFE;border-radius:5px;
-                             font-size:0.68rem;color:var(--blue);background:#EFF6FF;
-                             cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap">
-                      Copy
-                    </button>
-                  </div>
-                </div>
-                <div class="gf"><label>PAN (embedded)</label>
-                  <div class="v g-mono" id="gPan" style="font-size:0.8rem;color:var(--navy)"></div></div>
-                <div class="gf"><label>State / UT</label>
-                  <div class="v" id="gState"></div></div>
-                <div class="gf"><label>Entity Type</label>
-                  <div class="v" id="gType"></div></div>
-              </div>
-            </div>
-
-            <!-- Step instruction -->
-            <div style="margin-top:10px;padding:10px 12px;background:#F8FAFF;
-                        border:1px solid #BFDBFE;border-radius:8px;font-size:0.78rem;
-                        color:#1E40AF;line-height:1.7">
-              <strong style="display:block;margin-bottom:4px;font-size:0.72rem;
-                             text-transform:uppercase;letter-spacing:0.5px;color:var(--gray-4)">
-                How to verify name & status:
-              </strong>
-              <span style="font-size:1rem">1</span> Click <strong>Open GST Portal</strong> below →
-              popup opens on the official GSTN search page<br>
-              <span style="font-size:1rem">2</span> GSTIN is <strong>copied to your clipboard</strong> automatically —
-              just <strong>Ctrl+V / paste</strong> it in the GSTIN box<br>
-              <span style="font-size:1rem">3</span> Solve the CAPTCHA and click Search to see full details
-            </div>
-
-            <!-- Open portal button — prominent -->
-            <button onclick="openGSTNPortal()"
-              style="width:100%;margin-top:10px;padding:10px 16px;
-                     background:var(--navy);color:white;border:none;border-radius:8px;
-                     font-size:0.84rem;font-weight:600;cursor:pointer;
-                     font-family:'Inter',sans-serif;display:flex;align-items:center;
-                     justify-content:center;gap:8px;transition:background 0.15s"
-              onmouseover="this.style.background='#1E4080'"
-              onmouseout="this.style.background='var(--navy)'">
-              🔗 Open GST Portal &amp; Copy GSTIN
-            </button>
-            <div id="gCopiedMsg" style="display:none;text-align:center;margin-top:6px;
-                 font-size:0.74rem;color:var(--green);font-weight:600">
-              ✅ GSTIN copied to clipboard!
-            </div>
-          </div>
-
-          <!-- Default state — before any input -->
-          <div id="gDefault">
-            <a href="https://services.gst.gov.in/services/searchtp" target="_blank"
-               class="g-portal" style="margin-top:10px">
-              🔗 Open GST Taxpayer Search Portal →
-            </a>
-            <p class="t-note">Enter a GSTIN above. We validate format, decode state and entity type instantly, then help you open the official portal with one click.</p>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- ② HSN / SAC SEARCH -->
-      <div class="tc">
-        <div class="tc-head">
-          <div class="tc-icon" style="background:#EFF6FF">📦</div>
-          <div>
-            <h3>HSN / SAC Search</h3>
-            <p>Find GST rate by code or description · GST 2.0 rates</p>
-          </div>
-        </div>
-        <div class="tc-body">
-          <div class="h-tabs">
-            <button class="h-tab on" id="hTabG" onclick="setHTab('goods')">📦 Goods (HSN)</button>
-            <button class="h-tab"    id="hTabS" onclick="setHTab('services')">⚙️ Services (SAC)</button>
-          </div>
-          <input type="text" id="hInp" class="ti"
-            placeholder="HSN code or description — e.g. 8528 or television…"
-            autocomplete="off" oninput="doHSN()">
-          <div class="h-results" id="hOut"></div>
-          <p class="t-note" style="margin-top:7px">Rates per GST 2.0 (22 Sept 2025). 12% and 28% slabs removed. Always verify from <a href="https://services.gst.gov.in/services/searchhsnsac" target="_blank">official GSTN portal →</a></p>
-        </div>
-      </div>
-
-      <!-- ③ LIVE FOREX RATES -->
-      <div class="tc">
-        <div class="tc-head">
-          <div class="tc-icon" style="background:#FFFBEB">💱</div>
-          <div>
-            <h3>Live Forex Rates</h3>
-            <p>₹ vs 8 major currencies · Refreshes live</p>
-          </div>
-        </div>
-        <div class="tc-body">
-          <div class="fx-bar">
-            <span class="fx-time" id="fxTime">Loading…</span>
-            <button class="fx-btn" onclick="doForex()">↺ Refresh</button>
-          </div>
-          <div class="fx-grid" id="fxGrid">
-            <div class="fx-sk"></div><div class="fx-sk"></div>
-            <div class="fx-sk"></div><div class="fx-sk"></div>
-            <div class="fx-sk"></div><div class="fx-sk"></div>
-            <div class="fx-sk"></div><div class="fx-sk"></div>
-          </div>
-          <div class="fx-foot" id="fxFoot"></div>
-          <p class="t-note">Indicative rates. For FEMA and compliance use <a href="https://www.rbi.org.in/Scripts/ReferenceRateArchive.aspx" target="_blank">RBI Reference Rates →</a></p>
-        </div>
-      </div>
-
-    </div>
+<div class="container">
+  <div class="tools-head">
+    <span class="sec-label">Free Tools</span>
+    <h2>Verify · Search · Track</h2>
+    <p>Instant results · No login · No signup</p>
   </div>
+  <div class="tools-grid">
+
+    <!-- ① GSTIN -->
+    <div class="tc">
+      <div class="tc-head">
+        <div class="tc-icon" style="background:#F0FDF4">🔍</div>
+        <div><h3>GSTIN Verifier</h3><p>Validate format · Decode state & entity · Open GST portal</p></div>
+      </div>
+      <div class="tc-body">
+        <div class="g-row">
+          <input type="text" id="gInp" class="ti g-mono" placeholder="Enter 15-digit GSTIN…"
+            maxlength="15" autocomplete="off"
+            oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'');onGSTIN()"
+            onkeydown="if(event.key==='Enter')gOpenPortal()">
+          <button class="tb tb-blue" onclick="gOpenPortal()">Verify →</button>
+        </div>
+        <div class="g-err" id="gErr"></div>
+        <div class="g-result" id="gRes">
+          <div class="g-card">
+            <div class="g-valid">
+              <span>✅</span><span>Valid GSTIN format</span>
+              <span class="g-badge" id="gBadge"></span>
+            </div>
+            <div class="g-grid">
+              <div class="gf"><label>GSTIN</label>
+                <div class="g-copy-row">
+                  <div class="v g-mono" id="gNum" style="font-size:.79rem;letter-spacing:1px;color:var(--blue)"></div>
+                  <button class="g-copy-btn" id="gCopyBtn" onclick="gCopy()">Copy</button>
+                </div>
+              </div>
+              <div class="gf"><label>PAN (embedded)</label><div class="v g-mono" id="gPan" style="font-size:.79rem;color:var(--navy)"></div></div>
+              <div class="gf"><label>State / UT</label><div class="v" id="gSt"></div></div>
+              <div class="gf"><label>Entity Type</label><div class="v" id="gEnt"></div></div>
+            </div>
+          </div>
+          <div class="g-step">
+            <strong>To verify name & status (CAPTCHA required on GSTN):</strong>
+            <b>1</b> Click button below → GST portal opens in popup<br>
+            <b>2</b> GSTIN auto-copied → <b>Ctrl+V</b> / paste in the GSTIN field<br>
+            <b>3</b> Solve CAPTCHA → click Search → full details appear
+          </div>
+          <button class="g-open-btn" onclick="gOpenPortal()">🔗 Open GST Portal &amp; Copy GSTIN</button>
+          <div class="g-copied" id="gCopied">✅ GSTIN copied to clipboard!</div>
+        </div>
+        <div class="g-default" id="gDefault">
+          <a href="https://services.gst.gov.in/services/searchtp" target="_blank" class="g-portal-link">🔗 Open GST Taxpayer Search Portal →</a>
+          <p class="t-note">Enter a GSTIN above. We validate format and decode state + entity type instantly, then open the official portal for full verification.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ② HSN / SAC -->
+    <div class="tc">
+      <div class="tc-head">
+        <div class="tc-icon" style="background:#EFF6FF">📦</div>
+        <div><h3>HSN / SAC Search</h3><p>Find GST rate by code or description · GST 2.0 rates</p></div>
+      </div>
+      <div class="tc-body">
+        <div class="h-tabs">
+          <button class="h-tab on" id="hTabG" onclick="hSetTab('goods')">📦 Goods (HSN)</button>
+          <button class="h-tab"    id="hTabS" onclick="hSetTab('services')">⚙️ Services (SAC)</button>
+        </div>
+        <input type="text" id="hInp" class="ti"
+          placeholder="Code or description — e.g. 8528 or television…"
+          autocomplete="off" oninput="hSearch()">
+        <div class="h-results" id="hOut"></div>
+        <p class="t-note" style="margin-top:6px">Rates per GST 2.0 (22 Sept 2025). Verify from <a href="https://services.gst.gov.in/services/searchhsnsac" target="_blank">official GSTN →</a></p>
+      </div>
+    </div>
+
+    <!-- ③ FOREX -->
+    <div class="tc">
+      <div class="tc-head">
+        <div class="tc-icon" style="background:#FFFBEB">💱</div>
+        <div><h3>Live Forex Rates</h3><p>₹ vs 8 major currencies · Auto-loads on open</p></div>
+      </div>
+      <div class="tc-body">
+        <div class="fx-bar">
+          <span class="fx-time" id="fxTime">Loading…</span>
+          <button class="fx-btn" onclick="fxLoad()">↺ Refresh</button>
+        </div>
+        <div class="fx-grid" id="fxGrid">
+          <div class="fx-sk"></div><div class="fx-sk"></div>
+          <div class="fx-sk"></div><div class="fx-sk"></div>
+          <div class="fx-sk"></div><div class="fx-sk"></div>
+          <div class="fx-sk"></div><div class="fx-sk"></div>
+        </div>
+        <div class="fx-foot" id="fxFoot"></div>
+        <p class="t-note">Indicative only. For compliance use <a href="https://www.rbi.org.in/Scripts/ReferenceRateArchive.aspx" target="_blank">RBI Reference Rates →</a></p>
+      </div>
+    </div>
+
+  </div>
+</div>
 </section>
 
-<!-- ════ TOPIC CARDS ════ -->
-<section class="topics-section">
-  <div class="container">
-    <div style="text-align:center;margin-bottom:0">
-      <span class="sec-label">Reference Guides</span>
-      <h2 class="sec-title">Explore by Topic</h2>
-      <p style="color:var(--gray-5);margin-top:5px;font-size:0.88rem">Plain language · Latest amendments · Official sources linked in every section</p>
+<!-- ════ COMPLIANCE CALENDAR ════ -->
+<section class="cal-section" id="calendar">
+<div class="container">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:10px">
+    <div>
+      <span class="sec-label">Compliance Calendar</span>
+      <h2 class="sec-title">Upcoming Due Dates — FY 2025-26 / 2026-27</h2>
+      <p style="color:var(--gray-5);font-size:0.86rem;margin-top:4px">GST · Income Tax · TDS/TCS · PF · ESI · ROC — all in one place. Auto-highlights upcoming deadlines.</p>
     </div>
-    <div class="topics-grid">
-
-      <a href="income-tax.html" class="tp-card">
-        <div class="tp-bar" style="background:#2563EB"></div>
-        <div class="tp-body">
-          <div class="tp-icon" style="background:#EFF6FF">📊</div>
-          <h3>Income Tax</h3>
-          <p>Tax slabs, salary, capital gains, deductions 80C–80U, TDS rates, ITR forms. IT Act 1961 ↔ IT Act 2025 (effective 1 April 2026).</p>
-        </div>
-        <div class="tp-foot">
-          <div class="tp-tags"><span class="tp-tag">Direct Tax</span><span class="tp-tag">IT Act 2025</span><span class="tp-tag">CBDT</span></div>
-          <span class="tp-arrow" style="color:#2563EB">→</span>
-        </div>
-      </a>
-
-      <a href="gst.html" class="tp-card">
-        <div class="tp-bar" style="background:#16A34A"></div>
-        <div class="tp-body">
-          <div class="tp-icon" style="background:#F0FDF4">🏷️</div>
-          <h3>Goods & Service Tax</h3>
-          <p>GST 2.0 rates — 0%, 5%, 18%, 40%. Registration, ITC, e-invoice, GSTR returns. Updated 22 September 2025.</p>
-        </div>
-        <div class="tp-foot">
-          <div class="tp-tags"><span class="tp-tag">Indirect Tax</span><span class="tp-tag">GST 2.0</span><span class="tp-tag">CBIC</span></div>
-          <span class="tp-arrow" style="color:#16A34A">→</span>
-        </div>
-      </a>
-
-      <a href="companies-act.html" class="tp-card">
-        <div class="tp-bar" style="background:#1A3A6B"></div>
-        <div class="tp-body">
-          <div class="tp-icon" style="background:#EFF6FF">🏢</div>
-          <h3>Companies Act</h3>
-          <p>Incorporation, directors, meetings, audit, CSR, MCA filings. Small company update Dec 2025, DIR-3 KYC, fast-track mergers.</p>
-        </div>
-        <div class="tp-foot">
-          <div class="tp-tags"><span class="tp-tag">MCA</span><span class="tp-tag">NCLT</span><span class="tp-tag">Updated 2025</span></div>
-          <span class="tp-arrow" style="color:#1A3A6B">→</span>
-        </div>
-      </a>
-
-      <a href="tds-master.html" class="tp-card">
-        <div class="tp-bar" style="background:#D97706"></div>
-        <div class="tp-body">
-          <div class="tp-icon" style="background:#FFFBEB">✂️</div>
-          <h3>TDS / TCS Master</h3>
-          <p>All 91 TDS and TCS section codes — rates, thresholds, who deducts. IT Act 1961 ↔ IT Act 2025 mapping. Finance Bill 2026.</p>
-        </div>
-        <div class="tp-foot">
-          <div class="tp-tags"><span class="tp-tag">91 Sections</span><span class="tp-tag">TY 2026-27</span><span class="tp-tag">FB 2026</span></div>
-          <span class="tp-arrow" style="color:#D97706">→</span>
-        </div>
-      </a>
-
-    </div>
+    <div style="font-size:0.76rem;color:var(--gray-5)">Today: <strong id="todayDate"></strong></div>
   </div>
+  <div class="cal-filters">
+    <button class="cf on" data-cat="all">All</button>
+    <button class="cf" data-cat="GST">GST</button>
+    <button class="cf" data-cat="Income Tax">Income Tax</button>
+    <button class="cf" data-cat="TDS">TDS / TCS</button>
+    <button class="cf" data-cat="PF">PF / ESIC</button>
+    <button class="cf" data-cat="ROC">ROC / MCA</button>
+  </div>
+  <div class="cal-tbl-wrap">
+    <table class="cal-tbl">
+      <thead>
+        <tr>
+          <th style="width:95px">Due Date</th>
+          <th style="width:75px">Category</th>
+          <th>Compliance / Form</th>
+          <th style="width:110px">Who Must File</th>
+          <th style="width:90px">Days Left</th>
+        </tr>
+      </thead>
+      <tbody id="calBody"></tbody>
+    </table>
+  </div>
+  <div class="cal-legend">
+    <div class="leg"><div class="leg-dot" style="background:#DC2626"></div>Overdue</div>
+    <div class="leg"><div class="leg-dot" style="background:#D97706"></div>Due ≤ 7 days</div>
+    <div class="leg"><div class="leg-dot" style="background:#16A34A"></div>Due ≤ 30 days</div>
+    <div class="leg"><div class="leg-dot" style="background:#94A3B8"></div>More than 30 days</div>
+  </div>
+</div>
+</section>
+
+<!-- ════ TOPICS ════ -->
+<section class="topics-section">
+<div class="container">
+  <div style="text-align:center">
+    <span class="sec-label">Reference Guides</span>
+    <h2 class="sec-title">Explore by Topic</h2>
+    <p style="color:var(--gray-5);margin-top:4px;font-size:0.86rem">Plain language · Latest amendments · Official sources linked in every section</p>
+  </div>
+  <div class="topics-grid">
+    <a href="income-tax.html" class="tp-card">
+      <div class="tp-bar" style="background:#2563EB"></div>
+      <div class="tp-body"><div class="tp-icon" style="background:#EFF6FF">📊</div>
+        <h3>Income Tax</h3><p>Tax slabs, salary, capital gains, deductions, TDS rates, ITR forms. IT Act 1961 ↔ IT Act 2025 (from 1 April 2026).</p>
+      </div>
+      <div class="tp-foot"><div class="tp-tags"><span class="tp-tag">Direct Tax</span><span class="tp-tag">IT Act 2025</span></div><span class="tp-arrow" style="color:#2563EB">→</span></div>
+    </a>
+    <a href="gst.html" class="tp-card">
+      <div class="tp-bar" style="background:#16A34A"></div>
+      <div class="tp-body"><div class="tp-icon" style="background:#F0FDF4">🏷️</div>
+        <h3>Goods & Service Tax</h3><p>GST 2.0 rates — 0%, 5%, 18%, 40%. Registration, ITC, e-invoice, returns. Updated Sept 2025.</p>
+      </div>
+      <div class="tp-foot"><div class="tp-tags"><span class="tp-tag">Indirect Tax</span><span class="tp-tag">GST 2.0</span></div><span class="tp-arrow" style="color:#16A34A">→</span></div>
+    </a>
+    <a href="companies-act.html" class="tp-card">
+      <div class="tp-bar" style="background:#1A3A6B"></div>
+      <div class="tp-body"><div class="tp-icon" style="background:#EFF6FF">🏢</div>
+        <h3>Companies Act</h3><p>Incorporation, directors, meetings, audit, CSR, MCA filings. Small company update Dec 2025, DIR-3 KYC, fast-track mergers.</p>
+      </div>
+      <div class="tp-foot"><div class="tp-tags"><span class="tp-tag">MCA</span><span class="tp-tag">Updated 2025</span></div><span class="tp-arrow" style="color:#1A3A6B">→</span></div>
+    </a>
+    <a href="tds-master.html" class="tp-card">
+      <div class="tp-bar" style="background:#D97706"></div>
+      <div class="tp-body"><div class="tp-icon" style="background:#FFFBEB">✂️</div>
+        <h3>TDS / TCS Master</h3><p>All 91 TDS and TCS section codes — rates, thresholds, deductor. IT Act 1961 ↔ IT Act 2025. Finance Bill 2026.</p>
+      </div>
+      <div class="tp-foot"><div class="tp-tags"><span class="tp-tag">91 Sections</span><span class="tp-tag">TY 2026-27</span></div><span class="tp-arrow" style="color:#D97706">→</span></div>
+    </a>
+  </div>
+</div>
 </section>
 
 <!-- ════ AI CHAT ════ -->
 <section class="chat-section">
-  <div class="container">
-    <div style="text-align:center;margin-bottom:32px">
-      <span class="sec-label" style="color:#93C5FD">AI Legal Assistant</span>
-      <h2>Ask Anything About Indian Tax & Compliance</h2>
-      <p class="sub">Free · No login · Powered by Google Gemini · Income Tax · GST · Companies</p>
-    </div>
-    <div class="chat-container" id="chat-widget" style="max-width:820px;margin:0 auto">
-      <div class="chat-header">
-        <div class="chat-avatar">TF</div>
-        <div class="chat-header-info">
-          <h4>TrustFactON AI</h4>
-          <span><span class="online-dot"></span>Income Tax · Goods & Service Tax · Companies · TDS/TCS</span>
-        </div>
-      </div>
-      <div class="chat-messages"></div>
-      <div class="chat-suggestions">
-        <button class="chat-suggest-btn">New tax slabs under IT Act 2025?</button>
-        <button class="chat-suggest-btn">GST 2.0 — what changed from Sept 2025?</button>
-        <button class="chat-suggest-btn">Small company definition after Dec 2025?</button>
-        <button class="chat-suggest-btn">TDS on rent — Sec 194IB vs Sec 393?</button>
-      </div>
-      <div class="chat-input-row">
-        <textarea class="chat-input" rows="1" placeholder="Ask about Income Tax, Goods & Service Tax, Companies, TDS…"></textarea>
-        <button class="chat-send-btn"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
-      </div>
-    </div>
-    <p style="text-align:center;font-size:0.73rem;color:rgba(255,255,255,0.22);margin-top:12px">Informational only · Not legal or tax advice · Verify with a qualified professional</p>
+<div class="container">
+  <div style="text-align:center;margin-bottom:30px">
+    <span class="sec-label" style="color:#93C5FD">AI Legal Assistant</span>
+    <h2>Ask Anything About Indian Tax & Compliance</h2>
+    <p class="sub">Free · No login · Powered by Google Gemini</p>
   </div>
+  <div class="chat-container" id="chat-widget" style="max-width:820px;margin:0 auto">
+    <div class="chat-header">
+      <div class="chat-avatar">TF</div>
+      <div class="chat-header-info">
+        <h4>TrustFactON AI</h4>
+        <span><span class="online-dot"></span>Income Tax · GST · Companies · TDS/TCS</span>
+      </div>
+    </div>
+    <div class="chat-messages"></div>
+    <div class="chat-suggestions">
+      <button class="chat-suggest-btn">New tax slabs under IT Act 2025?</button>
+      <button class="chat-suggest-btn">GST 2.0 — what changed from Sept 2025?</button>
+      <button class="chat-suggest-btn">Small company definition after Dec 2025?</button>
+      <button class="chat-suggest-btn">TDS on rent — Sec 194IB vs Sec 393?</button>
+    </div>
+    <div class="chat-input-row">
+      <textarea class="chat-input" rows="1" placeholder="Ask about Income Tax, GST, Companies, TDS…"></textarea>
+      <button class="chat-send-btn"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+    </div>
+  </div>
+</div>
 </section>
 
 <!-- NEWSLETTER -->
 <section class="newsletter-section">
-  <div class="container"><div class="newsletter-inner">
-    <span class="sec-label">TrustFactON Weekly</span>
-    <h2 class="sec-title" style="margin-bottom:8px">Tax & Compliance Updates</h2>
-    <p class="sec-sub" style="margin-bottom:24px">CBDT circulars · GST Council decisions · MCA notifications — in plain language.</p>
-    <div class="newsletter-form">
-      <input type="email" id="nlEmail" placeholder="your@email.com">
-      <button onclick="window.open('https://trustfacton.beehiiv.com/subscribe?email='+encodeURIComponent(document.getElementById('nlEmail').value||''),'_blank')">Subscribe →</button>
-    </div>
-  </div></div>
+<div class="container"><div class="newsletter-inner">
+  <span class="sec-label">TrustFactON Weekly</span>
+  <h2 class="sec-title" style="margin-bottom:8px">Tax & Compliance Updates</h2>
+  <p class="sec-sub" style="margin-bottom:22px">CBDT circulars · GST Council decisions · MCA notifications — in plain language.</p>
+  <div class="newsletter-form">
+    <input type="email" id="nlEmail" placeholder="your@email.com">
+    <button onclick="window.open('https://trustfacton.beehiiv.com/subscribe?email='+encodeURIComponent(document.getElementById('nlEmail').value||''),'_blank')">Subscribe →</button>
+  </div>
+</div></div>
 </section>
 
 <div id="footer-placeholder"></div>
 <script src="components.js"></script>
 <script src="chat-widget.js"></script>
 <script>
-/* ══════════════════════════════════════════
-   GSTIN VERIFIER
-   1. Validates format live as user types
-   2. Decodes state + entity type from structure
-   3. Copies GSTIN to clipboard
-   4. Opens official GSTN portal in new tab
-   (Cross-origin policy prevents auto-fill or result capture — browser security)
-   ══════════════════════════════════════════ */
-
-const GSTIN_RE = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
-
-const STATES = {
-  '01':'Jammu & Kashmir','02':'Himachal Pradesh','03':'Punjab','04':'Chandigarh',
-  '05':'Uttarakhand','06':'Haryana','07':'Delhi','08':'Rajasthan',
-  '09':'Uttar Pradesh','10':'Bihar','11':'Sikkim','12':'Arunachal Pradesh',
-  '13':'Nagaland','14':'Manipur','15':'Mizoram','16':'Tripura',
-  '17':'Meghalaya','18':'Assam','19':'West Bengal','20':'Jharkhand',
-  '21':'Odisha','22':'Chhattisgarh','23':'Madhya Pradesh','24':'Gujarat',
-  '25':'Daman & Diu','26':'Dadra & Nagar Haveli','27':'Maharashtra',
-  '28':'Andhra Pradesh (Old)','29':'Karnataka','30':'Goa','31':'Lakshadweep',
-  '32':'Kerala','33':'Tamil Nadu','34':'Puducherry',
-  '35':'Andaman & Nicobar Islands','36':'Telangana','37':'Andhra Pradesh',
-  '38':'Ladakh','97':'Other Territory','99':'Centre Jurisdiction'
-};
-
-const ENTITY = {
-  'C':'Company (Pvt / Public Ltd)',
-  'P':'Individual / Proprietor',
-  'H':'Hindu Undivided Family (HUF)',
-  'F':'Partnership Firm',
-  'A':'Association of Persons (AOP)',
-  'T':'Trust / Charitable Org',
-  'B':'Body of Individuals (BOI)',
-  'L':'Limited Liability Partnership',
-  'J':'Artificial Juridical Person',
-  'G':'Government / Local Authority'
-};
-
-let currentGSTIN = '';
-
-function showSection(show) {
-  document.getElementById('gErr').classList.toggle('on', show === 'error');
-  document.getElementById('gRes').classList.toggle('on', show === 'result');
-  const def = document.getElementById('gDefault');
-  if (def) def.style.display = (show === 'result' || show === 'error') ? 'none' : '';
+/* ════════════════════════════════
+   GSTIN DECODER
+════════════════════════════════ */
+const GSTIN_RE=/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
+const ST={'01':'Jammu & Kashmir','02':'Himachal Pradesh','03':'Punjab','04':'Chandigarh','05':'Uttarakhand','06':'Haryana','07':'Delhi','08':'Rajasthan','09':'Uttar Pradesh','10':'Bihar','11':'Sikkim','12':'Arunachal Pradesh','13':'Nagaland','14':'Manipur','15':'Mizoram','16':'Tripura','17':'Meghalaya','18':'Assam','19':'West Bengal','20':'Jharkhand','21':'Odisha','22':'Chhattisgarh','23':'Madhya Pradesh','24':'Gujarat','25':'Daman & Diu','26':'Dadra & NH','27':'Maharashtra','28':'Andhra Pradesh','29':'Karnataka','30':'Goa','31':'Lakshadweep','32':'Kerala','33':'Tamil Nadu','34':'Puducherry','35':'Andaman & Nicobar','36':'Telangana','37':'Andhra Pradesh (New)','38':'Ladakh'};
+const EN={'C':'Company (Pvt/Public Ltd)','P':'Individual / Proprietor','H':'HUF','F':'Partnership Firm','A':'AOP','T':'Trust','B':'BOI','L':'LLP','J':'AJP','G':'Govt / Local Authority'};
+let curG='';
+function gShow(s){
+  document.getElementById('gErr').classList.toggle('on',s==='err');
+  document.getElementById('gRes').classList.toggle('on',s==='ok');
+  const d=document.getElementById('gDefault');if(d)d.style.display=(s==='ok'||s==='err')?'none':'';
 }
-
-function onGSTINInput() {
-  const raw = (document.getElementById('gInp').value || '').trim().toUpperCase();
-  currentGSTIN = raw;
-
-  if (!raw) { showSection('default'); return; }
-
-  // Show progress hint while typing
-  if (raw.length < 15) {
-    document.getElementById('gErr').textContent =
-      `⚠ ${15 - raw.length} more character${raw.length === 14 ? '' : 's'} needed (GSTIN is 15 digits)`;
-    showSection('error');
-    return;
+function onGSTIN(){
+  const v=document.getElementById('gInp').value.toUpperCase();curG=v;
+  if(!v){gShow('');return;}
+  const e=document.getElementById('gErr');
+  if(v.length<15){e.textContent='⚠ '+(15-v.length)+' more character'+(v.length===14?'':'s')+' needed';gShow('err');return;}
+  if(!GSTIN_RE.test(v)){e.innerHTML='⚠ Invalid format — '+gDiag(v)+'<br><span style="font-size:.7rem;color:#B45309">2 digits + 5 letters + 4 digits + letter + alphanumeric + Z + check</span>';gShow('err');return;}
+  const sc=v.slice(0,2),pan=v.slice(2,12),pt=pan[3];
+  document.getElementById('gNum').textContent=v;
+  document.getElementById('gPan').textContent=pan;
+  document.getElementById('gSt').textContent=ST[sc]||'Code '+sc;
+  document.getElementById('gEnt').textContent=EN[pt]||'Business Entity';
+  const b=document.getElementById('gBadge');b.textContent='CLFABTG'.includes(pt)?'🏢 Business':'👤 Individual';
+  gShow('ok');
+}
+function gDiag(g){
+  if(!/^[0-9]{2}/.test(g))return'positions 1–2 must be digits';
+  if(!/^[0-9]{2}[A-Z]{5}/.test(g))return'positions 3–7 must be letters';
+  if(!/^[0-9]{2}[A-Z]{5}[0-9]{4}/.test(g))return'positions 8–11 must be digits';
+  if(g[11]&&!/[A-Z]/.test(g[11]))return'position 12 must be a letter';
+  if(g[13]&&g[13]!=='Z')return'position 14 must be Z';
+  return'check all characters';
+}
+async function gCopy(){
+  if(!curG)return;
+  try{await navigator.clipboard.writeText(curG);}catch{const e=document.createElement('textarea');e.value=curG;e.style.cssText='position:fixed;opacity:0';document.body.appendChild(e);e.select();document.execCommand('copy');document.body.removeChild(e);}
+  const b=document.getElementById('gCopyBtn');
+  b.textContent='✓';b.style.background='#DCFCE7';b.style.color='#166534';
+  setTimeout(()=>{b.textContent='Copy';b.style.background='#EFF6FF';b.style.color='var(--blue)';},1800);
+}
+async function gOpenPortal(){
+  if(curG&&GSTIN_RE.test(curG)){
+    try{await navigator.clipboard.writeText(curG);}catch{const e=document.createElement('textarea');e.value=curG;e.style.cssText='position:fixed;opacity:0';document.body.appendChild(e);e.select();document.execCommand('copy');document.body.removeChild(e);}
+    const m=document.getElementById('gCopied');m.style.display='block';setTimeout(()=>m.style.display='none',2500);
   }
+  window.open('https://services.gst.gov.in/services/searchtp','_blank','width=940,height=700,left=80,top=60');
+}
 
-  // Full 15 chars — validate format
-  if (!GSTIN_RE.test(raw)) {
-    document.getElementById('gErr').innerHTML =
-      '⚠ Invalid GSTIN format — ' + diagnose(raw) +
-      '<br><span style="font-size:0.71rem;color:#B45309">Expected: 2 digits + 5 letters + 4 digits + 1 letter + 1 alphanumeric + Z + 1 check</span>';
-    showSection('error');
-    return;
+/* ════════════════════════════════
+   HSN / SAC DATA
+════════════════════════════════ */
+const HSN=[
+  {t:'goods',c:'0401',d:'Milk and cream, not concentrated',r:'Nil'},
+  {t:'goods',c:'0901',d:'Coffee — roasted or unroasted',r:'5%'},
+  {t:'goods',c:'0902',d:'Tea — green or black, flavoured or not',r:'5%'},
+  {t:'goods',c:'1001',d:'Wheat and meslin',r:'Nil'},
+  {t:'goods',c:'1006',d:'Rice — husked, semi-milled, wholly milled',r:'Nil'},
+  {t:'goods',c:'1701',d:'Cane or beet sugar, raw or refined',r:'5%'},
+  {t:'goods',c:'1902',d:'Pasta — noodles, spaghetti, macaroni (branded)',r:'18%'},
+  {t:'goods',c:'1904',d:'Breakfast cereals — cornflakes, muesli, puffed rice',r:'18%'},
+  {t:'goods',c:'1905',d:'Bread, pastry, cakes, biscuits — packaged',r:'18%'},
+  {t:'goods',c:'2106',d:'Packaged food — namkeen, bhujia, mixture, chips',r:'18%'},
+  {t:'goods',c:'2202',d:'Aerated drinks, soft drinks, cola, flavoured water',r:'40%'},
+  {t:'goods',c:'2401',d:'Unmanufactured tobacco and tobacco refuse',r:'40%'},
+  {t:'goods',c:'2402',d:'Cigars, cigarettes, cigarillos',r:'40%'},
+  {t:'goods',c:'2403',d:'Gutka, pan masala, khaini, zarda, tobacco products',r:'40%'},
+  {t:'goods',c:'2523',d:'Portland cement, aluminous cement, slag cement',r:'18%'},
+  {t:'goods',c:'2711',d:'LPG — Liquefied petroleum gas for household use',r:'5%'},
+  {t:'goods',c:'3004',d:'Medicaments — drugs, medicines, pharmaceutical products',r:'5%'},
+  {t:'goods',c:'3305',d:'Hair preparations — shampoo, conditioner, hair oil',r:'18%'},
+  {t:'goods',c:'3306',d:'Toothpaste, dental floss, oral hygiene preparations',r:'18%'},
+  {t:'goods',c:'3401',d:'Soap, washing bars, organic cleaning products',r:'18%'},
+  {t:'goods',c:'3402',d:'Detergents, washing powder, cleaning preparations',r:'18%'},
+  {t:'goods',c:'3304',d:'Beauty and makeup — lipstick, face powder, eye shadow',r:'28%'},
+  {t:'goods',c:'4011',d:'New pneumatic tyres of rubber',r:'28%'},
+  {t:'goods',c:'4901',d:'Printed books, brochures, pamphlets',r:'Nil'},
+  {t:'goods',c:'4902',d:'Newspapers, journals and periodicals',r:'Nil'},
+  {t:'goods',c:'6109',d:'T-shirts, vests — value ≤₹1000: 5%, >₹1000: 12%',r:'5% / 12%'},
+  {t:'goods',c:'6402',d:'Footwear with outer soles of rubber or plastics',r:'5%'},
+  {t:'goods',c:'6403',d:'Footwear with outer soles of leather',r:'5%'},
+  {t:'goods',c:'7108',d:'Gold — unwrought or semi-manufactured',r:'3%'},
+  {t:'goods',c:'7113',d:'Jewellery — gold, silver, platinum',r:'3%'},
+  {t:'goods',c:'7117',d:'Imitation jewellery, artificial jewellery',r:'3%'},
+  {t:'goods',c:'8415',d:'Air conditioning machines — window, split AC',r:'18%'},
+  {t:'goods',c:'8418',d:'Refrigerators, freezers, heat pumps',r:'18%'},
+  {t:'goods',c:'8450',d:'Household washing machines',r:'18%'},
+  {t:'goods',c:'8471',d:'Computers, laptops, automatic data-processing machines',r:'18%'},
+  {t:'goods',c:'8517',d:'Mobile phones, smartphones, telephone sets',r:'18%'},
+  {t:'goods',c:'8528',d:'Monitors, projectors, LED TV, smart television',r:'18%'},
+  {t:'goods',c:'8703',d:'Motor cars — small cars 18%, large/luxury cars 40%',r:'18% / 40%'},
+  {t:'goods',c:'8711',d:'Motorcycles, scooters, mopeds',r:'18%'},
+  {t:'goods',c:'8712',d:'Bicycles and other cycles',r:'5%'},
+  {t:'goods',c:'9004',d:'Spectacles, goggles — corrective or protective',r:'5%'},
+  {t:'goods',c:'9619',d:'Sanitary towels, tampons, diapers for babies',r:'Nil'},
+  {t:'services',c:'9954',d:'Construction services — works contract, real estate',r:'1% / 5% / 18%'},
+  {t:'services',c:'9963',d:'Restaurant, hotel accommodation, catering services',r:'5% / 18%'},
+  {t:'services',c:'9964',d:'Passenger transport — air (economy 5%, business 5%), taxi 18%',r:'5% / 18%'},
+  {t:'services',c:'9965',d:'Goods transport — GTA freight forwarding',r:'5% / 18%'},
+  {t:'services',c:'9966',d:'Vehicle rental and leasing services with operator',r:'18%'},
+  {t:'services',c:'9968',d:'Postal and courier services',r:'18%'},
+  {t:'services',c:'9971',d:'Banking, financial services; health/life insurance: Nil (GST 2.0)',r:'Nil / 18%'},
+  {t:'services',c:'9972',d:'Real estate services — renting commercial property',r:'18%'},
+  {t:'services',c:'9981',d:'Research and development services',r:'18%'},
+  {t:'services',c:'9982',d:'Legal and accounting services — lawyers, CAs',r:'18%'},
+  {t:'services',c:'9983',d:'IT services, software, SaaS, cloud, data processing',r:'18%'},
+  {t:'services',c:'9984',d:'Telecommunications, internet, cable TV services',r:'18%'},
+  {t:'services',c:'9985',d:'Support services — security, cleaning, packaging',r:'18%'},
+  {t:'services',c:'9986',d:'Agricultural support services — irrigation, pest control',r:'Nil'},
+  {t:'services',c:'9987',d:'Maintenance, repair — AC repair, vehicle servicing',r:'18%'},
+  {t:'services',c:'9988',d:'Job work / manufacturing on physical inputs',r:'5% / 18%'},
+  {t:'services',c:'9991',d:'Government and public administration services',r:'Nil'},
+  {t:'services',c:'9992',d:'Education — schools, colleges, vocational training',r:'Nil'},
+  {t:'services',c:'9993',d:'Human health — hospitals, doctors, diagnostic labs',r:'Nil'},
+  {t:'services',c:'9994',d:'Sewage, waste treatment and disposal',r:'Nil'},
+  {t:'services',c:'9996',d:'Recreational, cultural and sporting events, cinema',r:'18%'},
+  {t:'services',c:'9997',d:'Gyms, fitness centres, salons, barbers, yoga centres',r:'5%'},
+];
+function hRc(r){if(!r)return'';if(/nil/i.test(r))return'h-nil';if(/40/.test(r))return'h-40';if(/28/.test(r))return'h-28';if(/18/.test(r))return'h-18';if(/12/.test(r))return'h-12';if(/5/.test(r))return'h-5';if(/3/.test(r))return'h-3';return'h-sp';}
+let hTab='goods';
+function hSetTab(t){
+  hTab=t;
+  document.getElementById('hTabG').classList.toggle('on',t==='goods');
+  document.getElementById('hTabS').classList.toggle('on',t==='services');
+  const inp=document.getElementById('hInp');
+  inp.placeholder=t==='goods'?'HSN code or description — e.g. 8528 or television…':'SAC code or description — e.g. 9983 or software…';
+  inp.value='';document.getElementById('hOut').innerHTML='';inp.focus();
+}
+function hSearch(){
+  const q=document.getElementById('hInp').value.trim().toLowerCase();
+  const out=document.getElementById('hOut');
+  if(q.length<2){out.innerHTML='';return;}
+  const hits=HSN.filter(h=>h.t===hTab&&(h.c.includes(q)||h.d.toLowerCase().includes(q))).slice(0,8);
+  if(!hits.length){out.innerHTML=`<div class="h-empty">No results for "<b>${q}</b>". Try a broader term or <a href="https://services.gst.gov.in/services/searchhsnsac" target="_blank" style="color:var(--blue)">search on GSTN →</a></div>`;return;}
+  out.innerHTML=hits.map(h=>`<div class="h-item"><span class="h-code">${h.t==='goods'?'HSN':'SAC'} ${h.c}</span><div class="h-desc">${h.d}</div><span class="h-rate ${hRc(h.r)}">GST: ${h.r}</span></div>`).join('');
+}
+
+/* ════════════════════════════════
+   FOREX RATES
+════════════════════════════════ */
+const CCYS=[
+  {c:'USD',n:'US Dollar',f:'🇺🇸'},{c:'EUR',n:'Euro',f:'🇪🇺'},
+  {c:'GBP',n:'British Pound',f:'🇬🇧'},{c:'AED',n:'UAE Dirham',f:'🇦🇪'},
+  {c:'SGD',n:'Singapore $',f:'🇸🇬'},{c:'JPY',n:'Japanese Yen',f:'🇯🇵'},
+  {c:'AUD',n:'Aus Dollar',f:'🇦🇺'},{c:'SAR',n:'Saudi Riyal',f:'🇸🇦'},
+];
+async function fxLoad(){
+  const grid=document.getElementById('fxGrid'),timeEl=document.getElementById('fxTime'),foot=document.getElementById('fxFoot');
+  grid.innerHTML=Array(8).fill('<div class="fx-sk"></div>').join('');
+  timeEl.textContent='Fetching…';
+  const syms=CCYS.map(c=>c.c).join(',');
+  // Try multiple APIs
+  const APIS=[
+    `https://api.frankfurter.app/latest?from=INR&to=${syms}`,
+    `https://open.er-api.com/v6/latest/INR`,
+  ];
+  let rates=null;
+  for(const url of APIS){
+    try{
+      const r=await fetch(url,{signal:AbortSignal.timeout(7000)});
+      if(!r.ok)continue;
+      const j=await r.json();
+      // Frankfurter: j.rates.USD = how much USD per 1 INR
+      // open.er-api: j.rates.USD = how much USD per 1 INR (same structure)
+      if(j&&j.rates&&j.rates.USD){rates=j.rates;break;}
+    }catch(e){console.log('Forex API failed:',url,e.message);}
   }
-
-  // ── Valid — decode ──
-  decodeAndShow(raw);
-}
-
-function decodeAndShow(raw) {
-  const stateCode  = raw.slice(0, 2);
-  const pan        = raw.slice(2, 12);
-  const entityNum  = raw[12];
-  const panType    = pan[3];
-  const stateName  = STATES[stateCode] || 'State code ' + stateCode;
-  const entityType = ENTITY[panType]   || 'Business Entity';
-  const isBiz      = 'CLFABTG'.includes(panType);
-
-  document.getElementById('gNum').textContent   = raw;
-  document.getElementById('gPan').textContent   = pan;
-  document.getElementById('gState').textContent = stateName;
-  document.getElementById('gType').textContent  = entityType;
-
-  const badge = document.getElementById('gBadge');
-  badge.textContent = isBiz ? '🏢 Business' : '👤 Individual';
-
-  showSection('result');
-}
-
-function diagnose(g) {
-  if (!/^[0-9]{2}/.test(g))           return 'positions 1–2 must be digits (state code)';
-  if (!/^[0-9]{2}[A-Z]{5}/.test(g))   return 'positions 3–7 must be capital letters (PAN)';
-  if (!/^[0-9]{2}[A-Z]{5}[0-9]{4}/.test(g)) return 'positions 8–11 must be digits (PAN)';
-  if (g[11] && !/[A-Z]/.test(g[11]))  return 'position 12 must be a capital letter';
-  if (g[12] && !/[1-9A-Z]/.test(g[12])) return 'position 13 must be 1–9 or A–Z';
-  if (g[13] && g[13] !== 'Z')         return 'position 14 must be the letter Z';
-  return 'check all characters carefully';
-}
-
-// ── Copy GSTIN to clipboard ──
-async function copyGSTIN() {
-  if (!currentGSTIN) return;
-  try {
-    await navigator.clipboard.writeText(currentGSTIN);
-  } catch {
-    // Fallback for older browsers
-    const el = document.createElement('textarea');
-    el.value = currentGSTIN; el.style.position = 'fixed'; el.style.opacity = '0';
-    document.body.appendChild(el); el.select();
-    document.execCommand('copy'); document.body.removeChild(el);
+  if(!rates){
+    grid.innerHTML=`<div class="fx-err">Could not load live rates. Check <a href="https://www.rbi.org.in/Scripts/ReferenceRateArchive.aspx" target="_blank" style="color:var(--blue)">RBI Reference Rates →</a></div>`;
+    timeEl.textContent='Unavailable';return;
   }
-  const btn = document.getElementById('gCopyBtn');
-  if (btn) { btn.textContent = '✓ Copied'; btn.style.background = '#DCFCE7'; btn.style.color = '#166534'; btn.style.borderColor = '#BBF7D0'; setTimeout(() => { btn.textContent = 'Copy'; btn.style.background = '#EFF6FF'; btn.style.color = 'var(--blue)'; btn.style.borderColor = '#BFDBFE'; }, 2000); }
+  const now=new Date();
+  timeEl.textContent='Updated '+now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})+' IST';
+  foot.innerHTML=`Indicative · <a href="https://www.rbi.org.in/Scripts/ReferenceRateArchive.aspx" target="_blank" style="color:var(--blue)">Official RBI Rates ↗</a>`;
+  grid.innerHTML=CCYS.map(({c,n,f})=>{
+    const r=rates[c];if(!r)return'';
+    const inr=(1/r).toFixed(c==='JPY'?3:2);
+    return`<div class="fx-row"><div class="fx-left"><span class="fx-flag">${f}</span><div><span class="fx-code">${c}</span><span class="fx-name">${n}</span></div></div><div class="fx-right"><span class="big">₹${inr}</span><span class="sm">per 1 ${c}</span></div></div>`;
+  }).join('');
 }
 
-// ── Open portal + auto-copy ──
-async function openGSTNPortal() {
-  // If GSTIN is valid, copy it first, then open portal
-  if (currentGSTIN && GSTIN_RE.test(currentGSTIN)) {
-    // Copy to clipboard silently
-    try {
-      await navigator.clipboard.writeText(currentGSTIN);
-    } catch {
-      const el = document.createElement('textarea');
-      el.value = currentGSTIN; el.style.cssText = 'position:fixed;opacity:0';
-      document.body.appendChild(el); el.select();
-      document.execCommand('copy'); document.body.removeChild(el);
-    }
-    // Show copied confirmation
-    const msg = document.getElementById('gCopiedMsg');
-    if (msg) { msg.style.display = 'block'; setTimeout(() => msg.style.display = 'none', 3000); }
-  }
+/* ════════════════════════════════
+   COMPLIANCE CALENDAR
+════════════════════════════════ */
+const DEADLINES=[
+  // GST
+  {cat:'GST',name:'GSTR-1 Filing — March 2026 (Monthly taxpayers)',who:'Turnover > ₹5 Cr',date:'2026-04-11',note:'Outward supply details'},
+  {cat:'GST',name:'GSTR-1 Filing — Q4 Jan-Mar 2026 (QRMP)',who:'Turnover ≤ ₹5 Cr',date:'2026-04-13',note:'Quarterly filers'},
+  {cat:'GST',name:'GSTR-3B — March 2026 (Monthly)',who:'Turnover > ₹5 Cr',date:'2026-04-20',note:'Summary return + tax payment'},
+  {cat:'GST',name:'GSTR-3B — Q4 Jan-Mar 2026 (QRMP)',who:'Turnover ≤ ₹5 Cr',date:'2026-04-22',note:'Quarterly return'},
+  {cat:'GST',name:'GSTR-7 (TDS under GST) — March 2026',who:'GST TDS deductors',date:'2026-04-10',note:'Form GSTR-7'},
+  {cat:'GST',name:'GSTR-8 (TCS by e-commerce) — March 2026',who:'E-commerce operators',date:'2026-04-10',note:'Form GSTR-8'},
+  {cat:'GST',name:'GSTR-9 Annual Return — FY 2025-26',who:'All regular taxpayers',date:'2026-12-31',note:'Annual reconciliation'},
+  {cat:'GST',name:'GSTR-9C Reconciliation Statement — FY 2025-26',who:'Turnover > ₹5 Cr',date:'2026-12-31',note:'CA/CMA certified'},
+  // Income Tax
+  {cat:'Income Tax',name:'Advance Tax — 4th & Final Instalment (FY 2025-26)',who:'All advance tax payers',date:'2026-03-15',note:'100% of tax liability due'},
+  {cat:'Income Tax',name:'ITR Filing — Individuals, HUF, AOP (AY 2026-27)',who:'Non-audit taxpayers',date:'2026-07-31',note:'Sec 139(1) / Sec 263(1) IT Act 2025'},
+  {cat:'Income Tax',name:'Tax Audit Report Form 3CA/3CB + 3CD (AY 2026-27)',who:'Businesses with audit',date:'2026-09-30',note:'Sec 44AB'},
+  {cat:'Income Tax',name:'ITR Filing — Audit cases (AY 2026-27)',who:'Audit taxpayers',date:'2026-10-31',note:'Companies, firms, LLPs'},
+  {cat:'Income Tax',name:'Advance Tax — 1st Instalment FY 2026-27 (15%)',who:'All advance tax payers',date:'2026-06-15',note:'Sec 211 / Sec 253'},
+  {cat:'Income Tax',name:'Advance Tax — 2nd Instalment FY 2026-27 (45%)',who:'All advance tax payers',date:'2026-09-15',note:'Cumulative 45%'},
+  // TDS
+  {cat:'TDS',name:'TDS / TCS Deposit — March 2026',who:'All deductors',date:'2026-04-30',note:'March TDS deposited by 30 April'},
+  {cat:'TDS',name:'TDS Return Q4 — Form 24Q / 26Q / 27Q (Jan-Mar 2026)',who:'All deductors',date:'2026-05-31',note:'Quarterly TDS return'},
+  {cat:'TDS',name:'Form 16 / 16A Issue — FY 2025-26',who:'Employers & deductors',date:'2026-06-15',note:'TDS certificate to deductees'},
+  {cat:'TDS',name:'TDS / TCS Deposit — April 2026',who:'All deductors',date:'2026-05-07',note:'Monthly TDS by 7th'},
+  // PF
+  {cat:'PF',name:'EPF Monthly Contribution — March 2026',who:'All EPF establishments',date:'2026-04-15',note:'Employee + Employer contribution'},
+  {cat:'PF',name:'ESIC Monthly Contribution — March 2026',who:'ESIC-covered employers',date:'2026-04-15',note:'ESI contribution for March'},
+  {cat:'PF',name:'EPF Monthly Contribution — April 2026',who:'All EPF establishments',date:'2026-05-15',note:'Employee + Employer contribution'},
+  {cat:'PF',name:'ESIC Monthly Contribution — April 2026',who:'ESIC-covered employers',date:'2026-05-15',note:'ESI contribution for April'},
+  // ROC
+  {cat:'ROC',name:'DIR-3 KYC — Annual Director KYC',who:'All directors with DIN',date:'2026-09-30',note:'Once every 3 years (amended Dec 2025)'},
+  {cat:'ROC',name:'AOC-4 — Financial Statements FY 2025-26',who:'All companies',date:'2026-10-29',note:'Within 30 days of AGM'},
+  {cat:'ROC',name:'MGT-7 / MGT-7A — Annual Return FY 2025-26',who:'All companies',date:'2026-11-29',note:'Within 60 days of AGM'},
+  {cat:'ROC',name:'MSME-1 — Outstanding Payments H1 (Apr-Sep 2026)',who:'Companies with MSME dues',date:'2026-10-31',note:'Half-yearly return'},
+  {cat:'ROC',name:'DPT-3 — Return of Deposits FY 2025-26',who:'Companies with loans/deposits',date:'2026-06-30',note:'Annual deposit return'},
+];
 
-  // Open GST portal in new tab
-  window.open('https://services.gst.gov.in/services/searchtp', '_blank', 'width=900,height=680,left=100,top=80');
+function calRender(filter){
+  const today=new Date(); today.setHours(0,0,0,0);
+  const body=document.getElementById('calBody');
+  const rows=DEADLINES
+    .filter(d=>filter==='all'||d.cat===filter)
+    .map(d=>{
+      const due=new Date(d.date); due.setHours(0,0,0,0);
+      const diff=Math.round((due-today)/(1000*60*60*24));
+      return{...d,diff,due};
+    })
+    .sort((a,b)=>a.diff-b.diff);
+
+  body.innerHTML=rows.map(d=>{
+    // Row class
+    let rc='',dc='',dt='';
+    if(d.diff<0){rc='row-overdue';dc='days-over';dt=`${Math.abs(d.diff)}d overdue`;}
+    else if(d.diff===0){rc='row-today';dc='days-today';dt='Today!';}
+    else if(d.diff<=7){rc='row-soon';dc='days-soon';dt=`${d.diff} days`;}
+    else if(d.diff<=30){rc='row-week';dc='days-near';dt=`${d.diff} days`;}
+    else{rc='';dc='days-far';dt=`${d.diff} days`;}
+
+    // Category badge
+    const catMap={'GST':'cat-gst','Income Tax':'cat-it','TDS':'cat-tds','PF':'cat-pf','ROC':'cat-roc','ESI':'cat-esi'};
+    const cb=catMap[d.cat]||'cat-gst';
+
+    // Format date
+    const dateStr=d.due.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+
+    return`<tr class="${rc}">
+      <td style="font-size:.78rem;font-weight:600;color:var(--black);white-space:nowrap">${dateStr}</td>
+      <td><span class="${cb}">${d.cat}</span></td>
+      <td>
+        <div style="font-size:.8rem;color:var(--black);font-weight:500;margin-bottom:2px">${d.name}</div>
+        <div style="font-size:.71rem;color:var(--gray-4)">${d.note}</div>
+      </td>
+      <td style="font-size:.75rem;color:var(--gray-5)">${d.who}</td>
+      <td><span class="${dc}">${dt}</span></td>
+    </tr>`;
+  }).join('');
 }
 
-document.addEventListener('DOMContentLoaded', () => doForex());
+// Filter buttons
+document.addEventListener('DOMContentLoaded',()=>{
+  // Set today date
+  const td=new Date();
+  const el=document.getElementById('todayDate');
+  if(el)el.textContent=td.toLocaleDateString('en-IN',{day:'2-digit',month:'long',year:'numeric'});
 
+  // Calendar render
+  calRender('all');
+  document.querySelectorAll('.cf').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('.cf').forEach(b=>b.classList.remove('on'));
+      btn.classList.add('on');
+      calRender(btn.dataset.cat);
+    });
+  });
+
+  // Forex load
+  fxLoad();
+});
 </script>
 </body>
 </html>
