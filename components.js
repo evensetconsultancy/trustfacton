@@ -15,8 +15,9 @@ const NAV_HTML = `
         <li><a href="companies-act.html">Companies Act</a></li>
         <li><a href="tds-master.html">TDS/TCS Master</a></li>
       </ul>
-      <div class="nav-cta">
+      <div class="nav-cta" id="nav-cta-area">
         <a href="https://trustfacton.beehiiv.com/subscribe" target="_blank" class="btn btn-ghost btn-sm">Newsletter</a>
+        <a href="login.html" class="btn btn-blue btn-sm" id="nav-login-btn">Login →</a>
       </div>
       <div class="hamburger" onclick="toggleMenu()">
         <span></span><span></span><span></span>
@@ -101,4 +102,23 @@ function footerSub() { const e = document.getElementById('footer-email')?.value;
 function showToast(msg) { const t = document.createElement('div'); t.style.cssText = `position:fixed;bottom:20px;right:20px;background:#0F172A;color:white;padding:10px 18px;border-radius:8px;font-size:0.84rem;font-family:'Inter',sans-serif;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,0.2);`; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3000); }
 function initAccordions() { document.querySelectorAll('.accordion-header').forEach(h => { h.addEventListener('click', () => { const b = h.nextElementSibling; const open = h.classList.contains('open'); document.querySelectorAll('.accordion-header').forEach(x => { x.classList.remove('open'); x.nextElementSibling?.classList.remove('open'); }); if (!open) { h.classList.add('open'); b?.classList.add('open'); } }); }); }
 function showTopic(val) { if (!val) return; document.querySelectorAll('.topic-panel').forEach(p => p.classList.remove('active')); document.getElementById('panel-' + val)?.classList.add('active'); document.getElementById('panels-wrap')?.scrollIntoView({behavior:'smooth', block:'start'}); const s = document.getElementById('topicSelect'); if (s) s.value = val; document.querySelectorAll('.topic-chip').forEach(c => c.classList.toggle('active', c.getAttribute('onclick') === `showTopic('${val}')`)); }
-document.addEventListener('DOMContentLoaded', () => { injectComponents(); initAccordions(); const hash = window.location.hash.replace('#',''); if (hash && document.getElementById('panel-' + hash)) showTopic(hash); });
+document.addEventListener('DOMContentLoaded', async () => {
+  injectComponents();
+  initAccordions();
+  const hash = window.location.hash.replace('#','');
+  if (hash && document.getElementById('panel-' + hash)) showTopic(hash);
+
+  // Auth-aware nav button
+  if (typeof supabase !== 'undefined' && typeof SUPABASE_URL !== 'undefined') {
+    try {
+      const sb2 = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      const { data: { user } } = await sb2.auth.getUser();
+      const btn = document.getElementById('nav-login-btn');
+      if (btn && user) {
+        btn.textContent = 'Dashboard →';
+        btn.href = 'dashboard.html';
+        btn.style.background = 'var(--green)';
+      }
+    } catch {}
+  }
+});

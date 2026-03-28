@@ -385,37 +385,12 @@ p  { line-height: 1.7; color: var(--gray-5); }
   background-size: 60px 60px;
   pointer-events: none;
 }
-.home-hero-inner {
-  display: grid; grid-template-columns: auto 1fr; gap: 64px;
-  align-items: center; position: relative; z-index: 1;
-}
-.home-hero-brand {
-  display: flex; flex-direction: column; align-items: center; gap: 0;
-  flex-shrink: 0;
-}
-.home-hero-logo {
-  width: 180px; height: 180px;
-  object-fit: contain;
-  mix-blend-mode: screen;
-  filter: drop-shadow(0 0 40px rgba(220,38,38,0.25));
-  animation: heroFloat 4s ease-in-out infinite;
-}
-@keyframes heroFloat {
-  0%,100% { transform: translateY(0); }
-  50%      { transform: translateY(-8px); }
-}
-.home-hero-brand-name {
-  font-family: var(--font-head); font-size: 1.6rem; font-weight: 700;
-  color: white; letter-spacing: -0.5px; text-align: center;
-  margin-top: -10px;
-}
-.home-hero-brand-name .accent { color: #60A5FA; }
-.home-hero-brand-tag {
-  font-size: 0.7rem; color: rgba(255,255,255,0.4);
-  text-transform: uppercase; letter-spacing: 2px; margin-top: 4px;
+.home-hero-centered {
   text-align: center;
+  max-width: 720px;
+  margin: 0 auto;
+  position: relative; z-index: 1;
 }
-.home-hero-content {}
 .home-hero-badge {
   display: inline-flex; align-items: center; gap: 7px;
   background: rgba(96,165,250,0.12); border: 1px solid rgba(96,165,250,0.25);
@@ -465,17 +440,9 @@ p  { line-height: 1.7; color: var(--gray-5); }
 
 /* ── Responsive hero ── */
 @media(max-width:860px){
-  .home-hero-inner { grid-template-columns: 1fr; gap: 32px; text-align: center; }
-  .home-hero-brand { flex-direction: row; align-items: center; justify-content: center; gap: 16px; }
-  .home-hero-logo  { width: 80px; height: 80px; }
-  .home-hero-brand-name { font-size: 1.3rem; margin-top: 0; }
-  .home-hero-brand-tag  { display: none; }
+  .home-hero-centered { padding: 0 8px; }
   .home-hero h1    { font-size: clamp(1.6rem, 5vw, 2.2rem); }
   .home-hero p     { margin: 0 auto 28px; }
   .home-hero-actions { justify-content: center; }
   .home-hero-stats { justify-content: center; }
-}
-@media(max-width:480px){
-  .home-hero-logo { width: 56px; height: 56px; }
-  .home-hero-brand-name { font-size: 1.1rem; }
 }
