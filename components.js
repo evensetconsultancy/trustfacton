@@ -1,21 +1,22 @@
-/* ===== TrustFactON — Components v3 ===== */
+/* ===== TrustFactON — Components v4 (with logo) ===== */
 
 const NAV_HTML = `
 <nav id="site-nav">
   <div class="container">
     <div class="nav-inner">
-      <a href="index.html" class="nav-logo">Trust<span class="accent">Fact</span>ON</a>
+      <a href="index.html" class="nav-logo">
+        <img src="logo.png" alt="TrustFactON" class="nav-logo-img">
+        <span class="nav-logo-text">Trust<span class="accent">Fact</span>ON</span>
+      </a>
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="income-tax.html">Income Tax</a></li>
-        <li><a href="gst.html">Goods & Service Tax</a></li>
+        <li><a href="gst.html">Goods &amp; Service Tax</a></li>
         <li><a href="companies-act.html">Companies Act</a></li>
         <li><a href="tds-master.html">TDS/TCS Master</a></li>
-        <li><a href="chat.html">AI Chat</a></li>
       </ul>
       <div class="nav-cta">
         <a href="https://trustfacton.beehiiv.com/subscribe" target="_blank" class="btn btn-ghost btn-sm">Newsletter</a>
-        <a href="chat.html" class="btn btn-blue btn-sm">Ask AI →</a>
       </div>
       <div class="hamburger" onclick="toggleMenu()">
         <span></span><span></span><span></span>
@@ -28,7 +29,6 @@ const NAV_HTML = `
     <a href="gst.html">🏷️ Goods &amp; Service Tax</a>
     <a href="companies-act.html">🏢 Companies Act</a>
     <a href="tds-master.html">✂️ TDS/TCS Master</a>
-    <a href="chat.html">🤖 AI Chat</a>
     <a href="https://trustfacton.beehiiv.com/subscribe" target="_blank">📧 Newsletter</a>
   </div>
 </nav>`;
@@ -38,8 +38,15 @@ const FOOTER_HTML = `
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <div class="footer-logo">Trust<span class="accent">Fact</span>ON</div>
-        <p>India's plain-language compliance reference. Income Tax · Goods &amp; Service Tax · Companies Act · TDS/TCS. Powered by Evenset Consultancy Services, Bengaluru.</p>
+        <div class="footer-logo-wrap">
+          <img src="logo.png" alt="TrustFactON" class="footer-logo-img">
+          <div class="footer-logo">Trust<span class="accent">Fact</span>ON</div>
+        </div>
+        <p>India's plain-language compliance reference. Income Tax · Goods &amp; Service Tax · Companies Act · TDS/TCS.<br>Built by Evenset Consultancy Services, Bengaluru.</p>
+        <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
+          <a href="https://evensetconsultancy.com" target="_blank" style="font-size:0.76rem;color:rgba(255,255,255,0.4);border:1px solid rgba(255,255,255,0.1);padding:3px 10px;border-radius:5px;transition:all 0.15s" onmouseover="this.style.color='#60A5FA'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Evenset Consultancy ↗</a>
+          <a href="https://trustfacton.beehiiv.com/subscribe" target="_blank" style="font-size:0.76rem;color:rgba(255,255,255,0.4);border:1px solid rgba(255,255,255,0.1);padding:3px 10px;border-radius:5px;transition:all 0.15s" onmouseover="this.style.color='#60A5FA'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Newsletter ↗</a>
+        </div>
       </div>
       <div class="footer-col">
         <h4>Topics</h4>
@@ -48,7 +55,6 @@ const FOOTER_HTML = `
           <li><a href="gst.html">Goods &amp; Service Tax</a></li>
           <li><a href="companies-act.html">Companies Act</a></li>
           <li><a href="tds-master.html">TDS/TCS Master</a></li>
-          <li><a href="chat.html">AI Chat</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -69,12 +75,12 @@ const FOOTER_HTML = `
           <input type="email" id="footer-email" placeholder="your@email.com">
           <button onclick="footerSub()">→</button>
         </div>
-        <p style="font-size:0.74rem;margin-top:8px;color:rgba(255,255,255,0.3)">No spam. Unsubscribe anytime.</p>
+        <p style="font-size:0.73rem;margin-top:8px;color:rgba(255,255,255,0.25)">No spam. Unsubscribe anytime.</p>
       </div>
     </div>
     <div class="footer-bottom">
       <span>© 2026 TrustFactON · Evenset Consultancy Services OPC Pvt Ltd · Bengaluru</span>
-      <span style="color:rgba(255,255,255,0.25)">Informational only. Not legal advice.</span>
+      <span style="color:rgba(255,255,255,0.2)">Informational only. Not legal advice.</span>
     </div>
   </div>
 </footer>`;
@@ -84,7 +90,6 @@ function injectComponents() {
   if (n) n.outerHTML = NAV_HTML; else document.body.insertAdjacentHTML('afterbegin', NAV_HTML);
   const f = document.getElementById('footer-placeholder');
   if (f) f.outerHTML = FOOTER_HTML; else document.body.insertAdjacentHTML('beforeend', FOOTER_HTML);
-  // Highlight active nav link
   const page = window.location.pathname.split('/').pop() || 'index.html';
   document.querySelectorAll('#site-nav .nav-links a').forEach(a => {
     if (a.getAttribute('href') === page) a.classList.add('active');

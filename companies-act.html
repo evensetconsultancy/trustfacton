@@ -74,7 +74,6 @@
           <option value="filings">📋 Annual MCA Filings</option>
           <option value="penalties">⚠️ Penalties & Offences</option>
           <option value="links">🔗 Official Links</option>
-          <option value="chat">🤖 Ask AI</option>
         </select>
         <span class="topic-arrow">▼</span>
       </div>
@@ -85,7 +84,6 @@
         <button class="topic-chip" onclick="showTopic('audit')">📊 Audit</button>
         <button class="topic-chip" onclick="showTopic('csr')">🌱 CSR</button>
         <button class="topic-chip" onclick="showTopic('filings')">📋 Filings</button>
-        <button class="topic-chip" onclick="showTopic('chat')">🤖 Ask AI</button>
       </div>
     </div>
   </div>
@@ -108,7 +106,6 @@
     <div class="quick-card" onclick="showTopic('filings')"><div class="icon">📋</div><div><h4>Annual MCA Filings</h4><p>All e-forms & due dates</p></div></div>
     <div class="quick-card" onclick="showTopic('penalties')"><div class="icon">⚠️</div><div><h4>Penalties & Offences</h4><p>Default consequences</p></div></div>
     <div class="quick-card" onclick="showTopic('links')"><div class="icon">🔗</div><div><h4>Official Links</h4><p>MCA portals</p></div></div>
-    <div class="quick-card" onclick="showTopic('chat')"><div class="icon">🤖</div><div><h4>Ask AI</h4><p>Instant answers</p></div></div>
   </div>
 </div>
 
@@ -579,33 +576,7 @@
   <div class="ib blue" style="margin-top:20px"><strong>About TrustFactON</strong>Plain-language summaries for educational purposes only. For binding text and latest notifications, always refer to official portals above. Not a substitute for professional advice. Built by Evenset Consultancy Services, Bengaluru.</div>
 </div></div>
 
-<!-- AI CHAT -->
-<div class="topic-panel" id="panel-chat">
-<div class="panel-content">
-  <span class="panel-label">AI Assistant</span>
-  <h2>Ask About Companies Act</h2>
-  <p style="color:var(--gray-5);margin-top:6px">Free for all users. No login. Powered by Google Gemini.</p>
-  <div class="chat-container" id="chat-widget" data-act="Companies Act 2013 and MCA Rules" style="max-width:760px;margin-top:20px">
-    <div class="chat-header">
-      <div class="chat-avatar">TF</div>
-      <div class="chat-header-info">
-        <h4>Companies Act AI</h4>
-        <span><span class="online-dot"></span>Companies Act 2013 · MCA · NCLT · Powered by Google Gemini</span>
-      </div>
-    </div>
-    <div class="chat-messages"></div>
-    <div class="chat-suggestions">
-      <button class="chat-suggest-btn">Due date for MGT-7 annual return?</button>
-      <button class="chat-suggest-btn">Director disqualification u/s 164?</button>
-      <button class="chat-suggest-btn">CSR applicability — which companies?</button>
-      <button class="chat-suggest-btn">OPC vs Private Limited — key differences?</button>
-    </div>
-    <div class="chat-input-row">
-      <textarea class="chat-input" rows="1" placeholder="Ask anything about Companies Act 2013..."></textarea>
-      <button class="chat-send-btn"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
-    </div>
-  </div>
-</div></div>
+
 
 </div></div>
 
@@ -623,6 +594,5 @@
 
 <div id="footer-placeholder"></div>
 <script src="components.js"></script>
-<script src="chat-widget.js"></script>
 </body>
 </html>

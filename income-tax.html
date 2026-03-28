@@ -123,7 +123,6 @@
           <option value="advance">🗓️ Advance Tax</option>
           <option value="calendar">📅 Compliance Calendar</option>
           <option value="links">🔗 Official Links</option>
-          <option value="chat">🤖 Ask AI</option>
         </select>
         <span class="topic-arrow">▼</span>
       </div>
@@ -134,7 +133,6 @@
         <button class="topic-chip" onclick="showTopic('deductions')">🧾 Deductions</button>
         <button class="topic-chip" onclick="showTopic('tds')">✂️ TDS</button>
         <button class="topic-chip" onclick="showTopic('itr')">📋 ITR</button>
-        <button class="topic-chip" onclick="showTopic('chat')">🤖 Ask AI</button>
       </div>
     </div>
   </div>
@@ -159,7 +157,6 @@
     <div class="quick-card" onclick="showTopic('advance')"><div class="icon">🗓️</div><div><h4>Advance Tax</h4><p>Instalments & dates</p></div></div>
     <div class="quick-card" onclick="showTopic('calendar')"><div class="icon">📅</div><div><h4>Compliance Calendar</h4><p>All key due dates</p></div></div>
     <div class="quick-card" onclick="showTopic('links')"><div class="icon">🔗</div><div><h4>Official Links</h4><p>Govt portals</p></div></div>
-    <div class="quick-card" onclick="showTopic('chat')"><div class="icon">🤖</div><div><h4>Ask AI</h4><p>Instant answers</p></div></div>
   </div>
 </div>
 
@@ -805,33 +802,7 @@
   <div class="ib blue" style="margin-top:20px"><strong>About TrustFactON</strong>Plain-language summaries for educational purposes only. For binding text and latest notifications, always refer to official portals above. Not a substitute for professional advice. Built by Evenset Consultancy Services, Bengaluru.</div>
 </div></div>
 
-<!-- AI CHAT -->
-<div class="topic-panel" id="panel-chat">
-<div class="panel-content">
-  <span class="panel-label">AI Assistant</span>
-  <h2>Ask About Income Tax</h2>
-  <p style="color:var(--gray-5);margin-top:6px">Free for all users. No login. Powered by Google Gemini. Ask about IT Act 1961 or IT Act 2025.</p>
-  <div class="chat-container" id="chat-widget" data-act="Income Tax Act 1961 and IT Act 2025" style="max-width:760px;margin-top:20px">
-    <div class="chat-header">
-      <div class="chat-avatar">TF</div>
-      <div class="chat-header-info">
-        <h4>Income Tax AI</h4>
-        <span><span class="online-dot"></span>IT Act 1961 & IT Act 2025 · Powered by Google Gemini</span>
-      </div>
-    </div>
-    <div class="chat-messages"></div>
-    <div class="chat-suggestions">
-      <button class="chat-suggest-btn">New vs Old regime — which is better for me?</button>
-      <button class="chat-suggest-btn">LTCG on property sale — new section in IT Act 2025?</button>
-      <button class="chat-suggest-btn">Sec 80C changed to which section in IT Act 2025?</button>
-      <button class="chat-suggest-btn">TDS on salary — Sec 192 vs Sec 392 difference?</button>
-    </div>
-    <div class="chat-input-row">
-      <textarea class="chat-input" rows="1" placeholder="Ask about IT Act 1961 or IT Act 2025..."></textarea>
-      <button class="chat-send-btn"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
-    </div>
-  </div>
-</div></div>
+
 
 </div></div><!-- /container /panels-wrap -->
 
@@ -849,6 +820,5 @@
 
 <div id="footer-placeholder"></div>
 <script src="components.js"></script>
-<script src="chat-widget.js"></script>
 </body>
 </html>
