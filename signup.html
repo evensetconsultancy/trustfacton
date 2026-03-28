@@ -6,459 +6,196 @@
 <title>Create Account — TrustFactON</title>
 <link rel="stylesheet" href="style.css">
 <style>
-body { background: var(--gray-1); min-height: 100vh; display: flex; align-items: flex-start; justify-content: center; padding: 32px 20px; }
-.auth-wrap { width: 100%; max-width: 520px; }
-.auth-logo { text-align: center; margin-bottom: 24px; }
-.auth-logo img { width: 46px; height: 46px; object-fit: contain; mix-blend-mode: multiply; }
-.auth-logo-name { font-family: 'Playfair Display', Georgia, serif; font-size: 1.3rem; color: var(--navy); font-weight: 700; margin-top: 4px; }
-.auth-logo-name .accent { color: var(--blue); }
+body{background:var(--gray-1);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 20px;}
+.wrap{width:100%;max-width:400px;}
+.logo{text-align:center;margin-bottom:24px;}
+.logo img{width:46px;height:46px;object-fit:contain;mix-blend-mode:multiply;}
+.logo-name{font-family:'Playfair Display',Georgia,serif;font-size:1.3rem;color:var(--navy);font-weight:700;margin-top:5px;}
+.logo-name .accent{color:var(--blue);}
+.card{background:white;border-radius:14px;border:1px solid var(--gray-3);padding:28px 28px 24px;box-shadow:0 4px 24px rgba(0,0,0,0.06);}
+.card h2{font-size:1.15rem;color:var(--black);margin-bottom:4px;}
+.card p{font-size:0.84rem;color:var(--gray-5);margin-bottom:22px;}
+.fg{margin-bottom:14px;}
+.fg label{display:block;font-size:0.79rem;font-weight:600;color:var(--gray-6);margin-bottom:5px;}
+.fg input,.fg select{width:100%;padding:10px 12px;border:1.5px solid var(--gray-3);border-radius:8px;font-size:0.87rem;font-family:'Inter',sans-serif;color:var(--black);background:white;transition:border-color .15s,box-shadow .15s;box-sizing:border-box;}
+.fg input:focus,.fg select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.08);}
+.btn-full{width:100%;padding:11px;background:var(--navy);color:white;border:none;border-radius:8px;font-size:0.9rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:background .15s;margin-top:4px;}
+.btn-full:hover{background:#0F2444;}
+.btn-full:disabled{background:var(--gray-4);cursor:not-allowed;}
+.err{background:#FEF2F2;border:1px solid #FECACA;border-radius:8px;padding:9px 12px;font-size:0.81rem;color:#991B1B;margin-bottom:14px;display:none;}
+.err.show{display:block;}
+.foot{text-align:center;font-size:0.83rem;color:var(--gray-5);margin-top:16px;}
+.foot a{color:var(--blue);font-weight:600;text-decoration:none;}
+.back{text-align:center;margin-top:12px;font-size:0.8rem;}
+.back a{color:var(--gray-4);text-decoration:none;}
 
-/* Progress steps */
-.steps { display: flex; align-items: center; justify-content: center; gap: 0; margin-bottom: 24px; }
-.step { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; font-weight: 500; color: var(--gray-4); }
-.step.active { color: var(--navy); }
-.step.done   { color: var(--green); }
-.step-num { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; background: var(--gray-3); color: var(--gray-5); flex-shrink: 0; }
-.step.active .step-num { background: var(--navy); color: white; }
-.step.done   .step-num { background: var(--green); color: white; }
-.step-line { width: 40px; height: 2px; background: var(--gray-3); margin: 0 4px; flex-shrink: 0; }
-.step-line.done { background: var(--green); }
-
-/* Card */
-.auth-card { background: white; border-radius: 14px; border: 1px solid var(--gray-3); padding: 32px; box-shadow: 0 4px 24px rgba(0,0,0,0.06); }
-.step-panel { display: none; }
-.step-panel.active { display: block; }
-.auth-card h2 { font-size: 1.15rem; color: var(--black); margin-bottom: 4px; }
-.auth-card .sub { font-size: 0.84rem; color: var(--gray-5); margin-bottom: 22px; }
-
-/* Form */
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.form-group { margin-bottom: 14px; }
-.form-group label { display: block; font-size: 0.79rem; font-weight: 600; color: var(--gray-6); margin-bottom: 5px; }
-.form-group label .req { color: var(--red); margin-left: 2px; }
-.form-group label .opt { font-weight: 400; color: var(--gray-4); font-size: 0.72rem; margin-left: 4px; }
-.form-group input, .form-group select {
-  width: 100%; padding: 9px 12px;
-  border: 1.5px solid var(--gray-3); border-radius: 8px;
-  font-size: 0.86rem; font-family: 'Inter',sans-serif;
-  color: var(--black); background: white;
-  transition: border-color 0.15s, box-shadow 0.15s;
-  box-sizing: border-box;
-}
-.form-group input:focus, .form-group select:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,0.08); }
-.form-group input.err, .form-group select.err { border-color: var(--red); }
-.form-group .hint { font-size: 0.72rem; color: var(--gray-4); margin-top: 4px; }
-.form-group .verr { font-size: 0.72rem; color: var(--red); margin-top: 4px; display: none; }
-.form-group .verr.show { display: block; }
-
-/* Role selector */
-.role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
-.role-card { border: 1.5px solid var(--gray-3); border-radius: 10px; padding: 14px; cursor: pointer; transition: all 0.15s; }
-.role-card:hover { border-color: var(--blue); }
-.role-card.selected { border-color: var(--navy); background: #F0F4F8; }
-.role-card h4 { font-size: 0.86rem; color: var(--black); margin-bottom: 3px; }
-.role-card p  { font-size: 0.75rem; color: var(--gray-5); line-height: 1.4; }
-.role-card .ri { font-size: 1.3rem; margin-bottom: 6px; }
-
-/* Registration checkboxes */
-.reg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
-.reg-item { border: 1.5px solid var(--gray-3); border-radius: 8px; padding: 11px 13px; cursor: pointer; transition: all 0.15s; display: flex; align-items: flex-start; gap: 10px; }
-.reg-item:hover { border-color: var(--blue); }
-.reg-item.selected { border-color: var(--navy); background: #F0F4F8; }
-.reg-item.disabled { opacity: 0.5; cursor: not-allowed; background: var(--gray-1); }
-.reg-item input[type="checkbox"] { margin-top: 2px; flex-shrink: 0; cursor: pointer; width: 14px; height: 14px; }
-.reg-item .rl { }
-.reg-item .rl strong { font-size: 0.82rem; display: block; color: var(--black); }
-.reg-item .rl span   { font-size: 0.72rem; color: var(--gray-5); line-height: 1.3; }
-
-/* Conditional fields */
-.cond-field { display: none; }
-.cond-field.show { display: block; }
-
-/* Buttons */
-.btn-row { display: flex; gap: 10px; margin-top: 8px; }
-.btn-primary { flex: 1; padding: 11px; background: var(--navy); color: white; border: none; border-radius: 8px; font-size: 0.88rem; font-weight: 600; cursor: pointer; font-family: 'Inter',sans-serif; transition: background 0.15s; }
-.btn-primary:hover { background: #0F2444; }
-.btn-primary:disabled { background: var(--gray-4); cursor: not-allowed; }
-.btn-back { padding: 11px 18px; background: white; color: var(--gray-6); border: 1.5px solid var(--gray-3); border-radius: 8px; font-size: 0.88rem; font-weight: 500; cursor: pointer; font-family: 'Inter',sans-serif; transition: all 0.15s; }
-.btn-back:hover { border-color: var(--gray-5); }
-
-.auth-err { background: #FEF2F2; border: 1px solid #FECACA; border-radius: 8px; padding: 10px 13px; font-size: 0.82rem; color: #991B1B; margin-bottom: 14px; display: none; }
-.auth-err.show { display: block; }
-.auth-link { text-align: center; font-size: 0.84rem; color: var(--gray-5); margin-top: 18px; }
-.auth-link a { color: var(--blue); font-weight: 600; text-decoration: none; }
-
-@media(max-width:480px){ .form-row{grid-template-columns:1fr;} .role-grid{grid-template-columns:1fr;} .reg-grid{grid-template-columns:1fr;} }
+/* OTP screen */
+.otp-wrap{text-align:center;padding:4px 0;}
+.otp-wrap h2{margin-bottom:6px;}
+.otp-wrap p{font-size:0.84rem;color:var(--gray-5);margin-bottom:20px;line-height:1.6;}
+#otpInput{width:100%;padding:13px;text-align:center;font-size:1.8rem;letter-spacing:14px;border:1.5px solid var(--gray-3);border-radius:8px;font-family:'Inter',sans-serif;box-sizing:border-box;color:var(--black);margin-bottom:12px;}
+#otpInput:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.08);}
+.resend-btn{background:none;border:none;color:var(--blue);font-size:0.82rem;cursor:pointer;font-family:'Inter',sans-serif;font-weight:600;margin-top:12px;}
 </style>
 </head>
 <body>
-<div class="auth-wrap">
-
-  <div class="auth-logo">
+<div class="wrap">
+  <div class="logo">
     <img src="logo.png" alt="TrustFactON">
-    <div class="auth-logo-name">Trust<span class="accent">Fact</span>ON</div>
+    <div class="logo-name">Trust<span class="accent">Fact</span>ON</div>
   </div>
 
-  <!-- Progress bar -->
-  <div class="steps">
-    <div class="step active" id="s1"><span class="step-num" id="sn1">1</span> Account</div>
-    <div class="step-line" id="sl1"></div>
-    <div class="step" id="s2"><span class="step-num" id="sn2">2</span> Entity</div>
-    <div class="step-line" id="sl2"></div>
-    <div class="step" id="s3"><span class="step-num" id="sn3">3</span> Registrations</div>
+  <div class="card" id="signupCard">
+    <h2>Create your account</h2>
+    <p>Free forever · No credit card · Takes 30 seconds</p>
+
+    <div class="err" id="errMsg"></div>
+
+    <div class="fg">
+      <label>Your name</label>
+      <input type="text" id="name" placeholder="Venkanna Setty" autocomplete="name">
+    </div>
+    <div class="fg">
+      <label>Email address</label>
+      <input type="email" id="email" placeholder="you@example.com" autocomplete="email"
+             onkeydown="if(event.key==='Enter')doSignup()">
+    </div>
+    <div class="fg">
+      <label>I am a</label>
+      <select id="role">
+        <option value="owner">Business Owner / Individual</option>
+        <option value="professional">CA / CS / Tax Professional</option>
+      </select>
+    </div>
+
+    <button class="btn-full" id="signupBtn" onclick="doSignup()">Get Started →</button>
+
+    <div class="foot">Already have an account? <a href="login.html">Login →</a></div>
   </div>
 
-  <div class="auth-card">
-    <div class="auth-err" id="errMsg"></div>
+  <!-- OTP screen — shown after email sent -->
+  <div class="card" id="otpCard" style="display:none">
+    <div class="otp-wrap">
+      <div style="font-size:2rem;margin-bottom:12px">📬</div>
+      <h2>Enter your code</h2>
+      <p>We sent a 6-digit code to<br><strong id="sentTo" style="color:var(--black)"></strong></p>
 
-    <!-- ── STEP 1: Account ── -->
-    <div class="step-panel active" id="panel1">
-      <h2>Create your account</h2>
-      <p class="sub">Free forever. No credit card required.</p>
+      <div class="err" id="otpErr"></div>
 
-      <div class="form-group">
-        <label>Full name <span class="req">*</span></label>
-        <input type="text" id="s1name" placeholder="Venkanna Setty E" autocomplete="name">
-      </div>
-      <div class="form-group">
-        <label>Email address <span class="req">*</span></label>
-        <input type="email" id="s1email" placeholder="you@example.com" autocomplete="email">
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Password <span class="req">*</span></label>
-          <input type="password" id="s1pass" placeholder="Min 8 characters" autocomplete="new-password">
-        </div>
-        <div class="form-group">
-          <label>Phone <span class="opt">(for WhatsApp later)</span></label>
-          <input type="tel" id="s1phone" placeholder="+91 9876543210">
-        </div>
-      </div>
+      <input type="text" id="otpInput" placeholder="——————"
+        maxlength="6" inputmode="numeric"
+        oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+        onkeydown="if(event.key==='Enter')verifyOTP()">
 
-      <label style="font-size:0.79rem;font-weight:600;color:var(--gray-6);display:block;margin-bottom:10px">
-        I am a <span class="req">*</span>
-      </label>
-      <div class="role-grid">
-        <div class="role-card selected" id="rc-owner" onclick="setRole('owner')">
-          <div class="ri">🏢</div>
-          <h4>Business Owner</h4>
-          <p>Managing compliance for my own business or personal filings</p>
-        </div>
-        <div class="role-card" id="rc-professional" onclick="setRole('professional')">
-          <div class="ri">📋</div>
-          <h4>CA / CS / Tax Pro</h4>
-          <p>Managing compliance for multiple clients from one portal</p>
-        </div>
-      </div>
-
-      <div class="btn-row">
-        <button class="btn-primary" id="btn1" onclick="step1Next()">Continue →</button>
-      </div>
-
-      <div class="auth-link">Already have an account? <a href="login.html">Login →</a></div>
+      <button class="btn-full" id="verifyBtn" onclick="verifyOTP()">Verify & Continue →</button>
+      <br>
+      <button class="resend-btn" id="resendBtn" onclick="resendCode()">Resend code</button>
     </div>
-
-    <!-- ── STEP 2: Entity ── -->
-    <div class="step-panel" id="panel2">
-      <h2>Add your first entity</h2>
-      <p class="sub">You can add more entities from the dashboard later.</p>
-
-      <div class="form-group">
-        <label>Business / Person name <span class="req">*</span></label>
-        <input type="text" id="s2name" placeholder="e.g. Evenset Consultancy Services OPC Pvt Ltd">
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Entity type <span class="req">*</span></label>
-          <select id="s2type" onchange="onTypeChange()">
-            <option value="">— Select type —</option>
-            <option value="Individual">Individual / Salaried</option>
-            <option value="Proprietor">Proprietor / Sole Trader</option>
-            <option value="Partnership">Partnership Firm</option>
-            <option value="LLP">LLP</option>
-            <option value="OPC">OPC (One Person Company)</option>
-            <option value="Private Limited">Private Limited Company</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>PAN <span class="req">*</span></label>
-          <input type="text" id="s2pan" placeholder="AAAAA0000A" maxlength="10"
-            oninput="this.value=this.value.toUpperCase()">
-          <div class="hint">Mandatory for all entity types</div>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group cond-field" id="cf-gstin">
-          <label>GSTIN <span class="opt">(if GST registered)</span></label>
-          <input type="text" id="s2gstin" placeholder="29AAAAA0000A1Z5" maxlength="15"
-            oninput="this.value=this.value.toUpperCase()">
-        </div>
-        <div class="form-group cond-field" id="cf-tan">
-          <label>TAN <span class="opt">(if TDS applicable)</span></label>
-          <input type="text" id="s2tan" placeholder="AAAA00000A" maxlength="10"
-            oninput="this.value=this.value.toUpperCase()">
-        </div>
-      </div>
-      <div class="form-group cond-field" id="cf-cin">
-        <label id="cin-label">CIN / LLPIN <span class="opt">(from MCA certificate)</span></label>
-        <input type="text" id="s2cin" placeholder="U74999KA2020OPC123456"
-          oninput="this.value=this.value.toUpperCase()">
-      </div>
-      <div class="form-group">
-        <label>Reminder email <span class="opt">(can differ from login email)</span></label>
-        <input type="email" id="s2email" placeholder="filings@yourbusiness.com">
-        <div class="hint">Deadline reminders will be sent here</div>
-      </div>
-
-      <div class="btn-row">
-        <button class="btn-back" onclick="goStep(1)">← Back</button>
-        <button class="btn-primary" id="btn2" onclick="step2Next()">Continue →</button>
-      </div>
-    </div>
-
-    <!-- ── STEP 3: Registrations ── -->
-    <div class="step-panel" id="panel3">
-      <h2>Select applicable registrations</h2>
-      <p class="sub">We'll track only the deadlines that apply to you.</p>
-
-      <div class="reg-grid">
-
-        <div class="reg-item selected disabled" id="ri-it">
-          <input type="checkbox" id="cb-it" checked disabled>
-          <div class="rl"><strong>📊 Income Tax</strong><span>PAN mandatory — always tracked</span></div>
-        </div>
-
-        <div class="reg-item" id="ri-gst" onclick="toggleReg('gst',this)">
-          <input type="checkbox" id="cb-gst">
-          <div class="rl"><strong>🏷️ GST</strong><span>GSTR-1, GSTR-3B, GSTR-9</span></div>
-        </div>
-
-        <div class="reg-item" id="ri-tds" onclick="toggleReg('tds',this)">
-          <input type="checkbox" id="cb-tds">
-          <div class="rl"><strong>✂️ TDS / TCS</strong><span>Deposit, Returns, Form 16</span></div>
-        </div>
-
-        <div class="reg-item" id="ri-pf" onclick="toggleReg('pf',this)">
-          <input type="checkbox" id="cb-pf">
-          <div class="rl"><strong>🏦 PF / EPF</strong><span>Monthly EPF contribution</span></div>
-        </div>
-
-        <div class="reg-item" id="ri-esic" onclick="toggleReg('esic',this)">
-          <input type="checkbox" id="cb-esic">
-          <div class="rl"><strong>🏥 ESIC</strong><span>Monthly ESI contribution</span></div>
-        </div>
-
-        <div class="reg-item" id="ri-roc" onclick="toggleReg('roc',this)">
-          <input type="checkbox" id="cb-roc">
-          <div class="rl"><strong>🏢 ROC / MCA</strong><span>AOC-4, MGT-7, DIR-3 KYC</span></div>
-        </div>
-
-        <div class="reg-item" id="ri-pt" onclick="toggleReg('pt',this)">
-          <input type="checkbox" id="cb-pt">
-          <div class="rl"><strong>💼 Professional Tax</strong><span>State PT slab returns</span></div>
-        </div>
-
-      </div>
-
-      <div class="btn-row">
-        <button class="btn-back" onclick="goStep(2)">← Back</button>
-        <button class="btn-primary" id="btn3" onclick="step3Submit()">Create Account →</button>
-      </div>
-    </div>
-
-  </div><!-- /auth-card -->
-  <div style="text-align:center;margin-top:14px;font-size:0.78rem;color:var(--gray-4)">
-    <a href="index.html" style="color:var(--gray-4)">← Back to TrustFactON</a>
   </div>
-</div><!-- /auth-wrap -->
+
+  <div class="back"><a href="index.html">← Back to TrustFactON</a></div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
 <script>
-// ── State ─────────────────────────────────────────────
-let selectedRole = 'owner';
-const regs = { it: true, gst: false, tds: false, pf: false, esic: false, roc: false, pt: false };
+let pendingEmail = '';
 
-// Redirect if already logged in
 (async () => {
-  const user = await getUser();
-  if (user) window.location.href = 'dashboard.html';
+  const { data:{ session } } = await sb.auth.getSession();
+  if (session) window.location.href = 'dashboard.html';
 })();
 
-// ── Step navigation ───────────────────────────────────
-function goStep(n) {
-  [1,2,3].forEach(i => {
-    document.getElementById('panel'+i).classList.toggle('active', i===n);
-    const si = document.getElementById('s'+i);
-    si.className = 'step' + (i<n ? ' done' : (i===n ? ' active' : ''));
-    document.getElementById('sn'+i).textContent = i<n ? '✓' : i;
-    if (i < 3) document.getElementById('sl'+i).className = 'step-line' + (i<n ? ' done' : '');
+function showErr(msg, el='errMsg') {
+  const e = document.getElementById(el);
+  e.textContent = msg; e.classList.add('show');
+}
+function clearErr(el='errMsg') {
+  document.getElementById(el).classList.remove('show');
+}
+
+async function doSignup() {
+  const name  = document.getElementById('name').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const role  = document.getElementById('role').value;
+  clearErr();
+
+  if (!name)  return showErr('Please enter your name.');
+  if (!email) return showErr('Please enter your email address.');
+
+  const btn = document.getElementById('signupBtn');
+  btn.disabled = true; btn.textContent = 'Sending code…';
+
+  // Store name + role for after verification
+  localStorage.setItem('tf_signup', JSON.stringify({ name, role }));
+
+  const { error } = await sb.auth.signInWithOtp({
+    email,
+    options: { shouldCreateUser: true, data: { name, role } }
   });
-  document.getElementById('errMsg').classList.remove('show');
-}
 
-function setRole(r) {
-  selectedRole = r;
-  document.getElementById('rc-owner').classList.toggle('selected', r==='owner');
-  document.getElementById('rc-professional').classList.toggle('selected', r==='professional');
-}
-
-function toggleReg(key, el) {
-  if (el.classList.contains('disabled')) return;
-  regs[key] = !regs[key];
-  el.classList.toggle('selected', regs[key]);
-  document.getElementById('cb-'+key).checked = regs[key];
-}
-
-function onTypeChange() {
-  const t = document.getElementById('s2type').value;
-  const showCin   = ['OPC','Private Limited','LLP'].includes(t);
-  const showGstin = t !== '';
-  const showTan   = t !== '';
-  document.getElementById('cf-cin').classList.toggle('show', showCin);
-  document.getElementById('cf-gstin').classList.toggle('show', showGstin);
-  document.getElementById('cf-tan').classList.toggle('show', showTan);
-  if (t === 'LLP') {
-    document.getElementById('cin-label').innerHTML = 'LLPIN <span class="opt">(from MCA certificate)</span>';
-    document.getElementById('s2cin').placeholder = 'AAA-1234';
-  } else {
-    document.getElementById('cin-label').innerHTML = 'CIN <span class="opt">(from MCA certificate)</span>';
-    document.getElementById('s2cin').placeholder = 'U74999KA2020OPC123456';
+  if (error) {
+    btn.disabled = false; btn.textContent = 'Get Started →';
+    return showErr(error.message);
   }
-  // Auto-check ROC for companies
-  if (['OPC','Private Limited','LLP'].includes(t) && !regs.roc) {
-    // will suggest on step 3
+
+  pendingEmail = email;
+  document.getElementById('sentTo').textContent = email;
+  document.getElementById('signupCard').style.display = 'none';
+  document.getElementById('otpCard').style.display = 'block';
+  setTimeout(() => document.getElementById('otpInput')?.focus(), 120);
+}
+
+async function verifyOTP() {
+  const token = document.getElementById('otpInput').value.trim();
+  const btn   = document.getElementById('verifyBtn');
+  clearErr('otpErr');
+
+  if (token.length !== 6) return showErr('Enter the complete 6-digit code.', 'otpErr');
+
+  btn.disabled = true; btn.textContent = 'Verifying…';
+
+  const { data, error } = await sb.auth.verifyOtp({
+    email: pendingEmail, token, type: 'email'
+  });
+
+  if (error) {
+    btn.disabled = false; btn.textContent = 'Verify & Continue →';
+    return showErr(
+      error.message.includes('invalid') || error.message.includes('expired')
+        ? 'Incorrect or expired code. Request a new one below.'
+        : error.message,
+      'otpErr'
+    );
   }
-}
 
-// ── Validation ────────────────────────────────────────
-function showErr(msg) {
-  const el = document.getElementById('errMsg');
-  el.textContent = msg; el.classList.add('show');
-  el.scrollIntoView({behavior:'smooth', block:'nearest'});
-}
-
-const PAN_RE  = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
-const GSTIN_RE = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
-const TAN_RE  = /^[A-Z]{4}[0-9]{5}[A-Z]{1}$/;
-
-// ── Step 1 ────────────────────────────────────────────
-function step1Next() {
-  const name  = document.getElementById('s1name').value.trim();
-  const email = document.getElementById('s1email').value.trim();
-  const pass  = document.getElementById('s1pass').value;
-  if (!name)              return showErr('Please enter your full name.');
-  if (!email)             return showErr('Please enter your email address.');
-  if (pass.length < 8)    return showErr('Password must be at least 8 characters.');
-  goStep(2);
-}
-
-// ── Step 2 ────────────────────────────────────────────
-function step2Next() {
-  const name = document.getElementById('s2name').value.trim();
-  const type = document.getElementById('s2type').value;
-  const pan  = document.getElementById('s2pan').value.trim().toUpperCase();
-  const gstin= document.getElementById('s2gstin').value.trim().toUpperCase();
-  const tan  = document.getElementById('s2tan').value.trim().toUpperCase();
-  if (!name)             return showErr('Please enter the entity name.');
-  if (!type)             return showErr('Please select entity type.');
-  if (!PAN_RE.test(pan)) return showErr('PAN format is invalid. Expected: AAAAA0000A');
-  if (gstin && !GSTIN_RE.test(gstin)) return showErr('GSTIN format is invalid. Expected: 29AAAAA0000A1Z5');
-  if (tan && !TAN_RE.test(tan))       return showErr('TAN format is invalid. Expected: AAAA00000A');
-  // Auto-suggest ROC for companies
-  if (['OPC','Private Limited','LLP'].includes(type)) regs.roc = true;
-  document.getElementById('ri-roc').classList.toggle('selected', regs.roc);
-  document.getElementById('cb-roc').checked = regs.roc;
-  goStep(3);
-}
-
-// ── Step 3: Submit ────────────────────────────────────
-// Flow:
-//   1. Call sb.auth.signUp → Supabase sends verification email
-//   2. Save entity/registration data to localStorage (pending setup)
-//   3. Show "check your email" confirmation screen
-//   4. User clicks email link → redirected to dashboard.html
-//   5. dashboard.html detects pending setup → creates entity from localStorage
-async function step3Submit() {
-  const btn = document.getElementById('btn3');
-  btn.disabled = true; btn.textContent = 'Creating account…';
-
-  const email = document.getElementById('s1email').value.trim();
-  const pass  = document.getElementById('s1pass').value;
-  const name  = document.getElementById('s1name').value.trim();
-  const phone = document.getElementById('s1phone').value.trim();
-
-  try {
-    // 1. Create auth account — Supabase will send verification email
-    const { data: authData, error: authErr } = await sb.auth.signUp({
-      email, password: pass,
-      options: {
-        data: { name, role: selectedRole },
-        emailRedirectTo: window.location.origin + '/dashboard.html?setup=1'
-      }
+  // Update profile with name + role from localStorage
+  const saved = JSON.parse(localStorage.getItem('tf_signup') || '{}');
+  if (saved.name) {
+    await sb.from('profiles').upsert({
+      id: data.user.id, name: saved.name, role: saved.role || 'owner'
     });
-    if (authErr) throw authErr;
-
-    // 2. Save pending entity setup to localStorage
-    //    Dashboard will read this after email is confirmed
-    const pendingSetup = {
-      entityName:    document.getElementById('s2name').value.trim(),
-      entityType:    document.getElementById('s2type').value,
-      pan:           document.getElementById('s2pan').value.trim().toUpperCase(),
-      gstin:         document.getElementById('s2gstin').value.trim().toUpperCase() || null,
-      cin_llpin:     document.getElementById('s2cin').value.trim().toUpperCase()   || null,
-      tan:           document.getElementById('s2tan').value.trim().toUpperCase()   || null,
-      emailReminders:document.getElementById('s2email').value.trim() || email,
-      phone,
-      regs: { ...regs },
-      role: selectedRole,
-    };
-    localStorage.setItem('tf_pending_setup', JSON.stringify(pendingSetup));
-
-    // 3. Show verification screen
-    showVerifyScreen(email);
-
-  } catch (e) {
-    btn.disabled = false; btn.textContent = 'Create Account →';
-    showErr(e.message || 'Something went wrong. Please try again.');
   }
+  localStorage.removeItem('tf_signup');
+
+  // New user → go to profile setup
+  // Returning user → go to dashboard
+  window.location.href = 'profile-setup.html';
 }
 
-function showVerifyScreen(email) {
-  // Replace card content with confirmation message
-  document.querySelector('.auth-card').innerHTML = `
-    <div style="text-align:center;padding:12px 0">
-      <div style="font-size:2.5rem;margin-bottom:16px">📧</div>
-      <h2 style="margin-bottom:8px">Check your inbox</h2>
-      <p style="color:var(--gray-5);margin-bottom:20px;line-height:1.7">
-        We sent a verification link to<br>
-        <strong style="color:var(--black)">${email}</strong><br><br>
-        Click the link in the email to activate your account and set up your compliance dashboard.
-      </p>
-      <div style="background:var(--gray-1);border-radius:8px;padding:14px;font-size:0.82rem;color:var(--gray-5);margin-bottom:20px;text-align:left;line-height:1.7">
-        <strong style="color:var(--black);display:block;margin-bottom:6px">Didn't receive it?</strong>
-        • Check your spam / junk folder<br>
-        • Make sure you entered the correct email<br>
-        • Wait 2–3 minutes before trying again
-      </div>
-      <button onclick="resendVerification('${email}')" id="resendBtn"
-        style="padding:9px 20px;border:1.5px solid var(--gray-3);border-radius:8px;font-size:0.84rem;color:var(--gray-6);background:white;cursor:pointer;font-family:'Inter',sans-serif">
-        Resend verification email
-      </button>
-    </div>`;
-  document.querySelectorAll('.step-line, .step').forEach(el => el.style.display = 'none');
-}
-
-async function resendVerification(email) {
+async function resendCode() {
   const btn = document.getElementById('resendBtn');
   btn.disabled = true; btn.textContent = 'Sending…';
-  const { error } = await sb.auth.resend({ type: 'signup', email });
+  clearErr('otpErr');
+  const { error } = await sb.auth.signInWithOtp({
+    email: pendingEmail, options: { shouldCreateUser: true }
+  });
   if (error) {
-    btn.disabled = false; btn.textContent = 'Resend verification email';
-    alert('Error: ' + error.message);
+    showErr('Could not resend. Try again in a moment.', 'otpErr');
   } else {
-    btn.textContent = '✅ Sent! Check your inbox';
+    btn.textContent = '✅ New code sent!';
   }
+  setTimeout(() => { btn.disabled = false; btn.textContent = 'Resend code'; }, 20000);
 }
 </script>
 </body>

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Set Up Your Profile — TrustFactON</title>
+<link rel="stylesheet" href="style.css">
+<style>
+body{background:var(--gray-1);min-height:100vh;padding:32px 20px;}
+.wrap{max-width:560px;margin:0 auto;}
+.logo{text-align:center;margin-bottom:22px;}
+.logo img{width:40px;height:40px;object-fit:contain;mix-blend-mode:multiply;}
+.logo-name{font-family:'Playfair Display',Georgia,serif;font-size:1.2rem;color:var(--navy);font-weight:700;margin-top:4px;}
+.logo-name .accent{color:var(--blue);}
+
+/* Steps */
+.steps{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:22px;}
+.step{display:flex;align-items:center;gap:7px;font-size:0.79rem;font-weight:500;color:var(--gray-4);}
+.step.active{color:var(--navy);}
+.step.done{color:var(--green);}
+.snum{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700;background:var(--gray-3);color:var(--gray-5);flex-shrink:0;}
+.step.active .snum{background:var(--navy);color:white;}
+.step.done .snum{background:var(--green);color:white;}
+.sline{width:36px;height:2px;background:var(--gray-3);margin:0 3px;flex-shrink:0;}
+.sline.done{background:var(--green);}
+
+.card{background:white;border-radius:14px;border:1px solid var(--gray-3);padding:28px;box-shadow:0 4px 24px rgba(0,0,0,0.06);margin-bottom:14px;}
+.card h2{font-size:1.1rem;color:var(--black);margin-bottom:4px;}
+.card p{font-size:0.83rem;color:var(--gray-5);margin-bottom:20px;line-height:1.6;}
+.panel{display:none;}
+.panel.active{display:block;}
+
+.fg{margin-bottom:14px;}
+.fg label{display:block;font-size:0.78rem;font-weight:600;color:var(--gray-6);margin-bottom:5px;}
+.req{color:var(--red);margin-left:2px;}
+.opt{font-weight:400;color:var(--gray-4);font-size:0.71rem;margin-left:4px;}
+.fg input,.fg select{width:100%;padding:9px 12px;border:1.5px solid var(--gray-3);border-radius:8px;font-size:0.86rem;font-family:'Inter',sans-serif;color:var(--black);background:white;transition:border-color .15s,box-shadow .15s;box-sizing:border-box;}
+.fg input:focus,.fg select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.08);}
+.fg .hint{font-size:0.71rem;color:var(--gray-4);margin-top:3px;}
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+
+/* Registration tiles */
+.reg-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px;}
+.reg-tile{border:1.5px solid var(--gray-3);border-radius:9px;padding:12px 13px;cursor:pointer;transition:all .15s;display:flex;align-items:flex-start;gap:9px;}
+.reg-tile:hover{border-color:var(--blue);}
+.reg-tile.on{border-color:var(--navy);background:#F0F4F8;}
+.reg-tile.locked{opacity:.55;cursor:default;background:var(--gray-1);}
+.reg-tile input[type=checkbox]{margin-top:2px;flex-shrink:0;width:14px;height:14px;}
+.reg-tile strong{font-size:0.81rem;display:block;color:var(--black);}
+.reg-tile span{font-size:0.71rem;color:var(--gray-5);line-height:1.3;}
+
+/* Buttons */
+.btn-row{display:flex;gap:10px;margin-top:6px;}
+.btn-p{flex:1;padding:11px;background:var(--navy);color:white;border:none;border-radius:8px;font-size:0.88rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:background .15s;}
+.btn-p:hover{background:#0F2444;}
+.btn-p:disabled{background:var(--gray-4);cursor:not-allowed;}
+.btn-s{padding:11px 16px;background:white;color:var(--gray-6);border:1.5px solid var(--gray-3);border-radius:8px;font-size:0.86rem;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;}
+
+.err{background:#FEF2F2;border:1px solid #FECACA;border-radius:8px;padding:9px 12px;font-size:0.81rem;color:#991B1B;margin-bottom:12px;display:none;}
+.err.show{display:block;}
+
+.skip-note{text-align:center;font-size:0.79rem;color:var(--gray-4);margin-top:8px;}
+.skip-note a{color:var(--blue);cursor:pointer;font-weight:500;}
+
+@media(max-width:480px){.fg-row{grid-template-columns:1fr;}.reg-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="logo">
+    <img src="logo.png" alt="">
+    <div class="logo-name">Trust<span class="accent">Fact</span>ON</div>
+  </div>
+
+  <!-- Progress -->
+  <div class="steps">
+    <div class="step active" id="ps1"><span class="snum" id="pn1">1</span>Entity</div>
+    <div class="sline" id="pl1"></div>
+    <div class="step" id="ps2"><span class="snum" id="pn2">2</span>Registrations</div>
+    <div class="sline" id="pl2"></div>
+    <div class="step" id="ps3"><span class="snum" id="pn3">3</span>Done</div>
+  </div>
+
+  <div class="card">
+    <div class="err" id="errMsg"></div>
+
+    <!-- Panel 1: Entity details -->
+    <div class="panel active" id="pp1">
+      <h2>Tell us about your entity</h2>
+      <p>This helps us show you the right compliance deadlines. You can add more entities later.</p>
+
+      <div class="fg">
+        <label>Entity / Business name <span class="req">*</span></label>
+        <input type="text" id="eName" placeholder="e.g. Evenset Consultancy Services OPC Pvt Ltd">
+      </div>
+      <div class="fg-row">
+        <div class="fg">
+          <label>Entity type <span class="req">*</span></label>
+          <select id="eType" onchange="onTypeChange()">
+            <option value="">— Select —</option>
+            <option value="Individual">Individual / Salaried</option>
+            <option value="Proprietor">Proprietor / Sole Trader</option>
+            <option value="Partnership">Partnership Firm</option>
+            <option value="LLP">LLP</option>
+            <option value="OPC">OPC</option>
+            <option value="Private Limited">Private Limited</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>PAN <span class="req">*</span></label>
+          <input type="text" id="ePan" placeholder="AAAAA0000A" maxlength="10"
+            oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
+          <div class="hint">Mandatory for all entity types</div>
+        </div>
+      </div>
+
+      <div class="fg-row">
+        <div class="fg" id="cf-gstin" style="display:none">
+          <label>GSTIN <span class="opt">(if registered)</span></label>
+          <input type="text" id="eGstin" placeholder="29AAAAA0000A1Z5" maxlength="15"
+            oninput="this.value=this.value.toUpperCase()">
+        </div>
+        <div class="fg" id="cf-tan" style="display:none">
+          <label>TAN <span class="opt">(if applicable)</span></label>
+          <input type="text" id="eTan" placeholder="AAAA00000A" maxlength="10"
+            oninput="this.value=this.value.toUpperCase()">
+        </div>
+      </div>
+
+      <div class="fg" id="cf-cin" style="display:none">
+        <label id="cinLabel">CIN <span class="opt">(from MCA certificate)</span></label>
+        <input type="text" id="eCin" placeholder="U74999KA2020OPC123456"
+          oninput="this.value=this.value.toUpperCase()">
+      </div>
+
+      <div class="fg">
+        <label>Reminder email <span class="opt">(for deadline alerts)</span></label>
+        <input type="email" id="eEmail" placeholder="filings@yourbusiness.com">
+        <div class="hint">Defaults to your login email if left blank</div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-p" onclick="p1Next()">Continue →</button>
+      </div>
+      <div class="skip-note">
+        <a onclick="skipSetup()">Skip for now — I'll set this up later</a>
+      </div>
+    </div>
+
+    <!-- Panel 2: Registrations -->
+    <div class="panel" id="pp2">
+      <h2>Which registrations apply?</h2>
+      <p>Select what's applicable — we'll track only those deadlines for you.</p>
+
+      <div class="reg-grid">
+        <div class="reg-tile locked" id="rt-it">
+          <input type="checkbox" checked disabled>
+          <div><strong>📊 Income Tax</strong><span>Always tracked — PAN mandatory</span></div>
+        </div>
+        <div class="reg-tile" id="rt-gst" onclick="toggleReg('gst',this)">
+          <input type="checkbox" id="cb-gst">
+          <div><strong>🏷️ GST</strong><span>GSTR-1, GSTR-3B, GSTR-9</span></div>
+        </div>
+        <div class="reg-tile" id="rt-tds" onclick="toggleReg('tds',this)">
+          <input type="checkbox" id="cb-tds">
+          <div><strong>✂️ TDS / TCS</strong><span>Returns, deposits, Form 16</span></div>
+        </div>
+        <div class="reg-tile" id="rt-pf" onclick="toggleReg('pf',this)">
+          <input type="checkbox" id="cb-pf">
+          <div><strong>🏦 PF / EPF</strong><span>Monthly contributions</span></div>
+        </div>
+        <div class="reg-tile" id="rt-esic" onclick="toggleReg('esic',this)">
+          <input type="checkbox" id="cb-esic">
+          <div><strong>🏥 ESIC</strong><span>Monthly ESI contributions</span></div>
+        </div>
+        <div class="reg-tile" id="rt-roc" onclick="toggleReg('roc',this)">
+          <input type="checkbox" id="cb-roc">
+          <div><strong>🏢 ROC / MCA</strong><span>AOC-4, MGT-7, DIR-3 KYC</span></div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-s" onclick="goPanel(1)">← Back</button>
+        <button class="btn-p" id="saveBtn" onclick="saveProfile()">Save & Go to Dashboard →</button>
+      </div>
+    </div>
+
+    <!-- Panel 3: Done -->
+    <div class="panel" id="pp3" style="text-align:center;padding:12px 0">
+      <div style="font-size:2.5rem;margin-bottom:14px">🎉</div>
+      <h2 style="margin-bottom:8px">You're all set!</h2>
+      <p style="margin-bottom:22px">Your compliance dashboard is ready. We'll remind you before every deadline.</p>
+      <button class="btn-p" onclick="window.location.href='dashboard.html?new=1'"
+        style="max-width:260px;margin:0 auto">
+        Open Dashboard →
+      </button>
+    </div>
+
+  </div><!-- /card -->
+</div><!-- /wrap -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script>
+const regs = { gst:false, tds:false, pf:false, esic:false, roc:false };
+let currentUser = null;
+
+(async () => {
+  const { data:{ session } } = await sb.auth.getSession();
+  if (!session) { window.location.href = 'login.html'; return; }
+  currentUser = session.user;
+
+  // Pre-fill reminder email with login email
+  document.getElementById('eEmail').placeholder = currentUser.email;
+
+  // If user already has an entity, go straight to dashboard
+  const entities = await getMyEntities(currentUser.id);
+  if (entities.length) {
+    window.location.href = 'dashboard.html';
+  }
+})();
+
+function goPanel(n) {
+  [1,2,3].forEach(i => {
+    document.getElementById('pp'+i).classList.toggle('active', i===n);
+    const s = document.getElementById('ps'+i);
+    s.className = 'step' + (i < n ? ' done' : i === n ? ' active' : '');
+    document.getElementById('pn'+i).textContent = i < n ? '✓' : i;
+    if (i < 3) document.getElementById('pl'+i).className = 'sline' + (i < n ? ' done' : '');
+  });
+  document.getElementById('errMsg').classList.remove('show');
+}
+
+function onTypeChange() {
+  const t = document.getElementById('eType').value;
+  document.getElementById('cf-gstin').style.display = t ? 'block' : 'none';
+  document.getElementById('cf-tan').style.display   = t ? 'block' : 'none';
+  const hasCin = ['OPC','Private Limited','LLP'].includes(t);
+  document.getElementById('cf-cin').style.display = hasCin ? 'block' : 'none';
+  if (t === 'LLP') {
+    document.getElementById('cinLabel').innerHTML = 'LLPIN <span class="opt">(from MCA certificate)</span>';
+    document.getElementById('eCin').placeholder = 'AAA-1234';
+  } else {
+    document.getElementById('cinLabel').innerHTML = 'CIN <span class="opt">(from MCA certificate)</span>';
+    document.getElementById('eCin').placeholder = 'U74999KA2020OPC123456';
+  }
+  // Auto-check ROC for companies
+  if (['OPC','Private Limited','LLP'].includes(t)) {
+    regs.roc = true;
+    document.getElementById('rt-roc').classList.add('on');
+    document.getElementById('cb-roc').checked = true;
+  }
+}
+
+function toggleReg(key, el) {
+  if (el.classList.contains('locked')) return;
+  regs[key] = !regs[key];
+  el.classList.toggle('on', regs[key]);
+  document.getElementById('cb-'+key).checked = regs[key];
+}
+
+const PAN_RE   = /^[A-Z]{5}[0-9]{4}[A-Z]$/;
+const GSTIN_RE = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/;
+const TAN_RE   = /^[A-Z]{4}[0-9]{5}[A-Z]$/;
+
+function showErr(msg) {
+  const e = document.getElementById('errMsg');
+  e.textContent = msg; e.classList.add('show');
+  e.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function p1Next() {
+  const name  = document.getElementById('eName').value.trim();
+  const type  = document.getElementById('eType').value;
+  const pan   = document.getElementById('ePan').value.trim().toUpperCase();
+  const gstin = document.getElementById('eGstin').value.trim().toUpperCase();
+  const tan   = document.getElementById('eTan').value.trim().toUpperCase();
+
+  if (!name)              return showErr('Please enter the entity name.');
+  if (!type)              return showErr('Please select entity type.');
+  if (!PAN_RE.test(pan))  return showErr('PAN format is invalid. Expected: AAAAA0000A');
+  if (gstin && !GSTIN_RE.test(gstin)) return showErr('GSTIN format invalid. Expected: 29AAAAA0000A1Z5');
+  if (tan   && !TAN_RE.test(tan))     return showErr('TAN format invalid. Expected: AAAA00000A');
+
+  goPanel(2);
+}
+
+async function saveProfile() {
+  const btn = document.getElementById('saveBtn');
+  btn.disabled = true; btn.textContent = 'Saving…';
+
+  try {
+    const email = document.getElementById('eEmail').value.trim() || currentUser.email;
+
+    const { data: ent, error: eErr } = await sb.from('entities').insert({
+      created_by:      currentUser.id,
+      name:            document.getElementById('eName').value.trim(),
+      type:            document.getElementById('eType').value,
+      pan:             document.getElementById('ePan').value.trim().toUpperCase(),
+      gstin:           document.getElementById('eGstin').value.trim().toUpperCase() || null,
+      cin_llpin:       document.getElementById('eCin').value.trim().toUpperCase()   || null,
+      tan:             document.getElementById('eTan').value.trim().toUpperCase()   || null,
+      email_reminders: email,
+    }).select().single();
+    if (eErr) throw eErr;
+
+    await sb.from('entity_members').insert({
+      entity_id: ent.id, user_id: currentUser.id, role: 'owner', status: 'active'
+    });
+
+    await sb.from('registrations').insert({
+      entity_id:        ent.id,
+      gst:              regs.gst,
+      income_tax:       true,
+      tds:              regs.tds,
+      pf:               regs.pf,
+      esic:             regs.esic,
+      roc:              regs.roc,
+      professional_tax: false,
+    });
+
+    goPanel(3);
+  } catch(e) {
+    btn.disabled = false; btn.textContent = 'Save & Go to Dashboard →';
+    showErr(e.message || 'Something went wrong. Please try again.');
+  }
+}
+
+function skipSetup() {
+  // Goes to dashboard — they can set up from settings later
+  window.location.href = 'dashboard.html';
+}
+</script>
+</body>
+</html>

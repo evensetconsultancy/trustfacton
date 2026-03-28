@@ -66,12 +66,22 @@ body { background: var(--gray-1); display: flex; align-items: center; justify-co
     <button class="btn-full" id="loginBtn" onclick="doLogin()">Login →</button>
 
     <div class="auth-divider">or</div>
-    <button class="btn-full" id="otpBtn" onclick="sendOTP()"
+    <button class="btn-full" id="otpBtn" onclick="sendLoginOTP()"
       style="background:white;color:var(--navy);border:1.5px solid var(--gray-3)">
-      Send login link to email
+      Login with 6-digit email code
     </button>
-    <div id="otpMsg" style="display:none;text-align:center;font-size:0.82rem;color:var(--green);margin-top:10px;font-weight:600">
-      ✅ Magic link sent! Check your inbox.
+    <div id="otpBox" style="display:none;margin-top:14px">
+      <p style="font-size:0.82rem;color:var(--gray-5);text-align:center;margin-bottom:10px">
+        Enter the 6-digit code sent to your email
+      </p>
+      <input type="text" id="otpCode" placeholder="6-digit code"
+        maxlength="6" inputmode="numeric"
+        oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+        onkeydown="if(event.key==='Enter')verifyLoginOTP()"
+        style="width:100%;padding:11px;text-align:center;font-size:1.4rem;
+               letter-spacing:10px;border:1.5px solid var(--gray-3);border-radius:8px;
+               font-family:'Inter',sans-serif;box-sizing:border-box;color:var(--black);margin-bottom:10px">
+      <button class="btn-full" onclick="verifyLoginOTP()">Verify & Login →</button>
     </div>
   </div>
 
@@ -114,20 +124,41 @@ async function doLogin() {
   }
 }
 
-async function sendOTP() {
+async function sendLoginOTP() {
   const email = document.getElementById('email').value.trim();
   if (!email) { showErr('Enter your email address first.'); return; }
 
   const btn = document.getElementById('otpBtn');
-  btn.disabled = true; btn.textContent = 'Sending…';
-  const { error } = await sb.auth.signInWithOtp({ email, options: { emailRedirectTo: window.location.origin + '/dashboard.html' } });
+  btn.disabled = true; btn.textContent = 'Sending code…';
+
+  const { error } = await sb.auth.signInWithOtp({
+    email, options: { shouldCreateUser: false }
+  });
 
   if (error) {
-    btn.disabled = false; btn.textContent = 'Send login link to email';
+    btn.disabled = false; btn.textContent = 'Login with 6-digit email code';
     showErr(error.message);
   } else {
-    document.getElementById('otpMsg').style.display = 'block';
-    btn.textContent = 'Link sent ✓';
+    btn.textContent = 'Code sent ✓';
+    document.getElementById('otpBox').style.display = 'block';
+    setTimeout(() => document.getElementById('otpCode')?.focus(), 100);
+  }
+}
+
+async function verifyLoginOTP() {
+  const email = document.getElementById('email').value.trim();
+  const token = (document.getElementById('otpCode')?.value || '').trim();
+
+  if (token.length !== 6) { showErr('Please enter the complete 6-digit code.'); return; }
+
+  const { error } = await sb.auth.verifyOtp({ email, token, type: 'email' });
+
+  if (error) {
+    showErr(error.message?.includes('invalid') || error.message?.includes('expired')
+      ? 'Incorrect or expired code. Request a new one.'
+      : error.message);
+  } else {
+    window.location.href = 'dashboard.html';
   }
 }
 
