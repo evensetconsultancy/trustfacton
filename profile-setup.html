@@ -293,32 +293,24 @@ async function saveProfile() {
   try {
     const email = document.getElementById('eEmail').value.trim() || currentUser.email;
 
-    const { data: ent, error: eErr } = await sb.from('entities').insert({
-      created_by:      currentUser.id,
-      name:            document.getElementById('eName').value.trim(),
-      type:            document.getElementById('eType').value,
-      pan:             document.getElementById('ePan').value.trim().toUpperCase(),
-      gstin:           document.getElementById('eGstin').value.trim().toUpperCase() || null,
-      cin_llpin:       document.getElementById('eCin').value.trim().toUpperCase()   || null,
-      tan:             document.getElementById('eTan').value.trim().toUpperCase()   || null,
-      email_reminders: email,
-    }).select().single();
+    // Use security definer function — bypasses RLS for inserts
+    const { data: entityId, error: eErr } = await sb.rpc('create_entity', {
+      p_user_id:   currentUser.id,
+      p_name:      document.getElementById('eName').value.trim(),
+      p_type:      document.getElementById('eType').value,
+      p_pan:       document.getElementById('ePan').value.trim().toUpperCase(),
+      p_gstin:     document.getElementById('eGstin').value.trim().toUpperCase() || null,
+      p_cin_llpin: document.getElementById('eCin').value.trim().toUpperCase()   || null,
+      p_tan:       document.getElementById('eTan').value.trim().toUpperCase()   || null,
+      p_email:     email,
+      p_gst:       regs.gst,
+      p_tds:       regs.tds,
+      p_pf:        regs.pf,
+      p_esic:      regs.esic,
+      p_roc:       regs.roc,
+      p_pt:        false,
+    });
     if (eErr) throw eErr;
-
-    await sb.from('entity_members').insert({
-      entity_id: ent.id, user_id: currentUser.id, role: 'owner', status: 'active'
-    });
-
-    await sb.from('registrations').insert({
-      entity_id:        ent.id,
-      gst:              regs.gst,
-      income_tax:       true,
-      tds:              regs.tds,
-      pf:               regs.pf,
-      esic:             regs.esic,
-      roc:              regs.roc,
-      professional_tax: false,
-    });
 
     goPanel(3);
   } catch(e) {
