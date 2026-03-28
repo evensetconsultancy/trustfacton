@@ -263,46 +263,63 @@
 <!-- ════ COMPLIANCE CALENDAR ════ -->
 <section class="cal-section" id="calendar">
 <div class="container">
-  <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:10px">
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:20px">
     <div>
       <span class="sec-label">Compliance Calendar</span>
-      <h2 class="sec-title">Upcoming Due Dates — FY 2025-26 / 2026-27</h2>
-      <p style="color:var(--gray-5);font-size:0.86rem;margin-top:4px">GST · Income Tax · TDS/TCS · PF · ESI · ROC — all in one place. Auto-highlights upcoming deadlines.</p>
+      <h2 class="sec-title" id="calTitle">Due Dates — March 2026</h2>
+      <p style="color:var(--gray-5);font-size:0.85rem;margin-top:3px">GST · Income Tax · TDS/TCS · PF · ESIC · ROC — auto-updates each month</p>
     </div>
-    <div style="font-size:0.76rem;color:var(--gray-5)">Today: <strong id="todayDate"></strong></div>
+    <!-- Month navigator -->
+    <div style="display:flex;align-items:center;gap:8px;background:white;border:1px solid var(--gray-3);border-radius:10px;padding:6px 10px">
+      <button onclick="calNav(-1)" style="width:28px;height:28px;border:1px solid var(--gray-3);border-radius:6px;background:white;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;color:var(--gray-5)">‹</button>
+      <span id="calMonthLabel" style="font-size:0.85rem;font-weight:600;color:var(--black);min-width:110px;text-align:center"></span>
+      <button onclick="calNav(1)"  style="width:28px;height:28px;border:1px solid var(--gray-3);border-radius:6px;background:white;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;color:var(--gray-5)">›</button>
+    </div>
   </div>
-  <div class="cal-filters">
+
+  <!-- Category filter pills -->
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">
     <button class="cf on" data-cat="all">All</button>
-    <button class="cf" data-cat="GST">GST</button>
-    <button class="cf" data-cat="Income Tax">Income Tax</button>
-    <button class="cf" data-cat="TDS">TDS / TCS</button>
-    <button class="cf" data-cat="PF">PF / ESIC</button>
-    <button class="cf" data-cat="ROC">ROC / MCA</button>
+    <button class="cf" data-cat="GST">🏷️ GST</button>
+    <button class="cf" data-cat="Income Tax">📊 Income Tax</button>
+    <button class="cf" data-cat="TDS">✂️ TDS/TCS</button>
+    <button class="cf" data-cat="PF">🏦 PF</button>
+    <button class="cf" data-cat="ESIC">🏥 ESIC</button>
+    <button class="cf" data-cat="ROC">🏢 ROC</button>
   </div>
+
+  <!-- Table -->
   <div class="cal-tbl-wrap">
     <table class="cal-tbl">
       <thead>
         <tr>
-          <th style="width:95px">Due Date</th>
-          <th style="width:75px">Category</th>
-          <th>Compliance / Form</th>
-          <th style="width:110px">Who Must File</th>
-          <th style="width:90px">Days Left</th>
+          <th style="width:80px">Date</th>
+          <th style="width:80px">Category</th>
+          <th>Due / Filing</th>
+          <th style="width:120px">Who Must Comply</th>
+          <th style="width:85px">Status</th>
         </tr>
       </thead>
-      <tbody id="calBody"></tbody>
+      <tbody id="calBody">
+        <tr><td colspan="5" style="text-align:center;padding:24px;color:var(--gray-4)">Loading…</td></tr>
+      </tbody>
     </table>
   </div>
-  <div class="cal-legend">
-    <div class="leg"><div class="leg-dot" style="background:#DC2626"></div>Overdue</div>
-    <div class="leg"><div class="leg-dot" style="background:#D97706"></div>Due ≤ 7 days</div>
-    <div class="leg"><div class="leg-dot" style="background:#16A34A"></div>Due ≤ 30 days</div>
-    <div class="leg"><div class="leg-dot" style="background:#94A3B8"></div>More than 30 days</div>
+
+  <!-- Legend -->
+  <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;font-size:0.73rem;color:var(--gray-5);align-items:center">
+    <span style="font-weight:600;color:var(--gray-4)">Legend:</span>
+    <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;background:#DC2626;border-radius:2px;display:inline-block"></span>Overdue</span>
+    <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;background:#D97706;border-radius:2px;display:inline-block"></span>Due within 7 days</span>
+    <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;background:#16A34A;border-radius:2px;display:inline-block"></span>Due within 30 days</span>
+    <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;background:#94A3B8;border-radius:2px;display:inline-block"></span>Future</span>
+    <span style="margin-left:auto;font-size:0.7rem;color:var(--gray-4)">* Dates subject to CBDT/GSTN extension notifications. Verify before filing.</span>
   </div>
 </div>
 </section>
 
 <!-- ════ TOPICS ════ -->
+
 <section class="topics-section">
 <div class="container">
   <div style="text-align:center">
@@ -573,102 +590,205 @@ async function fxLoad(){
 }
 
 /* ════════════════════════════════
-   COMPLIANCE CALENDAR
+   COMPLIANCE CALENDAR — Monthly
+   ALL labels/years/FY computed dynamically from current date.
+   Zero manual updates needed year to year.
 ════════════════════════════════ */
-const DEADLINES=[
-  // GST
-  {cat:'GST',name:'GSTR-1 Filing — March 2026 (Monthly taxpayers)',who:'Turnover > ₹5 Cr',date:'2026-04-11',note:'Outward supply details'},
-  {cat:'GST',name:'GSTR-1 Filing — Q4 Jan-Mar 2026 (QRMP)',who:'Turnover ≤ ₹5 Cr',date:'2026-04-13',note:'Quarterly filers'},
-  {cat:'GST',name:'GSTR-3B — March 2026 (Monthly)',who:'Turnover > ₹5 Cr',date:'2026-04-20',note:'Summary return + tax payment'},
-  {cat:'GST',name:'GSTR-3B — Q4 Jan-Mar 2026 (QRMP)',who:'Turnover ≤ ₹5 Cr',date:'2026-04-22',note:'Quarterly return'},
-  {cat:'GST',name:'GSTR-7 (TDS under GST) — March 2026',who:'GST TDS deductors',date:'2026-04-10',note:'Form GSTR-7'},
-  {cat:'GST',name:'GSTR-8 (TCS by e-commerce) — March 2026',who:'E-commerce operators',date:'2026-04-10',note:'Form GSTR-8'},
-  {cat:'GST',name:'GSTR-9 Annual Return — FY 2025-26',who:'All regular taxpayers',date:'2026-12-31',note:'Annual reconciliation'},
-  {cat:'GST',name:'GSTR-9C Reconciliation Statement — FY 2025-26',who:'Turnover > ₹5 Cr',date:'2026-12-31',note:'CA/CMA certified'},
-  // Income Tax
-  {cat:'Income Tax',name:'Advance Tax — 4th & Final Instalment (FY 2025-26)',who:'All advance tax payers',date:'2026-03-15',note:'100% of tax liability due'},
-  {cat:'Income Tax',name:'ITR Filing — Individuals, HUF, AOP (AY 2026-27)',who:'Non-audit taxpayers',date:'2026-07-31',note:'Sec 139(1) / Sec 263(1) IT Act 2025'},
-  {cat:'Income Tax',name:'Tax Audit Report Form 3CA/3CB + 3CD (AY 2026-27)',who:'Businesses with audit',date:'2026-09-30',note:'Sec 44AB'},
-  {cat:'Income Tax',name:'ITR Filing — Audit cases (AY 2026-27)',who:'Audit taxpayers',date:'2026-10-31',note:'Companies, firms, LLPs'},
-  {cat:'Income Tax',name:'Advance Tax — 1st Instalment FY 2026-27 (15%)',who:'All advance tax payers',date:'2026-06-15',note:'Sec 211 / Sec 253'},
-  {cat:'Income Tax',name:'Advance Tax — 2nd Instalment FY 2026-27 (45%)',who:'All advance tax payers',date:'2026-09-15',note:'Cumulative 45%'},
-  // TDS
-  {cat:'TDS',name:'TDS / TCS Deposit — March 2026',who:'All deductors',date:'2026-04-30',note:'March TDS deposited by 30 April'},
-  {cat:'TDS',name:'TDS Return Q4 — Form 24Q / 26Q / 27Q (Jan-Mar 2026)',who:'All deductors',date:'2026-05-31',note:'Quarterly TDS return'},
-  {cat:'TDS',name:'Form 16 / 16A Issue — FY 2025-26',who:'Employers & deductors',date:'2026-06-15',note:'TDS certificate to deductees'},
-  {cat:'TDS',name:'TDS / TCS Deposit — April 2026',who:'All deductors',date:'2026-05-07',note:'Monthly TDS by 7th'},
-  // PF
-  {cat:'PF',name:'EPF Monthly Contribution — March 2026',who:'All EPF establishments',date:'2026-04-15',note:'Employee + Employer contribution'},
-  {cat:'PF',name:'ESIC Monthly Contribution — March 2026',who:'ESIC-covered employers',date:'2026-04-15',note:'ESI contribution for March'},
-  {cat:'PF',name:'EPF Monthly Contribution — April 2026',who:'All EPF establishments',date:'2026-05-15',note:'Employee + Employer contribution'},
-  {cat:'PF',name:'ESIC Monthly Contribution — April 2026',who:'ESIC-covered employers',date:'2026-05-15',note:'ESI contribution for April'},
-  // ROC
-  {cat:'ROC',name:'DIR-3 KYC — Annual Director KYC',who:'All directors with DIN',date:'2026-09-30',note:'Once every 3 years (amended Dec 2025)'},
-  {cat:'ROC',name:'AOC-4 — Financial Statements FY 2025-26',who:'All companies',date:'2026-10-29',note:'Within 30 days of AGM'},
-  {cat:'ROC',name:'MGT-7 / MGT-7A — Annual Return FY 2025-26',who:'All companies',date:'2026-11-29',note:'Within 60 days of AGM'},
-  {cat:'ROC',name:'MSME-1 — Outstanding Payments H1 (Apr-Sep 2026)',who:'Companies with MSME dues',date:'2026-10-31',note:'Half-yearly return'},
-  {cat:'ROC',name:'DPT-3 — Return of Deposits FY 2025-26',who:'Companies with loans/deposits',date:'2026-06-30',note:'Annual deposit return'},
+
+// ── FY / AY context — recomputed every page load ──
+function getFYContext(refDate) {
+  const d   = refDate || new Date();
+  const yr  = d.getFullYear();
+  const mo  = d.getMonth() + 1;  // 1-indexed
+
+  // FY runs 1 Apr → 31 Mar
+  const fyStart = mo <= 3 ? yr - 1 : yr;
+  const fyEnd   = fyStart + 1;
+  const ay      = fyEnd + 1;
+  const prevFyStart = fyStart - 1;
+  const prevFyEnd   = fyStart;
+
+  const fy2d  = s => String(s).slice(-2);   // 2026 → "26"
+
+  return {
+    yr,
+    // Current FY labels
+    FY:      `FY ${fyStart}-${fy2d(fyEnd)}`,      // FY 2025-26
+    AY:      `AY ${fyEnd}-${fy2d(ay)}`,           // AY 2026-27
+    fyEnd,                                         // 2026
+    fyStart,
+    // Previous FY (for GST annual return, which is due during current FY)
+    prevFY:  `FY ${prevFyStart}-${fy2d(prevFyEnd)}`, // FY 2024-25
+    prevFyEnd,                                     // 2025
+    // Advance tax FY (always current FY)
+    advFY:   `FY ${fyStart}-${fy2d(fyEnd)}`,
+    // Year in which annual filings are due (fy_end year = calendar year of AGM)
+    filingYr: fyEnd,
+    // Previous FY filing year for ROC (companies file for year just ended)
+    rocFY:   `FY ${prevFyStart}-${fy2d(prevFyEnd)}`,
+    rocFyEnd: prevFyEnd,
+  };
+}
+
+const FY = getFYContext();   // compute once on load
+
+// Each entry: {d, c, n, w, m}
+// n can be a function(FY) → returns dynamic string
+// m: 'all' | 'q_end' | 'non_q_end' | 'no_march' | [1,2,3...]
+const DL = [
+  // ── GST (every month) ──
+  {d:7,  c:'GST', n:'GSTR-7 — TDS deducted under GST',                          w:'GST TDS Deductors',                       m:'all'},
+  {d:7,  c:'GST', n:'GSTR-8 — TCS by e-commerce operators',                     w:'E-Commerce Operators',                    m:'all'},
+  {d:11, c:'GST', n:'GSTR-1 — Outward supply details (Monthly filers)',          w:'Monthly filers (Turnover > ₹5 Cr)',       m:'all'},
+  {d:13, c:'GST', n:'GSTR-1 / IFF — Outward supply (QRMP scheme)',              w:'Quarterly filers (Turnover ≤ ₹5 Cr)',     m:'all'},
+  {d:20, c:'GST', n:'GSTR-3B — Summary return + tax payment (Monthly)',          w:'Monthly filers (Turnover > ₹5 Cr)',       m:'all'},
+  {d:22, c:'GST', n:'GSTR-3B — Quarterly QRMP (Category 1 states)',             w:'QRMP — CG, MP, GJ, RJ, MH & others',     m:'q_end'},
+  {d:24, c:'GST', n:'GSTR-3B — Quarterly QRMP (Category 2 states)',             w:'QRMP — HP, PB, UK, CH, J&K & others',    m:'q_end'},
+  {d:25, c:'GST', n:'PMT-06 — Monthly tax payment (QRMP non-quarter months)',   w:'QRMP taxpayers',                          m:'non_q_end'},
+  // GST Annual — due 31 Dec of fyEnd year, computed from prevFY
+  {d:31, c:'GST', n: fy=>`GSTR-9 — Annual Return ${fy.prevFY} (due 31 Dec ${fy.prevFyEnd + 1})`,
+                                                                                  w:'All regular GST taxpayers',               m:[12]},
+  {d:31, c:'GST', n: fy=>`GSTR-9C — Reconciliation Statement ${fy.prevFY} (due 31 Dec ${fy.prevFyEnd + 1})`,
+                                                                                  w:'Turnover > ₹5 Cr — CA/CMA certified',    m:[12]},
+  // ── TDS / TCS ──
+  {d:7,  c:'TDS', n:'TDS/TCS Deposit — Government offices',                     w:'Central & State Govt deductors',          m:'all'},
+  {d:7,  c:'TDS', n:'TDS/TCS Deposit — Non-Govt deductors',                     w:'All non-Govt deductors',                  m:'no_march'},
+  {d:30, c:'TDS', n:'TDS/TCS Deposit — March (special: by 30 April)',           w:'All non-Govt deductors',                  m:[3]},
+  {d:31, c:'TDS', n: fy=>`TDS Return Q1 (Apr–Jun ${fy.fyStart}) — Form 24Q/26Q/27Q`,
+                                                                                  w:'All TDS/TCS deductors',                   m:[7]},
+  {d:31, c:'TDS', n: fy=>`TDS Return Q2 (Jul–Sep ${fy.fyStart}) — Form 24Q/26Q/27Q`,
+                                                                                  w:'All TDS/TCS deductors',                   m:[10]},
+  {d:31, c:'TDS', n: fy=>`TDS Return Q3 (Oct–Dec ${fy.fyStart}) — Form 24Q/26Q/27Q`,
+                                                                                  w:'All TDS/TCS deductors',                   m:[1]},
+  {d:31, c:'TDS', n: fy=>`TDS Return Q4 (Jan–Mar ${fy.fyEnd}) — Form 24Q/26Q/27Q`,
+                                                                                  w:'All TDS/TCS deductors',                   m:[5]},
+  {d:15, c:'TDS', n: fy=>`Form 16 / 16A — Issue TDS certificate ${fy.prevFY}`,
+                                                                                  w:'Employers & all deductors',               m:[6]},
+  // ── PF ──
+  {d:15, c:'PF',  n:'EPF Monthly Contribution — Employee + Employer',           w:'All EPF-registered establishments',       m:'all'},
+  // ── ESIC ──
+  {d:15, c:'ESIC',n:'ESIC Monthly Contribution',                                 w:'All ESIC-covered employers',              m:'all'},
+  // ── Income Tax ──
+  {d:15, c:'Income Tax', n: fy=>`Advance Tax — 1st Instalment 15% (${fy.advFY})`,  w:'All advance tax payers',              m:[6]},
+  {d:15, c:'Income Tax', n: fy=>`Advance Tax — 2nd Instalment 45% (${fy.advFY})`,  w:'All advance tax payers',              m:[9]},
+  {d:15, c:'Income Tax', n: fy=>`Advance Tax — 3rd Instalment 75% (${fy.advFY})`,  w:'All advance tax payers',              m:[12]},
+  {d:15, c:'Income Tax', n: fy=>`Advance Tax — Final Instalment 100% (${fy.advFY})`,w:'All advance tax payers',             m:[3]},
+  {d:31, c:'Income Tax', n: fy=>`ITR Filing — Individuals / HUF / AOP (${fy.AY})`, w:'Non-audit taxpayers',                 m:[7]},
+  {d:30, c:'Income Tax', n: fy=>`Tax Audit Report — Form 3CA/3CB + 3CD (${fy.AY})`,w:'All audit cases (Sec 44AB)',          m:[9]},
+  {d:31, c:'Income Tax', n: fy=>`ITR Filing — Audit cases, Companies, Firms (${fy.AY})`,w:'Audit cases per Sec 139(1)',     m:[10]},
+  {d:31, c:'Income Tax', n: fy=>`Updated Return (ITR-U) — last date ${fy.AY} previous`,w:'Eligible taxpayers',              m:[3]},
+  {d:31, c:'Income Tax', n: fy=>`Belated / Revised ITR — last date (${fy.AY})`,     w:'All taxpayers',                      m:[12]},
+  // ── ROC / MCA ──
+  {d:30, c:'ROC', n: fy=>`DPT-3 — Return of Deposits / Outstanding Loans ${fy.rocFY}`,w:'Companies with deposits/loans',   m:[6]},
+  {d:30, c:'ROC', n:'DIR-3 KYC — Director KYC filing (once every 3 years)',     w:'All directors with DIN',                  m:[9]},
+  {d:30, c:'ROC', n: fy=>`MSME-1 — H2 (Oct–Mar ${fy.rocFyEnd} outstanding dues)`,  w:'Companies with MSME dues > 45 days', m:[4]},
+  {d:31, c:'ROC', n: fy=>`MSME-1 — H1 (Apr–Sep ${fy.fyStart} outstanding dues)`,   w:'Companies with MSME dues > 45 days', m:[10]},
+  {d:29, c:'ROC', n: fy=>`AOC-4 — Financial Statements ${fy.rocFY}`,               w:'All companies (30 days from AGM)',    m:[10]},
+  {d:29, c:'ROC', n: fy=>`MGT-7 / MGT-7A — Annual Return ${fy.rocFY}`,             w:'All companies (60 days from AGM)',    m:[11]},
 ];
 
-function calRender(filter){
-  const today=new Date(); today.setHours(0,0,0,0);
-  const body=document.getElementById('calBody');
-  const rows=DEADLINES
-    .filter(d=>filter==='all'||d.cat===filter)
-    .map(d=>{
-      const due=new Date(d.date); due.setHours(0,0,0,0);
-      const diff=Math.round((due-today)/(1000*60*60*24));
-      return{...d,diff,due};
+// ── Helpers ──
+const MONTHS=['','January','February','March','April','May','June',
+              'July','August','September','October','November','December'];
+const CAT_CLS={
+  'GST':'cat-gst','Income Tax':'cat-it','TDS':'cat-tds',
+  'PF':'cat-pf','ESIC':'cat-esi','ROC':'cat-roc'
+};
+
+// Resolve name — supports both string and function(FY)
+function resolveName(entry, fyCtx) {
+  return typeof entry.n === 'function' ? entry.n(fyCtx) : entry.n;
+}
+
+// Get deadlines for a given month + year, recomputing FY context for that month
+function dlForMonth(m, y) {
+  const refDate = new Date(y, m - 1, 1);
+  const fyCtx   = getFYContext(refDate);   // recompute for the viewed month's context
+  const isQEnd  = [3,6,9,12].includes(m);
+
+  return DL
+    .filter(dl => {
+      if (dl.m === 'all')       return true;
+      if (dl.m === 'q_end')     return isQEnd;
+      if (dl.m === 'non_q_end') return !isQEnd;
+      if (dl.m === 'no_march')  return m !== 3;
+      if (Array.isArray(dl.m))  return dl.m.includes(m);
+      return false;
     })
-    .sort((a,b)=>a.diff-b.diff);
+    .map(dl => {
+      const lastDay = new Date(y, m, 0).getDate();
+      const day     = Math.min(dl.d, lastDay);
+      return {
+        ...dl,
+        resolvedName: resolveName(dl, fyCtx),
+        actualDate:   new Date(y, m - 1, day),
+      };
+    })
+    .sort((a, b) => a.actualDate - b.actualDate);
+}
 
-  body.innerHTML=rows.map(d=>{
-    // Row class
-    let rc='',dc='',dt='';
-    if(d.diff<0){rc='row-overdue';dc='days-over';dt=`${Math.abs(d.diff)}d overdue`;}
-    else if(d.diff===0){rc='row-today';dc='days-today';dt='Today!';}
-    else if(d.diff<=7){rc='row-soon';dc='days-soon';dt=`${d.diff} days`;}
-    else if(d.diff<=30){rc='row-week';dc='days-near';dt=`${d.diff} days`;}
-    else{rc='';dc='days-far';dt=`${d.diff} days`;}
+let calYear  = new Date().getFullYear();
+let calMonth = new Date().getMonth() + 1;
+let calCat   = 'all';
 
-    // Category badge
-    const catMap={'GST':'cat-gst','Income Tax':'cat-it','TDS':'cat-tds','PF':'cat-pf','ROC':'cat-roc','ESI':'cat-esi'};
-    const cb=catMap[d.cat]||'cat-gst';
+function calRender() {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const label = MONTHS[calMonth] + ' ' + calYear;
 
-    // Format date
-    const dateStr=d.due.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+  document.getElementById('calTitle').textContent      = 'Due Dates — ' + label;
+  document.getElementById('calMonthLabel').textContent = label;
 
-    return`<tr class="${rc}">
-      <td style="font-size:.78rem;font-weight:600;color:var(--black);white-space:nowrap">${dateStr}</td>
-      <td><span class="${cb}">${d.cat}</span></td>
-      <td>
-        <div style="font-size:.8rem;color:var(--black);font-weight:500;margin-bottom:2px">${d.name}</div>
-        <div style="font-size:.71rem;color:var(--gray-4)">${d.note}</div>
-      </td>
-      <td style="font-size:.75rem;color:var(--gray-5)">${d.who}</td>
-      <td><span class="${dc}">${dt}</span></td>
+  let rows = dlForMonth(calMonth, calYear);
+  if (calCat !== 'all') rows = rows.filter(r => r.c === calCat);
+
+  const body = document.getElementById('calBody');
+  if (!rows.length) {
+    body.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:28px;color:var(--gray-4);font-size:0.85rem">No deadlines for this category in ${label}</td></tr>`;
+    return;
+  }
+
+  body.innerHTML = rows.map(r => {
+    const diff    = Math.round((r.actualDate - today) / 86400000);
+    const dateStr = String(r.actualDate.getDate()).padStart(2,'0') + ' ' + MONTHS[calMonth].slice(0,3) + ' ' + calYear;
+    const isPast  = calYear < today.getFullYear() || (calYear === today.getFullYear() && calMonth < today.getMonth()+1);
+
+    let rowCls='', badgeCls='', badgeTxt='';
+    if (isPast)        { rowCls='';             badgeCls='days-far';   badgeTxt='Past'; }
+    else if (diff < 0) { rowCls='row-overdue';  badgeCls='days-over';  badgeTxt=Math.abs(diff)+'d overdue'; }
+    else if (diff===0) { rowCls='row-today';    badgeCls='days-today'; badgeTxt='⚡ Today!'; }
+    else if (diff<=7)  { rowCls='row-soon';     badgeCls='days-soon';  badgeTxt=diff+' days'; }
+    else if (diff<=30) { rowCls='row-week';     badgeCls='days-near';  badgeTxt=diff+' days'; }
+    else               { rowCls='';             badgeCls='days-far';   badgeTxt=diff+' days'; }
+
+    const catCls = CAT_CLS[r.c] || 'cat-gst';
+    return `<tr class="${rowCls}">
+      <td style="font-weight:700;font-size:.79rem;color:var(--black);white-space:nowrap">${dateStr}</td>
+      <td><span class="${catCls}">${r.c}</span></td>
+      <td style="font-size:.79rem;color:var(--black)">${r.resolvedName}</td>
+      <td style="font-size:.72rem;color:var(--gray-5);line-height:1.4">${r.w}</td>
+      <td><span class="${badgeCls}">${badgeTxt}</span></td>
     </tr>`;
   }).join('');
 }
 
-// Filter buttons
-document.addEventListener('DOMContentLoaded',()=>{
-  // Set today date
-  const td=new Date();
-  const el=document.getElementById('todayDate');
-  if(el)el.textContent=td.toLocaleDateString('en-IN',{day:'2-digit',month:'long',year:'numeric'});
+function calNav(dir) {
+  calMonth += dir;
+  if (calMonth > 12) { calMonth=1;  calYear++; }
+  if (calMonth < 1)  { calMonth=12; calYear--; }
+  calRender();
+}
 
-  // Calendar render
-  calRender('all');
-  document.querySelectorAll('.cf').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      document.querySelectorAll('.cf').forEach(b=>b.classList.remove('on'));
-      btn.classList.add('on');
-      calRender(btn.dataset.cat);
-    });
-  });
+document.addEventListener('click', e => {
+  if (e.target.classList.contains('cf')) {
+    document.querySelectorAll('.cf').forEach(b=>b.classList.remove('on'));
+    e.target.classList.add('on');
+    calCat = e.target.dataset.cat;
+    calRender();
+  }
+});
 
-  // Forex load
+document.addEventListener('DOMContentLoaded', () => {
+  calRender();
   fxLoad();
 });
 </script>
