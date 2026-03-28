@@ -340,8 +340,22 @@ let activeTab     = 'deadlines';
 
 // ── Init ──────────────────────────────────────────────
 (async () => {
-  currentUser = await requireAuth();
-  if (!currentUser) return;
+  // When user clicks email verification link, Supabase puts the session
+  // tokens in the URL hash. We must let Supabase process them first.
+  // getSession() handles this automatically in Supabase v2.
+  const { data: { session } } = await sb.auth.getSession();
+
+  if (!session) {
+    // No session from hash either — redirect to login
+    window.location.href = 'login.html';
+    return;
+  }
+  currentUser = session.user;
+
+  // Clean the hash from URL so it doesn't show tokens
+  if (window.location.hash && window.location.hash.includes('access_token')) {
+    window.history.replaceState(null, '', window.location.pathname + window.location.search);
+  }
 
   currentProfile = await getProfile(currentUser.id);
 
