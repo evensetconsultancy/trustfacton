@@ -17,6 +17,8 @@ const NAV_HTML = `
       </ul>
       <div class="nav-cta" id="nav-cta-area">
         <a href="https://trustfacton.beehiiv.com/subscribe" target="_blank" class="btn btn-ghost btn-sm">Newsletter</a>
+        <a href="dashboard.html" class="btn btn-sm" id="nav-tracker-btn"
+           style="display:none;background:#16A34A;color:white;border:none">My Tracker →</a>
         <a href="login.html" class="btn btn-blue btn-sm" id="nav-login-btn">Login →</a>
       </div>
       <div class="hamburger" onclick="toggleMenu()">
@@ -108,16 +110,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   const hash = window.location.hash.replace('#','');
   if (hash && document.getElementById('panel-' + hash)) showTopic(hash);
 
-  // Auth-aware nav button
+  // Auth-aware nav — show Tracker button when logged in, hide Login
   if (typeof supabase !== 'undefined' && typeof SUPABASE_URL !== 'undefined') {
     try {
       const sb2 = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-      const { data: { user } } = await sb2.auth.getUser();
-      const btn = document.getElementById('nav-login-btn');
-      if (btn && user) {
-        btn.textContent = 'Dashboard →';
-        btn.href = 'dashboard.html';
-        btn.style.background = 'var(--green)';
+      const { data: { session } } = await sb2.auth.getSession();
+      if (session) {
+        const loginBtn   = document.getElementById('nav-login-btn');
+        const trackerBtn = document.getElementById('nav-tracker-btn');
+        if (loginBtn)   loginBtn.style.display   = 'none';
+        if (trackerBtn) trackerBtn.style.display  = 'inline-flex';
       }
     } catch {}
   }
