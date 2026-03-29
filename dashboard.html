@@ -153,7 +153,8 @@ body { background: var(--gray-1); min-height: 100vh; }
 .history-row-done   td { background: #F0FDF4 !important; }
 .history-row-missed td { background: #FEF2F2 !important; }
 
-@media(max-width:900px){ .stat-grid{grid-template-columns:1fr 1fr;} }
+@media(max-width:1100px){ .stat-grid{grid-template-columns:repeat(3,1fr)!important;} }
+@media(max-width:900px) { .stat-grid{grid-template-columns:repeat(3,1fr)!important;} }
 @media(max-width:640px){
   .stat-grid{grid-template-columns:1fr 1fr;}
   .filing-table thead th:nth-child(4),
@@ -214,11 +215,19 @@ body { background: var(--gray-1); min-height: 100vh; }
   </div>
 
   <!-- Stat cards -->
-  <div class="stat-grid" id="statGrid">
-    <div class="stat-card"><div class="sv sv-red" id="st-overdue">—</div><div class="sl">Overdue</div></div>
-    <div class="stat-card"><div class="sv sv-amber" id="st-soon">—</div><div class="sl">Due this week</div></div>
-    <div class="stat-card"><div class="sv sv-green" id="st-done">—</div><div class="sl">Done this month</div></div>
-    <div class="stat-card"><div class="sv sv-blue" id="st-total">—</div><div class="sl">Total tracked</div></div>
+  <div class="stat-grid" id="statGrid" style="grid-template-columns:repeat(6,1fr)">
+    <div class="stat-card"><div class="sv sv-red"   id="st-overdue">—</div><div class="sl">Overdue</div></div>
+    <div class="stat-card"><div class="sv sv-amber"  id="st-soon">—</div><div class="sl">Due this week</div></div>
+    <div class="stat-card"><div class="sv sv-green"  id="st-done">—</div><div class="sl">Done this month</div></div>
+    <div class="stat-card"><div class="sv sv-blue"   id="st-total">—</div><div class="sl">Total tracked</div></div>
+    <div class="stat-card" style="cursor:pointer" onclick="switchTab('notices',document.querySelectorAll('.db-tab')[2])">
+      <div class="sv" id="st-notices" style="color:#DC2626">—</div>
+      <div class="sl">Open notices</div>
+    </div>
+    <div class="stat-card">
+      <div class="sv sv-blue" id="st-nextdue" style="font-size:1rem;line-height:1.2">—</div>
+      <div class="sl">Next due date</div>
+    </div>
   </div>
 
   <!-- Tabs -->
@@ -753,6 +762,7 @@ function goCurrentMonth() {
 function renderStats() {
   const today = new Date(); today.setHours(0,0,0,0);
   let overdue=0, soon=0, doneMonth=0;
+  let nextDue = null;
   const now = new Date();
   const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
 
@@ -761,16 +771,37 @@ function renderStats() {
     const status = f?.status || 'pending';
     if (status === 'done' && f.done_at && new Date(f.done_at) >= monthStart) doneMonth++;
     if (status !== 'done') {
-      const diff = Math.round((new Date(dl.due) - today) / 86400000);
+      // Use extended due if available
+      const ext  = allExtensions.find(e => dl.key.includes(e.filing_key) && e.active);
+      const due  = ext ? new Date(ext.extended_due) : new Date(dl.due);
+      const diff = Math.round((due - today) / 86400000);
       if (diff < 0)     overdue++;
       else if (diff<=7) soon++;
+      // Track next upcoming due date
+      if (diff >= 0 && (!nextDue || due < nextDue.date)) {
+        nextDue = { date: due, name: dl.name };
+      }
     }
   });
+
+  // Open notices count
+  const openNotices = allNotices.filter(n => !['Closed','Appeal Filed'].includes(n.status)).length;
 
   document.getElementById('st-overdue').textContent = overdue;
   document.getElementById('st-soon').textContent    = soon;
   document.getElementById('st-done').textContent    = doneMonth;
   document.getElementById('st-total').textContent   = deadlines.length;
+  document.getElementById('st-notices').textContent = openNotices || '0';
+
+  const ndEl = document.getElementById('st-nextdue');
+  if (nextDue) {
+    const diff = Math.round((nextDue.date - today) / 86400000);
+    ndEl.textContent = diff === 0 ? 'Today' : diff === 1 ? 'Tomorrow' :
+      nextDue.date.toLocaleDateString('en-IN',{day:'2-digit',month:'short'});
+    ndEl.title = nextDue.name;
+  } else {
+    ndEl.textContent = '—';
+  }
 }
 
 // ── Deadline table ────────────────────────────────────

@@ -4,8 +4,8 @@
    Supabase Dashboard → Settings → API
    ========================================= */
 
-const SUPABASE_URL      = 'https://jmolgvabcfbmsctldpcr.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_ITdqqr6Yczf2d6c_fuNcmw_065lWBcj';
+const SUPABASE_URL      = 'https://YOUR_PROJECT.supabase.co';
+const SUPABASE_ANON_KEY = 'YOUR_ANON_KEY_HERE';
 
 // Supabase JS v2 loaded via CDN in each HTML file
 // This file just exports the client
@@ -74,8 +74,31 @@ function getFYContext(refDate) {
 }
 
 // Generate deadlines for an entity based on its granular registrations
+// Backward compatible: if granular columns missing, falls back to old booleans
 function getEntityDeadlines(reg, refDate) {
-  const f   = reg || {};
+  const r = reg || {};
+
+  // Backward compatibility: if new granular fields not set yet,
+  // derive them from old boolean flags
+  const f = {
+    income_tax:      r.income_tax !== false,  // always true
+    // GST: if no granular set, use old gst flag → default to regular monthly
+    gst_regular:     r.gst_regular     || (r.gst && !r.gst_qrmp && !r.gst_composition),
+    gst_qrmp:        r.gst_qrmp        || false,
+    gst_composition: r.gst_composition || false,
+    gst_gstr7:       r.gst_gstr7       || false,
+    gst_gstr8:       r.gst_gstr8       || false,
+    gst_gstr9:       r.gst_gstr9       || (r.gst || false),
+    // TDS: if no granular, use old tds flag → default to general + returns + form16
+    tds_general:     r.tds_general     || (r.tds || false),
+    tds_salary:      r.tds_salary      || false,
+    tcs_collection:  r.tcs_collection  || false,
+    tds_returns:     r.tds_returns     || (r.tds || false),
+    tds_form16:      r.tds_form16      || (r.tds || false),
+    pf:              r.pf   || false,
+    esic:            r.esic || false,
+    roc:             r.roc  || false,
+  };
   const ctx = getFYContext(refDate);
   const yr  = refDate ? refDate.getFullYear() : new Date().getFullYear();
   const mo  = refDate ? refDate.getMonth() + 1 : new Date().getMonth() + 1;

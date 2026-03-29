@@ -376,24 +376,17 @@
       </div>
     </div>
 
-    <!-- FOREX -->
+    <!-- TDS RATE FINDER -->
     <div class="tc">
       <div class="tc-head">
-        <div class="tc-icon" style="background:#FFFBEB">💱</div>
-        <div><h3>Live Forex Rates</h3><p>₹ vs 8 major currencies</p></div>
+        <div class="tc-icon" style="background:#FFFBEB">✂️</div>
+        <div><h3>TDS Rate Finder</h3><p>Rate &amp; threshold by payment type</p></div>
       </div>
       <div class="tc-body">
-        <div class="fx-bar">
-          <span class="fx-time" id="fxTime">Loading…</span>
-          <button class="fx-btn" onclick="fxLoad()">↺ Refresh</button>
-        </div>
-        <div class="fx-grid" id="fxGrid">
-          <div class="fx-sk"></div><div class="fx-sk"></div>
-          <div class="fx-sk"></div><div class="fx-sk"></div>
-          <div class="fx-sk"></div><div class="fx-sk"></div>
-          <div class="fx-sk"></div><div class="fx-sk"></div>
-        </div>
-        <p class="t-note" style="margin-top:6px">Indicative. For compliance use <a href="https://www.rbi.org.in/Scripts/ReferenceRateArchive.aspx" target="_blank">RBI Rates →</a></p>
+        <input type="text" id="tdsInp" class="ti" placeholder="Search — e.g. contractor, salary, rent…"
+          autocomplete="off" oninput="tdsSearch()">
+        <div id="tdsOut" style="margin-top:8px;max-height:280px;overflow-y:auto;scrollbar-width:thin"></div>
+        <p class="t-note" style="margin-top:6px">Rates as per IT Act 2025 (AY 2026-27). Verify from <a href="https://incometaxindia.gov.in" target="_blank">Income Tax portal →</a></p>
       </div>
     </div>
   </div>
@@ -518,47 +511,6 @@ let hTab='goods';
 function hSetTab(t){hTab=t;document.getElementById('hTabG').classList.toggle('on',t==='goods');document.getElementById('hTabS').classList.toggle('on',t==='services');const inp=document.getElementById('hInp');inp.placeholder=t==='goods'?'HSN code or description…':'SAC code or description…';inp.value='';document.getElementById('hOut').innerHTML='';inp.focus();}
 function hSearch(){const q=document.getElementById('hInp').value.trim().toLowerCase();const out=document.getElementById('hOut');if(q.length<2){out.innerHTML='';return;}const hits=HSN.filter(h=>h.t===hTab&&(h.c.includes(q)||h.d.toLowerCase().includes(q))).slice(0,8);if(!hits.length){out.innerHTML=`<div class="h-empty">No results. Try <a href="https://services.gst.gov.in/services/searchhsnsac" target="_blank" style="color:var(--blue)">official GSTN →</a></div>`;return;}out.innerHTML=hits.map(h=>`<div class="h-item"><span class="h-code">${h.t==='goods'?'HSN':'SAC'} ${h.c}</span><div class="h-desc">${h.d}</div><span class="h-rate ${hRc(h.r)}">GST: ${h.r}</span></div>`).join('');}
 
-/* ════ FOREX ════ */
-const CCYS=[{c:'USD',n:'US Dollar',f:'🇺🇸'},{c:'EUR',n:'Euro',f:'🇪🇺'},{c:'GBP',n:'British Pound',f:'🇬🇧'},{c:'AED',n:'UAE Dirham',f:'🇦🇪'},{c:'SGD',n:'Singapore $',f:'🇸🇬'},{c:'JPY',n:'Japanese Yen',f:'🇯🇵'},{c:'AUD',n:'Aus Dollar',f:'🇦🇺'},{c:'SAR',n:'Saudi Riyal',f:'🇸🇦'}];
-async function fxLoad(){
-  const grid=document.getElementById('fxGrid'),timeEl=document.getElementById('fxTime');
-  grid.innerHTML=Array(8).fill('<div class="fx-sk"></div>').join('');
-  timeEl.textContent='Fetching…';
-  let rates=null;
-  const APIS=[
-    {url:'https://api.frankfurter.app/latest?from=INR&to=USD,EUR,GBP,AED,SGD,JPY,AUD,SAR',extract:j=>j.rates},
-    {url:'https://open.er-api.com/v6/latest/INR',extract:j=>j.rates},
-    {url:'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/inr.json',extract:j=>{
-      const r=j.inr||{};
-      return {USD:r.usd?1/r.usd:null,EUR:r.eur?1/r.eur:null,GBP:r.gbp?1/r.gbp:null,
-              AED:r.aed?1/r.aed:null,SGD:r.sgd?1/r.sgd:null,JPY:r.jpy?1/r.jpy:null,
-              AUD:r.aud?1/r.aud:null,SAR:r.sar?1/r.sar:null};}}
-  ];
-  for(const api of APIS){
-    try{
-      const ctrl=new AbortController();
-      const tid=setTimeout(()=>ctrl.abort(),6000);
-      const r=await fetch(api.url,{signal:ctrl.signal});
-      clearTimeout(tid);
-      if(!r.ok) continue;
-      const j=await r.json();
-      const extracted=api.extract(j);
-      if(extracted&&extracted.USD){rates=extracted;break;}
-    }catch(e){console.log('Forex API failed:',e.message);}
-  }
-  if(!rates){
-    grid.innerHTML=`<div class="fx-err">Rates unavailable. <a href="https://www.rbi.org.in/Scripts/ReferenceRateArchive.aspx" target="_blank" style="color:var(--blue)">Use RBI Rates →</a></div>`;
-    timeEl.textContent='Unavailable — tap Refresh to retry';
-    return;
-  }
-  const now=new Date();
-  timeEl.textContent='Updated '+now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})+' IST';
-  grid.innerHTML=CCYS.map(({c,n,f})=>{
-    const r=rates[c]; if(!r) return '';
-    const inr=(1/r).toFixed(c==='JPY'?3:2);
-    return`<div class="fx-row"><div class="fx-left"><span style="font-size:.95rem">${f}</span><div><span class="fx-code">${c}</span><span class="fx-name">${n}</span></div></div><div class="fx-right"><span class="big">₹${inr}</span><span class="sm">per 1 ${c}</span></div></div>`;
-  }).join('');
-}
 
 /* ════ CALENDAR ════ */
 // Helper: get previous month name and year for a given month/year
@@ -713,6 +665,90 @@ function dlForMonth(m, y) {
     })
     .sort((a, b) => a.actualDate - b.actualDate);
 }
+
+/* ════ TDS RATE FINDER ════ */
+const TDS_RATES = [
+  {s:'192',  n:'Salary',                    rate:'Slab rate', thresh:'Any',         who:'Employer'},
+  {s:'192A', n:'PF withdrawal (premature)',  rate:'10%',       thresh:'₹50,000',     who:'EPFO/Trustees'},
+  {s:'193',  n:'Interest on securities',    rate:'10%',       thresh:'₹10,000',     who:'Company/issuer'},
+  {s:'194',  n:'Dividend',                  rate:'10%',       thresh:'₹5,000',      who:'Company'},
+  {s:'194A', n:'Interest (bank/FD)',         rate:'10%',       thresh:'₹50,000 (Sr) / ₹40,000', who:'Bank/NBFC'},
+  {s:'194B', n:'Lottery / crossword prize', rate:'30%',       thresh:'₹10,000',     who:'Lottery organiser'},
+  {s:'194BB',n:'Horse race winnings',        rate:'30%',       thresh:'₹10,000',     who:'Race club'},
+  {s:'194C', n:'Contractor / sub-contractor',rate:'1% (Indiv/HUF) / 2%',thresh:'₹30,000 single / ₹1,00,000 aggregate', who:'Any person (audit)'},
+  {s:'194D', n:'Insurance commission',       rate:'5%',        thresh:'₹15,000',     who:'Insurance company'},
+  {s:'194DA',n:'Life insurance maturity',    rate:'5% on profit',thresh:'₹1,00,000', who:'Insurer'},
+  {s:'194E', n:'Non-resident sportsman/entertainer',rate:'20%',thresh:'Any',         who:'Any person'},
+  {s:'194EE',n:'NSS deposit withdrawal',     rate:'10%',       thresh:'₹2,500',      who:'Post office/NSS'},
+  {s:'194G', n:'Commission on lottery',      rate:'5%',        thresh:'₹15,000',     who:'Lottery seller'},
+  {s:'194H', n:'Commission or brokerage',    rate:'5%',        thresh:'₹15,000',     who:'Any person (audit)'},
+  {s:'194I', n:'Rent — land/building',       rate:'10%',       thresh:'₹2,40,000 p.a.', who:'Any person (audit)'},
+  {s:'194I', n:'Rent — plant/machinery',     rate:'2%',        thresh:'₹2,40,000 p.a.', who:'Any person (audit)'},
+  {s:'194IA',n:'Immovable property purchase',rate:'1%',        thresh:'₹50,00,000',  who:'Buyer'},
+  {s:'194IB',n:'Rent by individual/HUF',     rate:'5% (2% w.e.f Apr 2025)',thresh:'₹50,000/month', who:'Tenant (non-audit)'},
+  {s:'194IC',n:'Joint development — cash payment',rate:'10%',  thresh:'Any',         who:'Joint dev. party'},
+  {s:'194J', n:'Professional/technical fees',rate:'10% (2% technical)',thresh:'₹30,000', who:'Any person (audit)'},
+  {s:'194K', n:'Mutual fund income',         rate:'10%',       thresh:'₹5,000',      who:'MF'},
+  {s:'194LA',n:'Compensation — compulsory acquisition',rate:'10%',thresh:'₹2,50,000', who:'Paying authority'},
+  {s:'194LB',n:'Interest — infrastructure bonds (NRI)',rate:'5%',thresh:'Any',        who:'Company'},
+  {s:'194LC',n:'Interest — foreign currency loan',rate:'5%',   thresh:'Any',          who:'Company'},
+  {s:'194LD',n:'Interest — rupee bonds (FPI)',rate:'5%',       thresh:'Any',          who:'Indian company'},
+  {s:'194M', n:'Contractual / professional (non-audit)',rate:'2%',thresh:'₹50,00,000 p.a.', who:'Individual/HUF (non-audit)'},
+  {s:'194N', n:'Cash withdrawal from bank',  rate:'2% (5% if no ITR)',thresh:'₹1 Cr (₹20L no-ITR)', who:'Bank/post office'},
+  {s:'194O', n:'E-commerce operator to seller',rate:'1%',      thresh:'₹5,00,000',   who:'E-commerce operator'},
+  {s:'194P', n:'Senior citizen (75+) — bank TDS',rate:'Slab rate',thresh:'Any',      who:'Specified bank'},
+  {s:'194Q', n:'Purchase of goods',          rate:'0.1%',      thresh:'₹50,00,000',  who:'Buyer (turnover > ₹10 Cr)'},
+  {s:'194R', n:'Benefit/perquisite in business',rate:'10%',    thresh:'₹20,000',     who:'Any person'},
+  {s:'194S', n:'Crypto/VDA transfer',        rate:'1%',        thresh:'₹10,000 / ₹50,000 (specified)', who:'Buyer of VDA'},
+  {s:'195',  n:'Payment to non-resident',    rate:'Varies / DTAA',thresh:'Any',      who:'Any person'},
+  {s:'196A', n:'Income of non-resident MF',  rate:'20%',       thresh:'Any',         who:'MF'},
+  {s:'196C', n:'Income from foreign currency bonds (NRI)',rate:'10%',thresh:'Any',   who:'Company'},
+  {s:'196D', n:'FPI income (not capital gains)',rate:'20%',    thresh:'Any',         who:'Company'},
+  {s:'206C', n:'TCS — sale of alcohol/tobacco',rate:'1%',      thresh:'Any',         who:'Seller'},
+  {s:'206C', n:'TCS — sale of timber/forest produce',rate:'2.5%',thresh:'Any',      who:'Seller'},
+  {s:'206C', n:'TCS — sale of scrap',        rate:'1%',        thresh:'Any',         who:'Seller'},
+  {s:'206C', n:'TCS — tendu leaves',         rate:'5%',        thresh:'Any',         who:'Seller'},
+  {s:'206CB',n:'TCS — motor vehicle > ₹10L', rate:'1%',       thresh:'₹10,00,000',  who:'Dealer'},
+  {s:'206CQ',n:'TCS — overseas tour package',rate:'5% (20% no PAN)',thresh:'Any',   who:'Tour operator'},
+  {s:'206CR',n:'TCS — foreign remittance (LRS)',rate:'20%',    thresh:'₹7,00,000',   who:'AD bank'},
+];
+
+function tdsSearch() {
+  const q = document.getElementById('tdsInp').value.trim().toLowerCase();
+  const out = document.getElementById('tdsOut');
+  if (q.length < 2) { out.innerHTML=''; return; }
+  const hits = TDS_RATES.filter(t =>
+    t.s.toLowerCase().includes(q) ||
+    t.n.toLowerCase().includes(q) ||
+    t.who.toLowerCase().includes(q)
+  ).slice(0,8);
+  if (!hits.length) {
+    out.innerHTML=`<div style="text-align:center;padding:16px;font-size:.8rem;color:var(--gray-4)">No results. Try section number (e.g. 194C) or keyword (e.g. rent)</div>`;
+    return;
+  }
+  out.innerHTML = hits.map(t=>`
+    <div style="background:var(--gray-1);border:1px solid var(--gray-3);border-radius:7px;padding:9px 11px;margin-bottom:5px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+        <span style="background:var(--navy);color:white;padding:2px 8px;border-radius:4px;font-size:.68rem;font-weight:700;font-family:monospace">${t.s}</span>
+        <span style="font-size:.8rem;font-weight:600;color:var(--black)">${t.n}</span>
+        <span style="margin-left:auto;font-size:.8rem;font-weight:700;color:var(--blue)">${t.rate}</span>
+      </div>
+      <div style="display:flex;gap:16px;font-size:.71rem;color:var(--gray-5)">
+        <span>Threshold: <b style="color:var(--gray-6)">${t.thresh}</b></span>
+        <span>Deductor: <b style="color:var(--gray-6)">${t.who}</b></span>
+      </div>
+    </div>`).join('');
+}
+
+
+// ── Calendar state ────────────────────────────────────
+const MONTHS=['','January','February','March','April','May','June',
+              'July','August','September','October','November','December'];
+const CAT_CLS={'GST':'cat-gst','Income Tax':'cat-it','TDS':'cat-tds',
+               'PF':'cat-pf','ESIC':'cat-esi','ROC':'cat-roc'};
+let calYear  = new Date().getFullYear();
+let calMonth = new Date().getMonth() + 1;
+let calCat   = 'all';
 
 function calRender(){const today=new Date();today.setHours(0,0,0,0);const label=MONTHS[calMonth]+' '+calYear;document.getElementById('calTitle').textContent='Due Dates — '+label;document.getElementById('calMonthLabel').textContent=label;let rows=dlForMonth(calMonth,calYear);if(calCat!=='all')rows=rows.filter(r=>r.c===calCat);const body=document.getElementById('calBody');if(!rows.length){body.innerHTML=`<tr><td colspan="5" style="text-align:center;padding:28px;color:var(--gray-4)">No deadlines for this category in ${label}</td></tr>`;return;}body.innerHTML=rows.map(r=>{const diff=Math.round((r.actualDate-today)/86400000);const dateStr=String(r.actualDate.getDate()).padStart(2,'0')+' '+MONTHS[calMonth].slice(0,3)+' '+calYear;const isPast=calYear<today.getFullYear()||(calYear===today.getFullYear()&&calMonth<today.getMonth()+1);let rowCls='',badgeCls='',badgeTxt='';if(isPast){rowCls='';badgeCls='days-far';badgeTxt='Past';}else if(diff<0){rowCls='row-overdue';badgeCls='days-over';badgeTxt=Math.abs(diff)+'d overdue';}else if(diff===0){rowCls='row-today';badgeCls='days-today';badgeTxt='⚡ Today!';}else if(diff<=7){rowCls='row-soon';badgeCls='days-soon';badgeTxt=diff+' days';}else if(diff<=30){rowCls='row-near';badgeCls='days-near';badgeTxt=diff+' days';}else{rowCls='';badgeCls='days-far';badgeTxt=diff+' days';}const catCls=CAT_CLS[r.c]||'cat-gst';return`<tr class="${rowCls}"><td style="font-weight:700;font-size:.79rem;color:var(--black);white-space:nowrap">${dateStr}</td><td><span class="${catCls}">${r.c}</span></td><td style="font-size:.79rem;color:var(--black)">${r.resolvedName}</td><td style="font-size:.72rem;color:var(--gray-5);line-height:1.4">${r.w}</td><td><span class="${badgeCls}">${badgeTxt}</span></td></tr>`;}).join('');}
 
