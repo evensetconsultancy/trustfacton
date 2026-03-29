@@ -523,15 +523,141 @@ const CCYS=[{c:'USD',n:'US Dollar',f:'🇺🇸'},{c:'EUR',n:'Euro',f:'🇪🇺'}
 async function fxLoad(){const grid=document.getElementById('fxGrid'),timeEl=document.getElementById('fxTime');grid.innerHTML=Array(8).fill('<div class="fx-sk"></div>').join('');timeEl.textContent='Fetching…';let rates=null;for(const url of['https://api.frankfurter.app/latest?from=INR&to=USD,EUR,GBP,AED,SGD,JPY,AUD,SAR','https://open.er-api.com/v6/latest/INR']){try{const r=await fetch(url,{signal:AbortSignal.timeout(7000)});if(!r.ok)continue;const j=await r.json();if(j&&j.rates&&j.rates.USD){rates=j.rates;break;}}catch{}}if(!rates){grid.innerHTML=`<div class="fx-err">Unavailable. <a href="https://www.rbi.org.in/Scripts/ReferenceRateArchive.aspx" target="_blank" style="color:var(--blue)">RBI Rates →</a></div>`;timeEl.textContent='Unavailable';return;}const now=new Date();timeEl.textContent='Updated '+now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})+' IST';grid.innerHTML=CCYS.map(({c,n,f})=>{const r=rates[c];if(!r)return'';const inr=(1/r).toFixed(c==='JPY'?3:2);return`<div class="fx-row"><div class="fx-left"><span style="font-size:.95rem">${f}</span><div><span class="fx-code">${c}</span><span class="fx-name">${n}</span></div></div><div class="fx-right"><span class="big">₹${inr}</span><span class="sm">per 1 ${c}</span></div></div>`;}).join('');}
 
 /* ════ CALENDAR ════ */
-const DL=[{d:7,c:'GST',n:'GSTR-7 — TDS under GST',w:'GST TDS Deductors',m:'all'},{d:7,c:'GST',n:'GSTR-8 — TCS by e-commerce',w:'E-Commerce Operators',m:'all'},{d:11,c:'GST',n:'GSTR-1 — Outward Supplies (Monthly)',w:'Monthly filers > ₹5 Cr',m:'all'},{d:13,c:'GST',n:'GSTR-1 / IFF (QRMP)',w:'Quarterly filers ≤ ₹5 Cr',m:'all'},{d:20,c:'GST',n:'GSTR-3B — Summary Return (Monthly)',w:'Monthly filers > ₹5 Cr',m:'all'},{d:22,c:'GST',n:'GSTR-3B — Quarterly QRMP Cat.1',w:'QRMP Category 1 states',m:'q_end'},{d:24,c:'GST',n:'GSTR-3B — Quarterly QRMP Cat.2',w:'QRMP Category 2 states',m:'q_end'},{d:25,c:'GST',n:'PMT-06 — Monthly tax (QRMP)',w:'QRMP non-quarter months',m:'non_q_end'},{d:31,c:'GST',n:fy=>`GSTR-9 Annual Return ${fy.prevFY}`,w:'All regular GST taxpayers',m:[12]},{d:7,c:'TDS',n:'TDS/TCS Deposit — Govt offices',w:'Govt deductors',m:'all'},{d:7,c:'TDS',n:'TDS/TCS Deposit — Non-Govt',w:'Non-Govt deductors',m:'no_march'},{d:30,c:'TDS',n:'TDS/TCS Deposit — March (special)',w:'Non-Govt deductors',m:[3]},{d:31,c:'TDS',n:fy=>`TDS Return Q1 (Apr–Jun ${fy.fyStart})`,w:'All TDS deductors',m:[7]},{d:31,c:'TDS',n:fy=>`TDS Return Q2 (Jul–Sep ${fy.fyStart})`,w:'All TDS deductors',m:[10]},{d:31,c:'TDS',n:fy=>`TDS Return Q3 (Oct–Dec ${fy.fyStart})`,w:'All TDS deductors',m:[1]},{d:31,c:'TDS',n:fy=>`TDS Return Q4 (Jan–Mar ${fy.fyEnd})`,w:'All TDS deductors',m:[5]},{d:15,c:'TDS',n:fy=>`Form 16/16A — Issue TDS certificate ${fy.prevFY}`,w:'Employers & deductors',m:[6]},{d:15,c:'PF',n:'EPF Monthly Contribution',w:'EPF-registered establishments',m:'all'},{d:15,c:'ESIC',n:'ESIC Monthly Contribution',w:'ESIC-covered employers',m:'all'},{d:15,c:'Income Tax',n:fy=>`Advance Tax 1st Instalment 15% (${fy.advFY})`,w:'All advance tax payers',m:[6]},{d:15,c:'Income Tax',n:fy=>`Advance Tax 2nd Instalment 45% (${fy.advFY})`,w:'All advance tax payers',m:[9]},{d:15,c:'Income Tax',n:fy=>`Advance Tax 3rd Instalment 75% (${fy.advFY})`,w:'All advance tax payers',m:[12]},{d:15,c:'Income Tax',n:fy=>`Advance Tax Final 100% (${fy.advFY})`,w:'All advance tax payers',m:[3]},{d:31,c:'Income Tax',n:fy=>`ITR Filing Individuals/HUF (${fy.AY})`,w:'Non-audit taxpayers',m:[7]},{d:30,c:'Income Tax',n:fy=>`Tax Audit Report 3CA/3CB (${fy.AY})`,w:'Audit cases',m:[9]},{d:31,c:'Income Tax',n:fy=>`ITR Filing Audit Cases (${fy.AY})`,w:'Companies, firms, LLPs',m:[10]},{d:31,c:'Income Tax',n:fy=>`Updated Return (ITR-U) ${fy.AY}`,w:'Eligible taxpayers',m:[3]},{d:31,c:'Income Tax',n:fy=>`Belated/Revised ITR (${fy.AY})`,w:'All taxpayers',m:[12]},{d:30,c:'ROC',n:fy=>`DPT-3 Return of Deposits ${fy.rocFY}`,w:'Companies with deposits',m:[6]},{d:30,c:'ROC',n:'DIR-3 KYC Director KYC',w:'All directors with DIN',m:[9]},{d:30,c:'ROC',n:fy=>`MSME-1 H2 (Oct–Mar ${fy.rocFyEnd})`,w:'Companies with MSME dues',m:[4]},{d:31,c:'ROC',n:fy=>`MSME-1 H1 (Apr–Sep ${fy.fyStart})`,w:'Companies with MSME dues',m:[10]},{d:29,c:'ROC',n:fy=>`AOC-4 Financial Statements ${fy.rocFY}`,w:'All companies',m:[10]},{d:29,c:'ROC',n:fy=>`MGT-7/7A Annual Return ${fy.rocFY}`,w:'All companies',m:[11]}];
+// Helper: get previous month name and year for a given month/year
+function prevMonthLabel(m, y) {
+  const d = new Date(y, m - 2, 1); // m-2 because JS months are 0-indexed
+  return d.toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
+}
 
-const MONTHS=['','January','February','March','April','May','June','July','August','September','October','November','December'];
-const CAT_CLS={'GST':'cat-gst','Income Tax':'cat-it','TDS':'cat-tds','PF':'cat-pf','ESIC':'cat-esi','ROC':'cat-roc'};
-let calYear=new Date().getFullYear(),calMonth=new Date().getMonth()+1,calCat='all';
+// Helper: quarter label
+function quarterLabel(m, y) {
+  const qMap = {3:'Jan–Mar', 6:'Apr–Jun', 9:'Jul–Sep', 12:'Oct–Dec'};
+  const qStart = {3:y, 6:y, 9:y, 12:y};
+  return `${qMap[m]} ${y}`;
+}
 
-function getFYContext(d){const yr=d.getFullYear(),mo=d.getMonth()+1;const fyStart=mo<=3?yr-1:yr;const fyEnd=fyStart+1;const ay=fyEnd+1;const s=n=>String(n).slice(-2);return{yr,fyStart,fyEnd,FY:`FY ${fyStart}-${s(fyEnd)}`,AY:`AY ${fyEnd}-${s(ay)}`,prevFY:`FY ${fyStart-1}-${s(fyStart)}`,advFY:`FY ${fyStart}-${s(fyEnd)}`,rocFY:`FY ${fyStart-1}-${s(fyStart)}`,rocFyEnd:fyStart};}
+const DL = [
+  // ── GST (monthly — period = previous month) ──
+  {d:7,  c:'GST', n:(m,y)=>`GSTR-7 — TDS under GST (for ${prevMonthLabel(m,y)})`,
+                  w:'GST TDS Deductors', m:'all'},
+  {d:7,  c:'GST', n:(m,y)=>`GSTR-8 — TCS e-commerce (for ${prevMonthLabel(m,y)})`,
+                  w:'E-Commerce Operators', m:'all'},
+  {d:11, c:'GST', n:(m,y)=>`GSTR-1 Outward Supplies (for ${prevMonthLabel(m,y)})`,
+                  w:'Monthly filers (Turnover > ₹5 Cr)', m:'all'},
+  {d:13, c:'GST', n:(m,y)=>`GSTR-1 / IFF QRMP (for ${prevMonthLabel(m,y)})`,
+                  w:'Quarterly filers (Turnover ≤ ₹5 Cr)', m:'all'},
+  {d:20, c:'GST', n:(m,y)=>`GSTR-3B Summary Return (for ${prevMonthLabel(m,y)})`,
+                  w:'Monthly filers (Turnover > ₹5 Cr)', m:'all'},
+  {d:22, c:'GST', n:(m,y)=>`GSTR-3B Quarterly QRMP — Cat.1 (for ${quarterLabel(m,y)})`,
+                  w:'QRMP Category 1 states', m:'q_end'},
+  {d:24, c:'GST', n:(m,y)=>`GSTR-3B Quarterly QRMP — Cat.2 (for ${quarterLabel(m,y)})`,
+                  w:'QRMP Category 2 states', m:'q_end'},
+  {d:25, c:'GST', n:(m,y)=>`PMT-06 Monthly Tax Payment (for ${new Date(y,m-1,1).toLocaleDateString('en-IN',{month:'long',year:'numeric'})})`,
+                  w:'QRMP non-quarter-end months', m:'non_q_end'},
+  // GST Annual
+  {d:31, c:'GST', n:fy=>`GSTR-9 Annual Return ${fy.prevFY}`,
+                  w:'All regular GST taxpayers', m:[12]},
+  {d:31, c:'GST', n:fy=>`GSTR-9C Reconciliation Statement ${fy.prevFY}`,
+                  w:'Turnover > ₹5 Cr', m:[12]},
 
-function dlForMonth(m,y){const ref=new Date(y,m-1,1);const ctx=getFYContext(ref);const isQ=[3,6,9,12].includes(m);return DL.filter(dl=>{if(dl.m==='all')return true;if(dl.m==='q_end')return isQ;if(dl.m==='non_q_end')return!isQ;if(dl.m==='no_march')return m!==3;if(Array.isArray(dl.m))return dl.m.includes(m);return false;}).map(dl=>{const lastDay=new Date(y,m,0).getDate();const day=Math.min(dl.d,lastDay);return{...dl,resolvedName:typeof dl.n==='function'?dl.n(ctx):dl.n,actualDate:new Date(y,m-1,day)};}).sort((a,b)=>a.actualDate-b.actualDate);}
+  // ── TDS ──
+  // 7th of month = TDS for PREVIOUS month (all except March)
+  {d:7,  c:'TDS', n:(m,y)=>`TDS/TCS Deposit — Govt offices (for ${prevMonthLabel(m,y)})`,
+                  w:'Central & State Govt deductors', m:'all'},
+  {d:7,  c:'TDS', n:(m,y)=>`TDS/TCS Deposit — Non-Govt (for ${prevMonthLabel(m,y)})`,
+                  w:'All non-Govt deductors', m:'no_march'},
+  // March TDS is due 30th APRIL (not March!) — show in April's view
+  // April: ONLY 30 Apr entry for March TDS (no 7 Apr for March)
+  {d:30, c:'TDS', n:(m,y)=>`TDS/TCS Deposit — March ${y} (Special — due 30 April)`,
+                  w:'All non-Govt deductors', m:[4]},
+  // Quarterly returns
+  {d:31, c:'TDS', n:fy=>`TDS Return Q1 (Apr–Jun ${fy.fyStart}) — Form 24Q/26Q`,
+                  w:'All TDS/TCS deductors', m:[7]},
+  {d:31, c:'TDS', n:fy=>`TDS Return Q2 (Jul–Sep ${fy.fyStart}) — Form 24Q/26Q`,
+                  w:'All TDS/TCS deductors', m:[10]},
+  {d:31, c:'TDS', n:fy=>`TDS Return Q3 (Oct–Dec ${fy.fyStart}) — Form 24Q/26Q`,
+                  w:'All TDS/TCS deductors', m:[1]},
+  {d:31, c:'TDS', n:fy=>`TDS Return Q4 (Jan–Mar ${fy.fyEnd}) — Form 24Q/26Q`,
+                  w:'All TDS/TCS deductors', m:[5]},
+  {d:15, c:'TDS', n:fy=>`Form 16/16A — Issue TDS Certificate (${fy.prevFY})`,
+                  w:'Employers & all deductors', m:[6]},
+
+  // ── PF (15th of month = for previous month) ──
+  {d:15, c:'PF',  n:(m,y)=>`EPF Monthly Contribution (for ${prevMonthLabel(m,y)})`,
+                  w:'All EPF-registered establishments', m:'all'},
+
+  // ── ESIC (15th of month = for previous month) ──
+  {d:15, c:'ESIC',n:(m,y)=>`ESIC Monthly Contribution (for ${prevMonthLabel(m,y)})`,
+                  w:'All ESIC-covered employers', m:'all'},
+
+  // ── Income Tax ──
+  {d:15, c:'Income Tax', n:fy=>`Advance Tax 1st Instalment 15% (${fy.advFY})`,
+                  w:'All advance tax payers', m:[6]},
+  {d:15, c:'Income Tax', n:fy=>`Advance Tax 2nd Instalment 45% (${fy.advFY})`,
+                  w:'All advance tax payers', m:[9]},
+  {d:15, c:'Income Tax', n:fy=>`Advance Tax 3rd Instalment 75% (${fy.advFY})`,
+                  w:'All advance tax payers', m:[12]},
+  {d:15, c:'Income Tax', n:fy=>`Advance Tax Final Instalment 100% (${fy.advFY})`,
+                  w:'All advance tax payers', m:[3]},
+  {d:31, c:'Income Tax', n:fy=>`ITR Filing — Individuals / HUF (${fy.AY})`,
+                  w:'Non-audit taxpayers', m:[7]},
+  {d:30, c:'Income Tax', n:fy=>`Tax Audit Report — Form 3CA/3CB + 3CD (${fy.AY})`,
+                  w:'All audit cases (Sec 44AB)', m:[9]},
+  {d:31, c:'Income Tax', n:fy=>`ITR Filing — Audit Cases / Companies / Firms (${fy.AY})`,
+                  w:'Audit cases per Sec 139(1)', m:[10]},
+  {d:31, c:'Income Tax', n:fy=>`Updated Return (ITR-U) — Last Date (${fy.AY})`,
+                  w:'All eligible taxpayers', m:[3]},
+  {d:31, c:'Income Tax', n:fy=>`Belated / Revised ITR — Last Date (${fy.AY})`,
+                  w:'All taxpayers', m:[12]},
+
+  // ── ROC / MCA ──
+  {d:30, c:'ROC', n:fy=>`DPT-3 Return of Deposits (${fy.rocFY})`,
+                  w:'Companies with deposits / outstanding loans', m:[6]},
+  {d:30, c:'ROC', n:'DIR-3 KYC — Director KYC Filing (once every 3 years)',
+                  w:'All directors with DIN', m:[9]},
+  {d:30, c:'ROC', n:fy=>`MSME-1 H2 — Outstanding Dues Oct–Mar ${fy.rocFyEnd}`,
+                  w:'Companies with MSME dues > 45 days', m:[4]},
+  {d:31, c:'ROC', n:fy=>`MSME-1 H1 — Outstanding Dues Apr–Sep ${fy.fyStart}`,
+                  w:'Companies with MSME dues > 45 days', m:[10]},
+  {d:29, c:'ROC', n:fy=>`AOC-4 Financial Statements (${fy.rocFY})`,
+                  w:'All companies (within 30 days of AGM)', m:[10]},
+  {d:29, c:'ROC', n:fy=>`MGT-7 / MGT-7A Annual Return (${fy.rocFY})`,
+                  w:'All companies (within 60 days of AGM)', m:[11]},
+];
+
+function resolveName(entry, fyCtx, m, y) {
+  if (typeof entry.n === 'string') return entry.n;
+  if (typeof entry.n === 'function') {
+    if (entry.n.length === 2) return entry.n(m, y);
+    return entry.n(fyCtx);
+  }
+  return '';
+}
+
+function dlForMonth(m, y) {
+  const ref  = new Date(y, m - 1, 1);
+  const ctx  = getFYContext(ref);
+  const isQ  = [3,6,9,12].includes(m);
+  return DL
+    .filter(dl => {
+      if (dl.m === 'all')       return true;
+      if (dl.m === 'q_end')     return isQ;
+      if (dl.m === 'non_q_end') return !isQ;
+      if (dl.m === 'no_march')  return m !== 3;
+      if (Array.isArray(dl.m))  return dl.m.includes(m);
+      return false;
+    })
+    .map(dl => {
+      const lastDay = new Date(y, m, 0).getDate();
+      const day     = Math.min(dl.d, lastDay);
+      return {
+        ...dl,
+        resolvedName: resolveName(dl, ctx, m, y),
+        actualDate:   new Date(y, m - 1, day),
+      };
+    })
+    .sort((a, b) => a.actualDate - b.actualDate);
+}
 
 function calRender(){const today=new Date();today.setHours(0,0,0,0);const label=MONTHS[calMonth]+' '+calYear;document.getElementById('calTitle').textContent='Due Dates — '+label;document.getElementById('calMonthLabel').textContent=label;let rows=dlForMonth(calMonth,calYear);if(calCat!=='all')rows=rows.filter(r=>r.c===calCat);const body=document.getElementById('calBody');if(!rows.length){body.innerHTML=`<tr><td colspan="5" style="text-align:center;padding:28px;color:var(--gray-4)">No deadlines for this category in ${label}</td></tr>`;return;}body.innerHTML=rows.map(r=>{const diff=Math.round((r.actualDate-today)/86400000);const dateStr=String(r.actualDate.getDate()).padStart(2,'0')+' '+MONTHS[calMonth].slice(0,3)+' '+calYear;const isPast=calYear<today.getFullYear()||(calYear===today.getFullYear()&&calMonth<today.getMonth()+1);let rowCls='',badgeCls='',badgeTxt='';if(isPast){rowCls='';badgeCls='days-far';badgeTxt='Past';}else if(diff<0){rowCls='row-overdue';badgeCls='days-over';badgeTxt=Math.abs(diff)+'d overdue';}else if(diff===0){rowCls='row-today';badgeCls='days-today';badgeTxt='⚡ Today!';}else if(diff<=7){rowCls='row-soon';badgeCls='days-soon';badgeTxt=diff+' days';}else if(diff<=30){rowCls='row-near';badgeCls='days-near';badgeTxt=diff+' days';}else{rowCls='';badgeCls='days-far';badgeTxt=diff+' days';}const catCls=CAT_CLS[r.c]||'cat-gst';return`<tr class="${rowCls}"><td style="font-weight:700;font-size:.79rem;color:var(--black);white-space:nowrap">${dateStr}</td><td><span class="${catCls}">${r.c}</span></td><td style="font-size:.79rem;color:var(--black)">${r.resolvedName}</td><td style="font-size:.72rem;color:var(--gray-5);line-height:1.4">${r.w}</td><td><span class="${badgeCls}">${badgeTxt}</span></td></tr>`;}).join('');}
 

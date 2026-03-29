@@ -4,8 +4,8 @@
    Supabase Dashboard → Settings → API
    ========================================= */
 
-const SUPABASE_URL      = 'https://jmolgvabcfbmsctldpcr.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_ITdqqr6Yczf2d6c_fuNcmw_065lWBcj';
+const SUPABASE_URL      = 'https://YOUR_PROJECT.supabase.co';
+const SUPABASE_ANON_KEY = 'YOUR_ANON_KEY_HERE';
 
 // Supabase JS v2 loaded via CDN in each HTML file
 // This file just exports the client
@@ -73,73 +73,191 @@ function getFYContext(refDate) {
   };
 }
 
-// Generate deadlines for an entity based on its registrations
-function getEntityDeadlines(registrations, refDate) {
-  const f    = registrations || {};
-  const ctx  = getFYContext(refDate);
-  const today = refDate || new Date();
-  const yr   = today.getFullYear();
-  const mo   = today.getMonth() + 1;
-  const isQEnd = [3,6,9,12].includes(mo);
-
+// Generate deadlines for an entity based on its granular registrations
+function getEntityDeadlines(reg, refDate) {
+  const f   = reg || {};
+  const ctx = getFYContext(refDate);
+  const yr  = refDate ? refDate.getFullYear() : new Date().getFullYear();
+  const mo  = refDate ? refDate.getMonth() + 1 : new Date().getMonth() + 1;
+  const isQ = [3,6,9,12].includes(mo);
+  const prevMonLabel = new Date(yr, mo-2, 1).toLocaleDateString('en-IN',{month:'long',year:'numeric'});
   const all = [];
 
-  // ── GST ────────────────────────────────────────────
-  if (f.gst) {
-    all.push(
-      { key:`GSTR7_${yr}_${mo}`,  cat:'GST', name:'GSTR-7 (TDS under GST)',         due: new Date(yr,mo-1,7),  m:'all' },
-      { key:`GSTR8_${yr}_${mo}`,  cat:'GST', name:'GSTR-8 (TCS e-commerce)',         due: new Date(yr,mo-1,7),  m:'all' },
-      { key:`GSTR1_${yr}_${mo}`,  cat:'GST', name:'GSTR-1 Outward Supplies',         due: new Date(yr,mo-1,11), m:'all' },
-      { key:`GSTR3B_${yr}_${mo}`, cat:'GST', name:'GSTR-3B Summary Return',          due: new Date(yr,mo-1,20), m:'all' },
-    );
-    if (isQEnd) all.push(
-      { key:`GSTR3BQ1_${yr}_${mo}`, cat:'GST', name:'GSTR-3B Quarterly (QRMP)', due: new Date(yr,mo-1,22), m:'q_end' },
-    );
-    if (mo === 12) all.push(
-      { key:`GSTR9_${yr}`, cat:'GST', name:`GSTR-9 Annual Return ${ctx.prevFY}`, due: new Date(yr,11,31) },
-    );
+  // ── GST Regular (GSTR-1 / GSTR-3B monthly) ────────────────────
+  if (f.gst_regular) {
+    all.push({ key:`GSTR1_${yr}_${mo}`,  cat:'GST',
+      name:`GSTR-1 Outward Supplies (for ${prevMonLabel})`,
+      due: new Date(yr,mo-1,11) });
+    all.push({ key:`GSTR3B_${yr}_${mo}`, cat:'GST',
+      name:`GSTR-3B Summary Return (for ${prevMonLabel})`,
+      due: new Date(yr,mo-1,20) });
+    if (mo===12) all.push({ key:`GSTR9_${yr}`, cat:'GST',
+      name:`GSTR-9 Annual Return ${ctx.prevFY}`,
+      due: new Date(yr,11,31) });
   }
 
-  // ── Income Tax ─────────────────────────────────────
+  // ── GST QRMP (quarterly filer ≤₹5 Cr) ────────────────────────
+  if (f.gst_qrmp) {
+    // IFF (monthly)
+    all.push({ key:`IFF_${yr}_${mo}`, cat:'GST',
+      name:`GSTR-1 / IFF QRMP (for ${prevMonLabel})`,
+      due: new Date(yr,mo-1,13) });
+    // PMT-06 monthly payment (non quarter-end months)
+    if (!isQ) all.push({ key:`PMT06_${yr}_${mo}`, cat:'GST',
+      name:`PMT-06 Monthly Tax Payment (for ${new Date(yr,mo-1,1).toLocaleDateString('en-IN',{month:'long',year:'numeric'})})`,
+      due: new Date(yr,mo-1,25) });
+    // Quarterly return
+    if (isQ) {
+      all.push({ key:`GSTR3BQ_${yr}_${mo}`, cat:'GST',
+        name:`GSTR-3B Quarterly QRMP — Cat.1 (${ctx.FY} Q)`,
+        due: new Date(yr,mo-1,22) });
+    }
+    if (mo===12) all.push({ key:`GSTR9Q_${yr}`, cat:'GST',
+      name:`GSTR-9 Annual Return ${ctx.prevFY}`,
+      due: new Date(yr,11,31) });
+  }
+
+  // ── GST Composition ───────────────────────────────────────────
+  if (f.gst_composition) {
+    if (isQ) all.push({ key:`CMP08_${yr}_${mo}`, cat:'GST',
+      name:`CMP-08 Composition Tax Payment (Q ending ${prevMonLabel})`,
+      due: new Date(yr,mo-1,18) });
+    if (mo===4) all.push({ key:`GSTR4_${yr}`, cat:'GST',
+      name:`GSTR-4 Composition Annual Return ${ctx.prevFY}`,
+      due: new Date(yr,3,30) });
+  }
+
+  // ── GSTR-7 (TDS under GST) ────────────────────────────────────
+  if (f.gst_gstr7) {
+    all.push({ key:`GSTR7_${yr}_${mo}`, cat:'GST',
+      name:`GSTR-7 TDS under GST (for ${prevMonLabel})`,
+      due: new Date(yr,mo-1,7) });
+  }
+
+  // ── GSTR-8 (TCS — e-commerce operators) ──────────────────────
+  if (f.gst_gstr8) {
+    all.push({ key:`GSTR8_${yr}_${mo}`, cat:'GST',
+      name:`GSTR-8 TCS e-Commerce (for ${prevMonLabel})`,
+      due: new Date(yr,mo-1,7) });
+  }
+
+  // ── Income Tax (always on — PAN mandatory) ────────────────────
   if (f.income_tax) {
-    if (mo===6)  all.push({ key:`ADVT1_${yr}`, cat:'Income Tax', name:`Advance Tax 1st Instalment 15% (${ctx.FY})`, due: new Date(yr,5,15) });
-    if (mo===9)  all.push({ key:`ADVT2_${yr}`, cat:'Income Tax', name:`Advance Tax 2nd Instalment 45% (${ctx.FY})`, due: new Date(yr,8,15) });
-    if (mo===12) all.push({ key:`ADVT3_${yr}`, cat:'Income Tax', name:`Advance Tax 3rd Instalment 75% (${ctx.FY})`, due: new Date(yr,11,15) });
-    if (mo===3)  all.push({ key:`ADVT4_${yr}`, cat:'Income Tax', name:`Advance Tax Final 100% (${ctx.FY})`,         due: new Date(yr,2,15) });
-    if (mo===7)  all.push({ key:`ITR_${yr}`,    cat:'Income Tax', name:`ITR Filing Individuals/HUF (${ctx.AY})`,   due: new Date(yr,6,31) });
-    if (mo===9)  all.push({ key:`AUDIT_${yr}`,  cat:'Income Tax', name:`Tax Audit Report 3CA/3CB (${ctx.AY})`,     due: new Date(yr,8,30) });
-    if (mo===10) all.push({ key:`ITRAUD_${yr}`, cat:'Income Tax', name:`ITR Filing Audit Cases (${ctx.AY})`,       due: new Date(yr,9,31) });
+    if (mo===6)  all.push({ key:`ADVT1_${yr}`, cat:'Income Tax',
+      name:`Advance Tax 1st Instalment 15% (${ctx.FY})`, due: new Date(yr,5,15) });
+    if (mo===9)  all.push({ key:`ADVT2_${yr}`, cat:'Income Tax',
+      name:`Advance Tax 2nd Instalment 45% (${ctx.FY})`, due: new Date(yr,8,15) });
+    if (mo===12) all.push({ key:`ADVT3_${yr}`, cat:'Income Tax',
+      name:`Advance Tax 3rd Instalment 75% (${ctx.FY})`, due: new Date(yr,11,15) });
+    if (mo===3)  all.push({ key:`ADVT4_${yr}`, cat:'Income Tax',
+      name:`Advance Tax Final 100% (${ctx.FY})`, due: new Date(yr,2,15) });
+    if (mo===7)  all.push({ key:`ITR_${yr}`, cat:'Income Tax',
+      name:`ITR Filing Individuals/HUF (${ctx.AY})`, due: new Date(yr,6,31) });
+    if (mo===9)  all.push({ key:`AUDIT_${yr}`, cat:'Income Tax',
+      name:`Tax Audit Report 3CA/3CB (${ctx.AY})`, due: new Date(yr,8,30) });
+    if (mo===10) all.push({ key:`ITRAUD_${yr}`, cat:'Income Tax',
+      name:`ITR Filing Audit Cases (${ctx.AY})`, due: new Date(yr,9,31) });
+    if (mo===12) all.push({ key:`ITRREV_${yr}`, cat:'Income Tax',
+      name:`Belated/Revised ITR (${ctx.AY})`, due: new Date(yr,11,31) });
   }
 
-  // ── TDS ────────────────────────────────────────────
-  if (f.tds) {
-    const tdsDue = mo === 3 ? 30 : 7;
-    all.push({ key:`TDS_${yr}_${mo}`, cat:'TDS', name:'TDS/TCS Deposit', due: new Date(yr,mo-1,tdsDue) });
-    if (mo===5)  all.push({ key:`TDSR_Q4_${yr}`, cat:'TDS', name:'TDS Return Q4 (Jan–Mar) Form 24Q/26Q', due: new Date(yr,4,31) });
-    if (mo===7)  all.push({ key:`TDSR_Q1_${yr}`, cat:'TDS', name:'TDS Return Q1 (Apr–Jun) Form 24Q/26Q', due: new Date(yr,6,31) });
-    if (mo===10) all.push({ key:`TDSR_Q2_${yr}`, cat:'TDS', name:'TDS Return Q2 (Jul–Sep) Form 24Q/26Q', due: new Date(yr,9,31) });
-    if (mo===1)  all.push({ key:`TDSR_Q3_${yr}`, cat:'TDS', name:'TDS Return Q3 (Oct–Dec) Form 24Q/26Q', due: new Date(yr,0,31) });
-    if (mo===6)  all.push({ key:`F16_${yr}`,     cat:'TDS', name:`Form 16/16A Issue (${ctx.prevFY})`,     due: new Date(yr,5,15) });
+  // ── TDS General (194C, 194J, etc.) ───────────────────────────
+  if (f.tds_general) {
+    // 7th of each month = TDS for previous month (except March)
+    if (mo !== 3 && mo !== 4) {
+      all.push({ key:`TDS_${yr}_${mo}`, cat:'TDS',
+        name:`TDS Deposit (for ${prevMonLabel})`,
+        due: new Date(yr,mo-1,7) });
+    }
+    if (mo === 4) {
+      // Feb TDS on 7 Apr
+      all.push({ key:`TDS_${yr}_4`, cat:'TDS',
+        name:`TDS Deposit (for February ${yr})`,
+        due: new Date(yr,3,7) });
+      // March TDS special — 30 Apr
+      all.push({ key:`TDS_MARCH_${yr}`, cat:'TDS',
+        name:`TDS Deposit — March ${yr} (Special — due 30 April)`,
+        due: new Date(yr,3,30) });
+    }
   }
 
-  // ── PF ─────────────────────────────────────────────
+  // ── TDS Salary (192) ─────────────────────────────────────────
+  if (f.tds_salary) {
+    if (mo !== 3 && mo !== 4) {
+      all.push({ key:`TDS192_${yr}_${mo}`, cat:'TDS',
+        name:`TDS on Salary — 192 Deposit (for ${prevMonLabel})`,
+        due: new Date(yr,mo-1,7) });
+    }
+    if (mo === 4) {
+      all.push({ key:`TDS192_${yr}_4`, cat:'TDS',
+        name:`TDS on Salary — 192 Deposit (for February ${yr})`,
+        due: new Date(yr,3,7) });
+      all.push({ key:`TDS192_MARCH_${yr}`, cat:'TDS',
+        name:`TDS on Salary — 192 March ${yr} (Special — due 30 April)`,
+        due: new Date(yr,3,30) });
+    }
+  }
+
+  // ── TCS Collection (206C) ─────────────────────────────────────
+  if (f.tcs_collection) {
+    if (mo !== 3 && mo !== 4) {
+      all.push({ key:`TCS_${yr}_${mo}`, cat:'TDS',
+        name:`TCS Collection Deposit — 206C (for ${prevMonLabel})`,
+        due: new Date(yr,mo-1,7) });
+    }
+    if (mo === 4) {
+      all.push({ key:`TCS_MARCH_${yr}`, cat:'TDS',
+        name:`TCS Deposit — March ${yr} (Special — due 30 April)`,
+        due: new Date(yr,3,30) });
+    }
+  }
+
+  // ── TDS Quarterly Returns ────────────────────────────────────
+  if (f.tds_returns) {
+    if (mo===5)  all.push({ key:`TDSR_Q4_${yr}`, cat:'TDS',
+      name:`TDS Return Q4 (Jan–Mar ${ctx.fyEnd}) — Form 24Q/26Q`, due: new Date(yr,4,31) });
+    if (mo===7)  all.push({ key:`TDSR_Q1_${yr}`, cat:'TDS',
+      name:`TDS Return Q1 (Apr–Jun ${ctx.fyStart}) — Form 24Q/26Q`, due: new Date(yr,6,31) });
+    if (mo===10) all.push({ key:`TDSR_Q2_${yr}`, cat:'TDS',
+      name:`TDS Return Q2 (Jul–Sep ${ctx.fyStart}) — Form 24Q/26Q`, due: new Date(yr,9,31) });
+    if (mo===1)  all.push({ key:`TDSR_Q3_${yr}`, cat:'TDS',
+      name:`TDS Return Q3 (Oct–Dec ${ctx.fyStart}) — Form 24Q/26Q`, due: new Date(yr,0,31) });
+  }
+
+  // ── Form 16 / 16A ────────────────────────────────────────────
+  if (f.tds_form16) {
+    if (mo===6) all.push({ key:`F16_${yr}`, cat:'TDS',
+      name:`Form 16 / 16A Issue to Deductees (${ctx.prevFY})`, due: new Date(yr,5,15) });
+  }
+
+  // ── PF ───────────────────────────────────────────────────────
   if (f.pf) {
-    all.push({ key:`EPF_${yr}_${mo}`, cat:'PF', name:'EPF Monthly Contribution', due: new Date(yr,mo-1,15) });
+    all.push({ key:`EPF_${yr}_${mo}`, cat:'PF',
+      name:`EPF Monthly Contribution (for ${prevMonLabel})`,
+      due: new Date(yr,mo-1,15) });
   }
 
-  // ── ESIC ───────────────────────────────────────────
+  // ── ESIC ─────────────────────────────────────────────────────
   if (f.esic) {
-    all.push({ key:`ESIC_${yr}_${mo}`, cat:'ESIC', name:'ESIC Monthly Contribution', due: new Date(yr,mo-1,15) });
+    all.push({ key:`ESIC_${yr}_${mo}`, cat:'ESIC',
+      name:`ESIC Monthly Contribution (for ${prevMonLabel})`,
+      due: new Date(yr,mo-1,15) });
   }
 
-  // ── ROC / MCA ──────────────────────────────────────
+  // ── ROC / MCA ────────────────────────────────────────────────
   if (f.roc) {
-    if (mo===6)  all.push({ key:`DPT3_${yr}`,  cat:'ROC', name:`DPT-3 Return of Deposits (${ctx.prevFY})`,     due: new Date(yr,5,30) });
-    if (mo===9)  all.push({ key:`DIR3_${yr}`,   cat:'ROC', name:'DIR-3 KYC Director KYC',                       due: new Date(yr,8,30) });
-    if (mo===4)  all.push({ key:`MSME1H_${yr}`, cat:'ROC', name:'MSME-1 H2 (Oct–Mar outstanding dues)',         due: new Date(yr,3,30) });
-    if (mo===10) all.push({ key:`MSME1H2_${yr}`,cat:'ROC', name:'MSME-1 H1 (Apr–Sep outstanding dues)',         due: new Date(yr,9,31) });
-    if (mo===10) all.push({ key:`AOC4_${yr}`,   cat:'ROC', name:`AOC-4 Financial Statements (${ctx.prevFY})`,   due: new Date(yr,9,29) });
-    if (mo===11) all.push({ key:`MGT7_${yr}`,   cat:'ROC', name:`MGT-7/7A Annual Return (${ctx.prevFY})`,       due: new Date(yr,10,29) });
+    if (mo===6)  all.push({ key:`DPT3_${yr}`, cat:'ROC',
+      name:`DPT-3 Return of Deposits (${ctx.prevFY})`, due: new Date(yr,5,30) });
+    if (mo===9)  all.push({ key:`DIR3_${yr}`, cat:'ROC',
+      name:`DIR-3 KYC Director KYC`, due: new Date(yr,8,30) });
+    if (mo===4)  all.push({ key:`MSME1H_${yr}`, cat:'ROC',
+      name:`MSME-1 H2 — Outstanding Dues Oct–Mar`, due: new Date(yr,3,30) });
+    if (mo===10) all.push({ key:`MSME1H2_${yr}`, cat:'ROC',
+      name:`MSME-1 H1 — Outstanding Dues Apr–Sep`, due: new Date(yr,9,31) });
+    if (mo===10) all.push({ key:`AOC4_${yr}`, cat:'ROC',
+      name:`AOC-4 Financial Statements (${ctx.prevFY})`, due: new Date(yr,9,29) });
+    if (mo===11) all.push({ key:`MGT7_${yr}`, cat:'ROC',
+      name:`MGT-7 / MGT-7A Annual Return (${ctx.prevFY})`, due: new Date(yr,10,29) });
   }
 
   return all.sort((a,b) => a.due - b.due);

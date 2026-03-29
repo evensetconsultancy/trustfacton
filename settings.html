@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Settings — TrustFactON</title>
+<link rel="stylesheet" href="style.css">
+<style>
+body{background:var(--gray-1);min-height:100vh;}
+.db-header{background:var(--navy);position:sticky;top:0;z-index:200;box-shadow:0 2px 12px rgba(0,0,0,.2);}
+.db-header-inner{display:flex;align-items:center;gap:12px;height:54px;}
+.db-logo{display:flex;align-items:center;gap:8px;text-decoration:none;flex-shrink:0;}
+.db-logo img{width:30px;height:30px;object-fit:contain;mix-blend-mode:screen;}
+.db-logo span{font-family:'Playfair Display',Georgia,serif;font-size:1.05rem;color:white;}
+.db-logo .accent{color:#60A5FA;}
+.hdr-right{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.hdr-btn{padding:5px 13px;border-radius:7px;font-size:.78rem;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;border:1px solid rgba(255,255,255,.25);color:rgba(255,255,255,.8);background:transparent;transition:all .15s;text-decoration:none;}
+.hdr-btn:hover{background:rgba(255,255,255,.1);color:white;}
+.hdr-btn.green{background:#16A34A;color:white;border-color:#16A34A;}
+
+/* Body */
+.settings-body{max-width:760px;margin:0 auto;padding:28px 20px 56px;}
+.settings-back{display:inline-flex;align-items:center;gap:6px;color:var(--gray-5);font-size:.82rem;text-decoration:none;margin-bottom:20px;transition:color .15s;}
+.settings-back:hover{color:var(--navy);}
+
+/* Entity selector */
+.entity-select-wrap{background:white;border:1px solid var(--gray-3);border-radius:12px;padding:16px 18px;margin-bottom:22px;}
+.entity-select-wrap label{font-size:.77rem;font-weight:600;color:var(--gray-6);display:block;margin-bottom:6px;}
+.entity-select-row{display:flex;gap:8px;align-items:center;}
+.entity-select-row select{flex:1;padding:9px 11px;border:1.5px solid var(--gray-3);border-radius:8px;font-size:.86rem;font-family:'Inter',sans-serif;color:var(--black);}
+.entity-select-row select:focus{outline:none;border-color:var(--blue);}
+.add-entity-btn{padding:9px 14px;background:var(--navy);color:white;border:none;border-radius:8px;font-size:.8rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;}
+
+/* Sections */
+.settings-section{background:white;border:1px solid var(--gray-3);border-radius:12px;overflow:hidden;margin-bottom:16px;}
+.section-head{padding:14px 18px;border-bottom:1px solid var(--gray-2);display:flex;align-items:center;justify-content:space-between;}
+.section-head h2{font-size:.92rem;font-weight:700;color:var(--black);}
+.section-head p{font-size:.76rem;color:var(--gray-5);margin-top:2px;}
+.section-body{padding:18px;}
+
+/* Form */
+.fg{margin-bottom:13px;}
+.fg label{display:block;font-size:.77rem;font-weight:600;color:var(--gray-6);margin-bottom:4px;}
+.opt{font-weight:400;color:var(--gray-4);font-size:.7rem;margin-left:3px;}
+.fg input,.fg select{width:100%;padding:9px 11px;border:1.5px solid var(--gray-3);border-radius:8px;font-size:.85rem;font-family:'Inter',sans-serif;color:var(--black);background:white;transition:border-color .15s;box-sizing:border-box;}
+.fg input:focus,.fg select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.07);}
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+
+/* Compliance grid */
+.comp-master{display:flex;align-items:center;gap:8px;margin-bottom:8px;padding-bottom:7px;border-bottom:1px solid var(--gray-2);}
+.comp-master h3{font-size:.83rem;font-weight:700;color:var(--black);flex:1;}
+.master-toggle{display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none;}
+.master-toggle input{width:15px;height:15px;cursor:pointer;}
+.master-toggle span{font-size:.72rem;color:var(--gray-5);}
+.sub-label{font-size:.69rem;font-weight:600;color:var(--gray-5);margin-bottom:4px;text-transform:uppercase;letter-spacing:.4px;}
+.comp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px;}
+.comp-tile{border:1.5px solid var(--gray-3);border-radius:8px;padding:9px 10px;cursor:pointer;transition:all .12s;display:flex;align-items:flex-start;gap:7px;}
+.comp-tile:hover{border-color:var(--blue);background:#F8FBFF;}
+.comp-tile.on{border-color:var(--navy);background:#EFF4FF;}
+.comp-tile.locked{opacity:.55;cursor:default;background:var(--gray-1);}
+.comp-tile.sub{border-style:dashed;background:var(--gray-1);}
+.comp-tile.sub.on{background:#F0F4FF;border-color:#93C5FD;border-style:solid;}
+.comp-tile input[type=checkbox]{margin-top:1px;flex-shrink:0;width:13px;height:13px;}
+.comp-tile .tl strong{font-size:.78rem;display:block;color:var(--black);}
+.comp-tile .tl span{font-size:.67rem;color:var(--gray-5);line-height:1.4;}
+
+/* Save button */
+.save-bar{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-top:1px solid var(--gray-2);background:var(--gray-1);}
+.save-msg{font-size:.8rem;color:var(--green);font-weight:600;display:none;}
+.save-msg.show{display:block;}
+.btn-save{padding:9px 22px;background:var(--navy);color:white;border:none;border-radius:8px;font-size:.87rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;}
+.btn-save:hover{background:#0F2444;}
+.btn-save:disabled{background:var(--gray-4);cursor:not-allowed;}
+.err{background:#FEF2F2;border:1px solid #FECACA;border-radius:8px;padding:8px 11px;font-size:.8rem;color:#991B1B;margin-bottom:12px;display:none;}
+.err.show{display:block;}
+
+@media(max-width:600px){.fg-row{grid-template-columns:1fr;}.comp-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:420px){.comp-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<div class="db-header">
+  <div class="container">
+    <div class="db-header-inner">
+      <a href="dashboard.html" class="db-logo">
+        <img src="logo.png" alt="">
+        <span>Trust<span class="accent">Fact</span>ON</span>
+      </a>
+      <div class="hdr-right">
+        <a href="dashboard.html" class="hdr-btn green">← My Tracker</a>
+        <button class="hdr-btn" onclick="doLogout()">Logout</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="settings-body">
+  <a href="dashboard.html" class="settings-back">← Back to Dashboard</a>
+
+  <!-- Entity selector -->
+  <div class="entity-select-wrap">
+    <label>Configure settings for entity</label>
+    <div class="entity-select-row">
+      <select id="entitySelect" onchange="loadEntity()">
+        <option value="">Loading entities…</option>
+      </select>
+      <button class="add-entity-btn" onclick="addNewEntity()">+ Add Entity</button>
+    </div>
+  </div>
+
+  <div id="settingsContent" style="display:none">
+
+    <!-- Entity Details -->
+    <div class="settings-section">
+      <div class="section-head">
+        <div>
+          <h2>Entity Details</h2>
+          <p>Basic information and registration numbers</p>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="err" id="detailErr"></div>
+        <div class="fg-row">
+          <div class="fg">
+            <label>Entity name</label>
+            <input type="text" id="sName">
+          </div>
+          <div class="fg">
+            <label>Entity type</label>
+            <select id="sType">
+              <option value="Individual">Individual / Salaried</option>
+              <option value="Proprietor">Proprietor / Sole Trader</option>
+              <option value="Partnership">Partnership Firm</option>
+              <option value="LLP">LLP</option>
+              <option value="OPC">OPC</option>
+              <option value="Private Limited">Private Limited</option>
+            </select>
+          </div>
+        </div>
+        <div class="fg-row">
+          <div class="fg">
+            <label>PAN</label>
+            <input type="text" id="sPan" maxlength="10" oninput="this.value=this.value.toUpperCase()">
+          </div>
+          <div class="fg">
+            <label>GSTIN <span class="opt">(if applicable)</span></label>
+            <input type="text" id="sGstin" maxlength="15" oninput="this.value=this.value.toUpperCase()">
+          </div>
+        </div>
+        <div class="fg-row">
+          <div class="fg">
+            <label>TAN <span class="opt">(if applicable)</span></label>
+            <input type="text" id="sTan" maxlength="10" oninput="this.value=this.value.toUpperCase()">
+          </div>
+          <div class="fg">
+            <label>CIN / LLPIN <span class="opt">(companies/LLP)</span></label>
+            <input type="text" id="sCin" oninput="this.value=this.value.toUpperCase()">
+          </div>
+        </div>
+        <div class="fg">
+          <label>Reminder email <span class="opt">(deadline alerts sent here)</span></label>
+          <input type="email" id="sEmail">
+        </div>
+      </div>
+      <div class="save-bar">
+        <span class="save-msg" id="detailSaveMsg">✅ Entity details saved!</span>
+        <button class="btn-save" onclick="saveEntityDetails()">Save Details</button>
+      </div>
+    </div>
+
+    <!-- Compliance Configuration -->
+    <div class="settings-section">
+      <div class="section-head">
+        <div>
+          <h2>Compliance Configuration</h2>
+          <p>Select exactly which compliances apply to this entity</p>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="err" id="compErr"></div>
+
+        <!-- Income Tax — always on -->
+        <div style="margin-bottom:14px">
+          <div class="comp-master">
+            <h3>📊 Income Tax</h3>
+            <span style="font-size:.69rem;background:#DCFCE7;color:#166534;padding:2px 7px;border-radius:10px;font-weight:600">Always tracked</span>
+          </div>
+          <div class="comp-grid">
+            <div class="comp-tile locked on"><input type="checkbox" checked disabled>
+              <div class="tl"><strong>ITR Filing</strong><span>Annual return</span></div></div>
+            <div class="comp-tile locked on"><input type="checkbox" checked disabled>
+              <div class="tl"><strong>Advance Tax</strong><span>Q1–Q4</span></div></div>
+          </div>
+        </div>
+
+        <!-- GST -->
+        <div style="margin-bottom:14px">
+          <div class="comp-master">
+            <h3>🏷️ GST</h3>
+            <label class="master-toggle">
+              <input type="checkbox" id="s-gst-master" onchange="sToggleSection('gst',this.checked)">
+              <span>GST registered</span>
+            </label>
+          </div>
+          <div id="s-gst-body" style="display:none">
+            <div class="sub-label">Filing type (one only)</div>
+            <div class="comp-grid">
+              <div class="comp-tile" id="s-ct-gst_regular" onclick="sSelectMutual('gst_filing','gst_regular',this)">
+                <input type="checkbox" id="s-cb-gst_regular">
+                <div class="tl"><strong>Regular monthly</strong><span>GSTR-1/3B (> ₹5 Cr)</span></div>
+              </div>
+              <div class="comp-tile" id="s-ct-gst_qrmp" onclick="sSelectMutual('gst_filing','gst_qrmp',this)">
+                <input type="checkbox" id="s-cb-gst_qrmp">
+                <div class="tl"><strong>QRMP quarterly</strong><span>≤ ₹5 Cr turnover</span></div>
+              </div>
+              <div class="comp-tile" id="s-ct-gst_composition" onclick="sSelectMutual('gst_filing','gst_composition',this)">
+                <input type="checkbox" id="s-cb-gst_composition">
+                <div class="tl"><strong>Composition</strong><span>CMP-08, GSTR-4</span></div>
+              </div>
+            </div>
+            <div class="sub-label" style="margin-top:4px">Additional</div>
+            <div class="comp-grid">
+              <div class="comp-tile sub" id="s-ct-gst_gstr7" onclick="sToggleComp('gst_gstr7',this)">
+                <input type="checkbox" id="s-cb-gst_gstr7">
+                <div class="tl"><strong>GSTR-7</strong><span>TDS under GST</span></div>
+              </div>
+              <div class="comp-tile sub" id="s-ct-gst_gstr8" onclick="sToggleComp('gst_gstr8',this)">
+                <input type="checkbox" id="s-cb-gst_gstr8">
+                <div class="tl"><strong>GSTR-8</strong><span>TCS e-commerce</span></div>
+              </div>
+              <div class="comp-tile sub" id="s-ct-gst_gstr9" onclick="sToggleComp('gst_gstr9',this)">
+                <input type="checkbox" id="s-cb-gst_gstr9">
+                <div class="tl"><strong>GSTR-9</strong><span>Annual return</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TDS -->
+        <div style="margin-bottom:14px">
+          <div class="comp-master">
+            <h3>✂️ TDS / TCS</h3>
+            <label class="master-toggle">
+              <input type="checkbox" id="s-tds-master" onchange="sToggleSection('tds',this.checked)">
+              <span>Has TAN</span>
+            </label>
+          </div>
+          <div id="s-tds-body" style="display:none">
+            <div class="comp-grid">
+              <div class="comp-tile" id="s-ct-tds_general" onclick="sToggleComp('tds_general',this)">
+                <input type="checkbox" id="s-cb-tds_general">
+                <div class="tl"><strong>TDS Deposit</strong><span>194C / 194J etc</span></div>
+              </div>
+              <div class="comp-tile" id="s-ct-tds_salary" onclick="sToggleComp('tds_salary',this)">
+                <input type="checkbox" id="s-cb-tds_salary">
+                <div class="tl"><strong>TDS on Salary</strong><span>Section 192</span></div>
+              </div>
+              <div class="comp-tile" id="s-ct-tcs_collection" onclick="sToggleComp('tcs_collection',this)">
+                <input type="checkbox" id="s-cb-tcs_collection">
+                <div class="tl"><strong>TCS Collection</strong><span>Section 206C</span></div>
+              </div>
+              <div class="comp-tile" id="s-ct-tds_returns" onclick="sToggleComp('tds_returns',this)">
+                <input type="checkbox" id="s-cb-tds_returns">
+                <div class="tl"><strong>TDS Returns</strong><span>24Q / 26Q</span></div>
+              </div>
+              <div class="comp-tile" id="s-ct-tds_form16" onclick="sToggleComp('tds_form16',this)">
+                <input type="checkbox" id="s-cb-tds_form16">
+                <div class="tl"><strong>Form 16 / 16A</strong><span>TDS certificate</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Other -->
+        <div>
+          <div class="comp-master"><h3>🏦 Other</h3></div>
+          <div class="comp-grid">
+            <div class="comp-tile" id="s-ct-pf" onclick="sToggleComp('pf',this)">
+              <input type="checkbox" id="s-cb-pf">
+              <div class="tl"><strong>PF / EPF</strong><span>Monthly contributions</span></div>
+            </div>
+            <div class="comp-tile" id="s-ct-esic" onclick="sToggleComp('esic',this)">
+              <input type="checkbox" id="s-cb-esic">
+              <div class="tl"><strong>ESIC</strong><span>Monthly ESI</span></div>
+            </div>
+            <div class="comp-tile" id="s-ct-roc" onclick="sToggleComp('roc',this)">
+              <input type="checkbox" id="s-cb-roc">
+              <div class="tl"><strong>ROC / MCA</strong><span>AOC-4, MGT-7 etc</span></div>
+            </div>
+            <div class="comp-tile" id="s-ct-pt" onclick="sToggleComp('pt',this)">
+              <input type="checkbox" id="s-cb-pt">
+              <div class="tl"><strong>Professional Tax</strong><span>State PT</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="save-bar">
+        <span class="save-msg" id="compSaveMsg">✅ Compliance settings saved!</span>
+        <button class="btn-save" onclick="saveCompliances()">Save Compliances</button>
+      </div>
+    </div>
+
+  </div><!-- /settingsContent -->
+
+  <!-- Add Entity Modal (inline) -->
+  <div id="addEntityWrap" style="display:none">
+    <div class="settings-section">
+      <div class="section-head"><div><h2>Add New Entity</h2><p>Add another entity or client</p></div></div>
+      <div class="section-body">
+        <div class="err" id="addErr"></div>
+        <p style="font-size:.83rem;color:var(--gray-5);margin-bottom:16px">Fill in entity details, then configure compliances on the next step.</p>
+        <div class="fg"><label>Entity name *</label><input type="text" id="addName"></div>
+        <div class="fg-row">
+          <div class="fg"><label>Entity type *</label>
+            <select id="addType">
+              <option value="">— Select —</option>
+              <option value="Individual">Individual</option>
+              <option value="Proprietor">Proprietor</option>
+              <option value="Partnership">Partnership</option>
+              <option value="LLP">LLP</option>
+              <option value="OPC">OPC</option>
+              <option value="Private Limited">Private Limited</option>
+            </select>
+          </div>
+          <div class="fg"><label>PAN *</label>
+            <input type="text" id="addPan" maxlength="10" oninput="this.value=this.value.toUpperCase()">
+          </div>
+        </div>
+        <div class="fg-row">
+          <div class="fg"><label>GSTIN</label><input type="text" id="addGstin" maxlength="15" oninput="this.value=this.value.toUpperCase()"></div>
+          <div class="fg"><label>TAN</label><input type="text" id="addTan" maxlength="10" oninput="this.value=this.value.toUpperCase()"></div>
+        </div>
+        <div class="fg"><label>Reminder email</label><input type="email" id="addEmail"></div>
+      </div>
+      <div class="save-bar">
+        <button class="btn-save" style="background:white;color:var(--gray-6);border:1.5px solid var(--gray-3)" onclick="cancelAdd()">Cancel</button>
+        <button class="btn-save" onclick="saveNewEntity()">Add Entity →</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /settings-body -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script>
+let currentUser = null;
+let entities = [];
+let activeEntity = null;
+let activeRegs = null;
+
+const sComp = {
+  gst:false, gst_regular:false, gst_qrmp:false, gst_composition:false,
+  gst_gstr7:false, gst_gstr8:false, gst_gstr9:false,
+  tds:false, tds_general:false, tds_salary:false, tcs_collection:false,
+  tds_returns:false, tds_form16:false,
+  pf:false, esic:false, roc:false, professional_tax:false
+};
+
+(async () => {
+  const { data:{ session } } = await sb.auth.getSession();
+  if (!session) { window.location.href = 'login.html'; return; }
+  currentUser = session.user;
+  entities = await getMyEntities(currentUser.id);
+  populateEntitySelect();
+  if (entities.length) loadEntity();
+})();
+
+function populateEntitySelect() {
+  const sel = document.getElementById('entitySelect');
+  sel.innerHTML = entities.map(e =>
+    `<option value="${e.id}">${e.name} (${e.type})</option>`
+  ).join('');
+  if (!entities.length) sel.innerHTML = '<option>No entities yet — add one below</option>';
+}
+
+async function loadEntity() {
+  const id = document.getElementById('entitySelect').value;
+  activeEntity = entities.find(e => e.id === id);
+  if (!activeEntity) return;
+
+  // Load registrations
+  const { data: regs } = await sb.from('registrations').select('*').eq('entity_id', id).single();
+  activeRegs = regs || {};
+
+  // Fill entity details
+  document.getElementById('sName').value  = activeEntity.name || '';
+  document.getElementById('sType').value  = activeEntity.type || '';
+  document.getElementById('sPan').value   = activeEntity.pan  || '';
+  document.getElementById('sGstin').value = activeEntity.gstin || '';
+  document.getElementById('sTan').value   = activeEntity.tan  || '';
+  document.getElementById('sCin').value   = activeEntity.cin_llpin || '';
+  document.getElementById('sEmail').value = activeEntity.email_reminders || '';
+
+  // Fill compliance state
+  const compKeys = ['gst','gst_regular','gst_qrmp','gst_composition','gst_gstr7','gst_gstr8','gst_gstr9',
+    'tds','tds_general','tds_salary','tcs_collection','tds_returns','tds_form16',
+    'pf','esic','roc','professional_tax'];
+  compKeys.forEach(k => { sComp[k] = !!activeRegs[k]; });
+
+  renderComplianceUI();
+  document.getElementById('settingsContent').style.display = 'block';
+  document.getElementById('addEntityWrap').style.display = 'none';
+}
+
+function renderComplianceUI() {
+  // GST master
+  const gstOn = sComp.gst || sComp.gst_regular || sComp.gst_qrmp || sComp.gst_composition;
+  document.getElementById('s-gst-master').checked = gstOn;
+  document.getElementById('s-gst-body').style.display = gstOn ? 'block' : 'none';
+
+  // TDS master
+  const tdsOn = sComp.tds || sComp.tds_general || sComp.tds_salary || sComp.tcs_collection;
+  document.getElementById('s-tds-master').checked = tdsOn;
+  document.getElementById('s-tds-body').style.display = tdsOn ? 'block' : 'none';
+
+  // All individual tiles
+  const allKeys = ['gst_regular','gst_qrmp','gst_composition','gst_gstr7','gst_gstr8','gst_gstr9',
+    'tds_general','tds_salary','tcs_collection','tds_returns','tds_form16',
+    'pf','esic','roc','pt'];
+
+  allKeys.forEach(k => {
+    const key = k === 'pt' ? 'professional_tax' : k;
+    const el = document.getElementById('s-ct-'+k);
+    const cb = document.getElementById('s-cb-'+k);
+    if (el) el.classList.toggle('on', !!sComp[key]);
+    if (cb) cb.checked = !!sComp[key];
+  });
+}
+
+function sToggleSection(section, on) {
+  document.getElementById('s-'+section+'-body').style.display = on ? 'block' : 'none';
+  if (!on) {
+    const keys = section === 'gst'
+      ? ['gst_regular','gst_qrmp','gst_composition','gst_gstr7','gst_gstr8','gst_gstr9']
+      : ['tds_general','tds_salary','tcs_collection','tds_returns','tds_form16'];
+    keys.forEach(k => {
+      sComp[k] = false;
+      const el = document.getElementById('s-ct-'+k); if (el) el.classList.remove('on');
+      const cb = document.getElementById('s-cb-'+k); if (cb) cb.checked = false;
+    });
+  }
+  sComp[section] = on;
+}
+
+function sSelectMutual(group, key, el) {
+  const groupKeys = { gst_filing: ['gst_regular','gst_qrmp','gst_composition'] };
+  groupKeys[group].forEach(k => {
+    sComp[k] = false;
+    const ct = document.getElementById('s-ct-'+k); if (ct) ct.classList.remove('on');
+    const cb = document.getElementById('s-cb-'+k); if (cb) cb.checked = false;
+  });
+  const wasOn = !el.classList.contains('on');
+  sComp[key] = wasOn;
+  el.classList.toggle('on', wasOn);
+  document.getElementById('s-cb-'+key).checked = wasOn;
+}
+
+function sToggleComp(key, el) {
+  if (el.classList.contains('locked')) return;
+  const stateKey = key === 'pt' ? 'professional_tax' : key;
+  sComp[stateKey] = !sComp[stateKey];
+  el.classList.toggle('on', sComp[stateKey]);
+  document.getElementById('s-cb-'+key).checked = sComp[stateKey];
+}
+
+async function saveEntityDetails() {
+  const btn = document.querySelector('#settingsContent .settings-section:first-child .btn-save');
+  btn.disabled = true; btn.textContent = 'Saving…';
+  const { error } = await sb.from('entities').update({
+    name:            document.getElementById('sName').value.trim(),
+    type:            document.getElementById('sType').value,
+    pan:             document.getElementById('sPan').value.trim().toUpperCase(),
+    gstin:           document.getElementById('sGstin').value.trim().toUpperCase() || null,
+    tan:             document.getElementById('sTan').value.trim().toUpperCase()   || null,
+    cin_llpin:       document.getElementById('sCin').value.trim().toUpperCase()   || null,
+    email_reminders: document.getElementById('sEmail').value.trim() || currentUser.email,
+  }).eq('id', activeEntity.id);
+  btn.disabled = false; btn.textContent = 'Save Details';
+  if (error) {
+    document.getElementById('detailErr').textContent = error.message;
+    document.getElementById('detailErr').classList.add('show');
+  } else {
+    const msg = document.getElementById('detailSaveMsg');
+    msg.classList.add('show');
+    setTimeout(() => msg.classList.remove('show'), 3000);
+    entities = await getMyEntities(currentUser.id);
+    populateEntitySelect();
+  }
+}
+
+async function saveCompliances() {
+  const btn = document.querySelectorAll('.btn-save')[document.querySelectorAll('.btn-save').length - 2];
+  btn.disabled = true; btn.textContent = 'Saving…';
+  const payload = {
+    gst:             sComp.gst || sComp.gst_regular || sComp.gst_qrmp || sComp.gst_composition,
+    tds:             sComp.tds || sComp.tds_general || sComp.tds_salary || sComp.tcs_collection,
+    pf:              sComp.pf,
+    esic:            sComp.esic,
+    roc:             sComp.roc,
+    professional_tax:sComp.professional_tax,
+    gst_regular:     sComp.gst_regular,
+    gst_qrmp:        sComp.gst_qrmp,
+    gst_composition: sComp.gst_composition,
+    gst_gstr7:       sComp.gst_gstr7,
+    gst_gstr8:       sComp.gst_gstr8,
+    gst_gstr9:       sComp.gst_gstr9,
+    tds_general:     sComp.tds_general,
+    tds_salary:      sComp.tds_salary,
+    tcs_collection:  sComp.tcs_collection,
+    tds_returns:     sComp.tds_returns,
+    tds_form16:      sComp.tds_form16,
+  };
+  const { error } = await sb.from('registrations').update(payload).eq('entity_id', activeEntity.id);
+  btn.disabled = false; btn.textContent = 'Save Compliances';
+  if (error) {
+    document.getElementById('compErr').textContent = error.message;
+    document.getElementById('compErr').classList.add('show');
+  } else {
+    const msg = document.getElementById('compSaveMsg');
+    msg.classList.add('show');
+    setTimeout(() => msg.classList.remove('show'), 3000);
+  }
+}
+
+// Add new entity
+function addNewEntity() {
+  document.getElementById('settingsContent').style.display = 'none';
+  document.getElementById('addEntityWrap').style.display   = 'block';
+}
+function cancelAdd() {
+  document.getElementById('addEntityWrap').style.display   = 'none';
+  document.getElementById('settingsContent').style.display = 'block';
+}
+
+async function saveNewEntity() {
+  const name  = document.getElementById('addName').value.trim();
+  const type  = document.getElementById('addType').value;
+  const pan   = document.getElementById('addPan').value.trim().toUpperCase();
+  const errEl = document.getElementById('addErr');
+  errEl.classList.remove('show');
+  if (!name) { errEl.textContent = 'Please enter entity name.'; errEl.classList.add('show'); return; }
+  if (!type) { errEl.textContent = 'Please select entity type.'; errEl.classList.add('show'); return; }
+  if (!/^[A-Z]{5}[0-9]{4}[A-Z]$/.test(pan)) { errEl.textContent = 'PAN format invalid.'; errEl.classList.add('show'); return; }
+
+  const { data: ent, error } = await sb.rpc('create_entity', {
+    p_user_id:   currentUser.id,
+    p_name:      name,
+    p_type:      type,
+    p_pan:       pan,
+    p_gstin:     document.getElementById('addGstin').value.trim().toUpperCase() || null,
+    p_cin_llpin: null,
+    p_tan:       document.getElementById('addTan').value.trim().toUpperCase() || null,
+    p_email:     document.getElementById('addEmail').value.trim() || currentUser.email,
+    p_gst:false, p_tds:false, p_pf:false, p_esic:false, p_roc:false, p_pt:false,
+  });
+  if (error) { errEl.textContent = error.message; errEl.classList.add('show'); return; }
+
+  // Refresh and switch to new entity
+  entities = await getMyEntities(currentUser.id);
+  populateEntitySelect();
+  document.getElementById('entitySelect').value = ent;
+  document.getElementById('addEntityWrap').style.display = 'none';
+  await loadEntity();
+  // Show a reminder to configure compliances
+  document.getElementById('compErr').textContent = '⚡ Entity added! Now configure which compliances apply below.';
+  document.getElementById('compErr').style.background = '#F0FDF4';
+  document.getElementById('compErr').style.borderColor = '#BBF7D0';
+  document.getElementById('compErr').style.color = '#166534';
+  document.getElementById('compErr').classList.add('show');
+  document.getElementById('settingsContent').scrollIntoView({behavior:'smooth'});
+}
+
+async function doLogout() {
+  await sb.auth.signOut();
+  window.location.href = 'index.html';
+}
+</script>
+</body>
+</html>
