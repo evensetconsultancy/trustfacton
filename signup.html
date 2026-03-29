@@ -33,7 +33,7 @@ body{background:var(--gray-1);min-height:100vh;display:flex;align-items:center;j
 .otp-wrap{text-align:center;padding:4px 0;}
 .otp-wrap h2{margin-bottom:6px;}
 .otp-wrap p{font-size:0.84rem;color:var(--gray-5);margin-bottom:20px;line-height:1.6;}
-#otpInput{width:100%;padding:13px;text-align:center;font-size:1.8rem;letter-spacing:14px;border:1.5px solid var(--gray-3);border-radius:8px;font-family:'Inter',sans-serif;box-sizing:border-box;color:var(--black);margin-bottom:12px;}
+#otpInput{width:100%;padding:13px;text-align:center;font-size:1.6rem;letter-spacing:8px;border:1.5px solid var(--gray-3);border-radius:8px;font-family:'Inter',sans-serif;box-sizing:border-box;color:var(--black);margin-bottom:12px;}
 #otpInput:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.08);}
 .resend-btn{background:none;border:none;color:var(--blue);font-size:0.82rem;cursor:pointer;font-family:'Inter',sans-serif;font-weight:600;margin-top:12px;}
 </style>
@@ -78,12 +78,12 @@ body{background:var(--gray-1);min-height:100vh;display:flex;align-items:center;j
     <div class="otp-wrap">
       <div style="font-size:2rem;margin-bottom:12px">📬</div>
       <h2>Enter your code</h2>
-      <p>We sent a 6-digit code to<br><strong id="sentTo" style="color:var(--black)"></strong></p>
+      <p>We sent a login code to<br><strong id="sentTo" style="color:var(--black)"></strong></p>
 
       <div class="err" id="otpErr"></div>
 
       <input type="text" id="otpInput" placeholder="——————"
-        maxlength="6" inputmode="numeric"
+        maxlength="8" inputmode="numeric"
         oninput="this.value=this.value.replace(/[^0-9]/g,'')"
         onkeydown="if(event.key==='Enter')verifyOTP()">
 
@@ -151,7 +151,7 @@ async function verifyOTP() {
   const btn   = document.getElementById('verifyBtn');
   clearErr('otpErr');
 
-  if (token.length !== 6) return showErr('Enter the complete 6-digit code.', 'otpErr');
+  if (token.length < 6) return showErr('Enter the complete login code.', 'otpErr');
 
   btn.disabled = true; btn.textContent = 'Verifying…';
 
