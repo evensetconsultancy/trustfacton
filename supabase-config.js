@@ -4,8 +4,8 @@
    Supabase Dashboard → Settings → API
    ========================================= */
 
-const SUPABASE_URL      = 'https://YOUR_PROJECT.supabase.co';
-const SUPABASE_ANON_KEY = 'YOUR_ANON_KEY_HERE';
+const SUPABASE_URL      = 'https://jmolgvabcfbmsctldpcr.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_ITdqqr6Yczf2d6c_fuNcmw_065lWBcj';
 
 // Supabase JS v2 loaded via CDN in each HTML file
 // This file just exports the client
