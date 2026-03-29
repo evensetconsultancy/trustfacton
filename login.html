@@ -6,165 +6,158 @@
 <title>Login — TrustFactON</title>
 <link rel="stylesheet" href="style.css">
 <style>
-body { background: var(--gray-1); display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-.auth-wrap { width: 100%; max-width: 420px; padding: 20px; }
-.auth-logo { text-align: center; margin-bottom: 28px; }
-.auth-logo img { width: 52px; height: 52px; object-fit: contain; mix-blend-mode: multiply; }
-.auth-logo-name { font-family: 'Playfair Display', Georgia, serif; font-size: 1.4rem; color: var(--navy); font-weight: 700; margin-top: 6px; }
-.auth-logo-name .accent { color: var(--blue); }
-.auth-card { background: white; border-radius: 14px; border: 1px solid var(--gray-3); padding: 32px; box-shadow: 0 4px 24px rgba(0,0,0,0.06); }
-.auth-card h2 { font-size: 1.2rem; color: var(--black); margin-bottom: 4px; }
-.auth-card p  { font-size: 0.85rem; color: var(--gray-5); margin-bottom: 24px; }
-.form-group { margin-bottom: 16px; }
-.form-group label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--gray-6); margin-bottom: 6px; }
-.form-group input {
-  width: 100%; padding: 10px 13px;
-  border: 1.5px solid var(--gray-3); border-radius: 8px;
-  font-size: 0.88rem; font-family: 'Inter',sans-serif;
-  color: var(--black); background: white;
-  transition: border-color 0.15s, box-shadow 0.15s;
-  box-sizing: border-box;
-}
-.form-group input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,0.08); }
-.btn-full { width: 100%; padding: 11px; background: var(--navy); color: white; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; font-family: 'Inter',sans-serif; transition: background 0.15s; }
-.btn-full:hover { background: #0F2444; }
-.btn-full:disabled { background: var(--gray-4); cursor: not-allowed; }
-.auth-divider { text-align: center; font-size: 0.78rem; color: var(--gray-4); margin: 16px 0; }
-.auth-link { text-align: center; font-size: 0.84rem; color: var(--gray-5); margin-top: 20px; }
-.auth-link a { color: var(--blue); font-weight: 600; text-decoration: none; }
-.auth-link a:hover { text-decoration: underline; }
-.auth-err { background: #FEF2F2; border: 1px solid #FECACA; border-radius: 8px; padding: 10px 13px; font-size: 0.82rem; color: #991B1B; margin-bottom: 16px; display: none; }
-.auth-err.show { display: block; }
-.back-link { text-align: center; margin-top: 20px; font-size: 0.82rem; }
-.back-link a { color: var(--gray-5); text-decoration: none; }
-.back-link a:hover { color: var(--navy); }
+body{background:var(--gray-1);display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;}
+.wrap{width:100%;max-width:400px;}
+.logo{text-align:center;margin-bottom:24px;}
+.logo img{width:46px;height:46px;object-fit:contain;mix-blend-mode:multiply;}
+.logo-name{font-family:'Playfair Display',Georgia,serif;font-size:1.3rem;color:var(--navy);font-weight:700;margin-top:5px;}
+.logo-name .accent{color:var(--blue);}
+.card{background:white;border-radius:14px;border:1px solid var(--gray-3);padding:28px;box-shadow:0 4px 24px rgba(0,0,0,.06);}
+.card h2{font-size:1.15rem;color:var(--black);margin-bottom:4px;}
+.card p{font-size:0.84rem;color:var(--gray-5);margin-bottom:22px;}
+.fg{margin-bottom:14px;}
+.fg label{display:block;font-size:0.79rem;font-weight:600;color:var(--gray-6);margin-bottom:5px;}
+.fg input{width:100%;padding:10px 12px;border:1.5px solid var(--gray-3);border-radius:8px;font-size:0.87rem;font-family:'Inter',sans-serif;color:var(--black);background:white;transition:border-color .15s,box-shadow .15s;box-sizing:border-box;}
+.fg input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.08);}
+.btn-full{width:100%;padding:11px;background:var(--navy);color:white;border:none;border-radius:8px;font-size:0.9rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:background .15s;}
+.btn-full:hover{background:#0F2444;}
+.btn-full:disabled{background:var(--gray-4);cursor:not-allowed;}
+.err{background:#FEF2F2;border:1px solid #FECACA;border-radius:8px;padding:9px 12px;font-size:0.81rem;color:#991B1B;margin-bottom:14px;display:none;}
+.err.show{display:block;}
+.foot{text-align:center;font-size:0.83rem;color:var(--gray-5);margin-top:16px;}
+.foot a{color:var(--blue);font-weight:600;text-decoration:none;}
+.back{text-align:center;margin-top:12px;font-size:0.8rem;}
+.back a{color:var(--gray-4);text-decoration:none;}
+/* OTP input */
+#otpInput{width:100%;padding:13px;text-align:center;font-size:1.8rem;letter-spacing:14px;border:1.5px solid var(--gray-3);border-radius:8px;font-family:'Inter',sans-serif;box-sizing:border-box;color:var(--black);margin-bottom:12px;}
+#otpInput:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.08);}
+.resend{background:none;border:none;color:var(--blue);font-size:0.82rem;cursor:pointer;font-family:'Inter',sans-serif;font-weight:600;display:block;margin:10px auto 0;}
+.step-note{font-size:0.78rem;color:var(--gray-4);text-align:center;margin-top:10px;line-height:1.5;}
 </style>
 </head>
 <body>
-<div class="auth-wrap">
-  <div class="auth-logo">
+<div class="wrap">
+  <div class="logo">
     <img src="logo.png" alt="TrustFactON">
-    <div class="auth-logo-name">Trust<span class="accent">Fact</span>ON</div>
+    <div class="logo-name">Trust<span class="accent">Fact</span>ON</div>
   </div>
 
-  <div class="auth-card">
+  <!-- Step 1: Email -->
+  <div class="card" id="step1">
     <h2>Welcome back</h2>
-    <p>Login to your compliance dashboard</p>
-
-    <div class="auth-err" id="errMsg"></div>
-
-    <div class="form-group">
+    <p>Enter your email — we'll send a 6-digit login code</p>
+    <div class="err" id="err1"></div>
+    <div class="fg">
       <label>Email address</label>
-      <input type="email" id="email" placeholder="you@example.com" autocomplete="email">
+      <input type="email" id="email" placeholder="you@example.com" autocomplete="email"
+             onkeydown="if(event.key==='Enter')sendCode()">
     </div>
-    <div class="form-group">
-      <label>Password</label>
-      <input type="password" id="password" placeholder="Your password" autocomplete="current-password"
-             onkeydown="if(event.key==='Enter')doLogin()">
-    </div>
-
-    <button class="btn-full" id="loginBtn" onclick="doLogin()">Login →</button>
-
-    <div class="auth-divider">or</div>
-    <button class="btn-full" id="otpBtn" onclick="sendLoginOTP()"
-      style="background:white;color:var(--navy);border:1.5px solid var(--gray-3)">
-      Login with 6-digit email code
-    </button>
-    <div id="otpBox" style="display:none;margin-top:14px">
-      <p style="font-size:0.82rem;color:var(--gray-5);text-align:center;margin-bottom:10px">
-        Enter the 6-digit code sent to your email
-      </p>
-      <input type="text" id="otpCode" placeholder="6-digit code"
-        maxlength="6" inputmode="numeric"
-        oninput="this.value=this.value.replace(/[^0-9]/g,'')"
-        onkeydown="if(event.key==='Enter')verifyLoginOTP()"
-        style="width:100%;padding:11px;text-align:center;font-size:1.4rem;
-               letter-spacing:10px;border:1.5px solid var(--gray-3);border-radius:8px;
-               font-family:'Inter',sans-serif;box-sizing:border-box;color:var(--black);margin-bottom:10px">
-      <button class="btn-full" onclick="verifyLoginOTP()">Verify & Login →</button>
-    </div>
+    <button class="btn-full" id="sendBtn" onclick="sendCode()">Send Login Code →</button>
+    <div class="foot">New here? <a href="signup.html">Create account →</a></div>
   </div>
 
-  <div class="auth-link">Don't have an account? <a href="signup.html">Create one free →</a></div>
-  <div class="back-link"><a href="index.html">← Back to TrustFactON</a></div>
+  <!-- Step 2: OTP -->
+  <div class="card" id="step2" style="display:none">
+    <h2>Enter your code</h2>
+    <p style="margin-bottom:6px">6-digit code sent to<br><strong id="sentTo" style="color:var(--black)"></strong></p>
+    <div class="err" id="err2"></div>
+    <input type="text" id="otpInput" placeholder="——————"
+      maxlength="6" inputmode="numeric"
+      oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+      onkeydown="if(event.key==='Enter')verifyCode()">
+    <button class="btn-full" id="verifyBtn" onclick="verifyCode()">Login →</button>
+    <button class="resend" id="resendBtn" onclick="resendCode()">Resend code</button>
+    <p class="step-note"><a href="#" onclick="document.getElementById('step1').style.display='block';document.getElementById('step2').style.display='none';" style="color:var(--gray-4)">← Use a different email</a></p>
+  </div>
+
+  <div class="back"><a href="index.html">← Back to TrustFactON</a></div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
 <script>
-// If already logged in → go to dashboard
+let pendingEmail = '';
+
 (async () => {
-  const user = await getUser();
-  if (user) window.location.href = 'dashboard.html';
+  const { data:{ session } } = await sb.auth.getSession();
+  if (session) window.location.href = 'dashboard.html';
 })();
 
-async function doLogin() {
-  const email    = document.getElementById('email').value.trim();
-  const password = document.getElementById('password').value;
-  const btn      = document.getElementById('loginBtn');
-  const err      = document.getElementById('errMsg');
-
-  if (!email || !password) { showErr('Please enter your email and password.'); return; }
-
-  btn.disabled = true; btn.textContent = 'Logging in…';
-  const { error } = await sb.auth.signInWithPassword({ email, password });
-
-  if (error) {
-    btn.disabled = false; btn.textContent = 'Login →';
-    const msg = error.message;
-    if (msg.includes('Email not confirmed') || msg.includes('not confirmed')) {
-      showErr('Please verify your email first. Check your inbox for the verification link we sent during signup.');
-    } else if (msg.includes('Invalid login credentials')) {
-      showErr('Incorrect email or password. Please try again.');
-    } else {
-      showErr(msg);
-    }
-  } else {
-    window.location.href = 'dashboard.html';
-  }
+function showErr(msg, id) {
+  const e = document.getElementById(id);
+  e.textContent = msg; e.classList.add('show');
 }
+function clearErr(id) { document.getElementById(id).classList.remove('show'); }
 
-async function sendLoginOTP() {
+async function sendCode() {
   const email = document.getElementById('email').value.trim();
-  if (!email) { showErr('Enter your email address first.'); return; }
+  clearErr('err1');
+  if (!email) return showErr('Please enter your email address.', 'err1');
 
-  const btn = document.getElementById('otpBtn');
-  btn.disabled = true; btn.textContent = 'Sending code…';
+  const btn = document.getElementById('sendBtn');
+  btn.disabled = true; btn.textContent = 'Sending…';
 
   const { error } = await sb.auth.signInWithOtp({
-    email, options: { shouldCreateUser: false }
+    email,
+    options: { shouldCreateUser: false }
   });
 
   if (error) {
-    btn.disabled = false; btn.textContent = 'Login with 6-digit email code';
-    showErr(error.message);
-  } else {
-    btn.textContent = 'Code sent ✓';
-    document.getElementById('otpBox').style.display = 'block';
-    setTimeout(() => document.getElementById('otpCode')?.focus(), 100);
+    btn.disabled = false; btn.textContent = 'Send Login Code →';
+    // If user doesn't exist, suggest signup
+    const msg = error.message.includes('not found') || error.message.includes('Signups not allowed')
+      ? 'No account found for this email. <a href="signup.html" style="color:var(--blue);font-weight:600">Create one →</a>'
+      : error.message;
+    document.getElementById('err1').innerHTML = msg;
+    document.getElementById('err1').classList.add('show');
+    return;
   }
+
+  pendingEmail = email;
+  document.getElementById('sentTo').textContent = email;
+  document.getElementById('step1').style.display = 'none';
+  document.getElementById('step2').style.display = 'block';
+  setTimeout(() => document.getElementById('otpInput')?.focus(), 100);
 }
 
-async function verifyLoginOTP() {
-  const email = document.getElementById('email').value.trim();
-  const token = (document.getElementById('otpCode')?.value || '').trim();
+async function verifyCode() {
+  const token = document.getElementById('otpInput').value.trim();
+  clearErr('err2');
+  if (token.length !== 6) return showErr('Enter the complete 6-digit code.', 'err2');
 
-  if (token.length !== 6) { showErr('Please enter the complete 6-digit code.'); return; }
+  const btn = document.getElementById('verifyBtn');
+  btn.disabled = true; btn.textContent = 'Verifying…';
 
-  const { error } = await sb.auth.verifyOtp({ email, token, type: 'email' });
+  const { error } = await sb.auth.verifyOtp({
+    email: pendingEmail, token, type: 'email'
+  });
 
   if (error) {
-    showErr(error.message?.includes('invalid') || error.message?.includes('expired')
-      ? 'Incorrect or expired code. Request a new one.'
-      : error.message);
-  } else {
-    window.location.href = 'dashboard.html';
+    btn.disabled = false; btn.textContent = 'Login →';
+    showErr(
+      error.message.includes('invalid') || error.message.includes('expired')
+        ? 'Incorrect or expired code. Click Resend to get a new one.'
+        : error.message,
+      'err2'
+    );
+    return;
   }
+  window.location.href = 'dashboard.html';
 }
 
-function showErr(msg) {
-  const el = document.getElementById('errMsg');
-  el.textContent = msg; el.classList.add('show');
+async function resendCode() {
+  const btn = document.getElementById('resendBtn');
+  btn.disabled = true; btn.textContent = 'Sending…';
+  clearErr('err2');
+  const { error } = await sb.auth.signInWithOtp({
+    email: pendingEmail, options: { shouldCreateUser: false }
+  });
+  if (error) {
+    showErr('Could not resend. Try again in a moment.', 'err2');
+  } else {
+    btn.textContent = '✅ New code sent!';
+  }
+  setTimeout(() => { btn.disabled = false; btn.textContent = 'Resend code'; }, 20000);
 }
 </script>
 </body>

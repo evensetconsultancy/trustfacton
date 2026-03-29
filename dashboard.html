@@ -230,7 +230,23 @@ body { background: var(--gray-1); min-height: 100vh; }
 
   <!-- ── TAB: Deadlines ── -->
   <div id="tab-deadlines">
-    <div class="cat-pills" id="catPills">
+
+    <!-- Month navigator + category filter row -->
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px">
+      <!-- Month nav -->
+      <div style="display:flex;align-items:center;gap:8px;background:white;border:1px solid var(--gray-3);border-radius:10px;padding:5px 10px">
+        <button onclick="navMonth(-1)" style="width:26px;height:26px;border:1px solid var(--gray-3);border-radius:6px;background:white;cursor:pointer;font-size:.95rem;display:flex;align-items:center;justify-content:center;color:var(--gray-5)">‹</button>
+        <span id="dlMonthLabel" style="font-size:.84rem;font-weight:600;color:var(--black);min-width:120px;text-align:center"></span>
+        <button onclick="navMonth(1)"  style="width:26px;height:26px;border:1px solid var(--gray-3);border-radius:6px;background:white;cursor:pointer;font-size:.95rem;display:flex;align-items:center;justify-content:center;color:var(--gray-5)">›</button>
+        <button onclick="goCurrentMonth()" style="padding:3px 10px;border:1px solid var(--gray-3);border-radius:6px;font-size:.72rem;color:var(--gray-5);background:white;cursor:pointer;font-family:'Inter',sans-serif">Today</button>
+      </div>
+      <!-- Assign task button -->
+      <button onclick="openAssignTask()" style="display:flex;align-items:center;gap:6px;padding:7px 14px;background:var(--blue);color:white;border:none;border-radius:8px;font-size:.81rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif">
+        + Assign Task
+      </button>
+    </div>
+
+    <div class="cat-pills" id="catPills" style="margin-bottom:12px">
       <button class="cat-pill on" data-cat="all" onclick="setCat('all',this)">All</button>
       <button class="cat-pill" data-cat="GST" onclick="setCat('GST',this)">🏷️ GST</button>
       <button class="cat-pill" data-cat="Income Tax" onclick="setCat('Income Tax',this)">📊 Income Tax</button>
@@ -247,8 +263,9 @@ body { background: var(--gray-1); min-height: 100vh; }
             <th style="width:95px">Due Date</th>
             <th style="width:85px">Category</th>
             <th>Filing / Compliance</th>
-            <th style="width:100px">Status</th>
-            <th style="width:110px">Action</th>
+            <th style="width:100px">Assigned To</th>
+            <th style="width:90px">Status</th>
+            <th style="width:100px">Action</th>
           </tr>
         </thead>
         <tbody id="filingBody">
@@ -303,6 +320,34 @@ body { background: var(--gray-1); min-height: 100vh; }
 
 </div><!-- /db-body -->
 
+<!-- Assign Task Modal -->
+<div class="modal-overlay" id="assignModal">
+  <div class="modal">
+    <h3>Assign Task</h3>
+    <p>Assign a compliance filing to a team member for this entity.</p>
+    <div class="modal-field">
+      <label>Filing / Task</label>
+      <select id="assignFiling" style="width:100%;padding:8px 12px;border:1.5px solid var(--gray-3);border-radius:8px;font-size:0.85rem;font-family:'Inter',sans-serif;box-sizing:border-box">
+        <option value="">— Select filing —</option>
+      </select>
+    </div>
+    <div class="modal-field">
+      <label>Assign to</label>
+      <select id="assignMember" style="width:100%;padding:8px 12px;border:1.5px solid var(--gray-3);border-radius:8px;font-size:0.85rem;font-family:'Inter',sans-serif;box-sizing:border-box">
+        <option value="">— Select member —</option>
+      </select>
+    </div>
+    <div class="modal-field">
+      <label>Note <span style="font-weight:400;color:var(--gray-4)">(optional)</span></label>
+      <textarea id="assignNote" placeholder="Any instructions…" style="width:100%;padding:8px 12px;border:1.5px solid var(--gray-3);border-radius:8px;font-size:0.85rem;font-family:'Inter',sans-serif;box-sizing:border-box;resize:vertical;min-height:60px"></textarea>
+    </div>
+    <div class="modal-btns">
+      <button class="modal-cancel" onclick="document.getElementById('assignModal').classList.remove('open')">Cancel</button>
+      <button class="modal-submit" style="background:var(--blue)" onclick="saveAssignment()">Assign →</button>
+    </div>
+  </div>
+</div>
+
 <!-- Mark Done Modal -->
 <div class="modal-overlay" id="doneModal">
   <div class="modal">
@@ -332,11 +377,16 @@ let currentUser   = null;
 let currentProfile= null;
 let entities      = [];
 let activeEntity  = null;
-let allFilings    = [];   // from DB
-let deadlines     = [];   // computed
+let allFilings    = [];
+let deadlines     = [];
 let activeCat     = 'all';
 let pendingDoneKey= null;
 let activeTab     = 'deadlines';
+let dlYear        = new Date().getFullYear();
+let dlMonth       = new Date().getMonth() + 1;   // 1-indexed, current month
+
+const MONTHS = ['','January','February','March','April','May','June',
+                'July','August','September','October','November','December'];
 
 // ── Init ──────────────────────────────────────────────
 (async () => {
@@ -498,17 +548,11 @@ async function loadEntityData() {
   const reg = activeEntity.registrations || {};
   const now = new Date();
 
-  // Compute deadlines for next 3 months
-  deadlines = [];
-  for (let offset = -1; offset <= 3; offset++) {
-    const d = new Date(now.getFullYear(), now.getMonth() + offset, 1);
-    const dl = getEntityDeadlines(reg, d);
-    dl.forEach(item => {
-      // avoid duplicates
-      if (!deadlines.find(x => x.key === item.key)) deadlines.push(item);
-    });
-  }
+  // Compute deadlines for the selected month
+  const refDate = new Date(dlYear, dlMonth - 1, 1);
+  deadlines = getEntityDeadlines(reg, refDate);
   deadlines.sort((a,b) => a.due - b.due);
+  updateMonthLabel();
 
   // Load DB filings (already marked done/missed)
   allFilings = await getEntityFilings(activeEntity.id);
@@ -517,6 +561,25 @@ async function loadEntityData() {
   renderStats();
   renderHistory();
   await renderTeam();
+}
+
+// ── Month navigation ─────────────────────────────────
+function updateMonthLabel() {
+  const el = document.getElementById('dlMonthLabel');
+  if (el) el.textContent = MONTHS[dlMonth] + ' ' + dlYear;
+}
+
+function navMonth(dir) {
+  dlMonth += dir;
+  if (dlMonth > 12) { dlMonth = 1;  dlYear++; }
+  if (dlMonth < 1)  { dlMonth = 12; dlYear--; }
+  loadEntityData();
+}
+
+function goCurrentMonth() {
+  dlYear  = new Date().getFullYear();
+  dlMonth = new Date().getMonth() + 1;
+  loadEntityData();
 }
 
 // ── Stats ─────────────────────────────────────────────
@@ -575,10 +638,12 @@ function renderDeadlines() {
       ? `<button class="done-btn undo" onclick="undoDone('${dl.key}')">↩ Undo</button>`
       : `<button class="done-btn mark" onclick="openMarkDone('${dl.key}','${dl.name.replace(/'/g,"\\'").replace(/"/g,'\\"')}')">Mark Done</button>`;
 
+    const assignee = f?.assigned_to_name || '—';
     return `<tr class="${rowCls}">
       <td style="font-size:.78rem;font-weight:600;color:var(--black);white-space:nowrap">${dateStr}</td>
       <td><span class="cat-badge" style="background:${catColor}">${dl.cat}</span></td>
       <td style="font-size:.81rem;color:var(--black)">${dl.name}${f?.ack_number ? `<br><span style="font-size:.71rem;color:var(--gray-5)">ARN/Ack: ${f.ack_number}</span>` : ''}</td>
+      <td style="font-size:.76rem;color:var(--gray-5)">${assignee}</td>
       <td><span class="sb ${sbClass}">${dayLbl}</span></td>
       <td>${actionBtn}</td>
     </tr>`;
@@ -743,6 +808,82 @@ function switchTab(tab, el) {
   ['deadlines','history','team'].forEach(t => {
     document.getElementById('tab-'+t).style.display = t === tab ? 'block' : 'none';
   });
+}
+
+// ── Assign Task ───────────────────────────────────────
+async function openAssignTask() {
+  // Populate filing dropdown with current month's pending deadlines
+  const sel = document.getElementById('assignFiling');
+  sel.innerHTML = '<option value="">— Select filing —</option>';
+  deadlines.forEach(dl => {
+    const f = allFilings.find(f => f.deadline_key === dl.key);
+    if (f?.status !== 'done') {
+      const opt = document.createElement('option');
+      opt.value = dl.key;
+      opt.textContent = dl.name;
+      sel.appendChild(opt);
+    }
+  });
+
+  // Populate members dropdown
+  const { data: members } = await sb
+    .from('entity_members')
+    .select('user_id, profiles(name)')
+    .eq('entity_id', activeEntity.id)
+    .eq('status', 'active');
+
+  const msel = document.getElementById('assignMember');
+  msel.innerHTML = '<option value="">— Select member —</option>';
+  (members || []).forEach(m => {
+    if (m.profiles?.name) {
+      const opt = document.createElement('option');
+      opt.value = m.user_id;
+      opt.textContent = m.profiles.name;
+      msel.appendChild(opt);
+    }
+  });
+
+  document.getElementById('assignModal').classList.add('open');
+}
+
+async function saveAssignment() {
+  const key    = document.getElementById('assignFiling').value;
+  const userId = document.getElementById('assignMember').value;
+  const note   = document.getElementById('assignNote').value.trim();
+
+  if (!key)    { showToast('Please select a filing.'); return; }
+  if (!userId) { showToast('Please select a team member.'); return; }
+
+  const dl = deadlines.find(d => d.key === key);
+  if (!dl) return;
+
+  // Get assignee name for display
+  const msel = document.getElementById('assignMember');
+  const assigneeName = msel.options[msel.selectedIndex]?.text || '';
+
+  const payload = {
+    entity_id:    activeEntity.id,
+    deadline_key: key,
+    period_label: MONTHS[dlMonth] + ' ' + dlYear,
+    category:     dl.cat,
+    filing_name:  dl.name,
+    due_date:     dl.due.toISOString().slice(0,10),
+    status:       'pending',
+    notes:        note || null,
+    assigned_to:  userId,
+    assigned_to_name: assigneeName,
+  };
+
+  const { error } = await sb.from('filings').upsert(payload, { onConflict: 'entity_id,deadline_key' });
+
+  document.getElementById('assignModal').classList.remove('open');
+  document.getElementById('assignNote').value = '';
+
+  if (error) { showToast('Error: ' + error.message); return; }
+
+  allFilings = await getEntityFilings(activeEntity.id);
+  renderDeadlines();
+  showToast('✅ Task assigned to ' + assigneeName);
 }
 
 // ── Logout ────────────────────────────────────────────
