@@ -633,9 +633,11 @@ const MONTHS = ['','January','February','March','April','May','June',
     return;
   }
 
-  // Accept any pending invitations
-  await acceptPendingInvitations(currentUser.email);
-  entities = await getMyEntities(currentUser.id); // refresh after accepting
+  // Accept any pending invitations (RPC may not exist — fail gracefully)
+  try {
+    await acceptPendingInvitations(currentUser.email);
+    entities = await getMyEntities(currentUser.id);
+  } catch { /* ignore if accept_invitation RPC not deployed yet */ }
 
   activeEntity = entities[0];
   renderEntitySwitcher();
@@ -663,8 +665,8 @@ function hideSetupBanner() {
 
 async function acceptPendingInvitations(email) {
   try {
-    await sb.rpc('accept_invitation', { p_email: email, p_user_id: currentUser.id });
-    entities = await getMyEntities(currentUser.id); // refresh
+    const { error } = await sb.rpc('accept_invitation', { p_email: email, p_user_id: currentUser.id });
+    if (!error) entities = await getMyEntities(currentUser.id);
   } catch {}
 }
 
