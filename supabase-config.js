@@ -4,8 +4,8 @@
    Supabase Dashboard → Settings → API
    ========================================= */
 
-const SUPABASE_URL      = 'https://jmolgvabcfbmsctldpcr.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_ITdqqr6Yczf2d6c_fuNcmw_065lWBcj';
+const SUPABASE_URL      = 'https://YOUR_PROJECT.supabase.co';
+const SUPABASE_ANON_KEY = 'YOUR_ANON_KEY_HERE';
 
 // Supabase JS v2 loaded via CDN in each HTML file
 // This file just exports the client
@@ -317,11 +317,14 @@ const CAT_COLOR = {
 // ── Extension helpers ─────────────────────────────────
 // Check if admin has pushed an extension for a specific filing
 async function getActiveExtensions() {
-  const { data } = await sb.from('extensions')
-    .select('*')
-    .eq('active', true)
-    .order('created_at', { ascending: false });
-  return data || [];
+  try {
+    const { data, error } = await sb.from('extensions')
+      .select('*')
+      .eq('active', true)
+      .order('created_at', { ascending: false });
+    if (error) return [];
+    return data || [];
+  } catch { return []; }
 }
 
 // Given a filing key and original due date, check if extension applies
@@ -351,11 +354,14 @@ async function getActiveAnnouncements(page) {
 
 // ── Notice helpers ────────────────────────────────────
 async function getEntityNotices(entityId) {
-  const { data } = await sb.from('notices')
-    .select('*, assigned_profile:assigned_to(name)')
-    .eq('entity_id', entityId)
-    .order('response_due_date', { ascending: true });
-  return data || [];
+  try {
+    const { data, error } = await sb.from('notices')
+      .select('*, assigned_profile:assigned_to(name)')
+      .eq('entity_id', entityId)
+      .order('response_due_date', { ascending: true });
+    if (error) return [];
+    return data || [];
+  } catch { return []; }
 }
 
 function noticeUrgencyClass(responseDue, status) {

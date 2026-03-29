@@ -719,8 +719,8 @@ async function loadEntityData() {
   const reg = activeEntity.registrations || {};
   const now = new Date();
 
-  // Load admin-pushed extensions
-  allExtensions = await getActiveExtensions();
+  // Load admin-pushed extensions (table may not exist yet — fail gracefully)
+  try { allExtensions = await getActiveExtensions(); } catch { allExtensions = []; }
 
   // Compute deadlines for the selected month
   const refDate = new Date(dlYear, dlMonth - 1, 1);
@@ -730,7 +730,7 @@ async function loadEntityData() {
 
   // Load DB filings (already marked done/missed)
   allFilings = await getEntityFilings(activeEntity.id);
-  await loadNoticesData();
+  try { await loadNoticesData(); } catch { allNotices = []; }
 
   renderDeadlines();
   renderStats();
