@@ -289,3 +289,91 @@ const CAT_COLOR = {
   'GST': '#16A34A', 'Income Tax': '#2563EB', 'TDS': '#D97706',
   'PF': '#7C3AED', 'ESIC': '#0891B2', 'ROC': '#DC2626'
 };
+
+
+// ── Extension helpers ─────────────────────────────────
+// Check if admin has pushed an extension for a specific filing
+async function getActiveExtensions() {
+  const { data } = await sb.from('extensions')
+    .select('*')
+    .eq('active', true)
+    .order('created_at', { ascending: false });
+  return data || [];
+}
+
+// Given a filing key and original due date, check if extension applies
+function getExtendedDue(filingKey, originalDue, extensions) {
+  if (!extensions?.length) return null;
+  // Match by filing_key prefix (e.g. 'GSTR3B' matches 'GSTR3B_2026_3')
+  const match = extensions.find(ext => {
+    const keyMatch = filingKey.startsWith(ext.filing_key) ||
+                     ext.filing_key === filingKey ||
+                     filingKey.includes(ext.filing_key.replace('_',''));
+    const dateMatch = ext.original_due === originalDue ||
+                      new Date(ext.original_due).toDateString() === new Date(originalDue).toDateString();
+    return keyMatch && dateMatch;
+  });
+  return match ? match : null;
+}
+
+// ── Announcement helpers ─────────────────────────────
+async function getActiveAnnouncements(page) {
+  const { data } = await sb.from('announcements')
+    .select('*')
+    .eq('active', true)
+    .contains('show_on', [page])
+    .order('created_at', { ascending: false });
+  return data || [];
+}
+
+// ── Notice helpers ────────────────────────────────────
+async function getEntityNotices(entityId) {
+  const { data } = await sb.from('notices')
+    .select('*, assigned_profile:assigned_to(name)')
+    .eq('entity_id', entityId)
+    .order('response_due_date', { ascending: true });
+  return data || [];
+}
+
+function noticeUrgencyClass(responseDue, status) {
+  if (['Closed','Appeal Filed'].includes(status)) return 'status-done';
+  const today = new Date(); today.setHours(0,0,0,0);
+  const diff  = Math.round((new Date(responseDue) - today) / 86400000);
+  if (diff < 0)  return 'status-overdue';
+  if (diff <= 7) return 'status-soon';
+  if (diff <= 30)return 'status-near';
+  return 'status-future';
+}
+
+const AUTHORITY_COLOR = {
+  'GST Department':         '#16A34A',
+  'Income Tax Department':  '#2563EB',
+  'ROC / MCA':              '#DC2626',
+  'EPFO':                   '#7C3AED',
+  'ESIC':                   '#0891B2',
+  'Customs':                '#D97706',
+  'State Tax':              '#059669',
+  'Other':                  '#64748B',
+};
+
+// ── Site content helpers ──────────────────────────────
+async function getSiteContent(page, sectionKey) {
+  const { data } = await sb.from('site_content')
+    .select('*')
+    .eq('page', page)
+    .eq('section_key', sectionKey)
+    .single();
+  return data;
+}
+
+async function upsertSiteContent(page, sectionKey, title, structured, freeText, userId) {
+  const { error } = await sb.from('site_content').upsert({
+    page, section_key: sectionKey,
+    section_title: title,
+    structured: structured || null,
+    free_text:   freeText   || null,
+    updated_by:  userId,
+    updated_at:  new Date().toISOString(),
+  }, { onConflict: 'page,section_key' });
+  return error;
+}

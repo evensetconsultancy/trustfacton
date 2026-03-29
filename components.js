@@ -104,6 +104,46 @@ function footerSub() { const e = document.getElementById('footer-email')?.value;
 function showToast(msg) { const t = document.createElement('div'); t.style.cssText = `position:fixed;bottom:20px;right:20px;background:#0F172A;color:white;padding:10px 18px;border-radius:8px;font-size:0.84rem;font-family:'Inter',sans-serif;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,0.2);`; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3000); }
 function initAccordions() { document.querySelectorAll('.accordion-header').forEach(h => { h.addEventListener('click', () => { const b = h.nextElementSibling; const open = h.classList.contains('open'); document.querySelectorAll('.accordion-header').forEach(x => { x.classList.remove('open'); x.nextElementSibling?.classList.remove('open'); }); if (!open) { h.classList.add('open'); b?.classList.add('open'); } }); }); }
 function showTopic(val) { if (!val) return; document.querySelectorAll('.topic-panel').forEach(p => p.classList.remove('active')); document.getElementById('panel-' + val)?.classList.add('active'); document.getElementById('panels-wrap')?.scrollIntoView({behavior:'smooth', block:'start'}); const s = document.getElementById('topicSelect'); if (s) s.value = val; document.querySelectorAll('.topic-chip').forEach(c => c.classList.toggle('active', c.getAttribute('onclick') === `showTopic('${val}')`)); }
+async function loadAnnouncements(sbClient, pageKey) {
+  try {
+    const { data: announcements } = await sbClient
+      .from('announcements')
+      .select('*')
+      .eq('active', true)
+      .contains('show_on', [pageKey])
+      .order('created_at', { ascending: false });
+
+    if (!announcements?.length) return;
+
+    const colors = {
+      'info':    { bg:'#EFF6FF', border:'#BFDBFE', text:'#1E40AF', dot:'#3B82F6' },
+      'warning': { bg:'#FFFBEB', border:'#FDE68A', text:'#92400E', dot:'#F59E0B' },
+      'urgent':  { bg:'#FEF2F2', border:'#FECACA', text:'#991B1B', dot:'#EF4444' },
+    };
+
+    const wrap = document.createElement('div');
+    wrap.id = 'announcement-bar';
+    wrap.style.cssText = 'position:relative;z-index:150;';
+
+    announcements.forEach(a => {
+      const col = colors[a.type] || colors.info;
+      const div = document.createElement('div');
+      div.style.cssText = `background:${col.bg};border-bottom:1px solid ${col.border};padding:8px 16px;text-align:center;font-size:.8rem;color:${col.text};display:flex;align-items:center;justify-content:center;gap:8px;`;
+      div.innerHTML = `
+        <span style="width:7px;height:7px;border-radius:50%;background:${col.dot};flex-shrink:0;display:inline-block"></span>
+        <span>${a.message}</span>
+        ${a.link_url ? `<a href="${a.link_url}" style="color:${col.text};font-weight:700;text-decoration:underline">${a.link_text||'Learn more →'}</a>` : ''}
+        <button onclick="this.parentElement.remove()" style="margin-left:auto;background:none;border:none;color:${col.text};cursor:pointer;font-size:1rem;opacity:.6;padding:0 4px">×</button>`;
+      wrap.appendChild(div);
+    });
+
+    // Insert after nav
+    const nav = document.getElementById('site-nav');
+    if (nav) nav.insertAdjacentElement('afterend', wrap);
+    else document.body.insertAdjacentElement('afterbegin', wrap);
+  } catch {}
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   injectComponents();
   initAccordions();
@@ -121,6 +161,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (loginBtn)   loginBtn.style.display   = 'none';
         if (trackerBtn) trackerBtn.style.display  = 'inline-flex';
       }
-    } catch {}
+      // Load announcements for current page
+      const page = window.location.pathname.split('/').pop().replace('.html','') || 'index';
+      const pageKey = page === 'index' ? 'homepage' : page;
+      await loadAnnouncements(sb2, pageKey);
+    } catch(e) { console.log('Nav init:', e.message); }
   }
 });

@@ -225,7 +225,9 @@ body { background: var(--gray-1); min-height: 100vh; }
   <div class="db-tabs">
     <button class="db-tab active" onclick="switchTab('deadlines',this)">📅 Deadlines</button>
     <button class="db-tab"        onclick="switchTab('history',this)">🗂 History</button>
-    <button class="db-tab"        onclick="switchTab('team',this)">👥 Team / Invitations</button>
+    <button class="db-tab"        onclick="switchTab('notices',this)">⚠️ Notices</button>
+    <button class="db-tab"        onclick="switchTab('team',this)">👥 Team</button>
+    <button class="db-tab" id="allClientsTab" style="display:none" onclick="switchTab('allclients',this)">🏢 All Clients</button>
   </div>
 
   <!-- ── TAB: Deadlines ── -->
@@ -296,6 +298,58 @@ body { background: var(--gray-1); min-height: 100vh; }
     </div>
   </div>
 
+  <!-- ── TAB: Notices ── -->
+  <div id="tab-notices" style="display:none">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+      <div style="font-size:.84rem;color:var(--gray-5)">Track tax notices, SCNs and demand orders for this entity</div>
+      <button onclick="openAddNotice()"
+        style="display:flex;align-items:center;gap:6px;padding:7px 14px;background:var(--red);color:white;border:none;border-radius:8px;font-size:.81rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif">
+        + Add Notice
+      </button>
+    </div>
+    <!-- Notice filter -->
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px" id="noticeFilters">
+      <button class="cat-pill on" data-nf="all" onclick="filterNotices('all',this)">All</button>
+      <button class="cat-pill" data-nf="Open" onclick="filterNotices('Open',this)">Open</button>
+      <button class="cat-pill" data-nf="Responded" onclick="filterNotices('Responded',this)">Responded</button>
+      <button class="cat-pill" data-nf="Closed" onclick="filterNotices('Closed',this)">Closed</button>
+      <button class="cat-pill" data-nf="Appeal Filed" onclick="filterNotices('Appeal Filed',this)">Appeal Filed</button>
+    </div>
+    <div class="filing-table-wrap">
+      <table class="filing-table">
+        <thead>
+          <tr>
+            <th>Authority</th>
+            <th>Type</th>
+            <th>Notice Date</th>
+            <th>Response Due</th>
+            <th>DIN / Ref</th>
+            <th>Assigned To</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="noticeBody">
+          <tr><td colspan="8" style="text-align:center;padding:32px;color:var(--gray-4)">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── TAB: All Clients (CA view) ── -->
+  <div id="tab-allclients" style="display:none">
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px" id="clientCatFilter">
+      <button class="cat-pill on" data-cc="all" onclick="filterClients('all',this)">All</button>
+      <button class="cat-pill" data-cc="GST"        onclick="filterClients('GST',this)">🏷️ GST</button>
+      <button class="cat-pill" data-cc="Income Tax"  onclick="filterClients('Income Tax',this)">📊 Income Tax</button>
+      <button class="cat-pill" data-cc="TDS"         onclick="filterClients('TDS',this)">✂️ TDS</button>
+      <button class="cat-pill" data-cc="ROC"         onclick="filterClients('ROC',this)">🏢 ROC</button>
+    </div>
+    <div id="clientGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px">
+      <div style="color:var(--gray-4);font-size:.84rem;padding:20px">Loading client data…</div>
+    </div>
+  </div>
+
   <!-- ── TAB: Team ── -->
   <div id="tab-team" style="display:none">
     <div class="invite-card">
@@ -319,6 +373,105 @@ body { background: var(--gray-1); min-height: 100vh; }
   </div>
 
 </div><!-- /db-body -->
+
+<!-- Add Notice Modal -->
+<div class="modal-overlay" id="noticeModal">
+  <div class="modal" style="max-width:520px">
+    <h3 id="noticeModalTitle">Add Tax Notice</h3>
+    <p>Record a notice received for this entity</p>
+    <input type="hidden" id="editNoticeId">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div class="modal-field">
+        <label>Issuing Authority *</label>
+        <select id="nAuthority" style="width:100%;padding:8px;border:1.5px solid var(--gray-3);border-radius:8px;font-size:.84rem;font-family:'Inter',sans-serif">
+          <option value="GST Department">GST Department</option>
+          <option value="Income Tax Department">Income Tax Department</option>
+          <option value="ROC / MCA">ROC / MCA</option>
+          <option value="EPFO">EPFO</option>
+          <option value="ESIC">ESIC</option>
+          <option value="Customs">Customs</option>
+          <option value="State Tax">State Tax</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="modal-field">
+        <label>Notice Type *</label>
+        <select id="nType" style="width:100%;padding:8px;border:1.5px solid var(--gray-3);border-radius:8px;font-size:.84rem;font-family:'Inter',sans-serif">
+          <option value="SCN">SCN (Show Cause Notice)</option>
+          <option value="Demand Notice">Demand Notice</option>
+          <option value="Scrutiny">Scrutiny</option>
+          <option value="Assessment Order">Assessment Order</option>
+          <option value="Appeal">Appeal</option>
+          <option value="Recovery">Recovery</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="modal-field">
+        <label>Notice Date *</label>
+        <input type="date" id="nNoticeDate" style="width:100%;padding:8px;border:1.5px solid var(--gray-3);border-radius:8px;font-family:'Inter',sans-serif;box-sizing:border-box">
+      </div>
+      <div class="modal-field">
+        <label>Response Due Date *</label>
+        <input type="date" id="nResponseDue" style="width:100%;padding:8px;border:1.5px solid var(--gray-3);border-radius:8px;font-family:'Inter',sans-serif;box-sizing:border-box">
+      </div>
+      <div class="modal-field">
+        <label>DIN / Reference No.</label>
+        <input type="text" id="nDin" placeholder="e.g. DIN-20240900123456" style="width:100%;padding:8px;border:1.5px solid var(--gray-3);border-radius:8px;font-size:.84rem;font-family:'Inter',sans-serif;box-sizing:border-box">
+      </div>
+      <div class="modal-field">
+        <label>Status</label>
+        <select id="nStatus" style="width:100%;padding:8px;border:1.5px solid var(--gray-3);border-radius:8px;font-size:.84rem;font-family:'Inter',sans-serif">
+          <option value="Open">Open</option>
+          <option value="Responded">Responded</option>
+          <option value="Extension Requested">Extension Requested</option>
+          <option value="Closed">Closed</option>
+          <option value="Appeal Filed">Appeal Filed</option>
+        </select>
+      </div>
+      <div class="modal-field">
+        <label>Extension Date (if any)</label>
+        <input type="date" id="nExtDate" style="width:100%;padding:8px;border:1.5px solid var(--gray-3);border-radius:8px;font-family:'Inter',sans-serif;box-sizing:border-box">
+      </div>
+      <div class="modal-field">
+        <label>Last Replied Date</label>
+        <input type="date" id="nLastReplied" style="width:100%;padding:8px;border:1.5px solid var(--gray-3);border-radius:8px;font-family:'Inter',sans-serif;box-sizing:border-box">
+      </div>
+    </div>
+    <div class="modal-field" style="margin-top:4px">
+      <label>Notes</label>
+      <textarea id="nNotes" placeholder="Brief description of the notice…" style="width:100%;padding:8px;border:1.5px solid var(--gray-3);border-radius:8px;font-size:.84rem;font-family:'Inter',sans-serif;box-sizing:border-box;resize:vertical;min-height:60px"></textarea>
+    </div>
+    <div class="modal-btns">
+      <button class="modal-cancel" onclick="document.getElementById('noticeModal').classList.remove('open')">Cancel</button>
+      <button class="modal-submit" style="background:var(--red)" onclick="saveNotice()">Save Notice</button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Due Date Modal -->
+<div class="modal-overlay" id="extendDueModal">
+  <div class="modal">
+    <h3>Edit Due Date</h3>
+    <p id="extendFiling" style="font-weight:600;color:var(--black)"></p>
+    <input type="hidden" id="extendKey">
+    <div class="modal-field">
+      <label>Original due date</label>
+      <input type="text" id="extendOriginal" disabled style="background:var(--gray-1);opacity:.7">
+    </div>
+    <div class="modal-field">
+      <label>New / Extended due date *</label>
+      <input type="date" id="extendNewDate">
+    </div>
+    <div class="modal-field">
+      <label>Reason / Circular reference</label>
+      <input type="text" id="extendReason" placeholder="e.g. CBDT extended per Circular 05/2026">
+    </div>
+    <div class="modal-btns">
+      <button class="modal-cancel" onclick="document.getElementById('extendDueModal').classList.remove('open')">Cancel</button>
+      <button class="modal-submit" style="background:var(--amber)" onclick="saveExtendDue()">Update Due Date</button>
+    </div>
+  </div>
+</div>
 
 <!-- Assign Task Modal -->
 <div class="modal-overlay" id="assignModal">
@@ -379,11 +532,15 @@ let entities      = [];
 let activeEntity  = null;
 let allFilings    = [];
 let deadlines     = [];
+let allExtensions = [];   // admin-pushed extensions
+let allNotices    = [];   // tax notices
+let allClients    = [];   // for CA cross-entity view
 let activeCat     = 'all';
+let activeNoticeFl= 'all';
 let pendingDoneKey= null;
 let activeTab     = 'deadlines';
 let dlYear        = new Date().getFullYear();
-let dlMonth       = new Date().getMonth() + 1;   // 1-indexed, current month
+let dlMonth       = new Date().getMonth() + 1;
 
 const MONTHS = ['','January','February','March','April','May','June',
                 'July','August','September','October','November','December'];
@@ -510,6 +667,11 @@ function showWelcome() {
   document.getElementById('welcomeSub').textContent =
     `${activeEntity.name} · ${activeEntity.type} · Compliance dashboard`;
   document.getElementById('dbWelcome').style.display = 'flex';
+
+  // Show All Clients tab for professionals
+  const isProf = currentProfile?.role === 'professional' || entities.length > 2;
+  const tab = document.getElementById('allClientsTab');
+  if (tab) tab.style.display = isProf ? 'block' : 'none';
 }
 
 // ── Entity switcher ───────────────────────────────────
@@ -548,6 +710,9 @@ async function loadEntityData() {
   const reg = activeEntity.registrations || {};
   const now = new Date();
 
+  // Load admin-pushed extensions
+  allExtensions = await getActiveExtensions();
+
   // Compute deadlines for the selected month
   const refDate = new Date(dlYear, dlMonth - 1, 1);
   deadlines = getEntityDeadlines(reg, refDate);
@@ -556,11 +721,13 @@ async function loadEntityData() {
 
   // Load DB filings (already marked done/missed)
   allFilings = await getEntityFilings(activeEntity.id);
+  await loadNoticesData();
 
   renderDeadlines();
   renderStats();
   renderHistory();
   await renderTeam();
+  if (activeTab === 'notices') renderNotices();
 }
 
 // ── Month navigation ─────────────────────────────────
@@ -629,7 +796,7 @@ function renderDeadlines() {
     else if (diff <= 7)    rowCls = 'row-soon';
     else if (diff <= 30)   rowCls = 'row-near';
 
-    const dateStr = new Date(dl.due).toLocaleDateString('en-IN', {day:'2-digit',month:'short',year:'numeric'});
+    const dateStr = effectiveDue.toLocaleDateString('en-IN', {day:'2-digit',month:'short',year:'numeric'});
     const catColor = CAT_COLOR[dl.cat] || '#64748B';
     const sbClass  = urgencyClass(dl.due, status);
     const dayLbl   = daysLabel(dl.due, status);
@@ -642,7 +809,7 @@ function renderDeadlines() {
     return `<tr class="${rowCls}">
       <td style="font-size:.78rem;font-weight:600;color:var(--black);white-space:nowrap">${dateStr}</td>
       <td><span class="cat-badge" style="background:${catColor}">${dl.cat}</span></td>
-      <td style="font-size:.81rem;color:var(--black)">${dl.name}${f?.ack_number ? `<br><span style="font-size:.71rem;color:var(--gray-5)">ARN/Ack: ${f.ack_number}</span>` : ''}</td>
+      <td style="font-size:.81rem;color:var(--black)">${dl.name}${extBadge}${f?.ack_number ? `<br><span style="font-size:.71rem;color:var(--gray-5)">ARN/Ack: ${f.ack_number}</span>` : ''}</td>
       <td style="font-size:.76rem;color:var(--gray-5)">${assignee}</td>
       <td><span class="sb ${sbClass}">${dayLbl}</span></td>
       <td>${actionBtn}</td>
@@ -805,9 +972,12 @@ function switchTab(tab, el) {
   activeTab = tab;
   document.querySelectorAll('.db-tab').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
-  ['deadlines','history','team'].forEach(t => {
-    document.getElementById('tab-'+t).style.display = t === tab ? 'block' : 'none';
+  ['deadlines','history','notices','team','allclients'].forEach(t => {
+    const el2 = document.getElementById('tab-'+t);
+    if (el2) el2.style.display = t === tab ? 'block' : 'none';
   });
+  if (tab === 'notices')    renderNotices();
+  if (tab === 'allclients') loadAllClients();
 }
 
 // ── Assign Task ───────────────────────────────────────
@@ -884,6 +1054,281 @@ async function saveAssignment() {
   allFilings = await getEntityFilings(activeEntity.id);
   renderDeadlines();
   showToast('✅ Task assigned to ' + assigneeName);
+}
+
+// ── Notices ──────────────────────────────────────────
+async function loadNoticesData() {
+  allNotices = await getEntityNotices(activeEntity.id);
+}
+
+function openAddNotice() {
+  document.getElementById('noticeModalTitle').textContent = 'Add Tax Notice';
+  document.getElementById('editNoticeId').value = '';
+  ['nAuthority','nType','nNoticeDate','nResponseDue','nDin','nStatus','nExtDate','nLastReplied','nNotes'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = el.tagName === 'SELECT' ? el.options[0]?.value || '' : '';
+  });
+  document.getElementById('noticeModal').classList.add('open');
+}
+
+function openEditNotice(id) {
+  const n = allNotices.find(x => x.id === id);
+  if (!n) return;
+  document.getElementById('noticeModalTitle').textContent = 'Edit Notice';
+  document.getElementById('editNoticeId').value = id;
+  document.getElementById('nAuthority').value   = n.authority || '';
+  document.getElementById('nType').value         = n.notice_type || '';
+  document.getElementById('nNoticeDate').value   = n.notice_date || '';
+  document.getElementById('nResponseDue').value  = n.response_due_date || '';
+  document.getElementById('nDin').value          = n.din_reference || '';
+  document.getElementById('nStatus').value       = n.status || 'Open';
+  document.getElementById('nExtDate').value      = n.extension_date || '';
+  document.getElementById('nLastReplied').value  = n.last_replied_date || '';
+  document.getElementById('nNotes').value        = n.notes || '';
+  document.getElementById('noticeModal').classList.add('open');
+}
+
+async function saveNotice() {
+  const editId = document.getElementById('editNoticeId').value;
+  const payload = {
+    entity_id:        activeEntity.id,
+    authority:        document.getElementById('nAuthority').value,
+    notice_type:      document.getElementById('nType').value,
+    notice_date:      document.getElementById('nNoticeDate').value,
+    response_due_date:document.getElementById('nResponseDue').value,
+    din_reference:    document.getElementById('nDin').value.trim() || null,
+    status:           document.getElementById('nStatus').value,
+    extension_date:   document.getElementById('nExtDate').value || null,
+    last_replied_date:document.getElementById('nLastReplied').value || null,
+    notes:            document.getElementById('nNotes').value.trim() || null,
+    created_by:       currentUser.id,
+    updated_at:       new Date().toISOString(),
+  };
+
+  if (!payload.notice_date || !payload.response_due_date) {
+    showToast('Please enter notice date and response due date.');
+    return;
+  }
+
+  let error;
+  if (editId) {
+    ({ error } = await sb.from('notices').update(payload).eq('id', editId));
+  } else {
+    ({ error } = await sb.from('notices').insert(payload));
+  }
+
+  document.getElementById('noticeModal').classList.remove('open');
+  if (error) { showToast('Error: ' + error.message); return; }
+
+  allNotices = await getEntityNotices(activeEntity.id);
+  renderNotices();
+  showToast(editId ? '✅ Notice updated!' : '✅ Notice added!');
+}
+
+async function deleteNotice(id) {
+  if (!confirm('Delete this notice?')) return;
+  await sb.from('notices').delete().eq('id', id);
+  allNotices = await getEntityNotices(activeEntity.id);
+  renderNotices();
+  showToast('Notice deleted.');
+}
+
+function filterNotices(filter, el) {
+  activeNoticeFl = filter;
+  document.querySelectorAll('[data-nf]').forEach(b => b.classList.toggle('on', b.dataset.nf === filter));
+  renderNotices();
+}
+
+function renderNotices() {
+  const body = document.getElementById('noticeBody');
+  let rows = activeNoticeFl === 'all' ? allNotices : allNotices.filter(n => n.status === activeNoticeFl);
+
+  if (!rows.length) {
+    body.innerHTML = `<tr><td colspan="8"><div class="empty-state"><div class="ei">⚠️</div><h3>No notices yet</h3><p>Add a notice when you receive one from GST, Income Tax or any authority.</p></div></td></tr>`;
+    return;
+  }
+
+  const today = new Date(); today.setHours(0,0,0,0);
+  body.innerHTML = rows.map(n => {
+    const effDue  = n.extension_date || n.response_due_date;
+    const diff    = Math.round((new Date(effDue) - today) / 86400000);
+    const urg     = noticeUrgencyClass(effDue, n.status);
+    const color   = AUTHORITY_COLOR[n.authority] || '#64748B';
+    const statusColors = {
+      'Open':'#FEE2E2','Responded':'#DCFCE7','Extension Requested':'#FEF3C7',
+      'Closed':'#F1F5F9','Appeal Filed':'#EDE9FE'
+    };
+    const statusTextColors = {
+      'Open':'#991B1B','Responded':'#166534','Extension Requested':'#92400E',
+      'Closed':'#475569','Appeal Filed':'#5B21B6'
+    };
+    return `<tr class="${urg === 'status-overdue' ? 'row-overdue' : urg === 'status-soon' ? 'row-soon' : ''}">
+      <td><span style="background:${color};color:white;padding:2px 7px;border-radius:4px;font-size:.68rem;font-weight:700">${n.authority}</span></td>
+      <td style="font-size:.79rem;font-weight:600;color:var(--black)">${n.notice_type}</td>
+      <td style="font-size:.76rem">${n.notice_date ? new Date(n.notice_date).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}) : '—'}</td>
+      <td style="font-size:.76rem;font-weight:600;color:var(--black)">
+        ${new Date(effDue).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})}
+        ${n.extension_date ? '<br><span style="font-size:.67rem;color:var(--amber);font-weight:700">Extended</span>' : ''}
+      </td>
+      <td style="font-size:.72rem;color:var(--gray-5)">${n.din_reference||'—'}</td>
+      <td style="font-size:.74rem;color:var(--gray-5)">${n.assigned_to_name||n.assigned_profile?.name||'—'}</td>
+      <td><span style="padding:3px 8px;border-radius:12px;font-size:.69rem;font-weight:700;background:${statusColors[n.status]||'#F1F5F9'};color:${statusTextColors[n.status]||'#475569'}">${n.status}</span></td>
+      <td style="display:flex;gap:4px">
+        <button class="done-btn mark" style="font-size:.7rem;padding:3px 8px" onclick="openEditNotice('${n.id}')">Edit</button>
+        <button class="done-btn undo" style="font-size:.7rem;padding:3px 8px" onclick="deleteNotice('${n.id}')">Del</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+// ── Extend Due Date ────────────────────────────────────
+function openExtendDue(key, name, originalDate) {
+  document.getElementById('extendFiling').textContent = name;
+  document.getElementById('extendKey').value = key;
+  document.getElementById('extendOriginal').value = new Date(originalDate).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+  document.getElementById('extendNewDate').value = '';
+  document.getElementById('extendReason').value = '';
+  document.getElementById('extendDueModal').classList.add('open');
+}
+
+async function saveExtendDue() {
+  const key     = document.getElementById('extendKey').value;
+  const newDate = document.getElementById('extendNewDate').value;
+  const reason  = document.getElementById('extendReason').value.trim();
+  if (!newDate) { showToast('Please select a new due date.'); return; }
+
+  const dl = deadlines.find(d => d.key === key);
+  if (!dl) return;
+
+  const { error } = await sb.from('filings').upsert({
+    entity_id:         activeEntity.id,
+    deadline_key:      key,
+    period_label:      MONTHS[dlMonth] + ' ' + dlYear,
+    category:          dl.cat,
+    filing_name:       dl.name,
+    due_date:          dl.due.toISOString().slice(0,10),
+    status:            'pending',
+    extended_due_date: newDate,
+    extension_note:    reason || null,
+  }, { onConflict: 'entity_id,deadline_key' });
+
+  document.getElementById('extendDueModal').classList.remove('open');
+  if (error) { showToast('Error: ' + error.message); return; }
+
+  allFilings = await getEntityFilings(activeEntity.id);
+  renderDeadlines(); renderStats();
+  showToast('✅ Due date updated for this entity');
+}
+
+// ── All Clients (CA view) ─────────────────────────────
+let clientCatFilter = 'all';
+
+async function loadAllClients() {
+  const grid = document.getElementById('clientGrid');
+  grid.innerHTML = '<div style="color:var(--gray-4);font-size:.84rem;padding:20px">Loading…</div>';
+
+  // Get all entities this user has access to
+  const allEntities = await getMyEntities(currentUser.id);
+  allClients = allEntities;
+
+  if (!allEntities.length) {
+    grid.innerHTML = '<div class="empty-state"><div class="ei">🏢</div><h3>No entities found</h3><p>Add entities from Settings.</p></div>';
+    return;
+  }
+
+  renderClientGrid(allEntities);
+}
+
+function filterClients(cat, el) {
+  clientCatFilter = cat;
+  document.querySelectorAll('[data-cc]').forEach(b => b.classList.toggle('on', b.dataset.cc === cat));
+  renderClientGrid(allClients);
+}
+
+function complianceScore(entityFilings, totalDeadlines) {
+  if (!totalDeadlines) return 100;
+  const done = entityFilings.filter(f => f.status === 'done').length;
+  return Math.round((done / Math.max(totalDeadlines, 1)) * 100);
+}
+
+async function renderClientGrid(entities) {
+  const grid = document.getElementById('clientGrid');
+  const today = new Date(); today.setHours(0,0,0,0);
+
+  let cards = '';
+  for (const entity of entities) {
+    const filings  = await getEntityFilings(entity.id);
+    const reg      = entity.registrations || {};
+    const now      = new Date();
+    // Get deadlines for current + prev month
+    const dl1      = getEntityDeadlines(reg, now);
+    const dl2      = getEntityDeadlines(reg, new Date(now.getFullYear(), now.getMonth()-1, 1));
+    const allDl    = [...dl1, ...dl2].filter((d,i,a) => a.findIndex(x=>x.key===d.key)===i);
+
+    let overdue=0, soonCount=0;
+    allDl.forEach(dl => {
+      const f = filings.find(f => f.deadline_key === dl.key);
+      if (f?.status === 'done') return;
+      const diff = Math.round((new Date(dl.due) - today) / 86400000);
+      if (diff < 0)     overdue++;
+      else if (diff<=7) soonCount++;
+    });
+
+    const fyStart  = now.getMonth() < 3 ? now.getFullYear()-1 : now.getFullYear();
+    const fyDl     = getEntityDeadlines(reg, new Date(fyStart+1, 5, 1)); // sample month
+    const score    = complianceScore(filings, allDl.length);
+    const traffic  = overdue > 0 ? '#DC2626' : soonCount > 0 ? '#D97706' : '#16A34A';
+    const trafficLabel = overdue > 0 ? 'Needs attention' : soonCount > 0 ? 'Due soon' : 'On track';
+
+    cards += `<div style="background:white;border:1px solid var(--gray-3);border-radius:12px;overflow:hidden;transition:all .15s;cursor:pointer"
+                   onclick="switchToEntity('${entity.id}')">
+      <div style="height:3px;background:${traffic}"></div>
+      <div style="padding:16px">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px">
+          <div>
+            <div style="font-size:.86rem;font-weight:700;color:var(--black);margin-bottom:2px">${entity.name}</div>
+            <div style="font-size:.73rem;color:var(--gray-5)">${entity.type}</div>
+          </div>
+          <div style="text-align:center">
+            <div style="font-size:1.2rem;font-weight:700;font-family:'Playfair Display',Georgia,serif;color:${score>=80?'#16A34A':score>=50?'#D97706':'#DC2626'}">${score}%</div>
+            <div style="font-size:.6rem;color:var(--gray-5)">Compliance</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:10px">
+          <div style="flex:1;background:${overdue>0?'#FEF2F2':'var(--gray-1)'};border-radius:8px;padding:8px;text-align:center">
+            <div style="font-size:1.1rem;font-weight:700;color:${overdue>0?'var(--red)':'var(--gray-5)'}">${overdue}</div>
+            <div style="font-size:.62rem;color:var(--gray-5)">Overdue</div>
+          </div>
+          <div style="flex:1;background:${soonCount>0?'#FFFBEB':'var(--gray-1)'};border-radius:8px;padding:8px;text-align:center">
+            <div style="font-size:1.1rem;font-weight:700;color:${soonCount>0?'var(--amber)':'var(--gray-5)'}">${soonCount}</div>
+            <div style="font-size:.62rem;color:var(--gray-5)">Due this week</div>
+          </div>
+          <div style="flex:1;background:var(--gray-1);border-radius:8px;padding:8px;text-align:center">
+            <div style="font-size:1.1rem;font-weight:700;color:var(--blue)">${allDl.length}</div>
+            <div style="font-size:.62rem;color:var(--gray-5)">Total</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <span style="font-size:.72rem;font-weight:600;color:${traffic}">${trafficLabel}</span>
+          <span style="font-size:.72rem;color:var(--blue);font-weight:600">Open →</span>
+        </div>
+      </div>
+    </div>`;
+  }
+  grid.innerHTML = cards;
+}
+
+async function switchToEntity(id) {
+  activeEntity = entities.find(e => e.id === id);
+  if (!activeEntity) return;
+  document.getElementById('entityDrop').classList.remove('open');
+  renderEntitySwitcher();
+  showWelcome();
+  await loadEntityData();
+  // Switch to deadlines tab
+  document.querySelectorAll('.db-tab').forEach(t => t.classList.remove('active'));
+  document.querySelector('.db-tab').classList.add('active');
+  switchTab('deadlines', document.querySelector('.db-tab'));
 }
 
 // ── Logout ────────────────────────────────────────────
