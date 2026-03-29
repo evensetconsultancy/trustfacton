@@ -520,10 +520,65 @@ function hSearch(){const q=document.getElementById('hInp').value.trim().toLowerC
 
 /* ════ FOREX ════ */
 const CCYS=[{c:'USD',n:'US Dollar',f:'🇺🇸'},{c:'EUR',n:'Euro',f:'🇪🇺'},{c:'GBP',n:'British Pound',f:'🇬🇧'},{c:'AED',n:'UAE Dirham',f:'🇦🇪'},{c:'SGD',n:'Singapore $',f:'🇸🇬'},{c:'JPY',n:'Japanese Yen',f:'🇯🇵'},{c:'AUD',n:'Aus Dollar',f:'🇦🇺'},{c:'SAR',n:'Saudi Riyal',f:'🇸🇦'}];
-async function fxLoad(){const grid=document.getElementById('fxGrid'),timeEl=document.getElementById('fxTime');grid.innerHTML=Array(8).fill('<div class="fx-sk"></div>').join('');timeEl.textContent='Fetching…';let rates=null;for(const url of['https://api.frankfurter.app/latest?from=INR&to=USD,EUR,GBP,AED,SGD,JPY,AUD,SAR','https://open.er-api.com/v6/latest/INR']){try{const r=await fetch(url,{signal:AbortSignal.timeout(7000)});if(!r.ok)continue;const j=await r.json();if(j&&j.rates&&j.rates.USD){rates=j.rates;break;}}catch{}}if(!rates){grid.innerHTML=`<div class="fx-err">Unavailable. <a href="https://www.rbi.org.in/Scripts/ReferenceRateArchive.aspx" target="_blank" style="color:var(--blue)">RBI Rates →</a></div>`;timeEl.textContent='Unavailable';return;}const now=new Date();timeEl.textContent='Updated '+now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})+' IST';grid.innerHTML=CCYS.map(({c,n,f})=>{const r=rates[c];if(!r)return'';const inr=(1/r).toFixed(c==='JPY'?3:2);return`<div class="fx-row"><div class="fx-left"><span style="font-size:.95rem">${f}</span><div><span class="fx-code">${c}</span><span class="fx-name">${n}</span></div></div><div class="fx-right"><span class="big">₹${inr}</span><span class="sm">per 1 ${c}</span></div></div>`;}).join('');}
+async function fxLoad(){
+  const grid=document.getElementById('fxGrid'),timeEl=document.getElementById('fxTime');
+  grid.innerHTML=Array(8).fill('<div class="fx-sk"></div>').join('');
+  timeEl.textContent='Fetching…';
+  let rates=null;
+  const APIS=[
+    {url:'https://api.frankfurter.app/latest?from=INR&to=USD,EUR,GBP,AED,SGD,JPY,AUD,SAR',extract:j=>j.rates},
+    {url:'https://open.er-api.com/v6/latest/INR',extract:j=>j.rates},
+    {url:'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/inr.json',extract:j=>{
+      const r=j.inr||{};
+      return {USD:r.usd?1/r.usd:null,EUR:r.eur?1/r.eur:null,GBP:r.gbp?1/r.gbp:null,
+              AED:r.aed?1/r.aed:null,SGD:r.sgd?1/r.sgd:null,JPY:r.jpy?1/r.jpy:null,
+              AUD:r.aud?1/r.aud:null,SAR:r.sar?1/r.sar:null};}}
+  ];
+  for(const api of APIS){
+    try{
+      const ctrl=new AbortController();
+      const tid=setTimeout(()=>ctrl.abort(),6000);
+      const r=await fetch(api.url,{signal:ctrl.signal});
+      clearTimeout(tid);
+      if(!r.ok) continue;
+      const j=await r.json();
+      const extracted=api.extract(j);
+      if(extracted&&extracted.USD){rates=extracted;break;}
+    }catch(e){console.log('Forex API failed:',e.message);}
+  }
+  if(!rates){
+    grid.innerHTML=`<div class="fx-err">Rates unavailable. <a href="https://www.rbi.org.in/Scripts/ReferenceRateArchive.aspx" target="_blank" style="color:var(--blue)">Use RBI Rates →</a></div>`;
+    timeEl.textContent='Unavailable — tap Refresh to retry';
+    return;
+  }
+  const now=new Date();
+  timeEl.textContent='Updated '+now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})+' IST';
+  grid.innerHTML=CCYS.map(({c,n,f})=>{
+    const r=rates[c]; if(!r) return '';
+    const inr=(1/r).toFixed(c==='JPY'?3:2);
+    return`<div class="fx-row"><div class="fx-left"><span style="font-size:.95rem">${f}</span><div><span class="fx-code">${c}</span><span class="fx-name">${n}</span></div></div><div class="fx-right"><span class="big">₹${inr}</span><span class="sm">per 1 ${c}</span></div></div>`;
+  }).join('');
+}
 
 /* ════ CALENDAR ════ */
 // Helper: get previous month name and year for a given month/year
+function getFYContext(d) {
+  const yr = d.getFullYear(), mo = d.getMonth() + 1;
+  const fyStart = mo <= 3 ? yr - 1 : yr;
+  const fyEnd   = fyStart + 1;
+  const ay      = fyEnd + 1;
+  const s       = n => String(n).slice(-2);
+  return {
+    yr, fyStart, fyEnd,
+    FY:     `FY ${fyStart}-${s(fyEnd)}`,
+    AY:     `AY ${fyEnd}-${s(ay)}`,
+    prevFY: `FY ${fyStart-1}-${s(fyStart)}`,
+    advFY:  `FY ${fyStart}-${s(fyEnd)}`,
+    rocFY:  `FY ${fyStart-1}-${s(fyStart)}`,
+    rocFyEnd: fyStart,
+  };
+}
+
 function prevMonthLabel(m, y) {
   const d = new Date(y, m - 2, 1); // m-2 because JS months are 0-indexed
   return d.toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });

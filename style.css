@@ -446,3 +446,15 @@ p  { line-height: 1.7; color: var(--gray-5); }
   .home-hero-actions { justify-content: center; }
   .home-hero-stats { justify-content: center; }
 }
+
+/* ── Logo blend mode fixes ──────────────────────────── */
+/* Dark backgrounds (navy navbar, hero): screen removes black */
+.site-nav .nav-logo-img,
+.db-header .db-logo img,
+.db-header img,
+.home-hero .nav-logo-img { mix-blend-mode: screen; }
+
+/* Light backgrounds (auth pages, cards, white sections): multiply removes black */
+.auth-wrap img,
+.wrap img[src="logo.png"],
+.logo img[src="logo.png"] { mix-blend-mode: multiply; }
