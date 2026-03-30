@@ -401,6 +401,16 @@ async function saveProfile() {
       p_pf:        comp.pf, p_esic:comp.esic, p_roc:comp.roc, p_pt:comp.professional_tax,
     });
     if (eErr) throw eErr;
+
+    // Auto-assign primary_admin for professional accounts
+    const prof = await getProfile(currentUser.id);
+    if (prof?.role === 'professional') {
+      await sb.from('entity_members')
+        .update({ firm_role: 'primary_admin' })
+        .eq('entity_id', ent)
+        .eq('user_id', currentUser.id);
+    }
+
     const { error:regErr } = await sb.from('registrations').update({
       gst_regular:comp.gst_regular, gst_qrmp:comp.gst_qrmp, gst_composition:comp.gst_composition,
       gst_gstr7:comp.gst_gstr7, gst_gstr8:comp.gst_gstr8, gst_gstr9:comp.gst_gstr9,

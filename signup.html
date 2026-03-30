@@ -175,6 +175,11 @@ async function verifyOTP() {
     await sb.from('profiles').upsert({
       id: data.user.id, name: saved.name, role: saved.role || 'owner'
     });
+    // Professional users get primary_admin stored in localStorage
+    // It's applied when their first entity is created in profile-setup
+    if (saved.role === 'professional') {
+      localStorage.setItem('tf_is_primary_admin', '1');
+    }
   }
   localStorage.removeItem('tf_signup');
 

@@ -403,9 +403,10 @@ body{background:var(--gray-1);min-height:100vh;}
 <script>
 let currentUser = null;
 let currentProfile = null;
-let allClients = [];
-let allStaff   = [];
-const cmState  = {};
+let allClients  = [];
+let allStaff    = [];
+let isStrictPA  = false;  // true only for primary_admin, not secondary
+const cmState   = {};
 
 // ── Init ─────────────────────────────────────────────
 (async () => {
@@ -422,6 +423,7 @@ const cmState  = {};
     return;
   }
 
+  isStrictPA = await isStrictPrimaryAdmin(currentUser.id);
   await loadAll();
 })();
 
@@ -737,10 +739,23 @@ function renderStaffGrid() {
   }
   grid.innerHTML = allStaff.map(s => {
     const assigned = allClients.filter(c => c.staff_id === s.id).length;
+    const roleLabel = s.firm_role === 'secondary_admin' ? '⭐ Secondary Admin' : 'Staff';
+    const roleColor = s.firm_role === 'secondary_admin' ? '#7C3AED' : '#2563EB';
     return `<div class="staff-card">
-      <div class="sname">${s.name}</div>
-      <div class="semail" style="font-size:.72rem;color:var(--gray-5)">${s.id.slice(0,8)}…</div>
-      <div class="sclients">${assigned} client${assigned===1?'':'s'} assigned</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+        <div class="sname">${s.name}</div>
+        <span style="font-size:.67rem;font-weight:700;color:${roleColor};background:${roleColor}15;padding:2px 7px;border-radius:8px">${roleLabel}</span>
+      </div>
+      <div class="semail" style="font-size:.72rem;color:var(--gray-5);margin-bottom:8px">${s.email||s.id.slice(0,12)+'…'}</div>
+      <div class="sclients" style="margin-bottom:10px">${assigned} client${assigned===1?'':'s'} assigned</div>
+      ${isStrictPA ? `
+        <div style="display:flex;gap:6px">
+          ${s.firm_role === 'secondary_admin'
+            ? `<button class="ab ab-blue" onclick="changeStaffRole('${s.entityId}','${s.id}','staff')">↓ Demote to Staff</button>`
+            : `<button class="ab ab-green" onclick="changeStaffRole('${s.entityId}','${s.id}','secondary_admin')">↑ Make Secondary Admin</button>`
+          }
+          <button class="ab ab-red" onclick="removeStaff('${s.entityId}','${s.id}','${s.name}')">Remove</button>
+        </div>` : ''}
     </div>`;
   }).join('');
 }
@@ -793,6 +808,59 @@ async function cancelInvite(id) {
   await sb.from('entity_members').delete().eq('id', id);
   loadPendingInvites();
   showToast('Invite cancelled.');
+}
+
+async function changeStaffRole(entityId, userId, newRole) {
+  const label = newRole === 'secondary_admin' ? 'Secondary Admin' : 'Staff';
+  const { error } = await sb.from('entity_members')
+    .update({ firm_role: newRole })
+    .eq('entity_id', entityId)
+    .eq('user_id', userId);
+  if (error) { showToast('Error: ' + error.message); return; }
+  allStaff = await getFirmStaff(currentUser.id);
+  renderStaffGrid();
+  showToast(`✅ Role updated to ${label}`);
+}
+
+async function removeStaff(entityId, userId, name) {
+  if (!confirm(`Remove ${name} from your firm?`)) return;
+  const { error } = await sb.from('entity_members')
+    .delete()
+    .eq('entity_id', entityId)
+    .eq('user_id', userId)
+    .eq('firm_role', 'staff');
+  if (error) { showToast('Error: ' + error.message); return; }
+  allStaff = await getFirmStaff(currentUser.id);
+  renderStaffGrid();
+  showToast(`${name} removed from firm.`);
+}
+
+async function toggleSecondaryAdmin(userId, name, isCurrentlySecondary) {
+  const newRole = isCurrentlySecondary ? 'staff' : 'secondary_admin';
+  const label   = isCurrentlySecondary ? 'demoted to Staff' : 'promoted to Secondary Admin';
+  // Update firm_role across all entities this staff member is in
+  const entityIds = allClients.map(c => c.entity_id);
+  const { error } = await sb.from('entity_members')
+    .update({ firm_role: newRole })
+    .eq('user_id', userId)
+    .in('entity_id', entityIds);
+  if (error) { showToast('Error: ' + error.message); return; }
+  allStaff = await getFirmStaff(currentUser.id);
+  renderStaffGrid();
+  showToast(`✅ ${name} ${label}`);
+}
+
+async function removeStaff(userId, name) {
+  if (!confirm(`Remove ${name} from your firm? They will lose access to all assigned clients.`)) return;
+  const entityIds = allClients.map(c => c.entity_id);
+  const { error } = await sb.from('entity_members')
+    .delete()
+    .eq('user_id', userId)
+    .in('entity_id', entityIds);
+  if (error) { showToast('Error: ' + error.message); return; }
+  allStaff = await getFirmStaff(currentUser.id);
+  renderStaffGrid();
+  showToast(`${name} removed from firm.`);
 }
 
 async function doLogout() { await sb.auth.signOut(); window.location.href = 'index.html'; }

@@ -435,11 +435,39 @@ async function getMyFirmRole(userId, entityId) {
 async function isPrimaryAdmin(userId) {
   const { data } = await sb.from('entity_members')
     .select('id')
+    .in('firm_role', ['primary_admin','secondary_admin'])
     .eq('user_id', userId)
-    .eq('firm_role', 'primary_admin')
     .eq('status', 'active')
     .limit(1);
   return (data?.length || 0) > 0;
+}
+
+async function isStrictPrimaryAdmin(userId) {
+  // Only true primary admins — not secondary
+  const { data } = await sb.from('entity_members')
+    .select('id')
+    .eq('firm_role', 'primary_admin')
+    .eq('user_id', userId)
+    .eq('status', 'active')
+    .limit(1);
+  return (data?.length || 0) > 0;
+}
+
+async function promoteToSecondaryAdmin(entityId, userId) {
+  // Only primary admin can call this
+  const { error } = await sb.from('entity_members')
+    .update({ firm_role: 'secondary_admin' })
+    .eq('entity_id', entityId)
+    .eq('user_id', userId);
+  return error;
+}
+
+async function demoteToStaff(entityId, userId) {
+  const { error } = await sb.from('entity_members')
+    .update({ firm_role: 'staff' })
+    .eq('entity_id', entityId)
+    .eq('user_id', userId);
+  return error;
 }
 
 async function getFirmClients(adminId) {
@@ -469,20 +497,27 @@ async function getFirmClients(adminId) {
 }
 
 async function getFirmStaff(adminUserId) {
-  // Get all users who are staff in any entity this admin manages
-  const { data } = await sb.from('entity_members')
-    .select('user_id, profiles(name), entity_id')
-    .eq('firm_role', 'staff')
-    .eq('status', 'active');
-  // Filter to staff in entities this admin manages
   const myEntities = await getMyEntities(adminUserId);
   const myEntityIds = myEntities.map(e => e.id);
+  if (!myEntityIds.length) return [];
+
+  const { data } = await sb.from('entity_members')
+    .select('user_id, firm_role, entity_id, profiles(name, id)')
+    .in('firm_role', ['staff','secondary_admin'])
+    .eq('status', 'active')
+    .in('entity_id', myEntityIds);
+
   const staff = [];
   const seen = new Set();
   (data || []).forEach(m => {
-    if (myEntityIds.includes(m.entity_id) && !seen.has(m.user_id)) {
+    if (!seen.has(m.user_id)) {
       seen.add(m.user_id);
-      staff.push({ id: m.user_id, name: m.profiles?.name || 'Unknown' });
+      staff.push({
+        id:        m.user_id,
+        name:      m.profiles?.name || 'Unknown',
+        firm_role: m.firm_role,
+        entityId:  m.entity_id,
+      });
     }
   });
   return staff;
