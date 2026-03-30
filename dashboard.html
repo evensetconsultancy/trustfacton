@@ -538,6 +538,7 @@ body { background: var(--gray-1); min-height: 100vh; }
 <script>
 let currentUser   = null;
 let currentProfile= null;
+let myFirmRole    = 'owner';   // 'primary_admin' | 'staff' | 'client' | 'owner'
 let entities      = [];
 let activeEntity  = null;
 let allFilings    = [];
@@ -640,10 +641,21 @@ const MONTHS = ['','January','February','March','April','May','June',
     entities = await getMyEntities(currentUser.id);
   } catch { /* ignore if accept_invitation RPC not deployed yet */ }
 
+  // Client with single entity → use that entity directly
   activeEntity = entities[0];
+
+  // Detect firm role for this user
+  await detectFirmRole();
+
+  // If client role → confirm they only see their own entity
+  if (myFirmRole === 'client' && entities.length === 1) {
+    activeEntity = entities[0]; // already set, but make it explicit
+  }
+
   renderEntitySwitcher();
   await loadEntityData();
   showWelcome();
+  applyRoleUI();
 
   if (location.search.includes('new=1') || location.search.includes('setup=1')) {
     showToast('🎉 Account verified! Your compliance dashboard is ready.');
@@ -865,9 +877,18 @@ function renderDeadlines() {
     const sbClass  = urgencyClass(dl.due, status);
     const dayLbl   = daysLabel(dl.due, status);
 
+    const isClientRole = myFirmRole === 'client';
+    const isStaffRole  = myFirmRole === 'staff';
+    const canEditDate  = !isClientRole && !isStaffRole;
+
     const actionBtn = status === 'done'
-      ? `<button class="done-btn undo" onclick="undoDone('${dl.key}')">↩ Undo</button>`
-      : `<button class="done-btn mark" onclick="openMarkDone('${dl.key}','${dl.name.replace(/'/g,"\\'").replace(/"/g,'\\"')}')">Mark Done</button>`;
+      ? (canEditDate
+          ? `<button class="done-btn undo" onclick="undoDone('${dl.key}')">↩ Undo</button>`
+          : `<span class="sb status-done" style="font-size:.72rem">✓ Done</span>`)
+      : `<div style="display:flex;flex-direction:column;gap:3px">
+           <button class="done-btn mark" onclick="openMarkDone('${dl.key}','${dl.name.replace(/'/g,"\'").replace(/"/g,'\"')}')">Mark Done</button>
+           ${canEditDate ? `<button class="done-btn undo" style="font-size:.68rem" onclick="openExtendDue('${dl.key}','${dl.name.replace(/'/g,"\'").replace(/"/g,'\"')}','${dl.due.toISOString().slice(0,10)}')">Edit Date</button>` : ''}
+         </div>`;
 
     const assignee = f?.assigned_to_name || '—';
     return `<tr class="${rowCls}">
@@ -1393,6 +1414,92 @@ async function switchToEntity(id) {
   document.querySelectorAll('.db-tab').forEach(t => t.classList.remove('active'));
   document.querySelector('.db-tab').classList.add('active');
   switchTab('deadlines', document.querySelector('.db-tab'));
+}
+
+// ── Role detection + UI ──────────────────────────────
+async function detectFirmRole() {
+  if (!activeEntity) return;
+  try {
+    const { data } = await sb.from('entity_members')
+      .select('firm_role, role')
+      .eq('user_id', currentUser.id)
+      .eq('entity_id', activeEntity.id)
+      .eq('status', 'active')
+      .single();
+    myFirmRole = data?.firm_role || data?.role || 'owner';
+  } catch { myFirmRole = 'owner'; }
+}
+
+function applyRoleUI() {
+  const isClient      = myFirmRole === 'client';
+  const isStaff       = myFirmRole === 'staff';
+  const isPrimary     = myFirmRole === 'primary_admin' || myFirmRole === 'owner';
+
+  // ── Client restrictions ──
+  if (isClient) {
+    // Show read-only banner
+    showRoleBanner('client');
+    // Hide entity switcher — client has only one entity
+    const switcher = document.querySelector('.entity-switcher');
+    if (switcher) switcher.style.pointerEvents = 'none';
+    // Hide entity drop-down arrow cue
+    const btn = document.getElementById('entityBtn');
+    if (btn) btn.style.cursor = 'default';
+  }
+
+  if (isStaff) {
+    showRoleBanner('staff');
+  }
+
+  // ── Hide Team tab for staff + client ──
+  if (isClient || isStaff) {
+    const tabs = document.querySelectorAll('.db-tab');
+    tabs.forEach(t => { if (t.textContent.includes('Team')) t.style.display = 'none'; });
+  }
+
+  // ── Hide Assign Task button for staff + client ──
+  if (isClient || isStaff) {
+    const assignBtn = document.querySelector('button[onclick="openAssignTask()"]');
+    if (assignBtn) assignBtn.style.display = 'none';
+  }
+
+  // ── Hide Add entity for staff + client ──
+  if (isClient || isStaff) {
+    const addEnt = document.querySelector('.entity-drop-add');
+    if (addEnt) addEnt.style.display = 'none';
+  }
+
+  // ── Hide settings button for client ──
+  if (isClient) {
+    const settingsBtn = document.querySelector('[onclick*="settings.html"]');
+    if (settingsBtn) settingsBtn.style.display = 'none';
+  }
+
+  // ── Hide delete / undo for client (they can still mark done) ──
+  // Done in renderDeadlines via role check below
+}
+
+function showRoleBanner(role) {
+  const existing = document.getElementById('role-banner');
+  if (existing) existing.remove();
+
+  const bar = document.createElement('div');
+  bar.id = 'role-banner';
+
+  if (role === 'client') {
+    bar.style.cssText = 'background:#EFF6FF;border-bottom:1px solid #BFDBFE;padding:7px 20px;font-size:.78rem;color:#1E40AF;display:flex;align-items:center;gap:8px;';
+    bar.innerHTML = `
+      <span style="font-size:.9rem">👤</span>
+      <span>You are viewing as a <strong>Client</strong> — your CA manages the settings for this entity.</span>`;
+  } else if (role === 'staff') {
+    bar.style.cssText = 'background:#F0FDF4;border-bottom:1px solid #BBF7D0;padding:7px 20px;font-size:.78rem;color:#166534;display:flex;align-items:center;gap:8px;';
+    bar.innerHTML = `
+      <span style="font-size:.9rem">🧑‍💼</span>
+      <span>You are logged in as <strong>Staff</strong> — you can see and manage your assigned clients.</span>`;
+  }
+
+  const dashBody = document.querySelector('.db-body');
+  if (dashBody) dashBody.insertAdjacentElement('beforebegin', bar);
 }
 
 // ── Logout ────────────────────────────────────────────
