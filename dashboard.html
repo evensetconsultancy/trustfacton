@@ -718,27 +718,42 @@ async function switchEntity(id) {
 
 // ── Load entity data ──────────────────────────────────
 async function loadEntityData() {
-  const reg = activeEntity.registrations || {};
-  const now = new Date();
+  try {
+    const reg = activeEntity.registrations || {};
 
-  // Load admin-pushed extensions (table may not exist yet — fail gracefully)
-  try { allExtensions = await getActiveExtensions(); } catch { allExtensions = []; }
+    // Load admin-pushed extensions
+    try { allExtensions = await getActiveExtensions(); } catch { allExtensions = []; }
 
-  // Compute deadlines for the selected month
-  const refDate = new Date(dlYear, dlMonth - 1, 1);
-  deadlines = getEntityDeadlines(reg, refDate);
-  deadlines.sort((a,b) => a.due - b.due);
-  updateMonthLabel();
+    // Compute deadlines synchronously
+    const refDate = new Date(dlYear, dlMonth - 1, 1);
+    deadlines = getEntityDeadlines(reg, refDate);
+    deadlines.sort((a,b) => a.due - b.due);
+    updateMonthLabel();
 
-  // Load DB filings (already marked done/missed)
-  allFilings = await getEntityFilings(activeEntity.id);
-  try { await loadNoticesData(); } catch { allNotices = []; }
+    // Load filings from DB
+    allFilings = await getEntityFilings(activeEntity.id);
 
-  renderDeadlines();
-  renderStats();
-  renderHistory();
-  await renderTeam();
-  if (activeTab === 'notices') renderNotices();
+    // Load notices
+    try { await loadNoticesData(); } catch { allNotices = []; }
+
+    // Render everything
+    renderDeadlines();
+    renderStats();
+    renderHistory();
+    await renderTeam();
+    if (activeTab === 'notices') renderNotices();
+
+  } catch(e) {
+    console.error('loadEntityData failed:', e);
+    // Show error state instead of loading spinner
+    const body = document.getElementById('filingBody');
+    if (body) body.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:32px;color:var(--red)">
+      Error loading deadlines. Please refresh the page.<br>
+      <span style="font-size:.75rem;color:var(--gray-4)">${e.message||'Unknown error'}</span>
+    </td></tr>`;
+    // Still try to render stats with empty data
+    try { renderStats(); } catch {}
+  }
 }
 
 // ── Month navigation ─────────────────────────────────
@@ -819,9 +834,17 @@ function renderDeadlines() {
   }
 
   body.innerHTML = rows.map(dl => {
-    const f      = allFilings.find(f => f.deadline_key === dl.key);
-    const status = f?.status || 'pending';
-    const diff   = Math.round((new Date(dl.due) - today) / 86400000);
+    const f           = allFilings.find(f => f.deadline_key === dl.key);
+    const status      = f?.status || 'pending';
+    const extMatch    = (allExtensions||[]).find(e => dl.key.includes(e.filing_key) && e.active);
+    const userExt     = f?.extended_due_date;
+    const effectiveDue= userExt  ? new Date(userExt) :
+                        extMatch ? new Date(extMatch.extended_due) :
+                                   new Date(dl.due);
+    const extBadge    = (extMatch || userExt)
+      ? '<span style="font-size:.67rem;background:#FEF3C7;color:#92400E;padding:1px 6px;border-radius:4px;font-weight:700;margin-left:4px">Extended</span>'
+      : '';
+    const diff   = Math.round((effectiveDue - today) / 86400000);
 
     let rowCls = '';
     if (status === 'done') rowCls = 'row-done';

@@ -4,8 +4,8 @@
    Supabase Dashboard → Settings → API
    ========================================= */
 
-const SUPABASE_URL      = 'https://jmolgvabcfbmsctldpcr.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_ITdqqr6Yczf2d6c_fuNcmw_065lWBcj';
+const SUPABASE_URL      = 'https://YOUR_PROJECT.supabase.co';
+const SUPABASE_ANON_KEY = 'YOUR_ANON_KEY_HERE';
 
 // Supabase JS v2 loaded via CDN in each HTML file
 // This file just exports the client
@@ -48,12 +48,15 @@ async function getMyEntities(userId) {
 }
 
 async function getEntityFilings(entityId) {
-  const { data } = await sb
-    .from('filings')
-    .select('*, done_by_profile:done_by(name)')
-    .eq('entity_id', entityId)
-    .order('due_date', { ascending: true });
-  return data || [];
+  try {
+    const { data, error } = await sb
+      .from('filings')
+      .select('*')
+      .eq('entity_id', entityId)
+      .order('due_date', { ascending: true });
+    if (error) { console.error('getEntityFilings:', error); return []; }
+    return data || [];
+  } catch(e) { console.error('getEntityFilings exception:', e); return []; }
 }
 
 // ── Deadline computation (matches calendar logic) ───
