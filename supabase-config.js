@@ -46,7 +46,15 @@ async function getMyEntities(userId) {
     .eq('status', 'active');
   return (data || [])
     .filter(m => m.entities && m.entities.id)   // skip orphan rows
-    .map(m => ({ ...m.entities, my_role: m.role }));
+    .map(m => {
+      const entity = { ...m.entities, my_role: m.role };
+      // Supabase returns registrations as an ARRAY (one-to-many join)
+      // Flatten to object so reg.gst, reg.tds etc work correctly
+      if (Array.isArray(entity.registrations)) {
+        entity.registrations = entity.registrations[0] || {};
+      }
+      return entity;
+    });
 }
 
 async function getEntityFilings(entityId) {

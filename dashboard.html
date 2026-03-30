@@ -758,7 +758,9 @@ async function loadEntityData() {
       console.error('loadEntityData: no active entity');
       return;
     }
-    const reg = activeEntity.registrations || {};
+    // registrations may be array (Supabase join) or object — normalise
+    const rawReg = activeEntity.registrations;
+    const reg = Array.isArray(rawReg) ? (rawReg[0] || {}) : (rawReg || {});
 
     // Load admin-pushed extensions
     try { allExtensions = await getActiveExtensions(); } catch { allExtensions = []; }
