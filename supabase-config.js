@@ -409,3 +409,136 @@ async function upsertSiteContent(page, sectionKey, title, structured, freeText, 
   }, { onConflict: 'page,section_key' });
   return error;
 }
+// ── Firm / role helpers ───────────────────────────────
+
+async function getMyFirmRole(userId, entityId) {
+  const { data } = await sb.from('entity_members')
+    .select('firm_role, role')
+    .eq('user_id', userId)
+    .eq('entity_id', entityId)
+    .eq('status', 'active')
+    .single();
+  return data?.firm_role || data?.role || 'owner';
+}
+
+async function isPrimaryAdmin(userId) {
+  const { data } = await sb.from('entity_members')
+    .select('id')
+    .eq('user_id', userId)
+    .eq('firm_role', 'primary_admin')
+    .eq('status', 'active')
+    .limit(1);
+  return (data?.length || 0) > 0;
+}
+
+async function getFirmClients(adminId) {
+  try {
+    const { data, error } = await sb.rpc('get_firm_clients', { p_admin_id: adminId });
+    if (error) throw error;
+    return data || [];
+  } catch {
+    // Fallback: get entities where user is primary_admin
+    const { data } = await sb.from('entity_members')
+      .select('entity_id, assigned_staff_id, assigned_staff_name, entities(id,name,type,pan,gstin,tan,email_reminders,registrations(*))')
+      .eq('user_id', adminId)
+      .eq('firm_role', 'primary_admin')
+      .eq('status', 'active');
+    return (data || []).map(m => ({
+      entity_id: m.entity_id,
+      entity_name: m.entities?.name,
+      entity_type: m.entities?.type,
+      pan: m.entities?.pan,
+      gstin: m.entities?.gstin,
+      tan: m.entities?.tan,
+      staff_id: m.assigned_staff_id,
+      staff_name: m.assigned_staff_name,
+      ...m.entities?.registrations,
+    }));
+  }
+}
+
+async function getFirmStaff(adminUserId) {
+  // Get all users who are staff in any entity this admin manages
+  const { data } = await sb.from('entity_members')
+    .select('user_id, profiles(name), entity_id')
+    .eq('firm_role', 'staff')
+    .eq('status', 'active');
+  // Filter to staff in entities this admin manages
+  const myEntities = await getMyEntities(adminUserId);
+  const myEntityIds = myEntities.map(e => e.id);
+  const staff = [];
+  const seen = new Set();
+  (data || []).forEach(m => {
+    if (myEntityIds.includes(m.entity_id) && !seen.has(m.user_id)) {
+      seen.add(m.user_id);
+      staff.push({ id: m.user_id, name: m.profiles?.name || 'Unknown' });
+    }
+  });
+  return staff;
+}
+
+async function updateClientCompliances(entityId, comps) {
+  const { error } = await sb.from('registrations').update({
+    gst:             comps.gst,
+    income_tax:      true,
+    tds:             comps.tds,
+    pf:              comps.pf,
+    esic:            comps.esic,
+    roc:             comps.roc,
+    professional_tax:comps.pt || false,
+    gst_regular:     comps.gst_regular,
+    gst_qrmp:        comps.gst_qrmp,
+    gst_composition: comps.gst_composition,
+    gst_gstr7:       comps.gst_gstr7 || false,
+    gst_gstr8:       comps.gst_gstr8 || false,
+    gst_gstr9:       comps.gst_gstr9 || false,
+    tds_general:     comps.tds_general,
+    tds_salary:      comps.tds_salary,
+    tcs_collection:  comps.tcs_collection || false,
+    tds_returns:     comps.tds_returns,
+    tds_form16:      comps.tds_form16,
+  }).eq('entity_id', entityId);
+  return error;
+}
+
+async function assignStaffToClient(entityId, staffId, staffName) {
+  const { error } = await sb.from('entity_members')
+    .update({ assigned_staff_id: staffId, assigned_staff_name: staffName })
+    .eq('entity_id', entityId)
+    .in('firm_role', ['primary_admin','owner']);
+  return error;
+}
+
+async function deleteClientEntity(entityId, adminUserId) {
+  // Only primary_admin can delete
+  const role = await getMyFirmRole(adminUserId, entityId);
+  if (!['primary_admin','owner'].includes(role)) throw new Error('Not authorised');
+  // Delete cascades to entity_members, registrations, filings
+  const { error } = await sb.from('entities').delete().eq('id', entityId);
+  return error;
+}
+
+async function inviteStaffMember(entityIds, email, adminUserId, adminName) {
+  // Add staff to multiple entities
+  const errors = [];
+  for (const entityId of entityIds) {
+    const { error } = await sb.from('entity_members').upsert({
+      entity_id:    entityId,
+      invited_email:email,
+      firm_role:    'staff',
+      role:         'professional',
+      status:       'pending',
+      invited_by:   adminUserId,
+    }, { onConflict: 'entity_id,invited_email' });
+    if (error) errors.push(error.message);
+  }
+  // Send invitation email
+  await sb.auth.signInWithOtp({
+    email,
+    options: {
+      shouldCreateUser: true,
+      data: { role: 'professional', invited_by: adminName }
+    }
+  });
+  return errors;
+}
