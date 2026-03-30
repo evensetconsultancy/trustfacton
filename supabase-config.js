@@ -4,8 +4,8 @@
    Supabase Dashboard → Settings → API
    ========================================= */
 
-const SUPABASE_URL      = 'https://jmolgvabcfbmsctldpcr.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_ITdqqr6Yczf2d6c_fuNcmw_065lWBcj';
+const SUPABASE_URL      = 'https://YOUR_PROJECT.supabase.co';
+const SUPABASE_ANON_KEY = 'YOUR_ANON_KEY_HERE';
 
 // Supabase JS v2 loaded via CDN in each HTML file
 // This file just exports the client
@@ -44,7 +44,9 @@ async function getMyEntities(userId) {
     `)
     .eq('user_id', userId)
     .eq('status', 'active');
-  return (data || []).map(m => ({ ...m.entities, my_role: m.role }));
+  return (data || [])
+    .filter(m => m.entities && m.entities.id)   // skip orphan rows
+    .map(m => ({ ...m.entities, my_role: m.role }));
 }
 
 async function getEntityFilings(entityId) {
@@ -409,6 +411,7 @@ async function upsertSiteContent(page, sectionKey, title, structured, freeText, 
   }, { onConflict: 'page,section_key' });
   return error;
 }
+
 // ── Firm / role helpers ───────────────────────────────
 
 async function getMyFirmRole(userId, entityId) {

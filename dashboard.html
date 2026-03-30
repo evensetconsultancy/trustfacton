@@ -630,7 +630,22 @@ const MONTHS = ['','January','February','March','April','May','June',
   entities = await getMyEntities(currentUser.id);
 
   if (!entities.length) {
-    // No entity yet — send to profile setup
+    // No entity yet
+    // If professional role → still show dashboard (they manage client entities)
+    if (currentProfile?.role === 'professional') {
+      // Show empty dashboard with prompt to add clients via firm dashboard
+      renderEntitySwitcher();
+      showWelcome();
+      document.getElementById('filingBody').innerHTML =
+        `<tr><td colspan="6" style="text-align:center;padding:36px;color:var(--gray-4)">
+          <div style="font-size:1.5rem;margin-bottom:8px">🏢</div>
+          <div style="font-size:.9rem;font-weight:600;color:var(--black);margin-bottom:6px">No clients yet</div>
+          <div style="font-size:.82rem;margin-bottom:14px">Add clients via your Firm Dashboard to start tracking their compliance.</div>
+          <a href="firm-dashboard.html" style="background:var(--navy);color:white;padding:9px 20px;border-radius:8px;font-size:.83rem;font-weight:600;text-decoration:none">Open Firm Dashboard →</a>
+        </td></tr>`;
+      return;
+    }
+    // Non-professional with no entity → profile setup
     window.location.href = 'profile-setup.html';
     return;
   }
@@ -689,7 +704,7 @@ function showWelcome() {
   const name = currentProfile?.name?.split(' ')[0] || '';
   document.getElementById('welcomeMsg').textContent = `${greet}${name ? ', ' + name : ''}!`;
   document.getElementById('welcomeSub').textContent =
-    `${activeEntity.name} · ${activeEntity.type} · Compliance dashboard`;
+    `${activeEntity?.name || ''} · ${activeEntity?.type || ''} · Compliance dashboard`;
   document.getElementById('dbWelcome').style.display = 'flex';
 
   // Show All Clients tab + Firm Dashboard btn for primary admins
@@ -707,8 +722,8 @@ function showWelcome() {
 
 // ── Entity switcher ───────────────────────────────────
 function renderEntitySwitcher() {
-  document.getElementById('currentEntityName').textContent = activeEntity.name;
-  document.getElementById('currentEntityType').textContent = activeEntity.type;
+  document.getElementById('currentEntityName').textContent = activeEntity?.name || 'My Entity';
+  document.getElementById('currentEntityType').textContent = activeEntity?.type || '';
 
   const list = document.getElementById('entityList');
   list.innerHTML = entities.map(e => `
@@ -739,6 +754,10 @@ async function switchEntity(id) {
 // ── Load entity data ──────────────────────────────────
 async function loadEntityData() {
   try {
+    if (!activeEntity || !activeEntity.id) {
+      console.error('loadEntityData: no active entity');
+      return;
+    }
     const reg = activeEntity.registrations || {};
 
     // Load admin-pushed extensions
