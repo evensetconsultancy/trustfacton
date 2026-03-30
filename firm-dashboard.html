@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Firm Dashboard — TrustFactON</title>
+<link rel="stylesheet" href="style.css">
+<style>
+body{background:var(--gray-1);min-height:100vh;}
+
+/* Header */
+.fh{background:var(--navy);position:sticky;top:0;z-index:200;box-shadow:0 2px 12px rgba(0,0,0,.2);}
+.fh-inner{display:flex;align-items:center;gap:12px;height:54px;}
+.fh-logo{display:flex;align-items:center;gap:8px;text-decoration:none;}
+.fh-logo img{width:30px;height:30px;object-fit:contain;mix-blend-mode:screen;}
+.fh-logo span{font-family:'Playfair Display',Georgia,serif;font-size:1.05rem;color:white;}
+.fh-logo .accent{color:#60A5FA;}
+.fh-badge{background:rgba(96,165,250,.2);border:1px solid rgba(96,165,250,.3);color:#93C5FD;font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:10px;}
+.fh-right{margin-left:auto;display:flex;gap:8px;}
+.fh-btn{padding:5px 13px;border-radius:7px;font-size:.77rem;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.75);background:transparent;text-decoration:none;transition:all .15s;}
+.fh-btn:hover{background:rgba(255,255,255,.1);color:white;}
+.fh-btn.green{background:#16A34A;color:white;border-color:#16A34A;}
+
+/* Body */
+.fb{max-width:1100px;margin:0 auto;padding:24px 20px 56px;}
+
+/* Tabs */
+.firm-tabs{display:flex;gap:2px;border-bottom:2px solid var(--gray-3);margin-bottom:22px;}
+.firm-tab{padding:9px 18px;font-size:.83rem;font-weight:500;color:var(--gray-5);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;background:none;border-top:none;border-left:none;border-right:none;font-family:'Inter',sans-serif;transition:all .15s;}
+.firm-tab.active{color:var(--navy);border-bottom-color:var(--navy);font-weight:600;}
+.firm-tab:hover{color:var(--navy);}
+
+/* Stats */
+.firm-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px;}
+.fs-card{background:white;border:1px solid var(--gray-3);border-radius:10px;padding:16px 18px;}
+.fs-card .sv{font-size:1.8rem;font-weight:700;font-family:'Playfair Display',Georgia,serif;line-height:1;}
+.fs-card .sl{font-size:.74rem;color:var(--gray-5);margin-top:4px;}
+
+/* Client table */
+.firm-card{background:white;border:1px solid var(--gray-3);border-radius:12px;overflow:hidden;margin-bottom:16px;}
+.firm-card-head{padding:14px 18px;border-bottom:1px solid var(--gray-2);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.firm-card-head h3{font-size:.92rem;font-weight:700;color:var(--black);}
+.firm-card-head p{font-size:.75rem;color:var(--gray-5);margin-top:2px;}
+
+/* Search + filter bar */
+.search-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.search-bar input{padding:7px 12px;border:1.5px solid var(--gray-3);border-radius:8px;font-size:.82rem;font-family:'Inter',sans-serif;width:220px;}
+.search-bar input:focus{outline:none;border-color:var(--blue);}
+.search-bar select{padding:7px 10px;border:1.5px solid var(--gray-3);border-radius:8px;font-size:.81rem;font-family:'Inter',sans-serif;}
+
+/* Table */
+.firm-table{width:100%;border-collapse:collapse;font-size:.79rem;}
+.firm-table thead th{background:var(--navy);color:white;padding:9px 12px;text-align:left;font-weight:600;font-size:.73rem;white-space:nowrap;}
+.firm-table tbody td{padding:10px 12px;border-bottom:1px solid var(--gray-2);vertical-align:middle;}
+.firm-table tbody tr:last-child td{border-bottom:none;}
+.firm-table tbody tr:hover td{background:var(--gray-1);}
+
+/* Compliance toggles */
+.comp-toggles{display:flex;gap:4px;flex-wrap:wrap;}
+.ct{padding:2px 7px;border-radius:4px;font-size:.67rem;font-weight:700;cursor:pointer;border:1.5px solid;transition:all .12s;font-family:'Inter',sans-serif;}
+.ct.on{color:white;}
+.ct.off{background:white;opacity:.5;}
+.ct-gst.on{background:#16A34A;border-color:#16A34A;}
+.ct-gst.off{color:#16A34A;border-color:#16A34A;}
+.ct-tds.on{background:#D97706;border-color:#D97706;}
+.ct-tds.off{color:#D97706;border-color:#D97706;}
+.ct-roc.on{background:#DC2626;border-color:#DC2626;}
+.ct-roc.off{color:#DC2626;border-color:#DC2626;}
+.ct-pf.on{background:#7C3AED;border-color:#7C3AED;}
+.ct-pf.off{color:#7C3AED;border-color:#7C3AED;}
+.ct-esic.on{background:#0891B2;border-color:#0891B2;}
+.ct-esic.off{color:#0891B2;border-color:#0891B2;}
+.ct-it{background:#2563EB;border-color:#2563EB;color:white;cursor:default;}
+
+/* Action buttons */
+.ab{padding:4px 10px;border-radius:6px;font-size:.72rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;border:none;transition:all .15s;white-space:nowrap;}
+.ab-blue{background:#EFF6FF;color:#1D4ED8;}
+.ab-blue:hover{background:#DBEAFE;}
+.ab-red{background:#FEF2F2;color:#DC2626;}
+.ab-red:hover{background:#FEE2E2;}
+.ab-green{background:#F0FDF4;color:#16A34A;}
+.ab-green:hover{background:#DCFCE7;}
+
+/* Staff badge */
+.staff-badge{padding:2px 8px;border-radius:10px;font-size:.68rem;font-weight:600;background:#EFF6FF;color:#1D4ED8;cursor:pointer;border:1px solid #BFDBFE;}
+.staff-badge:hover{background:#DBEAFE;}
+.unassigned{color:var(--gray-4);font-size:.74rem;cursor:pointer;}
+.unassigned:hover{color:var(--blue);}
+
+/* Staff tab */
+.staff-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:4px;}
+.staff-card{background:white;border:1px solid var(--gray-3);border-radius:10px;padding:16px;}
+.staff-card .sname{font-size:.9rem;font-weight:700;color:var(--black);margin-bottom:2px;}
+.staff-card .semail{font-size:.76rem;color:var(--gray-5);margin-bottom:10px;}
+.staff-card .sclients{font-size:.76rem;color:var(--blue);font-weight:600;}
+
+/* Modals */
+.modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.5);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.open{display:flex;}
+.modal{background:white;border-radius:14px;padding:24px;max-width:460px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.15);}
+.modal h3{font-size:1rem;color:var(--black);margin-bottom:5px;}
+.modal p{font-size:.82rem;color:var(--gray-5);margin-bottom:16px;}
+.mf{margin-bottom:12px;}
+.mf label{display:block;font-size:.77rem;font-weight:600;color:var(--gray-6);margin-bottom:4px;}
+.mf input,.mf select,.mf textarea{width:100%;padding:8px 11px;border:1.5px solid var(--gray-3);border-radius:8px;font-size:.84rem;font-family:'Inter',sans-serif;box-sizing:border-box;}
+.mf input:focus,.mf select:focus{outline:none;border-color:var(--blue);}
+.m-btns{display:flex;gap:8px;margin-top:14px;}
+.m-sub{flex:1;padding:10px;background:var(--navy);color:white;border:none;border-radius:8px;font-size:.87rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;}
+.m-can{padding:10px 16px;background:white;color:var(--gray-6);border:1.5px solid var(--gray-3);border-radius:8px;font-size:.87rem;cursor:pointer;font-family:'Inter',sans-serif;}
+
+/* Compliance modal grid */
+.comp-modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;}
+.cmt{border:1.5px solid var(--gray-3);border-radius:8px;padding:9px 11px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all .12s;}
+.cmt:hover{border-color:var(--blue);}
+.cmt.on{border-color:var(--navy);background:#EFF4FF;}
+.cmt.locked{opacity:.6;cursor:default;background:var(--gray-1);}
+.cmt input{width:13px;height:13px;}
+.cmt strong{font-size:.79rem;display:block;color:var(--black);}
+.cmt span{font-size:.67rem;color:var(--gray-5);}
+
+/* Toast */
+.toast{position:fixed;bottom:20px;right:20px;background:var(--black);color:white;padding:10px 18px;border-radius:8px;font-size:.83rem;z-index:9999;transform:translateY(60px);opacity:0;transition:all .25s;}
+.toast.show{transform:translateY(0);opacity:1;}
+
+@media(max-width:900px){.firm-stats{grid-template-columns:1fr 1fr;}}
+@media(max-width:600px){.firm-stats{grid-template-columns:1fr 1fr;}.firm-table thead th:nth-child(4),.firm-table tbody td:nth-child(4){display:none;}}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="fh">
+  <div class="container">
+    <div class="fh-inner">
+      <a href="dashboard.html" class="fh-logo">
+        <img src="logo.png" alt="">
+        <span>Trust<span class="accent">Fact</span>ON</span>
+      </a>
+      <span class="fh-badge">Primary Admin</span>
+      <div class="fh-right">
+        <a href="dashboard.html" class="fh-btn green">← My Dashboard</a>
+        <a href="bulk-upload.html" class="fh-btn">📤 Bulk Upload</a>
+        <button class="fh-btn" onclick="doLogout()">Logout</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="fb">
+
+  <!-- Stats -->
+  <div class="firm-stats">
+    <div class="fs-card"><div class="sv sv-blue" id="fs-clients">—</div><div class="sl">Total clients</div></div>
+    <div class="fs-card"><div class="sv sv-red"  id="fs-overdue">—</div><div class="sl">Overdue across all</div></div>
+    <div class="fs-card"><div class="sv sv-amber" id="fs-staff">—</div><div class="sl">Staff members</div></div>
+    <div class="fs-card"><div class="sv sv-green" id="fs-done">—</div><div class="sl">Filings done this month</div></div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="firm-tabs">
+    <button class="firm-tab active" onclick="switchTab('clients',this)">👥 Clients</button>
+    <button class="firm-tab"        onclick="switchTab('staff',this)">🧑‍💼 Staff</button>
+    <button class="firm-tab"        onclick="switchTab('invites',this)">📩 Pending Invites</button>
+  </div>
+
+  <!-- ── Clients tab ── -->
+  <div id="tab-clients">
+    <div class="firm-card">
+      <div class="firm-card-head">
+        <div><h3>All Clients</h3><p>Click a toggle to enable/disable compliance. Click name to open dashboard.</p></div>
+        <div class="search-bar">
+          <input type="text" id="clientSearch" placeholder="Search by name or PAN…" oninput="filterClients()">
+          <select id="staffFilter" onchange="filterClients()">
+            <option value="">All staff</option>
+          </select>
+          <button class="ab ab-green" onclick="openAddClient()">+ Add Client</button>
+        </div>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="firm-table">
+          <thead>
+            <tr>
+              <th>Client</th>
+              <th>PAN</th>
+              <th>Compliances</th>
+              <th>Assigned Staff</th>
+              <th>Client Access</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="clientTableBody">
+            <tr><td colspan="6" style="text-align:center;padding:28px;color:var(--gray-4)">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Staff tab ── -->
+  <div id="tab-staff" style="display:none">
+    <div class="firm-card">
+      <div class="firm-card-head">
+        <div><h3>Staff Members</h3><p>Staff can only see clients assigned to them</p></div>
+        <button class="ab ab-green" onclick="openInviteStaff()">+ Invite Staff</button>
+      </div>
+      <div class="firm-card-body" style="padding:16px">
+        <div class="staff-grid" id="staffGrid">
+          <div style="color:var(--gray-4);font-size:.84rem">Loading…</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Invites tab ── -->
+  <div id="tab-invites" style="display:none">
+    <div class="firm-card">
+      <div class="firm-card-head">
+        <div><h3>Pending Invitations</h3><p>Clients and staff who haven't accepted yet</p></div>
+        <button class="ab ab-blue" onclick="loadPendingInvites()">↺ Refresh</button>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="firm-table">
+          <thead><tr><th>Email</th><th>Role</th><th>Entity</th><th>Invited</th><th>Action</th></tr></thead>
+          <tbody id="inviteBody">
+            <tr><td colspan="5" style="text-align:center;padding:28px;color:var(--gray-4)">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /fb -->
+
+<!-- Add Client Modal -->
+<div class="modal-overlay" id="addClientModal">
+  <div class="modal">
+    <h3>Add New Client</h3>
+    <p>Enter basic details. You can configure compliances after adding.</p>
+    <div class="mf"><label>Client name *</label><input type="text" id="ac-name"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div class="mf">
+        <label>Entity type *</label>
+        <select id="ac-type">
+          <option value="">— Select —</option>
+          <option value="Individual">Individual</option>
+          <option value="Proprietor">Proprietor</option>
+          <option value="Partnership">Partnership</option>
+          <option value="LLP">LLP</option>
+          <option value="OPC">OPC</option>
+          <option value="Private Limited">Private Limited</option>
+        </select>
+      </div>
+      <div class="mf"><label>PAN *</label><input type="text" id="ac-pan" maxlength="10" oninput="this.value=this.value.toUpperCase()"></div>
+      <div class="mf"><label>GSTIN</label><input type="text" id="ac-gstin" maxlength="15" oninput="this.value=this.value.toUpperCase()"></div>
+      <div class="mf"><label>TAN</label><input type="text" id="ac-tan" maxlength="10" oninput="this.value=this.value.toUpperCase()"></div>
+    </div>
+    <div class="mf"><label>CIN / LLPIN</label><input type="text" id="ac-cin" oninput="this.value=this.value.toUpperCase()"></div>
+    <div class="mf"><label>Reminder email</label><input type="email" id="ac-email" placeholder="client@example.com"></div>
+    <div class="mf"><label>Client portal invite email <span style="font-weight:400;color:var(--gray-4);font-size:.7rem">(optional — sends invitation)</span></label>
+      <input type="email" id="ac-invite" placeholder="client@example.com"></div>
+    <div class="m-btns">
+      <button class="m-can" onclick="document.getElementById('addClientModal').classList.remove('open')">Cancel</button>
+      <button class="m-sub" onclick="saveNewClient()">Add Client →</button>
+    </div>
+  </div>
+</div>
+
+<!-- Compliance Modal -->
+<div class="modal-overlay" id="compModal">
+  <div class="modal" style="max-width:500px">
+    <h3>Edit Compliances</h3>
+    <p id="compModalClient" style="font-weight:600;color:var(--black)"></p>
+    <input type="hidden" id="compEntityId">
+
+    <!-- Income Tax always on -->
+    <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:8px;padding:9px 12px;margin-bottom:10px;font-size:.79rem;color:#166534;font-weight:600">
+      📊 Income Tax — Always tracked (PAN mandatory)
+    </div>
+
+    <!-- GST -->
+    <div style="margin-bottom:10px">
+      <div style="font-size:.75rem;font-weight:700;color:var(--gray-5);margin-bottom:5px;text-transform:uppercase;letter-spacing:.4px">GST</div>
+      <div class="comp-modal-grid">
+        <div class="cmt" id="cmt-gst_regular" onclick="cmToggleMutual('gst','gst_regular',this)">
+          <input type="checkbox" id="cmcb-gst_regular">
+          <div><strong>Regular monthly</strong><span>GSTR-1 + GSTR-3B</span></div>
+        </div>
+        <div class="cmt" id="cmt-gst_qrmp" onclick="cmToggleMutual('gst','gst_qrmp',this)">
+          <input type="checkbox" id="cmcb-gst_qrmp">
+          <div><strong>QRMP quarterly</strong><span>≤ ₹5 Cr turnover</span></div>
+        </div>
+        <div class="cmt" id="cmt-gst_composition" onclick="cmToggleMutual('gst','gst_composition',this)">
+          <input type="checkbox" id="cmcb-gst_composition">
+          <div><strong>Composition</strong><span>CMP-08, GSTR-4</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TDS -->
+    <div style="margin-bottom:10px">
+      <div style="font-size:.75rem;font-weight:700;color:var(--gray-5);margin-bottom:5px;text-transform:uppercase;letter-spacing:.4px">TDS / TCS</div>
+      <div class="comp-modal-grid">
+        <div class="cmt" id="cmt-tds_general" onclick="cmToggle('tds_general',this)">
+          <input type="checkbox" id="cmcb-tds_general">
+          <div><strong>TDS Deposit</strong><span>194C / 194J etc</span></div>
+        </div>
+        <div class="cmt" id="cmt-tds_salary" onclick="cmToggle('tds_salary',this)">
+          <input type="checkbox" id="cmcb-tds_salary">
+          <div><strong>TDS on Salary</strong><span>Section 192</span></div>
+        </div>
+        <div class="cmt" id="cmt-tds_returns" onclick="cmToggle('tds_returns',this)">
+          <input type="checkbox" id="cmcb-tds_returns">
+          <div><strong>TDS Returns</strong><span>24Q / 26Q</span></div>
+        </div>
+        <div class="cmt" id="cmt-tds_form16" onclick="cmToggle('tds_form16',this)">
+          <input type="checkbox" id="cmcb-tds_form16">
+          <div><strong>Form 16 / 16A</strong><span>TDS certificate</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Other -->
+    <div style="margin-bottom:10px">
+      <div style="font-size:.75rem;font-weight:700;color:var(--gray-5);margin-bottom:5px;text-transform:uppercase;letter-spacing:.4px">Other</div>
+      <div class="comp-modal-grid">
+        <div class="cmt" id="cmt-pf" onclick="cmToggle('pf',this)">
+          <input type="checkbox" id="cmcb-pf">
+          <div><strong>PF / EPF</strong><span>Monthly contributions</span></div>
+        </div>
+        <div class="cmt" id="cmt-esic" onclick="cmToggle('esic',this)">
+          <input type="checkbox" id="cmcb-esic">
+          <div><strong>ESIC</strong><span>Monthly ESI</span></div>
+        </div>
+        <div class="cmt" id="cmt-roc" onclick="cmToggle('roc',this)">
+          <input type="checkbox" id="cmcb-roc">
+          <div><strong>ROC / MCA</strong><span>AOC-4, MGT-7</span></div>
+        </div>
+        <div class="cmt" id="cmt-pt" onclick="cmToggle('pt',this)">
+          <input type="checkbox" id="cmcb-pt">
+          <div><strong>Professional Tax</strong><span>State PT</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="m-btns">
+      <button class="m-can" onclick="document.getElementById('compModal').classList.remove('open')">Cancel</button>
+      <button class="m-sub" style="background:#16A34A" onclick="saveCompliances()">Save Compliances</button>
+    </div>
+  </div>
+</div>
+
+<!-- Assign Staff Modal -->
+<div class="modal-overlay" id="assignModal">
+  <div class="modal">
+    <h3>Assign Staff</h3>
+    <p id="assignClientName" style="font-weight:600;color:var(--black)"></p>
+    <input type="hidden" id="assignEntityId">
+    <div class="mf">
+      <label>Assign to staff member</label>
+      <select id="assignStaffSelect">
+        <option value="">— Unassigned —</option>
+      </select>
+    </div>
+    <div class="m-btns">
+      <button class="m-can" onclick="document.getElementById('assignModal').classList.remove('open')">Cancel</button>
+      <button class="m-sub" onclick="saveAssignment()">Save Assignment</button>
+    </div>
+  </div>
+</div>
+
+<!-- Invite Staff Modal -->
+<div class="modal-overlay" id="inviteStaffModal">
+  <div class="modal">
+    <h3>Invite Staff Member</h3>
+    <p>They'll receive an email invite. Once accepted, assign clients to them.</p>
+    <div class="mf"><label>Staff email *</label><input type="email" id="is-email" placeholder="staff@example.com"></div>
+    <div class="mf"><label>Their name</label><input type="text" id="is-name" placeholder="Name"></div>
+    <div class="m-btns">
+      <button class="m-can" onclick="document.getElementById('inviteStaffModal').classList.remove('open')">Cancel</button>
+      <button class="m-sub" onclick="sendStaffInvite()">Send Invite →</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirm Modal -->
+<div class="modal-overlay" id="deleteModal">
+  <div class="modal">
+    <h3>Delete Client</h3>
+    <p id="deleteClientName" style="font-weight:600;color:var(--red)"></p>
+    <p>This will permanently delete the entity and all its filing history. This cannot be undone.</p>
+    <input type="hidden" id="deleteEntityId">
+    <div class="m-btns">
+      <button class="m-can" onclick="document.getElementById('deleteModal').classList.remove('open')">Cancel</button>
+      <button class="m-sub" style="background:var(--red)" onclick="confirmDelete()">Delete Permanently</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script>
+let currentUser = null;
+let currentProfile = null;
+let allClients = [];
+let allStaff   = [];
+const cmState  = {};
+
+// ── Init ─────────────────────────────────────────────
+(async () => {
+  const { data:{ session } } = await sb.auth.getSession();
+  if (!session) { window.location.href = 'login.html'; return; }
+  currentUser    = session.user;
+  currentProfile = await getProfile(currentUser.id);
+
+  // Check primary admin
+  const isAdmin = await isPrimaryAdmin(currentUser.id);
+  if (!isAdmin) {
+    // Not a primary admin — redirect to regular dashboard
+    window.location.href = 'dashboard.html';
+    return;
+  }
+
+  await loadAll();
+})();
+
+async function loadAll() {
+  allClients = await getFirmClients(currentUser.id);
+  allStaff   = await getFirmStaff(currentUser.id);
+  renderClientTable(allClients);
+  populateStaffFilter();
+  updateStats();
+}
+
+// ── Stats ─────────────────────────────────────────────
+function updateStats() {
+  document.getElementById('fs-clients').textContent = allClients.length;
+  document.getElementById('fs-staff').textContent   = allStaff.length;
+}
+
+// ── Tab switching ─────────────────────────────────────
+function switchTab(tab, el) {
+  document.querySelectorAll('.firm-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  ['clients','staff','invites'].forEach(t => {
+    document.getElementById('tab-'+t).style.display = t === tab ? 'block' : 'none';
+  });
+  if (tab === 'staff')   renderStaffGrid();
+  if (tab === 'invites') loadPendingInvites();
+}
+
+// ── Client table ──────────────────────────────────────
+function renderClientTable(clients) {
+  const body = document.getElementById('clientTableBody');
+  if (!clients.length) {
+    body.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:36px;color:var(--gray-4)">
+      <div style="font-size:1.5rem;margin-bottom:8px">👥</div>
+      No clients yet. Add one manually or <a href="bulk-upload.html" style="color:var(--blue);font-weight:600">bulk upload →</a>
+    </td></tr>`;
+    return;
+  }
+
+  body.innerHTML = clients.map(c => {
+    const gst  = c.gst_regular || c.gst_qrmp || c.gst_composition || c.gst;
+    const tds  = c.tds_general || c.tds_salary || c.tds || false;
+    const compHtml = `
+      <div class="comp-toggles">
+        <span class="ct ct-it">IT</span>
+        <span class="ct ct-gst ${gst?'on':'off'}" title="${gst?'GST enabled':'GST disabled'}"
+          onclick="quickToggle('${c.entity_id}','gst',${gst},this)">GST</span>
+        <span class="ct ct-tds ${tds?'on':'off'}"
+          onclick="quickToggle('${c.entity_id}','tds',${tds},this)">TDS</span>
+        <span class="ct ct-roc ${c.roc?'on':'off'}"
+          onclick="quickToggle('${c.entity_id}','roc',${c.roc},this)">ROC</span>
+        <span class="ct ct-pf ${c.pf?'on':'off'}"
+          onclick="quickToggle('${c.entity_id}','pf',${c.pf},this)">PF</span>
+        <span class="ct ct-esic ${c.esic?'on':'off'}"
+          onclick="quickToggle('${c.entity_id}','esic',${c.esic},this)">ESIC</span>
+      </div>`;
+
+    const staffHtml = c.staff_name
+      ? `<span class="staff-badge" onclick="openAssign('${c.entity_id}','${c.entity_name?.replace(/'/g,"\\'")}',this)">${c.staff_name}</span>`
+      : `<span class="unassigned" onclick="openAssign('${c.entity_id}','${c.entity_name?.replace(/'/g,"\\'")}',this)">+ Assign staff</span>`;
+
+    const clientHtml = c.client_email
+      ? `<span style="font-size:.72rem;color:${c.client_status==='active'?'#16A34A':'#D97706'};font-weight:600">${c.client_status==='active'?'✓ Active':'⏳ Pending'}</span>`
+      : `<button class="ab ab-blue" style="font-size:.69rem" onclick="inviteClient('${c.entity_id}','${c.entity_name?.replace(/'/g,"\\'")}')">Invite client</button>`;
+
+    return `<tr>
+      <td>
+        <div style="font-weight:700;font-size:.83rem;color:var(--black)">${c.entity_name}</div>
+        <div style="font-size:.71rem;color:var(--gray-5)">${c.entity_type}</div>
+      </td>
+      <td style="font-family:monospace;font-size:.79rem;color:var(--navy)">${c.pan||'—'}</td>
+      <td>
+        ${compHtml}
+        <button class="ab ab-blue" style="font-size:.67rem;margin-top:4px" onclick="openCompModal('${c.entity_id}','${c.entity_name?.replace(/'/g,"\\'")}')">Edit →</button>
+      </td>
+      <td>${staffHtml}</td>
+      <td>${clientHtml}</td>
+      <td style="display:flex;gap:4px;flex-wrap:wrap">
+        <a href="dashboard.html" class="ab ab-blue" onclick="sessionStorage.setItem('openEntity','${c.entity_id}')">Open</a>
+        <button class="ab ab-red" onclick="openDelete('${c.entity_id}','${c.entity_name?.replace(/'/g,"\\'")}')">Delete</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function filterClients() {
+  const q     = document.getElementById('clientSearch').value.toLowerCase();
+  const staff = document.getElementById('staffFilter').value;
+  const filtered = allClients.filter(c => {
+    const matchQ = !q || c.entity_name?.toLowerCase().includes(q) || c.pan?.toLowerCase().includes(q);
+    const matchS = !staff || c.staff_id === staff;
+    return matchQ && matchS;
+  });
+  renderClientTable(filtered);
+}
+
+function populateStaffFilter() {
+  const sel = document.getElementById('staffFilter');
+  allStaff.forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s.id; opt.textContent = s.name;
+    sel.appendChild(opt);
+  });
+  const asel = document.getElementById('assignStaffSelect');
+  asel.innerHTML = '<option value="">— Unassigned —</option>';
+  allStaff.forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s.id; opt.textContent = s.name;
+    asel.appendChild(opt);
+  });
+}
+
+// ── Quick compliance toggles ──────────────────────────
+async function quickToggle(entityId, key, current, el) {
+  const newVal = !current;
+  el.classList.toggle('on', newVal);
+  el.classList.toggle('off', !newVal);
+
+  // Get full current registrations
+  const { data: reg } = await sb.from('registrations').select('*').eq('entity_id', entityId).single();
+  if (!reg) return;
+
+  const update = {};
+  if (key === 'gst') {
+    update.gst = newVal;
+    update.gst_regular = newVal;  // default to regular when toggling
+  } else {
+    update[key] = newVal;
+    if (key === 'tds') { update.tds_general = newVal; update.tds_returns = newVal; update.tds_form16 = newVal; }
+  }
+
+  const { error } = await sb.from('registrations').update(update).eq('entity_id', entityId);
+  if (error) { showToast('Error: ' + error.message); return; }
+
+  // Update local data
+  const client = allClients.find(c => c.entity_id === entityId);
+  if (client) Object.assign(client, update);
+  showToast(`✅ ${key.toUpperCase()} ${newVal ? 'enabled' : 'disabled'}`);
+}
+
+// ── Compliance modal ──────────────────────────────────
+function openCompModal(entityId, name) {
+  const c = allClients.find(x => x.entity_id === entityId);
+  if (!c) return;
+  document.getElementById('compEntityId').value = entityId;
+  document.getElementById('compModalClient').textContent = name;
+
+  const keys = ['gst_regular','gst_qrmp','gst_composition','tds_general','tds_salary','tds_returns','tds_form16','pf','esic','roc','pt'];
+  keys.forEach(k => {
+    const stateKey = k === 'pt' ? 'professional_tax' : k;
+    const val = !!c[stateKey] || !!c[k];
+    cmState[k] = val;
+    const el = document.getElementById('cmt-'+k);
+    if (el) el.classList.toggle('on', val);
+    const cb = document.getElementById('cmcb-'+k);
+    if (cb) cb.checked = val;
+  });
+  document.getElementById('compModal').classList.add('open');
+}
+
+function cmToggleMutual(group, key, el) {
+  const groupKeys = { gst: ['gst_regular','gst_qrmp','gst_composition'] };
+  groupKeys[group].forEach(k => {
+    cmState[k] = false;
+    const ct = document.getElementById('cmt-'+k); if (ct) ct.classList.remove('on');
+    const cb = document.getElementById('cmcb-'+k); if (cb) cb.checked = false;
+  });
+  const wasOn = !el.classList.contains('on');
+  cmState[key] = wasOn; el.classList.toggle('on', wasOn);
+  document.getElementById('cmcb-'+key).checked = wasOn;
+}
+
+function cmToggle(key, el) {
+  cmState[key] = !cmState[key];
+  el.classList.toggle('on', cmState[key]);
+  document.getElementById('cmcb-'+key).checked = cmState[key];
+}
+
+async function saveCompliances() {
+  const entityId = document.getElementById('compEntityId').value;
+  const error = await updateClientCompliances(entityId, {
+    gst: cmState.gst_regular || cmState.gst_qrmp || cmState.gst_composition,
+    tds: cmState.tds_general || cmState.tds_salary,
+    pf: cmState.pf, esic: cmState.esic, roc: cmState.roc, pt: cmState.pt,
+    gst_regular: cmState.gst_regular, gst_qrmp: cmState.gst_qrmp,
+    gst_composition: cmState.gst_composition,
+    tds_general: cmState.tds_general, tds_salary: cmState.tds_salary,
+    tds_returns: cmState.tds_returns, tds_form16: cmState.tds_form16,
+    tcs_collection: false,
+  });
+  document.getElementById('compModal').classList.remove('open');
+  if (error) { showToast('Error: ' + error.message); return; }
+  allClients = await getFirmClients(currentUser.id);
+  renderClientTable(allClients);
+  showToast('✅ Compliances updated!');
+}
+
+// ── Staff assignment ──────────────────────────────────
+function openAssign(entityId, name) {
+  document.getElementById('assignEntityId').value = entityId;
+  document.getElementById('assignClientName').textContent = name;
+  const c = allClients.find(x => x.entity_id === entityId);
+  if (c?.staff_id) document.getElementById('assignStaffSelect').value = c.staff_id;
+  document.getElementById('assignModal').classList.add('open');
+}
+
+async function saveAssignment() {
+  const entityId  = document.getElementById('assignEntityId').value;
+  const sel       = document.getElementById('assignStaffSelect');
+  const staffId   = sel.value;
+  const staffName = sel.options[sel.selectedIndex]?.text || '';
+  const error = await assignStaffToClient(entityId, staffId || null, staffName || null);
+  document.getElementById('assignModal').classList.remove('open');
+  if (error) { showToast('Error: ' + error.message); return; }
+  allClients = await getFirmClients(currentUser.id);
+  renderClientTable(allClients);
+  showToast(staffId ? `✅ Assigned to ${staffName}` : '✅ Staff assignment removed');
+}
+
+// ── Add client ────────────────────────────────────────
+function openAddClient() {
+  ['ac-name','ac-pan','ac-gstin','ac-tan','ac-cin','ac-email','ac-invite'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('ac-type').value = '';
+  document.getElementById('addClientModal').classList.add('open');
+}
+
+async function saveNewClient() {
+  const name  = document.getElementById('ac-name').value.trim();
+  const type  = document.getElementById('ac-type').value;
+  const pan   = document.getElementById('ac-pan').value.trim().toUpperCase();
+  const invite= document.getElementById('ac-invite').value.trim();
+
+  if (!name || !type || !pan) { showToast('Name, type and PAN are required.'); return; }
+  if (!/^[A-Z]{5}[0-9]{4}[A-Z]$/.test(pan)) { showToast('PAN format invalid.'); return; }
+
+  const { data: ent, error } = await sb.rpc('create_entity', {
+    p_user_id:   currentUser.id,
+    p_name:      name, p_type: type, p_pan: pan,
+    p_gstin:     document.getElementById('ac-gstin').value.trim().toUpperCase() || null,
+    p_cin_llpin: document.getElementById('ac-cin').value.trim().toUpperCase()   || null,
+    p_tan:       document.getElementById('ac-tan').value.trim().toUpperCase()   || null,
+    p_email:     document.getElementById('ac-email').value.trim() || null,
+    p_gst:false, p_tds:false, p_pf:false, p_esic:false, p_roc:false, p_pt:false,
+  });
+
+  if (error) { showToast('Error: ' + error.message); return; }
+
+  // Update firm_role to primary_admin for this entity
+  await sb.from('entity_members').update({ firm_role: 'primary_admin' })
+    .eq('entity_id', ent).eq('user_id', currentUser.id);
+
+  // Send client invite if email provided
+  if (invite) {
+    await sb.from('entity_members').insert({
+      entity_id: ent, invited_email: invite,
+      firm_role: 'client', role: 'client',
+      status: 'pending', invited_by: currentUser.id,
+    });
+    await sb.auth.signInWithOtp({ email: invite, options: { shouldCreateUser: true } });
+  }
+
+  document.getElementById('addClientModal').classList.remove('open');
+  allClients = await getFirmClients(currentUser.id);
+  renderClientTable(allClients);
+  updateStats();
+  showToast('✅ Client added!' + (invite ? ' Invitation sent.' : ''));
+}
+
+// ── Client invite ─────────────────────────────────────
+async function inviteClient(entityId, name) {
+  const email = prompt(`Enter client email to invite for ${name}:`);
+  if (!email) return;
+  const { error } = await sb.from('entity_members').insert({
+    entity_id: entityId, invited_email: email,
+    firm_role: 'client', role: 'client',
+    status: 'pending', invited_by: currentUser.id,
+  });
+  if (error && !error.message.includes('unique')) { showToast('Error: ' + error.message); return; }
+  await sb.auth.signInWithOtp({ email, options: { shouldCreateUser: true } });
+  allClients = await getFirmClients(currentUser.id);
+  renderClientTable(allClients);
+  showToast('✅ Invitation sent to ' + email);
+}
+
+// ── Delete ────────────────────────────────────────────
+function openDelete(entityId, name) {
+  document.getElementById('deleteEntityId').value = entityId;
+  document.getElementById('deleteClientName').textContent = name;
+  document.getElementById('deleteModal').classList.add('open');
+}
+
+async function confirmDelete() {
+  const entityId = document.getElementById('deleteEntityId').value;
+  const error = await deleteClientEntity(entityId, currentUser.id);
+  document.getElementById('deleteModal').classList.remove('open');
+  if (error) { showToast('Error: ' + error.message); return; }
+  allClients = allClients.filter(c => c.entity_id !== entityId);
+  renderClientTable(allClients);
+  updateStats();
+  showToast('Client deleted.');
+}
+
+// ── Staff ─────────────────────────────────────────────
+function renderStaffGrid() {
+  const grid = document.getElementById('staffGrid');
+  if (!allStaff.length) {
+    grid.innerHTML = `<div style="color:var(--gray-4);font-size:.84rem;grid-column:1/-1;text-align:center;padding:24px">
+      No staff yet. <button class="ab ab-green" onclick="openInviteStaff()" style="margin-left:8px">+ Invite Staff</button>
+    </div>`;
+    return;
+  }
+  grid.innerHTML = allStaff.map(s => {
+    const assigned = allClients.filter(c => c.staff_id === s.id).length;
+    return `<div class="staff-card">
+      <div class="sname">${s.name}</div>
+      <div class="semail" style="font-size:.72rem;color:var(--gray-5)">${s.id.slice(0,8)}…</div>
+      <div class="sclients">${assigned} client${assigned===1?'':'s'} assigned</div>
+    </div>`;
+  }).join('');
+}
+
+function openInviteStaff() {
+  document.getElementById('is-email').value = '';
+  document.getElementById('is-name').value  = '';
+  document.getElementById('inviteStaffModal').classList.add('open');
+}
+
+async function sendStaffInvite() {
+  const email = document.getElementById('is-email').value.trim();
+  if (!email) { showToast('Please enter an email.'); return; }
+  const myEntityIds = allClients.map(c => c.entity_id);
+  const errors = await inviteStaffMember(myEntityIds, email, currentUser.id, currentProfile?.name || '');
+  document.getElementById('inviteStaffModal').classList.remove('open');
+  if (errors.length) { showToast('Some errors: ' + errors[0]); return; }
+  showToast('✅ Staff invitation sent!');
+}
+
+// ── Pending invites ───────────────────────────────────
+async function loadPendingInvites() {
+  const { data } = await sb.from('entity_members')
+    .select('*, entities(name)')
+    .eq('status', 'pending')
+    .in('entity_id', allClients.map(c => c.entity_id));
+  const body = document.getElementById('inviteBody');
+  if (!data?.length) {
+    body.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--gray-4)">No pending invites</td></tr>`;
+    return;
+  }
+  body.innerHTML = data.map(m => `<tr>
+    <td style="font-size:.82rem">${m.invited_email||'—'}</td>
+    <td><span style="font-size:.72rem;font-weight:700;background:#EFF6FF;color:#1E40AF;padding:2px 7px;border-radius:4px">${m.firm_role||m.role}</span></td>
+    <td style="font-size:.79rem;color:var(--gray-5)">${m.entities?.name||'—'}</td>
+    <td style="font-size:.74rem;color:var(--gray-5)">${new Date(m.created_at).toLocaleDateString('en-IN')}</td>
+    <td>
+      <button class="ab ab-blue" onclick="resendInvite('${m.invited_email}')">Resend</button>
+      <button class="ab ab-red" style="margin-left:4px" onclick="cancelInvite('${m.id}')">Cancel</button>
+    </td>
+  </tr>`).join('');
+}
+
+async function resendInvite(email) {
+  await sb.auth.signInWithOtp({ email, options: { shouldCreateUser: true } });
+  showToast('✅ Invite resent to ' + email);
+}
+
+async function cancelInvite(id) {
+  await sb.from('entity_members').delete().eq('id', id);
+  loadPendingInvites();
+  showToast('Invite cancelled.');
+}
+
+async function doLogout() { await sb.auth.signOut(); window.location.href = 'index.html'; }
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>

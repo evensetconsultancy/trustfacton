@@ -191,6 +191,7 @@ body { background: var(--gray-1); min-height: 100vh; }
       </div>
 
       <div class="db-nav-right">
+        <a href="firm-dashboard.html" class="db-nav-btn" id="firmDashBtn" style="display:none;background:#7C3AED;color:white;border-color:#7C3AED">🏢 Firm</a>
         <button class="db-nav-btn" onclick="window.location.href='settings.html'">⚙ Settings</button>
         <button class="db-nav-btn" onclick="doLogout()">Logout</button>
       </div>
@@ -679,10 +680,17 @@ function showWelcome() {
     `${activeEntity.name} · ${activeEntity.type} · Compliance dashboard`;
   document.getElementById('dbWelcome').style.display = 'flex';
 
-  // Show All Clients tab for professionals
+  // Show All Clients tab + Firm Dashboard btn for primary admins
   const isProf = currentProfile?.role === 'professional' || entities.length > 2;
   const tab = document.getElementById('allClientsTab');
   if (tab) tab.style.display = isProf ? 'block' : 'none';
+
+  // Show firm dashboard button for primary admins
+  try {
+    const isPA = await isPrimaryAdmin(currentUser.id);
+    const firmBtn = document.getElementById('firmDashBtn');
+    if (firmBtn && isPA) firmBtn.style.display = 'inline-flex';
+  } catch {}
 }
 
 // ── Entity switcher ───────────────────────────────────

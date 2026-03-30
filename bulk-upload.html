@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bulk Upload — TrustFactON</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<style>
+body{background:var(--gray-1);min-height:100vh;}
+.bh{background:var(--navy);position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.2);}
+.bh-inner{display:flex;align-items:center;gap:12px;height:54px;}
+.bh-logo{display:flex;align-items:center;gap:8px;text-decoration:none;}
+.bh-logo img{width:30px;height:30px;object-fit:contain;mix-blend-mode:screen;}
+.bh-logo span{font-family:'Playfair Display',Georgia,serif;font-size:1.05rem;color:white;}
+.bh-logo .accent{color:#60A5FA;}
+.bh-right{margin-left:auto;display:flex;gap:8px;}
+.bh-btn{padding:5px 12px;border-radius:7px;font-size:.77rem;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.75);background:transparent;text-decoration:none;}
+.bh-btn:hover{background:rgba(255,255,255,.1);}
+.bh-btn.green{background:#16A34A;color:white;border-color:#16A34A;}
+
+.bb{max-width:900px;margin:0 auto;padding:28px 20px 56px;}
+
+/* Steps */
+.up-steps{display:flex;align-items:center;gap:0;margin-bottom:28px;}
+.us{display:flex;align-items:center;gap:8px;font-size:.8rem;font-weight:500;color:var(--gray-4);}
+.us.active{color:var(--navy);}
+.us.done{color:var(--green);}
+.us-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.74rem;font-weight:700;background:var(--gray-3);color:var(--gray-5);flex-shrink:0;}
+.us.active .us-num{background:var(--navy);color:white;}
+.us.done .us-num{background:var(--green);color:white;}
+.us-line{flex:1;height:2px;background:var(--gray-3);margin:0 8px;}
+.us-line.done{background:var(--green);}
+
+/* Cards */
+.up-card{background:white;border:1px solid var(--gray-3);border-radius:12px;padding:24px;margin-bottom:16px;}
+.up-card h2{font-size:1rem;color:var(--black);margin-bottom:6px;}
+.up-card p{font-size:.83rem;color:var(--gray-5);line-height:1.6;}
+
+/* Drop zone */
+.drop-zone{border:2.5px dashed var(--gray-3);border-radius:12px;padding:40px 20px;text-align:center;cursor:pointer;transition:all .2s;background:var(--gray-1);}
+.drop-zone:hover,.drop-zone.drag{border-color:var(--blue);background:#EFF6FF;}
+.drop-zone .dz-icon{font-size:2.5rem;margin-bottom:12px;}
+.drop-zone h3{font-size:.95rem;color:var(--black);margin-bottom:4px;}
+.drop-zone p{font-size:.8rem;color:var(--gray-5);}
+.drop-zone input{display:none;}
+.browse-btn{display:inline-block;margin-top:12px;padding:8px 20px;background:var(--navy);color:white;border-radius:8px;font-size:.82rem;font-weight:600;cursor:pointer;}
+
+/* Template download */
+.template-card{background:#F0FDF4;border:1px solid #BBF7D0;border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+.template-card h4{font-size:.85rem;font-weight:700;color:#166534;margin-bottom:2px;}
+.template-card p{font-size:.76rem;color:#166534;opacity:.8;}
+.dl-btn{padding:7px 16px;background:#16A34A;color:white;border:none;border-radius:8px;font-size:.8rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;}
+
+/* Preview table */
+.prev-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--gray-3);}
+.prev-table{width:100%;border-collapse:collapse;font-size:.76rem;}
+.prev-table thead th{background:var(--navy);color:white;padding:8px 10px;text-align:left;font-weight:600;font-size:.7rem;white-space:nowrap;}
+.prev-table tbody td{padding:7px 10px;border-bottom:1px solid var(--gray-2);vertical-align:middle;}
+.prev-table tbody tr:last-child td{border-bottom:none;}
+.row-ok{background:#F0FDF4;}
+.row-dup{background:#FFFBEB;}
+.row-err{background:#FEF2F2;}
+.row-badge{padding:2px 7px;border-radius:4px;font-size:.67rem;font-weight:700;}
+.rb-new{background:#DCFCE7;color:#166534;}
+.rb-dup{background:#FEF3C7;color:#92400E;}
+.rb-err{background:#FEE2E2;color:#991B1B;}
+
+/* Duplicate resolution */
+.dup-card{background:#FFFBEB;border:1px solid #FDE68A;border-radius:10px;padding:14px 16px;margin-bottom:12px;}
+.dup-card h4{font-size:.84rem;font-weight:700;color:#92400E;margin-bottom:8px;}
+.dup-row{display:flex;align-items:center;gap:10px;margin-bottom:6px;font-size:.78rem;}
+.dup-row .dn{font-weight:600;color:var(--black);flex:1;}
+.dup-row .dp{font-family:monospace;color:var(--gray-5);font-size:.74rem;}
+.dup-choice{display:flex;gap:6px;}
+.dc-btn{padding:4px 10px;border-radius:6px;font-size:.71rem;font-weight:600;cursor:pointer;border:none;font-family:'Inter',sans-serif;}
+.dc-over{background:#FEF3C7;color:#92400E;}
+.dc-over.sel{background:#D97706;color:white;}
+.dc-skip{background:var(--gray-2);color:var(--gray-6);}
+.dc-skip.sel{background:#6B7280;color:white;}
+
+/* Progress */
+.progress-wrap{margin-top:16px;}
+.progress-bar{height:8px;background:var(--gray-2);border-radius:4px;overflow:hidden;margin-bottom:8px;}
+.progress-fill{height:100%;background:var(--navy);border-radius:4px;transition:width .3s;}
+.progress-text{font-size:.78rem;color:var(--gray-5);}
+
+/* Result summary */
+.result-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 0;}
+.rg-card{border-radius:8px;padding:12px;text-align:center;}
+.rg-val{font-size:1.4rem;font-weight:700;font-family:'Playfair Display',Georgia,serif;}
+.rg-lbl{font-size:.72rem;margin-top:2px;}
+
+/* Buttons */
+.btn-row{display:flex;gap:10px;margin-top:16px;}
+.btn-p{flex:1;padding:11px;background:var(--navy);color:white;border:none;border-radius:8px;font-size:.88rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;}
+.btn-p:hover{background:#0F2444;}
+.btn-p:disabled{background:var(--gray-4);cursor:not-allowed;}
+.btn-s{padding:11px 18px;background:white;color:var(--gray-6);border:1.5px solid var(--gray-3);border-radius:8px;font-size:.86rem;cursor:pointer;font-family:'Inter',sans-serif;}
+
+.toast{position:fixed;bottom:20px;right:20px;background:var(--black);color:white;padding:10px 18px;border-radius:8px;font-size:.83rem;z-index:9999;transform:translateY(60px);opacity:0;transition:all .25s;}
+.toast.show{transform:translateY(0);opacity:1;}
+
+@media(max-width:600px){.result-grid{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+
+<div class="bh">
+  <div class="container">
+    <div class="bh-inner">
+      <a href="firm-dashboard.html" class="bh-logo">
+        <img src="logo.png" alt="">
+        <span>Trust<span class="accent">Fact</span>ON</span>
+      </a>
+      <div class="bh-right">
+        <a href="firm-dashboard.html" class="bh-btn green">← Firm Dashboard</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="bb">
+
+  <!-- Steps -->
+  <div class="up-steps">
+    <div class="us active" id="st1"><span class="us-num" id="sn1">1</span>Upload</div>
+    <div class="us-line" id="sl1"></div>
+    <div class="us" id="st2"><span class="us-num" id="sn2">2</span>Review</div>
+    <div class="us-line" id="sl2"></div>
+    <div class="us" id="st3"><span class="us-num" id="sn3">3</span>Import</div>
+    <div class="us-line" id="sl3"></div>
+    <div class="us" id="st4"><span class="us-num" id="sn4">4</span>Done</div>
+  </div>
+
+  <!-- Step 1: Upload -->
+  <div id="panel1">
+    <!-- Template download -->
+    <div class="template-card">
+      <div style="font-size:1.8rem">📥</div>
+      <div style="flex:1">
+        <h4>Download Template First</h4>
+        <p>Use this template to ensure correct format. Required: Name, Type, PAN. Optional: GSTIN, TAN, Email, compliance flags.</p>
+      </div>
+      <button class="dl-btn" onclick="downloadTemplate()">⬇ Download Template</button>
+    </div>
+
+    <div class="up-card">
+      <h2>Upload Client List</h2>
+      <p>Accepted formats: Excel (.xlsx, .xls) or CSV (.csv) · Max 500 rows per upload</p>
+      <div class="drop-zone" id="dropZone"
+           ondragover="e=>e.preventDefault()" ondrop="handleDrop(event)"
+           onclick="document.getElementById('fileInput').click()">
+        <div class="dz-icon">📂</div>
+        <h3 id="dzTitle">Drop your file here</h3>
+        <p id="dzSub">Excel (.xlsx) or CSV · Up to 500 clients at once</p>
+        <span class="browse-btn">Browse File</span>
+        <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" onchange="handleFile(this.files[0])">
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 2: Review -->
+  <div id="panel2" style="display:none">
+    <div class="up-card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <div>
+          <h2>Review Import</h2>
+          <p id="previewSummary"></p>
+        </div>
+        <button class="btn-s" onclick="goStep(1)">← Re-upload</button>
+      </div>
+
+      <!-- Duplicate resolution -->
+      <div id="dupSection" style="display:none">
+        <div class="dup-card">
+          <h4>⚠ Duplicates Found — Choose action for each:</h4>
+          <div id="dupList"></div>
+        </div>
+      </div>
+
+      <!-- Preview table -->
+      <div class="prev-wrap">
+        <table class="prev-table">
+          <thead><tr>
+            <th>Status</th><th>Client Name</th><th>Type</th><th>PAN</th>
+            <th>GSTIN</th><th>GST</th><th>TDS</th><th>ROC</th><th>PF</th><th>Error</th>
+          </tr></thead>
+          <tbody id="previewBody"></tbody>
+        </table>
+      </div>
+
+      <div class="btn-row" style="margin-top:16px">
+        <button class="btn-s" onclick="goStep(1)">← Back</button>
+        <button class="btn-p" id="importBtn" onclick="runImport()">Import Clients →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 3: Importing -->
+  <div id="panel3" style="display:none">
+    <div class="up-card" style="text-align:center">
+      <div style="font-size:2rem;margin-bottom:12px">⚙️</div>
+      <h2>Importing clients…</h2>
+      <p>Please wait. Do not close this page.</p>
+      <div class="progress-wrap">
+        <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+        <div class="progress-text" id="progressText">0 of 0</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 4: Done -->
+  <div id="panel4" style="display:none">
+    <div class="up-card" style="text-align:center">
+      <div style="font-size:2.5rem;margin-bottom:14px">🎉</div>
+      <h2>Import Complete!</h2>
+      <div class="result-grid">
+        <div class="rg-card" style="background:#F0FDF4">
+          <div class="rg-val" style="color:#16A34A" id="res-created">0</div>
+          <div class="rg-lbl" style="color:#16A34A">Created</div>
+        </div>
+        <div class="rg-card" style="background:#FFFBEB">
+          <div class="rg-val" style="color:#D97706" id="res-updated">0</div>
+          <div class="rg-lbl" style="color:#D97706">Updated</div>
+        </div>
+        <div class="rg-card" style="background:#F8FAFC">
+          <div class="rg-val" style="color:#64748B" id="res-skipped">0</div>
+          <div class="rg-lbl" style="color:#64748B">Skipped</div>
+        </div>
+        <div class="rg-card" style="background:#FEF2F2">
+          <div class="rg-val" style="color:#DC2626" id="res-errors">0</div>
+          <div class="rg-lbl" style="color:#DC2626">Errors</div>
+        </div>
+      </div>
+      <div id="errorList" style="text-align:left;margin-bottom:16px"></div>
+      <div class="btn-row" style="justify-content:center">
+        <a href="firm-dashboard.html" class="btn-p" style="max-width:240px;text-align:center;text-decoration:none">
+          View Firm Dashboard →
+        </a>
+        <button class="btn-s" onclick="goStep(1)">Upload Another File</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script>
+let currentUser = null;
+let parsedRows  = [];   // raw from file
+let reviewRows  = [];   // after validation
+let dupChoices  = {};   // { pan: 'overwrite'|'skip' }
+
+const REQUIRED_COLS = ['Client Name','Entity Type','PAN'];
+const ENTITY_TYPES  = ['Individual','Proprietor','Partnership','LLP','OPC','Private Limited'];
+const PAN_RE        = /^[A-Z]{5}[0-9]{4}[A-Z]$/;
+
+(async () => {
+  const { data:{ session } } = await sb.auth.getSession();
+  if (!session) { window.location.href = 'login.html'; return; }
+  currentUser = session.user;
+})();
+
+// ── Steps ─────────────────────────────────────────────
+function goStep(n) {
+  [1,2,3,4].forEach(i => {
+    document.getElementById('panel'+i).style.display = i===n ? 'block':'none';
+    const s = document.getElementById('st'+i);
+    s.className = 'us'+(i<n?' done':i===n?' active':'');
+    document.getElementById('sn'+i).textContent = i<n?'✓':i;
+    if (i<4) document.getElementById('sl'+i).className = 'us-line'+(i<n?' done':'');
+  });
+}
+
+// ── Template download ─────────────────────────────────
+function downloadTemplate() {
+  const headers = [
+    'Client Name','Entity Type','PAN','GSTIN','TAN','CIN/LLPIN',
+    'Reminder Email','GST (Y/N)','TDS (Y/N)','ROC (Y/N)','PF (Y/N)','ESIC (Y/N)','PT (Y/N)'
+  ];
+  const sample = [
+    'Evenset Consultancy Services OPC Pvt Ltd','OPC','AAAAA0000A',
+    '29AAAAA0000A1Z5','AAAA00000A','U74999KA2020OPC123456',
+    'accounts@evenset.com','Y','Y','Y','N','N','N'
+  ];
+  const notes = ['REQUIRED','REQUIRED — Individual/Proprietor/Partnership/LLP/OPC/Private Limited',
+    'REQUIRED — Format: AAAAA0000A','Optional','Optional — Format: AAAA00000A','Optional',
+    'Optional — reminders sent here','Y or N','Y or N','Y or N','Y or N','Y or N','Y or N'];
+
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.aoa_to_sheet([headers, sample, notes]);
+  ws['!cols'] = headers.map(() => ({ wch: 24 }));
+  XLSX.utils.book_append_sheet(wb, ws, 'Clients');
+  XLSX.writeFile(wb, 'TrustFactON_Client_Upload_Template.xlsx');
+}
+
+// ── File handling ─────────────────────────────────────
+function handleDrop(e) {
+  e.preventDefault();
+  const file = e.dataTransfer.files[0];
+  if (file) handleFile(file);
+}
+
+async function handleFile(file) {
+  if (!file) return;
+  const ext = file.name.split('.').pop().toLowerCase();
+  if (!['xlsx','xls','csv'].includes(ext)) {
+    showToast('Please upload an Excel (.xlsx) or CSV file.');
+    return;
+  }
+
+  document.getElementById('dzTitle').textContent = file.name;
+  document.getElementById('dzSub').textContent   = 'Processing…';
+  document.getElementById('dropZone').classList.add('drag');
+
+  try {
+    const data  = await file.arrayBuffer();
+    const wb    = XLSX.read(data);
+    const ws    = wb.Sheets[wb.SheetNames[0]];
+    const rows  = XLSX.utils.sheet_to_json(ws, { defval: '' });
+
+    if (!rows.length) { showToast('File is empty.'); return; }
+
+    // Validate headers
+    const keys = Object.keys(rows[0]);
+    const missing = REQUIRED_COLS.filter(c => !keys.includes(c));
+    if (missing.length) {
+      showToast('Missing columns: ' + missing.join(', ') + '. Please use the template.');
+      return;
+    }
+
+    parsedRows = rows.slice(0, 500); // max 500
+    await validateAndPreview();
+    goStep(2);
+  } catch(e) {
+    showToast('Error reading file: ' + e.message);
+  }
+  document.getElementById('dropZone').classList.remove('drag');
+}
+
+// ── Validation + preview ──────────────────────────────
+async function validateAndPreview() {
+  // Get existing PANs for duplicate detection
+  const existingEntities = await getFirmClients(currentUser.id);
+  const existingPANs = new Map(existingEntities.map(e => [e.pan?.toUpperCase(), e]));
+
+  reviewRows = [];
+  dupChoices = {};
+
+  parsedRows.forEach((row, idx) => {
+    const name  = (row['Client Name']||'').trim();
+    const type  = (row['Entity Type']||'').trim();
+    const pan   = (row['PAN']||'').trim().toUpperCase();
+    const gstin = (row['GSTIN']||'').trim().toUpperCase();
+    const tan   = (row['TAN']||'').trim().toUpperCase();
+    const cin   = (row['CIN/LLPIN']||'').trim().toUpperCase();
+    const email = (row['Reminder Email']||'').trim();
+    const gst   = yesNo(row['GST (Y/N)']);
+    const tds   = yesNo(row['TDS (Y/N)']);
+    const roc   = yesNo(row['ROC (Y/N)']);
+    const pf    = yesNo(row['PF (Y/N)']);
+    const esic  = yesNo(row['ESIC (Y/N)']);
+    const pt    = yesNo(row['PT (Y/N)']);
+
+    let status = 'new', error = '';
+
+    if (!name) error = 'Client Name missing';
+    else if (!ENTITY_TYPES.includes(type)) error = `Entity Type invalid: "${type}"`;
+    else if (!PAN_RE.test(pan)) error = `PAN invalid: "${pan}"`;
+    else if (gstin && !/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/.test(gstin)) error = 'GSTIN format invalid';
+    else if (tan && !/^[A-Z]{4}[0-9]{5}[A-Z]$/.test(tan)) error = 'TAN format invalid';
+
+    if (!error && existingPANs.has(pan)) {
+      status = 'duplicate';
+      dupChoices[pan] = 'skip'; // default skip
+    } else if (!error) {
+      status = 'new';
+    } else {
+      status = 'error';
+    }
+
+    reviewRows.push({ row: idx+2, name, type, pan, gstin, tan, cin, email, gst, tds, roc, pf, esic, pt, status, error });
+  });
+
+  renderPreview();
+}
+
+function yesNo(val) {
+  return ['Y','YES','1','TRUE','y','yes'].includes(String(val||'').trim().toUpperCase());
+}
+
+function renderPreview() {
+  const newCount  = reviewRows.filter(r => r.status === 'new').length;
+  const dupCount  = reviewRows.filter(r => r.status === 'duplicate').length;
+  const errCount  = reviewRows.filter(r => r.status === 'error').length;
+  const total     = reviewRows.length;
+
+  document.getElementById('previewSummary').textContent =
+    `${total} rows · ${newCount} new · ${dupCount} duplicate · ${errCount} errors`;
+
+  // Duplicate resolution UI
+  const dups = reviewRows.filter(r => r.status === 'duplicate');
+  const dupSection = document.getElementById('dupSection');
+  if (dups.length) {
+    dupSection.style.display = 'block';
+    document.getElementById('dupList').innerHTML = dups.map(d => `
+      <div class="dup-row">
+        <span class="dn">${d.name}</span>
+        <span class="dp">${d.pan}</span>
+        <div class="dup-choice">
+          <button class="dc-btn dc-over ${dupChoices[d.pan]==='overwrite'?'sel':''}"
+            onclick="setDupChoice('${d.pan}','overwrite',this)">Overwrite</button>
+          <button class="dc-btn dc-skip ${dupChoices[d.pan]==='skip'?'sel':''}"
+            onclick="setDupChoice('${d.pan}','skip',this)">Skip</button>
+        </div>
+      </div>`).join('');
+  } else {
+    dupSection.style.display = 'none';
+  }
+
+  // Preview table
+  document.getElementById('previewBody').innerHTML = reviewRows.map(r => {
+    const cls = r.status === 'new' ? 'row-ok' : r.status === 'duplicate' ? 'row-dup' : 'row-err';
+    const badge = r.status === 'new'
+      ? '<span class="row-badge rb-new">New</span>'
+      : r.status === 'duplicate'
+      ? '<span class="row-badge rb-dup">Duplicate</span>'
+      : '<span class="row-badge rb-err">Error</span>';
+    const bool = v => v ? '✓':'—';
+    return `<tr class="${cls}">
+      <td>${badge}</td>
+      <td style="font-weight:600;max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${r.name}</td>
+      <td style="font-size:.72rem">${r.type}</td>
+      <td style="font-family:monospace;font-size:.74rem">${r.pan}</td>
+      <td style="font-size:.71rem;color:var(--gray-5)">${r.gstin||'—'}</td>
+      <td style="text-align:center">${bool(r.gst)}</td>
+      <td style="text-align:center">${bool(r.tds)}</td>
+      <td style="text-align:center">${bool(r.roc)}</td>
+      <td style="text-align:center">${bool(r.pf)}</td>
+      <td style="font-size:.71rem;color:var(--red)">${r.error||''}</td>
+    </tr>`;
+  }).join('');
+}
+
+function setDupChoice(pan, choice, btn) {
+  dupChoices[pan] = choice;
+  const row = btn.closest('.dup-row');
+  row.querySelectorAll('.dc-btn').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+}
+
+// ── Import ────────────────────────────────────────────
+async function runImport() {
+  const toProcess = reviewRows.filter(r => r.status !== 'error');
+  if (!toProcess.length) { showToast('Nothing to import after errors.'); return; }
+
+  goStep(3);
+  const results = { created:0, updated:0, skipped:0, errors:[] };
+  const total = toProcess.length;
+
+  for (let i = 0; i < toProcess.length; i++) {
+    const r = toProcess[i];
+
+    // Update progress
+    document.getElementById('progressFill').style.width = ((i+1)/total*100)+'%';
+    document.getElementById('progressText').textContent = `${i+1} of ${total} — ${r.name}`;
+
+    try {
+      if (r.status === 'duplicate') {
+        if (dupChoices[r.pan] === 'skip') { results.skipped++; continue; }
+        // Overwrite: find existing entity and update
+        const { data: existing } = await sb.from('entities')
+          .select('id').eq('pan', r.pan).single();
+        if (existing) {
+          await sb.from('entities').update({
+            name: r.name, type: r.type, gstin: r.gstin||null,
+            tan: r.tan||null, cin_llpin: r.cin||null,
+            email_reminders: r.email||null,
+          }).eq('id', existing.id);
+          await sb.from('registrations').update({
+            gst: r.gst, tds: r.tds, pf: r.pf, esic: r.esic, roc: r.roc,
+            professional_tax: r.pt, income_tax: true,
+            gst_regular: r.gst, tds_general: r.tds, tds_returns: r.tds,
+          }).eq('entity_id', existing.id);
+          results.updated++;
+        }
+      } else {
+        // New entity
+        const { data: ent, error } = await sb.rpc('create_entity', {
+          p_user_id:   currentUser.id,
+          p_name:      r.name, p_type: r.type, p_pan: r.pan,
+          p_gstin:     r.gstin||null, p_cin_llpin: r.cin||null,
+          p_tan:       r.tan||null, p_email: r.email||null,
+          p_gst: r.gst, p_tds: r.tds, p_pf: r.pf,
+          p_esic: r.esic, p_roc: r.roc, p_pt: r.pt,
+        });
+        if (error) throw error;
+
+        // Set as primary_admin entity
+        await sb.from('entity_members').update({ firm_role: 'primary_admin' })
+          .eq('entity_id', ent).eq('user_id', currentUser.id);
+
+        // Update granular flags
+        await sb.from('registrations').update({
+          gst_regular: r.gst, tds_general: r.tds, tds_returns: r.tds,
+          tds_form16: r.tds,
+        }).eq('entity_id', ent);
+
+        results.created++;
+      }
+    } catch(e) {
+      results.errors.push({ row: r.row, pan: r.pan, reason: e.message });
+    }
+
+    // Small delay to avoid rate limiting
+    if (i % 10 === 9) await new Promise(r => setTimeout(r, 200));
+  }
+
+  // Log the upload
+  await sb.from('bulk_upload_log').insert({
+    uploaded_by:   currentUser.id,
+    filename:      'bulk_upload',
+    total_rows:    total,
+    created_rows:  results.created,
+    updated_rows:  results.updated,
+    skipped_rows:  results.skipped,
+    error_rows:    results.errors.length,
+    errors:        results.errors.length ? results.errors : null,
+  });
+
+  // Show results
+  document.getElementById('res-created').textContent = results.created;
+  document.getElementById('res-updated').textContent = results.updated;
+  document.getElementById('res-skipped').textContent = results.skipped;
+  document.getElementById('res-errors').textContent  = results.errors.length;
+
+  if (results.errors.length) {
+    document.getElementById('errorList').innerHTML = `
+      <div style="background:#FEF2F2;border:1px solid #FECACA;border-radius:8px;padding:12px">
+        <div style="font-size:.78rem;font-weight:700;color:#991B1B;margin-bottom:6px">Errors (${results.errors.length}):</div>
+        ${results.errors.map(e => `<div style="font-size:.74rem;color:#991B1B">Row ${e.row} (${e.pan}): ${e.reason}</div>`).join('')}
+      </div>`;
+  }
+
+  goStep(4);
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+</script>
+</body>
+</html>
