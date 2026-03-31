@@ -701,7 +701,7 @@ async function acceptPendingInvitations(email) {
   } catch {}
 }
 
-async function showWelcome() {() {
+async function showWelcome() {
   const hour = new Date().getHours();
   const greet = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
   const name = currentProfile?.name?.split(' ')[0] || '';
