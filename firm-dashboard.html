@@ -287,11 +287,34 @@ body{background:var(--gray-1);min-height:100vh;}
         </div>
         <div class="cmt" id="cmt-gst_qrmp" onclick="cmToggleMutual('gst','gst_qrmp',this)">
           <input type="checkbox" id="cmcb-gst_qrmp">
-          <div><strong>QRMP quarterly</strong><span>≤ ₹5 Cr turnover</span></div>
+          <div><strong>QRMP quarterly</strong><span>Optional quarterly scheme</span></div>
         </div>
         <div class="cmt" id="cmt-gst_composition" onclick="cmToggleMutual('gst','gst_composition',this)">
           <input type="checkbox" id="cmcb-gst_composition">
           <div><strong>Composition</strong><span>CMP-08, GSTR-4</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Additional GST -->
+    <div style="margin-bottom:10px">
+      <div style="font-size:.75rem;font-weight:700;color:var(--gray-5);margin-bottom:5px;text-transform:uppercase;letter-spacing:.4px">Additional GST Returns</div>
+      <div class="comp-modal-grid">
+        <div class="cmt" id="cmt-gst_gstr7" onclick="cmToggle('gst_gstr7',this)">
+          <input type="checkbox" id="cmcb-gst_gstr7">
+          <div><strong>GSTR-7</strong><span>TDS under GST</span></div>
+        </div>
+        <div class="cmt" id="cmt-gst_gstr8" onclick="cmToggle('gst_gstr8',this)">
+          <input type="checkbox" id="cmcb-gst_gstr8">
+          <div><strong>GSTR-8</strong><span>TCS — e-commerce</span></div>
+        </div>
+        <div class="cmt" id="cmt-gst_gstr9" onclick="cmToggle('gst_gstr9',this)">
+          <input type="checkbox" id="cmcb-gst_gstr9">
+          <div><strong>GSTR-9</strong><span>Annual return</span></div>
+        </div>
+        <div class="cmt" id="cmt-gst_gstr9c" onclick="cmToggle('gst_gstr9c',this)">
+          <input type="checkbox" id="cmcb-gst_gstr9c">
+          <div><strong>GSTR-9C</strong><span>Reconciliation (>₹5 Cr)</span></div>
         </div>
       </div>
     </div>
@@ -575,7 +598,7 @@ function openCompModal(entityId, name) {
   document.getElementById('compEntityId').value = entityId;
   document.getElementById('compModalClient').textContent = name;
 
-  const keys = ['gst_regular','gst_qrmp','gst_composition','tds_general','tds_salary','tds_returns','tds_form16','pf','esic','roc','pt'];
+  const keys = ['gst_regular','gst_qrmp','gst_composition','gst_gstr7','gst_gstr8','gst_gstr9','gst_gstr9c','tds_general','tds_salary','tds_returns','tds_form16','pf','esic','roc','pt'];
   keys.forEach(k => {
     const stateKey = k === 'pt' ? 'professional_tax' : k;
     const val = !!c[stateKey] || !!c[k];
@@ -614,6 +637,10 @@ async function saveCompliances() {
     pf: cmState.pf, esic: cmState.esic, roc: cmState.roc, pt: cmState.pt,
     gst_regular: cmState.gst_regular, gst_qrmp: cmState.gst_qrmp,
     gst_composition: cmState.gst_composition,
+    gst_gstr7: cmState.gst_gstr7 || false,
+    gst_gstr8: cmState.gst_gstr8 || false,
+    gst_gstr9: cmState.gst_gstr9 || false,
+    gst_gstr9c: cmState.gst_gstr9c || false,
     tds_general: cmState.tds_general, tds_salary: cmState.tds_salary,
     tds_returns: cmState.tds_returns, tds_form16: cmState.tds_form16,
     tcs_collection: false,

@@ -25,12 +25,23 @@
       color: var(--gray-4); margin-right: 4px; }
 
     /* Inline section reference */
-    .s61 { font-family: monospace; font-size: 0.72rem; background: var(--gray-2);
-      color: var(--gray-5); padding: 1px 6px; border-radius: 4px; white-space: nowrap; }
-    .s25 { font-family: monospace; font-size: 0.72rem; background: #DBEAFE;
-      color: var(--blue); padding: 1px 6px; border-radius: 4px; font-weight: 600; white-space: nowrap; }
-    .sec-pair { display: inline-flex; align-items: center; gap: 3px; }
-    .sec-pair .mini-arr { font-size: 0.65rem; color: var(--gray-4); }
+    .s61 { font-family: monospace; font-size: 0.69rem; background: var(--gray-2);
+      color: var(--gray-5); padding: 1px 5px; border-radius: 3px; white-space: nowrap;
+      text-decoration: line-through; opacity: .7; }
+    .s25 { font-family: monospace; font-size: 0.78rem; background: #DBEAFE;
+      color: #1D4ED8; padding: 2px 7px; border-radius: 4px; font-weight: 700; white-space: nowrap;
+      border: 1px solid #93C5FD; }
+    /* ITA 2025 primary, 1961 small below */
+    .sec-pair { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 2px; }
+    .sec-pair .s25 { order: 1; }
+    .sec-pair .mini-arr { display: none; }
+    .sec-pair .s61 { order: 2; font-size: .64rem; }
+    /* Table column: 2025 first */
+    .atbl th:nth-child(2) { color: #1D4ED8; }
+    /* Section label helper */
+    .sec-both { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 2px; }
+    .sec-both .s25 { font-size: .78rem; }
+    .sec-both .s61 { font-size: .63rem; }
 
     /* Tables */
     .tbl-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--gray-3); margin-top: 14px; }
@@ -173,9 +184,9 @@
     <h4>IT Act 1961 → IT Act 2025 — Section Mapping</h4>
     <p>From 1 April 2026, IT Act 2025 replaces IT Act 1961 for new transactions. The <strong>new tax regime</strong> moves from Sec 115BAC (1961) → <strong>Sec 202 (2025)</strong>. The rebate under Sec 87A (1961) → <strong>Sec 159 (2025)</strong>. Tax rates are unchanged.</p>
     <div class="badge-row">
-      <span class="abadge">Sec 115BAC → Sec 202</span>
-      <span class="abadge">Sec 87A → Sec 159</span>
-      <span class="abadge">Sec 115BAB → Sec 204</span>
+      <span class="abadge"><span class="s25">Sec 202</span> <span class="s61">Sec 115BAC</span></span>
+      <span class="abadge"><span class="s25">Sec 159</span> <span class="s61">Sec 87A</span></span>
+      <span class="abadge"><span class="s25">Sec 204</span> <span class="s61">Sec 115BAB</span></span>
       <span class="abadge">Effective: 1 April 2026</span>
     </div>
   </div>
@@ -233,7 +244,7 @@
   <h3 class="sh">Corporate Tax Rates</h3>
   <div class="tbl-wrap">
     <table class="atbl">
-      <thead><tr><th>Company Type</th><th>Rate</th><th>IT Act 1961</th><th>IT Act 2025</th></tr></thead>
+      <thead><tr><th>Company Type</th><th>Rate</th><th>IT Act 2025</th><th>IT Act 1961</th></tr></thead>
       <tbody>
         <tr><td>Domestic (turnover ≤ ₹400 Cr)</td><td class="rate-cell">25%</td><td><span class="s61">Sec 115BA</span></td><td><span class="s25">Sec 203</span></td></tr>
         <tr class="hl"><td>Domestic (turnover > ₹400 Cr)</td><td class="rate-cell">30%</td><td><span class="s61">Sec 4</span></td><td><span class="s25">First Schedule</span></td></tr>
@@ -275,7 +286,7 @@
   </h3>
   <div class="tbl-wrap">
     <table class="atbl">
-      <thead><tr><th>Regime</th><th>Amount</th><th>IT Act 1961</th><th>IT Act 2025</th></tr></thead>
+      <thead><tr><th>Regime</th><th>Amount</th><th>IT Act 2025</th><th>IT Act 1961</th></tr></thead>
       <tbody>
         <tr class="hl"><td>New Regime (default)</td><td class="new-cell">₹75,000</td><td><span class="s61">Sec 16(ia)</span></td><td><span class="s25">Sec 20(a)</span></td></tr>
         <tr><td>Old Regime (optional)</td><td class="rate-cell">₹50,000</td><td><span class="s61">Sec 16(ia)</span></td><td><span class="s25">Sec 20(a)</span></td></tr>
@@ -408,8 +419,8 @@
       <span class="abadge">Sec 37 (General deductions) → Sec 37</span>
       <span class="abadge">Sec 40A(3) (Cash limit) → Sec 40A(3)</span>
       <span class="abadge">Sec 44AB (Audit) → Sec 44AB</span>
-      <span class="abadge">Sec 44AD → Sec 44AD</span>
-      <span class="abadge">Sec 44ADA → Sec 44ADA</span>
+      <span class="abadge"><span class="s25">Sec 44AD</span> <span class="s61">Sec 44AD</span></span>
+      <span class="abadge"><span class="s25">Sec 44ADA</span> <span class="s61">Sec 44ADA</span></span>
       <span class="abadge">Effective: 1 April 2026</span>
     </div>
   </div>
@@ -417,7 +428,7 @@
   <h3 class="sh">Presumptive Taxation Schemes</h3>
   <div class="tbl-wrap">
     <table class="atbl">
-      <thead><tr><th>Scheme</th><th>IT Act 1961</th><th>IT Act 2025</th><th>Eligible Taxpayers</th><th>Turnover Limit</th><th>Deemed Profit</th></tr></thead>
+      <thead><tr><th>Scheme</th><th>IT Act 2025</th><th>IT Act 1961</th><th>Eligible Taxpayers</th><th>Turnover Limit</th><th>Deemed Profit</th></tr></thead>
       <tbody>
         <tr class="hl"><td>Business</td><td><span class="s61">Sec 44AD</span></td><td><span class="s25">Sec 44AD</span></td><td>Resident Individual, HUF, Firm</td><td>≤ ₹2 Cr (₹3 Cr if 95%+ digital)</td><td>8% (cash) / 6% (digital)</td></tr>
         <tr><td>Profession</td><td><span class="s61">Sec 44ADA</span></td><td><span class="s25">Sec 44ADA</span></td><td>Doctor, CA, Lawyer, Engineer etc.</td><td>≤ ₹75L (₹1.5 Cr if 95%+ digital)</td><td>50% of gross receipts</td></tr>
@@ -480,8 +491,8 @@
       <thead>
         <tr>
           <th>Asset Type</th><th>LTCG Holding Period</th>
-          <th>STCG Rate</th><th>IT Act 1961</th><th>IT Act 2025</th>
-          <th>LTCG Rate</th><th>IT Act 1961</th><th>IT Act 2025</th>
+          <th>STCG Rate</th><th>IT Act 2025</th><th>IT Act 1961</th>
+          <th>LTCG Rate</th><th>IT Act 2025</th><th>IT Act 1961</th>
         </tr>
       </thead>
       <tbody>
@@ -497,7 +508,7 @@
   <h3 class="sh">Capital Gains Exemptions — Invest to Save Tax</h3>
   <div class="tbl-wrap">
     <table class="atbl">
-      <thead><tr><th>IT Act 1961</th><th>IT Act 2025</th><th>Invest in</th><th>Limit</th><th>Timeline</th></tr></thead>
+      <thead><tr><th>IT Act 2025</th><th>IT Act 1961</th><th>Invest in</th><th>Limit</th><th>Timeline</th></tr></thead>
       <tbody>
         <tr class="hl"><td><span class="s61">Sec 54</span></td><td><span class="s25">Sec 56</span></td><td>Residential house (from property sale)</td><td>No limit (1 house only)</td><td>Buy within 2 yrs / construct 3 yrs</td></tr>
         <tr><td><span class="s61">Sec 54F</span></td><td><span class="s25">Sec 57</span></td><td>Residential house (from non-property sale)</td><td>Full proceeds reinvested</td><td>Buy 1 yr before / 2 yrs after</td></tr>
@@ -524,15 +535,15 @@
   <div class="act-change">
     <h4>IT Act 1961 → IT Act 2025 — Deduction Section Mapping</h4>
     <div class="badge-row">
-      <span class="abadge">Sec 80C → Sec 123</span>
-      <span class="abadge">Sec 80CCC → Sec 124</span>
-      <span class="abadge">Sec 80CCD → Sec 125</span>
-      <span class="abadge">Sec 80D → Sec 126</span>
-      <span class="abadge">Sec 80E → Sec 128</span>
-      <span class="abadge">Sec 80G → Sec 130</span>
-      <span class="abadge">Sec 80TTA → Sec 136</span>
-      <span class="abadge">Sec 80TTB → Sec 137</span>
-      <span class="abadge">Sec 80U → Sec 144</span>
+      <span class="abadge"><span class="s25">Sec 123</span> <span class="s61">Sec 80C</span></span>
+      <span class="abadge"><span class="s25">Sec 124</span> <span class="s61">Sec 80CCC</span></span>
+      <span class="abadge"><span class="s25">Sec 125</span> <span class="s61">Sec 80CCD</span></span>
+      <span class="abadge"><span class="s25">Sec 126</span> <span class="s61">Sec 80D</span></span>
+      <span class="abadge"><span class="s25">Sec 128</span> <span class="s61">Sec 80E</span></span>
+      <span class="abadge"><span class="s25">Sec 130</span> <span class="s61">Sec 80G</span></span>
+      <span class="abadge"><span class="s25">Sec 136</span> <span class="s61">Sec 80TTA</span></span>
+      <span class="abadge"><span class="s25">Sec 137</span> <span class="s61">Sec 80TTB</span></span>
+      <span class="abadge"><span class="s25">Sec 144</span> <span class="s61">Sec 80U</span></span>
       <span class="abadge">Chapter VI-A → Chapter VIII</span>
       <span class="abadge">Effective: 1 April 2026</span>
     </div>
@@ -542,7 +553,7 @@
 
   <div class="tbl-wrap" style="margin-top:14px">
     <table class="atbl">
-      <thead><tr><th>IT Act 1961</th><th>IT Act 2025</th><th>Deduction For</th><th>Maximum Limit</th><th>Key Conditions</th></tr></thead>
+      <thead><tr><th>IT Act 2025</th><th>IT Act 1961</th><th>Deduction For</th><th>Maximum Limit</th><th>Key Conditions</th></tr></thead>
       <tbody>
         <tr class="hl"><td><span class="s61">Sec 80C</span></td><td><span class="s25">Sec 123</span></td><td>Specified investments</td><td>₹1,50,000</td><td>PPF, ELSS, NSC, Life insurance, home loan principal, EPF, SSY, tuition fees</td></tr>
         <tr><td><span class="s61">Sec 80CCC</span></td><td><span class="s25">Sec 124</span></td><td>Pension fund premium</td><td>₹1,50,000 (within 80C)</td><td>LIC or approved pension plan</td></tr>
@@ -589,7 +600,7 @@
 
   <div class="tbl-wrap" style="margin-top:14px">
     <table class="atbl">
-      <thead><tr><th>IT Act 1961</th><th>IT Act 2025</th><th>Nature of Payment</th><th>Rate</th><th>Threshold</th></tr></thead>
+      <thead><tr><th>IT Act 2025</th><th>IT Act 1961</th><th>Nature of Payment</th><th>Rate</th><th>Threshold</th></tr></thead>
       <tbody>
         <tr class="hl"><td><span class="s61">Sec 192</span></td><td><span class="s25">Sec 392</span></td><td>Salary</td><td class="rate-cell">Slab rates</td><td>As per regime opted</td></tr>
         <tr><td><span class="s61">Sec 193</span></td><td><span class="s25">Sec 393(1) Sl.5(i)</span></td><td>Interest on securities</td><td class="rate-cell">10%</td><td>₹10,000</td></tr>
@@ -659,7 +670,7 @@
   <h3 class="sh">ITR Filing Due Dates</h3>
   <div class="tbl-wrap">
     <table class="atbl">
-      <thead><tr><th>Taxpayer</th><th>Due Date</th><th>IT Act 1961</th><th>IT Act 2025</th></tr></thead>
+      <thead><tr><th>Taxpayer</th><th>Due Date</th><th>IT Act 2025</th><th>IT Act 1961</th></tr></thead>
       <tbody>
         <tr class="hl"><td>Individual / HUF (no audit)</td><td>31 July</td><td><span class="s61">Sec 139(1)</span></td><td><span class="s25">Sec 263(1)</span></td></tr>
         <tr><td>Audit cases</td><td>31 October</td><td><span class="s61">Sec 139(1)</span></td><td><span class="s25">Sec 263(1)</span></td></tr>
@@ -741,7 +752,7 @@
 
   <div class="tbl-wrap" style="margin-top:14px">
     <table class="atbl">
-      <thead><tr><th>Date</th><th>Compliance</th><th>Who</th><th>IT Act 1961</th><th>IT Act 2025</th></tr></thead>
+      <thead><tr><th>Date</th><th>Compliance</th><th>Who</th><th>IT Act 2025</th><th>IT Act 1961</th></tr></thead>
       <tbody>
         <tr><td>15 June</td><td>1st Advance Tax Instalment (15%)</td><td>All advance tax payers</td><td><span class="s61">Sec 211</span></td><td><span class="s25">Sec 253</span></td></tr>
         <tr class="hl"><td>31 July</td><td>ITR Filing — non-audit cases</td><td>Individuals, HUF, AOP, BOI</td><td><span class="s61">Sec 139(1)</span></td><td><span class="s25">Sec 263(1)</span></td></tr>

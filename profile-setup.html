@@ -161,11 +161,11 @@ body{background:var(--gray-1);min-height:100vh;padding:28px 20px 48px;}
     <div class="comp-grid">
       <div class="comp-tile" id="ct-gst_regular" onclick="selectMutual('gst_filing','gst_regular',this)">
         <input type="checkbox" id="cb-gst_regular">
-        <div class="tl"><strong>Regular monthly</strong><span>GSTR-1 + GSTR-3B (Turnover > ₹5 Cr)</span></div>
+        <div class="tl"><strong>Regular monthly</strong><span>GSTR-1 + GSTR-3B monthly</span></div>
       </div>
       <div class="comp-tile" id="ct-gst_qrmp" onclick="selectMutual('gst_filing','gst_qrmp',this)">
         <input type="checkbox" id="cb-gst_qrmp">
-        <div class="tl"><strong>QRMP quarterly</strong><span>Turnover ≤ ₹5 Cr</span></div>
+        <div class="tl"><strong>QRMP quarterly</strong><span>Optional — quarterly scheme</span></div>
       </div>
       <div class="comp-tile" id="ct-gst_composition" onclick="selectMutual('gst_filing','gst_composition',this)">
         <input type="checkbox" id="cb-gst_composition">
@@ -185,6 +185,10 @@ body{background:var(--gray-1);min-height:100vh;padding:28px 20px 48px;}
       <div class="comp-tile sub" id="ct-gst_gstr9" onclick="toggleComp('gst_gstr9',this)">
         <input type="checkbox" id="cb-gst_gstr9">
         <div class="tl"><strong>GSTR-9</strong><span>Annual return filing</span></div>
+      </div>
+              <div class="comp-tile sub" id="ct-gst_gstr9c" onclick="toggleComp('gst_gstr9c',this)">
+                <input type="checkbox" id="cb-gst_gstr9c">
+                <div class="tl"><strong>GSTR-9C</strong><span>Reconciliation statement (>₹5 Cr)</span></div>
       </div>
     </div>
   </div>

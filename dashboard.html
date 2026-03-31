@@ -862,9 +862,21 @@ async function showWelcome() {
   }[role] || role;
 
   const av = document.getElementById('profileAvatar');
-  if (av) { av.textContent = initials; }
+  if (av) {
+    av.textContent = initials;
+    av.style.background = pdRoleKey === 'primary_admin' ? '#1A3A6B' :
+                          pdRoleKey === 'secondary_admin' ? '#6D28D9' :
+                          pdRoleKey === 'staff' ? '#16A34A' :
+                          pdRoleKey === 'client' ? '#2563EB' : '#1A3A6B';
+  }
   const avLg = document.getElementById('pdAvatarLg');
-  if (avLg) { avLg.textContent = initials; }
+  if (avLg) {
+    avLg.textContent = initials;
+    avLg.style.background = pdRoleKey === 'primary_admin' ? '#1A3A6B' :
+                            pdRoleKey === 'secondary_admin' ? '#6D28D9' :
+                            pdRoleKey === 'staff' ? '#16A34A' :
+                            pdRoleKey === 'client' ? '#2563EB' : '#1A3A6B';
+  }
   // Populate reminder email field
   const remEl = document.getElementById('pdReminderEmail');
   if (remEl && activeEntity) {
@@ -883,17 +895,11 @@ async function showWelcome() {
   try {
     const isPA = await isPrimaryAdmin(currentUser.id);
     const firmBtn = document.getElementById('firmDashBtn');
-    if (firmBtn && isPA) firmBtn.style.display = 'inline-flex';
-    // Also show for secondary_admin
-    if (!isPA) {
-      const isSA = myFirmRole === 'secondary_admin';
-      if (firmBtn && isSA) firmBtn.style.display = 'inline-flex';
-    }
+    const showFirm = isPA || myFirmRole === 'secondary_admin' || myFirmRole === 'primary_admin';
+    if (firmBtn) firmBtn.style.display = showFirm ? 'inline-flex' : 'none';
     // Show firm link in profile dropdown
     const pdFirmLink = document.getElementById('pdFirmLink');
-    if (pdFirmLink && (isPA || myFirmRole === 'secondary_admin')) {
-      pdFirmLink.style.display = 'flex';
-    }
+    if (pdFirmLink) pdFirmLink.style.display = showFirm ? 'flex' : 'none';
   } catch {}
 }
 
