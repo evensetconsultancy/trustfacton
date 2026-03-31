@@ -463,6 +463,10 @@ function renderClientTable(clients) {
     return;
   }
 
+  // Only primary_admin can delete
+  const isCurrentUserPrimary = currentProfile?.role === 'primary_admin' ||
+    allStaff.find(s => s.id === currentUser.id)?.firm_role !== 'secondary_admin';
+
   body.innerHTML = clients.map(c => {
     const gst  = c.gst_regular || c.gst_qrmp || c.gst_composition || c.gst;
     const tds  = c.tds_general || c.tds_salary || c.tds || false;
@@ -503,7 +507,7 @@ function renderClientTable(clients) {
       <td>${clientHtml}</td>
       <td style="display:flex;gap:4px;flex-wrap:wrap">
         <a href="dashboard.html" class="ab ab-blue" onclick="sessionStorage.setItem('openEntity','${c.entity_id}')">Open</a>
-        <button class="ab ab-red" onclick="openDelete('${c.entity_id}','${c.entity_name?.replace(/'/g,"\\'")}')">Delete</button>
+        ${isCurrentUserPrimary ? `<button class="ab ab-red" onclick="openDelete('${c.entity_id}','${c.entity_name?.replace(/'/g,"\\'")}')">Delete</button>` : ''}
       </td>
     </tr>`;
   }).join('');

@@ -750,12 +750,11 @@ const MONTHS = ['','January','February','March','April','May','June',
   entities = await getMyEntities(currentUser.id);
 
   if (!entities.length) {
-    // No entity yet
-    // If professional role → still show dashboard (they manage client entities)
-    if (currentProfile?.role === 'professional') {
-      // Show empty dashboard with prompt to add clients via firm dashboard
+    const role = currentProfile?.role || 'owner';
+    // Professional with no clients yet
+    if (role === 'professional') {
       renderEntitySwitcher();
-      showWelcome();
+      await showWelcome();
       document.getElementById('filingBody').innerHTML =
         `<tr><td colspan="6" style="text-align:center;padding:36px;color:var(--gray-4)">
           <div style="font-size:1.5rem;margin-bottom:8px">🏢</div>
@@ -765,7 +764,27 @@ const MONTHS = ['','January','February','March','April','May','June',
         </td></tr>`;
       return;
     }
-    // Non-professional with no entity → profile setup
+    // Staff with no assigned clients yet
+    if (role === 'staff' || role === 'professional') {
+      document.getElementById('filingBody').innerHTML =
+        `<tr><td colspan="6" style="text-align:center;padding:36px;color:var(--gray-4)">
+          <div style="font-size:1.5rem;margin-bottom:8px">⏳</div>
+          <div style="font-size:.9rem;font-weight:600;color:var(--black);margin-bottom:6px">No clients assigned yet</div>
+          <div style="font-size:.82rem">Your firm admin hasn't assigned any clients to you yet. Contact your Primary Admin.</div>
+        </td></tr>`;
+      return;
+    }
+    // Client with pending invite (not yet active)
+    if (role === 'client') {
+      document.getElementById('filingBody').innerHTML =
+        `<tr><td colspan="6" style="text-align:center;padding:36px;color:var(--gray-4)">
+          <div style="font-size:1.5rem;margin-bottom:8px">📩</div>
+          <div style="font-size:.9rem;font-weight:600;color:var(--black);margin-bottom:6px">Waiting for access</div>
+          <div style="font-size:.82rem">Your CA is setting up your account. You'll receive an email once access is granted.</div>
+        </td></tr>`;
+      return;
+    }
+    // Regular user with no entity → profile setup
     window.location.href = 'profile-setup.html';
     return;
   }
@@ -833,10 +852,10 @@ async function showWelcome() {
   if (tab) tab.style.display = isProf ? 'block' : 'none';
 
   // Populate profile dropdown
-  const name  = currentProfile?.name || currentUser?.email?.split('@')[0] || 'User';
-  const email = currentUser?.email || '';
-  const role  = myFirmRole || currentProfile?.role || 'owner';
-  const initials = name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2) || '?';
+  const pdFullName  = currentProfile?.name || currentUser?.email?.split('@')[0] || 'User';
+  const pdUserEmail = currentUser?.email || '';
+  const pdRoleKey   = myFirmRole || currentProfile?.role || 'owner';
+  const initials    = pdFullName.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2) || '?';
   const roleLabel = {
     primary_admin:'Primary Admin', secondary_admin:'Secondary Admin',
     staff:'Staff', client:'Client', owner:'Owner', professional:'Professional'
@@ -852,13 +871,13 @@ async function showWelcome() {
     remEl.value = activeEntity.email_reminders || currentUser.email || '';
   }
   const pn = document.getElementById('profileName');
-  if (pn) pn.textContent = name.split(' ')[0];
-  const pdName  = document.getElementById('pdName');
-  if (pdName)  pdName.textContent  = name;
-  const pdEmail = document.getElementById('pdEmail');
-  if (pdEmail) pdEmail.textContent = email;
-  const pdRole  = document.getElementById('pdRole');
-  if (pdRole)  pdRole.textContent  = roleLabel;
+  if (pn) pn.textContent = pdFullName.split(' ')[0];
+  const pdNameEl  = document.getElementById('pdName');
+  if (pdNameEl)  pdNameEl.textContent  = pdFullName;
+  const pdEmailEl = document.getElementById('pdEmail');
+  if (pdEmailEl) pdEmailEl.textContent = pdUserEmail;
+  const pdRoleEl  = document.getElementById('pdRole');
+  if (pdRoleEl)  pdRoleEl.textContent  = roleLabel[pdRoleKey] || pdRoleKey;
 
   // Show firm dashboard button for primary + secondary admins
   try {
