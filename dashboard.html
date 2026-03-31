@@ -1722,6 +1722,19 @@ document.addEventListener('click', e => {
   }
 });
 
+async function saveReminderEmail() {
+  const email = document.getElementById('pdReminderEmail')?.value.trim();
+  if (!email) { showToast('Please enter an email.'); return; }
+  if (!activeEntity?.id) { showToast('No entity selected.'); return; }
+  const { error } = await sb.from('entities')
+    .update({ email_reminders: email })
+    .eq('id', activeEntity.id);
+  if (error) { showToast('Error: ' + error.message); return; }
+  activeEntity.email_reminders = email;
+  showToast('✅ Reminder email saved!');
+  document.getElementById('profileDrop')?.classList.remove('open');
+}
+  
 async function doLogout() {
   try {
     await sb.auth.signOut();
