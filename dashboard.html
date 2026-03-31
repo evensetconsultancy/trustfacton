@@ -859,7 +859,7 @@ async function showWelcome() {
   const roleLabel = {
     primary_admin:'Primary Admin', secondary_admin:'Secondary Admin',
     staff:'Staff', client:'Client', owner:'Owner', professional:'Professional'
-  }[role] || role;
+  }[pdRoleKey] || pdRoleKey;
 
   const av = document.getElementById('profileAvatar');
   if (av) {
