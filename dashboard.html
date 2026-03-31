@@ -156,15 +156,105 @@ body { background: var(--gray-1); min-height: 100vh; }
 .history-row-done   td { background: #F0FDF4 !important; }
 .history-row-missed td { background: #FEF2F2 !important; }
 
+/* ── Profile dropdown ── */
+.profile-wrap{position:relative;}
+.profile-btn{display:flex;align-items:center;gap:7px;padding:5px 10px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:8px;color:white;cursor:pointer;font-family:'Inter',sans-serif;font-size:.8rem;transition:all .15s;}
+.profile-btn:hover{background:rgba(255,255,255,.18);}
+.profile-avatar{width:26px;height:26px;border-radius:50%;background:#2563EB;color:white;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0;}
+.profile-name{max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.profile-drop{position:absolute;top:calc(100% + 8px);right:0;background:white;border:1px solid var(--gray-3);border-radius:10px;box-shadow:0 8px 32px rgba(0,0,0,.12);min-width:220px;z-index:500;display:none;}
+.profile-drop.open{display:block;}
+.pd-info{padding:14px 16px 10px;text-align:center;}
+.pd-avatar-lg{width:48px;height:48px;border-radius:50%;background:var(--navy);color:white;font-size:1.1rem;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;}
+.pd-name{font-size:.88rem;font-weight:700;color:var(--black);}
+.pd-email{font-size:.74rem;color:var(--gray-5);margin-top:2px;}
+.pd-role-badge{display:inline-block;margin-top:5px;padding:2px 8px;border-radius:10px;font-size:.69rem;font-weight:700;background:#EFF6FF;color:#1E40AF;}
+.pd-divider{height:1px;background:var(--gray-2);margin:2px 0;}
+.pd-item{display:block;width:100%;padding:9px 16px;font-size:.82rem;color:var(--gray-6);text-decoration:none;background:none;border:none;cursor:pointer;font-family:'Inter',sans-serif;text-align:left;transition:background .1s;}
+.pd-item:hover{background:var(--gray-1);color:var(--navy);}
+.pd-logout{color:var(--red)!important;}
+.pd-logout:hover{background:#FEF2F2!important;}
+
+/* ── Mobile improvements ── */
 @media(max-width:1100px){ .stat-grid{grid-template-columns:repeat(3,1fr)!important;} }
 @media(max-width:900px) { .stat-grid{grid-template-columns:repeat(3,1fr)!important;} }
-@media(max-width:640px){
-  .stat-grid{grid-template-columns:1fr 1fr;}
-  .filing-table thead th:nth-child(4),
-  .filing-table tbody td:nth-child(4) { display:none; }
-  .db-welcome { flex-direction: column; align-items: flex-start; }
+/* ── MOBILE ─────────────────────────────────────────── */
+@media(max-width:900px){
+  .stat-grid{grid-template-columns:repeat(3,1fr)!important;}
 }
-@media(max-width:480px){ .stat-grid{grid-template-columns:1fr 1fr;} }
+@media(max-width:640px){
+  /* Stat cards — 2 columns */
+  .stat-grid{grid-template-columns:1fr 1fr!important;gap:8px;}
+  .stat-card{padding:12px 14px;}
+  .sv{font-size:1.5rem!important;}
+
+  /* Header */
+  .db-header-inner{gap:6px;}
+  .db-logo span{font-size:.95rem;}
+  .entity-switcher{max-width:150px;}
+  .db-nav-right{gap:4px;}
+  .profile-name{display:none;}
+  #logoutBtn{display:none;} /* Hide text logout on mobile — use profile dropdown */
+
+  /* Welcome */
+  .db-welcome{flex-direction:column;align-items:flex-start;gap:8px;}
+
+  /* Tabs — horizontal scroll */
+  .db-tabs{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+    border-bottom:2px solid var(--gray-3);
+    white-space:nowrap;
+    display:block;
+    padding-bottom:0;
+  }
+  .db-tabs::-webkit-scrollbar{display:none;}
+  .db-tab{
+    display:inline-block;
+    white-space:nowrap;
+    font-size:.76rem;
+    padding:8px 12px;
+    border-bottom:2px solid transparent;
+    margin-bottom:-2px;
+  }
+
+  /* Month nav + assign task row */
+  .month-nav-row{flex-direction:column;align-items:flex-start!important;gap:8px!important;}
+  .month-nav-row > button{width:100%;}
+
+  /* Category pills — wrap */
+  .cat-pills{flex-wrap:wrap;gap:5px;}
+  .cat-pill{font-size:.72rem;padding:4px 10px;}
+
+  /* Filing table — horizontal scroll */
+  .filing-table-wrap{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    border-radius:10px;
+  }
+  .filing-table{min-width:520px;}
+
+  /* Hide less critical columns on mobile */
+  .filing-table thead th:nth-child(4),
+  .filing-table tbody td:nth-child(4){display:none;}
+
+  /* Action buttons stacked */
+  .done-btn{padding:5px 8px;font-size:.72rem;}
+
+  /* Notices table */
+  .filing-table thead th:nth-child(5),
+  .filing-table tbody td:nth-child(5),
+  .filing-table thead th:nth-child(6),
+  .filing-table tbody td:nth-child(6){display:none;}
+}
+
+@media(max-width:420px){
+  .stat-grid{grid-template-columns:1fr 1fr!important;}
+  .db-logo span{display:none;}
+  .sv{font-size:1.3rem!important;}
+  .filing-table{min-width:480px;}
+}
 </style>
 </head>
 <body>
@@ -195,8 +285,38 @@ body { background: var(--gray-1); min-height: 100vh; }
 
       <div class="db-nav-right">
         <a href="firm-dashboard.html" class="db-nav-btn" id="firmDashBtn" style="display:none;background:#7C3AED;color:white;border-color:#7C3AED">🏢 Firm</a>
-        <button class="db-nav-btn" onclick="window.location.href='settings.html'">⚙ Settings</button>
-        <button class="db-nav-btn" onclick="doLogout()">Logout</button>
+        <button type="button" class="db-nav-btn" id="logoutBtn" onclick="doLogout()" style="border-color:rgba(255,100,100,.4);color:rgba(255,180,180,.9)">Sign Out</button>
+        <!-- Profile dropdown -->
+        <div class="profile-wrap" id="profileWrap">
+          <button class="profile-btn" onclick="toggleProfile()" id="profileBtn">
+            <div class="profile-avatar" id="profileAvatar">?</div>
+            <span class="profile-name" id="profileName">Account</span>
+            <span style="font-size:.65rem;opacity:.7">▾</span>
+          </button>
+          <div class="profile-drop" id="profileDrop">
+            <div class="pd-info">
+              <div class="pd-avatar-lg" id="pdAvatarLg">?</div>
+              <div class="pd-name" id="pdName">—</div>
+              <div class="pd-email" id="pdEmail">—</div>
+              <span class="pd-role-badge" id="pdRole">—</span>
+            </div>
+            <div class="pd-divider"></div>
+            <div class="pd-item pd-email-edit" id="pdEmailEditRow" style="flex-direction:column;align-items:flex-start;gap:4px;cursor:default">
+              <div style="font-size:.72rem;font-weight:600;color:var(--gray-5)">Reminder email</div>
+              <div style="display:flex;gap:6px;width:100%">
+                <input type="email" id="pdReminderEmail" placeholder="your@email.com"
+                  style="flex:1;padding:5px 8px;border:1.5px solid var(--gray-3);border-radius:6px;font-size:.78rem;font-family:'Inter',sans-serif;">
+                <button type="button" onclick="saveReminderEmail()"
+                  style="padding:5px 10px;background:var(--navy);color:white;border:none;border-radius:6px;font-size:.74rem;font-weight:600;cursor:pointer">Save</button>
+              </div>
+            </div>
+            <div class="pd-divider"></div>
+            <a href="settings.html" class="pd-item">⚙ Settings</a>
+            <a href="firm-dashboard.html" class="pd-item" id="pdFirmLink" style="display:none">🏢 Firm Dashboard</a>
+            <div class="pd-divider"></div>
+            <button type="button" class="pd-item pd-logout" onclick="doLogout()">⏻ Sign Out</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -633,12 +753,11 @@ const MONTHS = ['','January','February','March','April','May','June',
   entities = await getMyEntities(currentUser.id);
 
   if (!entities.length) {
-    // No entity yet
-    // If professional role → still show dashboard (they manage client entities)
-    if (currentProfile?.role === 'professional') {
-      // Show empty dashboard with prompt to add clients via firm dashboard
+    const role = currentProfile?.role || 'owner';
+    // Professional with no clients yet
+    if (role === 'professional') {
       renderEntitySwitcher();
-      showWelcome();
+      await showWelcome();
       document.getElementById('filingBody').innerHTML =
         `<tr><td colspan="6" style="text-align:center;padding:36px;color:var(--gray-4)">
           <div style="font-size:1.5rem;margin-bottom:8px">🏢</div>
@@ -648,7 +767,27 @@ const MONTHS = ['','January','February','March','April','May','June',
         </td></tr>`;
       return;
     }
-    // Non-professional with no entity → profile setup
+    // Staff with no assigned clients yet
+    if (role === 'staff' || role === 'professional') {
+      document.getElementById('filingBody').innerHTML =
+        `<tr><td colspan="6" style="text-align:center;padding:36px;color:var(--gray-4)">
+          <div style="font-size:1.5rem;margin-bottom:8px">⏳</div>
+          <div style="font-size:.9rem;font-weight:600;color:var(--black);margin-bottom:6px">No clients assigned yet</div>
+          <div style="font-size:.82rem">Your firm admin hasn't assigned any clients to you yet. Contact your Primary Admin.</div>
+        </td></tr>`;
+      return;
+    }
+    // Client with pending invite (not yet active)
+    if (role === 'client') {
+      document.getElementById('filingBody').innerHTML =
+        `<tr><td colspan="6" style="text-align:center;padding:36px;color:var(--gray-4)">
+          <div style="font-size:1.5rem;margin-bottom:8px">📩</div>
+          <div style="font-size:.9rem;font-weight:600;color:var(--black);margin-bottom:6px">Waiting for access</div>
+          <div style="font-size:.82rem">Your CA is setting up your account. You'll receive an email once access is granted.</div>
+        </td></tr>`;
+      return;
+    }
+    // Regular user with no entity → profile setup
     window.location.href = 'profile-setup.html';
     return;
   }
@@ -715,11 +854,55 @@ async function showWelcome() {
   const tab = document.getElementById('allClientsTab');
   if (tab) tab.style.display = isProf ? 'block' : 'none';
 
-  // Show firm dashboard button for primary admins
+  // Populate profile dropdown
+  const pdFullName  = currentProfile?.name || currentUser?.email?.split('@')[0] || 'User';
+  const pdUserEmail = currentUser?.email || '';
+  const pdRoleKey   = myFirmRole || currentProfile?.role || 'owner';
+  const initials    = pdFullName.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2) || '?';
+  const roleLabel = {
+    primary_admin:'Primary Admin', secondary_admin:'Secondary Admin',
+    staff:'Staff', client:'Client', owner:'Owner', professional:'Professional'
+  }[pdRoleKey] || pdRoleKey;
+
+  const av = document.getElementById('profileAvatar');
+  if (av) {
+    av.textContent = initials;
+    av.style.background = pdRoleKey === 'primary_admin' ? '#1A3A6B' :
+                          pdRoleKey === 'secondary_admin' ? '#6D28D9' :
+                          pdRoleKey === 'staff' ? '#16A34A' :
+                          pdRoleKey === 'client' ? '#2563EB' : '#1A3A6B';
+  }
+  const avLg = document.getElementById('pdAvatarLg');
+  if (avLg) {
+    avLg.textContent = initials;
+    avLg.style.background = pdRoleKey === 'primary_admin' ? '#1A3A6B' :
+                            pdRoleKey === 'secondary_admin' ? '#6D28D9' :
+                            pdRoleKey === 'staff' ? '#16A34A' :
+                            pdRoleKey === 'client' ? '#2563EB' : '#1A3A6B';
+  }
+  // Populate reminder email field
+  const remEl = document.getElementById('pdReminderEmail');
+  if (remEl && activeEntity) {
+    remEl.value = activeEntity.email_reminders || currentUser.email || '';
+  }
+  const pn = document.getElementById('profileName');
+  if (pn) pn.textContent = pdFullName.split(' ')[0];
+  const pdNameEl  = document.getElementById('pdName');
+  if (pdNameEl)  pdNameEl.textContent  = pdFullName;
+  const pdEmailEl = document.getElementById('pdEmail');
+  if (pdEmailEl) pdEmailEl.textContent = pdUserEmail;
+  const pdRoleEl  = document.getElementById('pdRole');
+  if (pdRoleEl)  pdRoleEl.textContent  = roleLabel[pdRoleKey] || pdRoleKey;
+
+  // Show firm dashboard button for primary + secondary admins
   try {
     const isPA = await isPrimaryAdmin(currentUser.id);
     const firmBtn = document.getElementById('firmDashBtn');
-    if (firmBtn && isPA) firmBtn.style.display = 'inline-flex';
+    const showFirm = isPA || myFirmRole === 'secondary_admin' || myFirmRole === 'primary_admin';
+    if (firmBtn) firmBtn.style.display = showFirm ? 'inline-flex' : 'none';
+    // Show firm link in profile dropdown
+    const pdFirmLink = document.getElementById('pdFirmLink');
+    if (pdFirmLink) pdFirmLink.style.display = showFirm ? 'flex' : 'none';
   } catch {}
 }
 
@@ -902,8 +1085,8 @@ function renderDeadlines() {
     const dayLbl   = daysLabel(dl.due, status);
 
     const isClientRole = myFirmRole === 'client';
-    const isStaffRole  = myFirmRole === 'staff';
-    const canEditDate  = !isClientRole && !isStaffRole;
+    const isStaffRole  = myFirmRole === 'staff' && myFirmRole !== 'secondary_admin';
+    const canEditDate  = !isClientRole && myFirmRole !== 'staff';
 
     const actionBtn = status === 'done'
       ? (canEditDate
@@ -1457,7 +1640,9 @@ async function detectFirmRole() {
 function applyRoleUI() {
   const isClient      = myFirmRole === 'client';
   const isStaff       = myFirmRole === 'staff';
+  const isSecondary   = myFirmRole === 'secondary_admin';
   const isPrimary     = myFirmRole === 'primary_admin' || myFirmRole === 'owner';
+  const isAdmin       = isPrimary || isSecondary;
 
   // ── Client restrictions ──
   if (isClient) {
@@ -1527,9 +1712,41 @@ function showRoleBanner(role) {
 }
 
 // ── Logout ────────────────────────────────────────────
+function toggleProfile() {
+  const drop = document.getElementById('profileDrop');
+  drop.classList.toggle('open');
+}
+
+// Close profile dropdown when clicking outside
+document.addEventListener('click', e => {
+  const wrap = document.getElementById('profileWrap');
+  if (wrap && !wrap.contains(e.target)) {
+    document.getElementById('profileDrop')?.classList.remove('open');
+  }
+});
+
+async function saveReminderEmail() {
+  const email = document.getElementById('pdReminderEmail')?.value.trim();
+  if (!email) { showToast('Please enter an email.'); return; }
+  if (!activeEntity?.id) { showToast('No entity selected.'); return; }
+  const { error } = await sb.from('entities')
+    .update({ email_reminders: email })
+    .eq('id', activeEntity.id);
+  if (error) { showToast('Error: ' + error.message); return; }
+  activeEntity.email_reminders = email;
+  showToast('✅ Reminder email saved!');
+  document.getElementById('profileDrop')?.classList.remove('open');
+}
+
 async function doLogout() {
-  await sb.auth.signOut();
-  window.location.href = 'index.html';
+  try {
+    await sb.auth.signOut();
+  } catch(e) {
+    console.log('Signout error:', e);
+  } finally {
+    // Always redirect even if signout fails
+    window.location.href = 'index.html';
+  }
 }
 
 // ── Toast ─────────────────────────────────────────────
