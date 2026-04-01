@@ -508,9 +508,8 @@ function renderClientTable(clients) {
     return;
   }
 
-  // Only primary_admin can delete
-  const isCurrentUserPrimary = currentProfile?.role === 'primary_admin' ||
-    allStaff.find(s => s.id === currentUser.id)?.firm_role !== 'secondary_admin';
+  // Only strict primary_admin can delete — checked via isStrictPA flag set at init
+  const isCurrentUserPrimary = isStrictPA;
 
   body.innerHTML = clients.map(c => {
     const gst  = c.gst_regular || c.gst_qrmp || c.gst_composition || c.gst;
