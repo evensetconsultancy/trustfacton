@@ -956,12 +956,24 @@ async function loadEntityData() {
 
     // Compute deadlines synchronously
     const refDate = new Date(dlYear, dlMonth - 1, 1);
-    deadlines = getEntityDeadlines(reg, refDate);
-    deadlines.sort((a,b) => a.due - b.due);
+    let allDeadlines = getEntityDeadlines(reg, refDate);
+    allDeadlines.sort((a,b) => a.due - b.due);
+
     updateMonthLabel();
 
-    // Load filings from DB
+    // Load filings from DB FIRST before filtering
     allFilings = await getEntityFilings(activeEntity.id);
+
+    // Task-level staff: only show filings assigned to them
+    // Client-level staff: show all filings for that client
+    if (myFirmRole === 'staff' && activeEntity.assignment_type === 'task') {
+      deadlines = allDeadlines.filter(dl => {
+        const f = allFilings.find(f => f.deadline_key === dl.key);
+        return f?.assigned_to === currentUser.id;
+      });
+    } else {
+      deadlines = allDeadlines;
+    }
 
     // Load notices
     try { await loadNoticesData(); } catch { allNotices = []; }
@@ -1300,20 +1312,18 @@ async function openAssignTask() {
     }
   });
 
-  // Populate members dropdown
-  const { data: members } = await sb
-    .from('entity_members')
-    .select('user_id, profiles(name)')
-    .eq('entity_id', activeEntity.id)
-    .eq('status', 'active');
+  // Populate members dropdown — all firm staff via SECURITY DEFINER RPC
+  const { data: members, error: mErr } = await sb.rpc('get_firm_staff_for_entity', {
+    p_entity_id: activeEntity.id
+  });
 
   const msel = document.getElementById('assignMember');
   msel.innerHTML = '<option value="">— Select member —</option>';
   (members || []).forEach(m => {
-    if (m.profiles?.name) {
+    if (m.user_id && m.name) {
       const opt = document.createElement('option');
       opt.value = m.user_id;
-      opt.textContent = m.profiles.name;
+      opt.textContent = m.name + (m.firm_role === 'primary_admin' || m.firm_role === 'owner' ? ' (Admin)' : '');
       msel.appendChild(opt);
     }
   });

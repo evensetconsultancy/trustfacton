@@ -44,12 +44,21 @@ async function getMyEntities(userId) {
 
   const firmRole = memberCheck?.firm_role;
 
-  // Staff: only return entities explicitly assigned to them by admin
+  // Staff: only return entities explicitly assigned to them (client or task level)
   if (firmRole === 'staff') {
     const { data: staffEntities } = await sb.rpc('get_staff_entities', {
       p_staff_id: userId
     });
-    return (staffEntities || []).map(e => ({
+
+    // Deduplicate by entity_id (may appear twice if both client + task assigned)
+    const seen = new Set();
+    const unique = (staffEntities || []).filter(e => {
+      if (seen.has(e.entity_id)) return false;
+      seen.add(e.entity_id);
+      return true;
+    });
+
+    return unique.map(e => ({
       id:              e.entity_id,
       name:            e.entity_name,
       type:            e.entity_type,
@@ -60,6 +69,7 @@ async function getMyEntities(userId) {
       email_reminders: e.email_reminders,
       my_role:         'professional',
       my_firm_role:    'staff',
+      assignment_type: e.assignment_type, // 'client' or 'task'
       registrations:   {},
     }));
   }
