@@ -508,6 +508,7 @@ async function getFirmStaff(adminUserId) {
       staff.push({
         id:        m.user_id,
         name:      m.name || 'Unknown',
+        email:     m.email || '',
         firm_role: m.firm_role,
         entityId:  m.entity_id,
       });

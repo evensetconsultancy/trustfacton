@@ -796,7 +796,7 @@ const MONTHS = ['','January','February','March','April','May','June',
   try {
     await acceptPendingInvitations(currentUser.email);
     entities = await getMyEntities(currentUser.id);
-  } catch { /* ignore if accept_invitation RPC not deployed yet */ }
+  } catch { /* ignore if RPC unavailable */ }
 
   // Client with single entity → use that entity directly
   activeEntity = entities[0];
@@ -835,7 +835,7 @@ function hideSetupBanner() {
 
 async function acceptPendingInvitations(email) {
   try {
-    const { error } = await sb.rpc('accept_invitation', { p_email: email, p_user_id: currentUser.id });
+    const { error } = await sb.rpc('accept_staff_invites', { p_user_id: currentUser.id, p_email: email });
     if (!error) entities = await getMyEntities(currentUser.id);
   } catch {}
 }
@@ -1172,23 +1172,33 @@ async function sendInvite() {
   const msg   = document.getElementById('inviteMsg');
   if (!email) { showToast('Enter an email address.'); return; }
 
-  const { error } = await sb.from('entity_members').insert({
-    entity_id:    activeEntity.id,
-    invited_email:email,
-    role,
-    status:      'pending',
-    invited_by:  currentUser.id,
-  });
-
-  if (error) {
-    msg.style.cssText = 'display:block;color:var(--red)';
-    msg.textContent = error.message.includes('unique') ? 'This email is already invited.' : error.message;
+  // Use SECURITY DEFINER RPC — bypasses RLS for pending invite insert
+  const firmRole = role === 'professional' ? 'staff' : 'client';
+  let rpcError;
+  if (firmRole === 'client') {
+    const { error } = await sb.rpc('invite_client', {
+      p_entity_id: activeEntity.id,
+      p_email:     email,
+      p_admin_id:  currentUser.id,
+    });
+    rpcError = error;
   } else {
-    // Send invitation email via Supabase Auth
+    const { error } = await sb.rpc('invite_staff', {
+      p_email:    email,
+      p_admin_id: currentUser.id,
+    });
+    rpcError = error;
+  }
+
+  if (rpcError) {
+    msg.style.cssText = 'display:block;color:var(--red)';
+    msg.textContent = rpcError.message.includes('unique') ? 'This email is already invited.' : rpcError.message;
+  } else {
     await sb.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: window.location.origin + '/dashboard.html',
+        shouldCreateUser: true,
+        emailRedirectTo: 'https://trustfacton.com/accept-invite.html',
         data: { invited_by: currentProfile?.name, entity: activeEntity.name }
       }
     });

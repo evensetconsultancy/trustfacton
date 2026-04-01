@@ -458,13 +458,32 @@ async function loadAll() {
   allStaff   = await getFirmStaff(currentUser.id);
   renderClientTable(allClients);
   populateStaffFilter();
-  updateStats();
+  await updateStats();
 }
 
 // ── Stats ─────────────────────────────────────────────
-function updateStats() {
+async function updateStats() {
   document.getElementById('fs-clients').textContent = allClients.length;
   document.getElementById('fs-staff').textContent   = allStaff.length;
+  // Compute overdue + done this month across all clients
+  const today      = new Date(); today.setHours(0,0,0,0);
+  const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
+  let totalOverdue = 0, totalDone = 0;
+  for (const client of allClients) {
+    const filings   = await getEntityFilings(client.entity_id);
+    const deadlines = getEntityDeadlines(client, new Date());
+    deadlines.forEach(dl => {
+      const f = filings.find(f => f.deadline_key === dl.key);
+      if (f?.status === 'done') {
+        if (f.done_at && new Date(f.done_at) >= monthStart) totalDone++;
+      } else {
+        const diff = Math.round((new Date(dl.due) - today) / 86400000);
+        if (diff < 0) totalOverdue++;
+      }
+    });
+  }
+  document.getElementById('fs-overdue').textContent = totalOverdue || '0';
+  document.getElementById('fs-done').textContent    = totalDone    || '0';
 }
 
 // ── Tab switching ─────────────────────────────────────
@@ -713,18 +732,14 @@ async function saveNewClient() {
 
   // Send client invite if email provided
   if (invite) {
-    await sb.from('entity_members').insert({
-      entity_id: ent, invited_email: invite,
-      firm_role: 'client', role: 'client',
-      status: 'pending', invited_by: currentUser.id,
-    });
+    await sb.rpc('invite_client', { p_entity_id: ent, p_email: invite, p_admin_id: currentUser.id });
     await sb.auth.signInWithOtp({ email: invite, options: { shouldCreateUser: true, emailRedirectTo: 'https://trustfacton.com/accept-invite.html' } });
   }
 
   document.getElementById('addClientModal').classList.remove('open');
   allClients = await getFirmClients(currentUser.id);
   renderClientTable(allClients);
-  updateStats();
+  await updateStats();
   showToast('✅ Client added!' + (invite ? ' Invitation sent.' : ''));
 }
 
@@ -732,11 +747,7 @@ async function saveNewClient() {
 async function inviteClient(entityId, name) {
   const email = prompt(`Enter client email to invite for ${name}:`);
   if (!email) return;
-  const { error } = await sb.rpc('invite_client', {
-    p_entity_id: entityId,
-    p_email:     email,
-    p_admin_id:  currentUser.id,
-  });
+  const { error } = await sb.rpc('invite_client', { p_entity_id: entityId, p_email: email, p_admin_id: currentUser.id });
   if (error) { showToast('Error: ' + error.message); return; }
   await sb.auth.signInWithOtp({ email, options: { shouldCreateUser: true, emailRedirectTo: 'https://trustfacton.com/accept-invite.html' } });
   allClients = await getFirmClients(currentUser.id);
@@ -758,7 +769,7 @@ async function confirmDelete() {
   if (error) { showToast('Error: ' + error.message); return; }
   allClients = allClients.filter(c => c.entity_id !== entityId);
   renderClientTable(allClients);
-  updateStats();
+  await updateStats();
   showToast('Client deleted.');
 }
 
@@ -788,7 +799,7 @@ function renderStaffGrid() {
             ? `<button class="ab ab-blue" onclick="changeStaffRole('${s.entityId}','${s.id}','staff')">↓ Demote to Staff</button>`
             : `<button class="ab ab-green" onclick="changeStaffRole('${s.entityId}','${s.id}','secondary_admin')">↑ Make Secondary Admin</button>`
           }
-          <button class="ab ab-red" onclick="removeStaff('${s.entityId}','${s.id}','${s.name}')">Remove</button>
+          <button class="ab ab-red" onclick="removeStaff('${s.id}','${s.name}')">Remove</button>
         </div>` : ''}
     </div>`;
   }).join('');
@@ -803,19 +814,22 @@ function openInviteStaff() {
 async function sendStaffInvite() {
   const email = document.getElementById('is-email').value.trim();
   if (!email) { showToast('Please enter an email.'); return; }
-  // invite_staff v2: no entity_ids needed — function auto-finds admin's firm entity
+  const btn = document.querySelector('#inviteStaffModal .m-sub');
+  if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+  // v2: no entity_ids — invite_staff auto-finds admin firm entity
   const errors = await inviteStaffMember(email, currentUser.id, currentProfile?.name || '');
   document.getElementById('inviteStaffModal').classList.remove('open');
+  if (btn) { btn.disabled = false; btn.textContent = 'Send Invite →'; }
   if (errors.length) { showToast('Some errors: ' + errors[0]); return; }
-  loadPendingInvites();
-  showToast('✅ Staff invitation sent!');
+  showToast('✅ Staff invitation sent! They will receive an email.');
 }
 
 // ── Pending invites ───────────────────────────────────
 async function loadPendingInvites() {
+  const body = document.getElementById('inviteBody');
+  body.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:18px;color:var(--gray-4)">Loading…</td></tr>`;
   // SECURITY DEFINER RPC — sees pending rows (user_id=null) that RLS would block
   const { data, error } = await sb.rpc('get_pending_invites', { p_admin_id: currentUser.id });
-  const body = document.getElementById('inviteBody');
   if (!data?.length) {
     body.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--gray-4)">No pending invites</td></tr>`;
     return;
@@ -838,7 +852,6 @@ async function resendInvite(email) {
 }
 
 async function cancelInvite(id) {
-  // SECURITY DEFINER RPC — safe admin-only delete
   const { error } = await sb.rpc('cancel_invite', { p_invite_id: id, p_admin_id: currentUser.id });
   if (error) { showToast('Error: ' + error.message); return; }
   loadPendingInvites();
@@ -857,18 +870,7 @@ async function changeStaffRole(entityId, userId, newRole) {
   showToast(`✅ Role updated to ${label}`);
 }
 
-async function removeStaff(entityId, userId, name) {
-  if (!confirm(`Remove ${name} from your firm?`)) return;
-  const { error } = await sb.from('entity_members')
-    .delete()
-    .eq('entity_id', entityId)
-    .eq('user_id', userId)
-    .eq('firm_role', 'staff');
-  if (error) { showToast('Error: ' + error.message); return; }
-  allStaff = await getFirmStaff(currentUser.id);
-  renderStaffGrid();
-  showToast(`${name} removed from firm.`);
-}
+// removeStaff v2 defined below (removes from all entities)
 
 async function toggleSecondaryAdmin(userId, name, isCurrentlySecondary) {
   const newRole = isCurrentlySecondary ? 'staff' : 'secondary_admin';
