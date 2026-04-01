@@ -33,10 +33,42 @@ async function getProfile(userId) {
 
 // ── Entity helpers ───────────────────────────────────
 async function getMyEntities(userId) {
+  // First check if this user is a staff member
+  const { data: memberCheck } = await sb
+    .from('entity_members')
+    .select('firm_role')
+    .eq('user_id', userId)
+    .eq('status', 'active')
+    .limit(1)
+    .single();
+
+  const firmRole = memberCheck?.firm_role;
+
+  // Staff: only return entities explicitly assigned to them by admin
+  if (firmRole === 'staff') {
+    const { data: staffEntities } = await sb.rpc('get_staff_entities', {
+      p_staff_id: userId
+    });
+    return (staffEntities || []).map(e => ({
+      id:              e.entity_id,
+      name:            e.entity_name,
+      type:            e.entity_type,
+      pan:             e.pan,
+      gstin:           e.gstin,
+      tan:             e.tan,
+      cin_llpin:       e.cin_llpin,
+      email_reminders: e.email_reminders,
+      my_role:         'professional',
+      my_firm_role:    'staff',
+      registrations:   {},
+    }));
+  }
+
+  // Everyone else: normal query
   const { data } = await sb
     .from('entity_members')
     .select(`
-      role, status,
+      role, firm_role, status,
       entities (
         id, name, type, pan, gstin, cin_llpin, tan, email_reminders,
         registrations (*)
@@ -44,12 +76,11 @@ async function getMyEntities(userId) {
     `)
     .eq('user_id', userId)
     .eq('status', 'active');
+
   return (data || [])
-    .filter(m => m.entities && m.entities.id)   // skip orphan rows
+    .filter(m => m.entities && m.entities.id)
     .map(m => {
-      const entity = { ...m.entities, my_role: m.role };
-      // Supabase returns registrations as an ARRAY (one-to-many join)
-      // Flatten to object so reg.gst, reg.tds etc work correctly
+      const entity = { ...m.entities, my_role: m.role, my_firm_role: m.firm_role };
       if (Array.isArray(entity.registrations)) {
         entity.registrations = entity.registrations[0] || {};
       }

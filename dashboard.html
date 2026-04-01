@@ -303,11 +303,14 @@ body { background: var(--gray-1); min-height: 100vh; }
             <div class="pd-divider"></div>
             <div class="pd-item pd-email-edit" id="pdEmailEditRow" style="flex-direction:column;align-items:flex-start;gap:4px;cursor:default">
               <div style="font-size:.72rem;font-weight:600;color:var(--gray-5)">Reminder email</div>
-              <div style="display:flex;gap:6px;width:100%">
+              <div style="display:flex;gap:6px;width:100%" id="reminderEmailRow">
                 <input type="email" id="pdReminderEmail" placeholder="your@email.com"
                   style="flex:1;padding:5px 8px;border:1.5px solid var(--gray-3);border-radius:6px;font-size:.78rem;font-family:'Inter',sans-serif;">
                 <button type="button" onclick="saveReminderEmail()"
                   style="padding:5px 10px;background:var(--navy);color:white;border:none;border-radius:6px;font-size:.74rem;font-weight:600;cursor:pointer">Save</button>
+              </div>
+              <div id="reminderEmailReadonly" style="display:none;font-size:.75rem;color:var(--gray-5)">
+                Managed by your firm admin
               </div>
             </div>
             <div class="pd-divider"></div>
@@ -1668,6 +1671,11 @@ function applyRoleUI() {
 
   if (isStaff) {
     showRoleBanner('staff');
+    // Hide reminder email edit — staff cannot change entity reminder email
+    const reminderRow     = document.getElementById('reminderEmailRow');
+    const reminderReadonly= document.getElementById('reminderEmailReadonly');
+    if (reminderRow)      reminderRow.style.display     = 'none';
+    if (reminderReadonly) reminderReadonly.style.display = 'block';
   }
 
   // ── Hide Team tab for staff + client ──
@@ -1736,6 +1744,11 @@ document.addEventListener('click', e => {
 });
 
 async function saveReminderEmail() {
+  // Only owners and primary_admin can change entity reminder email
+  if (myFirmRole === 'staff' || myFirmRole === 'client') {
+    showToast('Only the account owner can change the reminder email.');
+    return;
+  }
   const email = document.getElementById('pdReminderEmail')?.value.trim();
   if (!email) { showToast('Please enter an email.'); return; }
   if (!activeEntity?.id) { showToast('No entity selected.'); return; }
