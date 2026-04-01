@@ -566,44 +566,26 @@ async function inviteStaffMember(email, adminUserId, adminName) {
   });
   if (error) return [error.message];
 
-  // Step 2: send branded Template B via Edge Function (Zoho SMTP + magic link)
-  try {
-    const { data: { session } } = await sb.auth.getSession();
-    const res = await fetch(`${SUPABASE_URL}/functions/v1/send-invite`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${session?.access_token ?? SUPABASE_ANON_KEY}`,
-      },
-      body: JSON.stringify({ type: 'staff', to: email, adminName }),
-    });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      return [err.error || 'Email delivery failed'];
+  // Step 2: send magic link email via Supabase (uses Zoho SMTP configured in dashboard)
+  const { error: otpErr } = await sb.auth.signInWithOtp({
+    email,
+    options: {
+      shouldCreateUser: true,
+      emailRedirectTo: 'https://trustfacton.com/accept-invite.html',
     }
-  } catch(e) {
-    return [e.message];
-  }
+  });
+  if (otpErr) console.warn('invite email warning:', otpErr.message);
   return [];
 }
 
 async function sendClientInviteEmail(email, adminName, entityName) {
-  // Template C via Edge Function (Zoho SMTP + magic link)
-  try {
-    const { data: { session } } = await sb.auth.getSession();
-    const res = await fetch(`${SUPABASE_URL}/functions/v1/send-invite`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${session?.access_token ?? SUPABASE_ANON_KEY}`,
-      },
-      body: JSON.stringify({ type: 'client', to: email, adminName, entityName }),
-    });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      console.warn('client invite email error:', err);
+  // Send magic link email via Supabase (uses Zoho SMTP configured in dashboard)
+  const { error } = await sb.auth.signInWithOtp({
+    email,
+    options: {
+      shouldCreateUser: true,
+      emailRedirectTo: 'https://trustfacton.com/accept-invite.html',
     }
-  } catch(e) {
-    console.warn('client invite fetch error:', e);
-  }
+  });
+  if (error) console.warn('client invite email warning:', error.message);
 }
