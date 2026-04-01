@@ -497,24 +497,17 @@ async function getFirmClients(adminId) {
 }
 
 async function getFirmStaff(adminUserId) {
-  const myEntities = await getMyEntities(adminUserId);
-  const myEntityIds = myEntities.map(e => e.id);
-  if (!myEntityIds.length) return [];
-
-  const { data } = await sb.from('entity_members')
-    .select('user_id, firm_role, entity_id, profiles(name, id)')
-    .in('firm_role', ['staff','secondary_admin'])
-    .eq('status', 'active')
-    .in('entity_id', myEntityIds);
-
+  // SECURITY DEFINER RPC — bypasses RLS (staff rows have user_id ≠ admin uid)
+  const { data, error } = await sb.rpc('get_firm_staff', { p_admin_id: adminUserId });
+  if (error) { console.error('getFirmStaff:', error); return []; }
   const staff = [];
-  const seen = new Set();
+  const seen  = new Set();
   (data || []).forEach(m => {
     if (!seen.has(m.user_id)) {
       seen.add(m.user_id);
       staff.push({
         id:        m.user_id,
-        name:      m.profiles?.name || 'Unknown',
+        name:      m.name || 'Unknown',
         firm_role: m.firm_role,
         entityId:  m.entity_id,
       });
@@ -565,26 +558,21 @@ async function deleteClientEntity(entityId, adminUserId) {
 }
 
 async function inviteStaffMember(entityIds, email, adminUserId, adminName) {
-  // Add staff to multiple entities
-  const errors = [];
-  for (const entityId of entityIds) {
-    const { error } = await sb.from('entity_members').upsert({
-      entity_id:    entityId,
-      invited_email:email,
-      firm_role:    'staff',
-      role:         'professional',
-      status:       'pending',
-      invited_by:   adminUserId,
-    }, { onConflict: 'entity_id,invited_email' });
-    if (error) errors.push(error.message);
-  }
-  // Send invitation email
-  await sb.auth.signInWithOtp({
+  // SECURITY DEFINER RPC — bypasses RLS (pending rows have user_id = null)
+  const { error } = await sb.rpc('invite_staff', {
+    p_entity_ids: entityIds,
+    p_email:      email,
+    p_admin_id:   adminUserId,
+  });
+  if (error) return [error.message];
+  // Send OTP invitation email
+  const { error: otpErr } = await sb.auth.signInWithOtp({
     email,
     options: {
       shouldCreateUser: true,
       data: { role: 'professional', invited_by: adminName }
     }
   });
-  return errors;
+  if (otpErr) console.warn('OTP send warning:', otpErr.message);
+  return []; // success
 }

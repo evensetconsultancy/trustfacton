@@ -145,7 +145,25 @@ async function verifyCode() {
     );
     return;
   }
-  window.location.href = 'dashboard.html';
+
+  // Accept any pending staff/client invites for this email
+  const { data: { user } } = await sb.auth.getUser();
+  if (user) {
+    try {
+      await sb.rpc('accept_staff_invites', {
+        p_user_id: user.id,
+        p_email:   user.email,
+      });
+    } catch(e) { console.warn('accept_staff_invites:', e); }
+  }
+
+  // Smart redirect: professionals go to firm dashboard
+  const profile = user ? await getProfile(user.id) : null;
+  if (profile?.role === 'professional') {
+    window.location.href = 'firm-dashboard.html';
+  } else {
+    window.location.href = 'dashboard.html';
+  }
 }
 
 async function resendCode() {

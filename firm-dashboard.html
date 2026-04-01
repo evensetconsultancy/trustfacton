@@ -732,12 +732,12 @@ async function saveNewClient() {
 async function inviteClient(entityId, name) {
   const email = prompt(`Enter client email to invite for ${name}:`);
   if (!email) return;
-  const { error } = await sb.from('entity_members').insert({
-    entity_id: entityId, invited_email: email,
-    firm_role: 'client', role: 'client',
-    status: 'pending', invited_by: currentUser.id,
+  const { error } = await sb.rpc('invite_client', {
+    p_entity_id: entityId,
+    p_email:     email,
+    p_admin_id:  currentUser.id,
   });
-  if (error && !error.message.includes('unique')) { showToast('Error: ' + error.message); return; }
+  if (error) { showToast('Error: ' + error.message); return; }
   await sb.auth.signInWithOtp({ email, options: { shouldCreateUser: true } });
   allClients = await getFirmClients(currentUser.id);
   renderClientTable(allClients);
@@ -812,10 +812,8 @@ async function sendStaffInvite() {
 
 // ── Pending invites ───────────────────────────────────
 async function loadPendingInvites() {
-  const { data } = await sb.from('entity_members')
-    .select('*, entities(name)')
-    .eq('status', 'pending')
-    .in('entity_id', allClients.map(c => c.entity_id));
+  // SECURITY DEFINER RPC — sees pending rows (user_id=null) that RLS would block
+  const { data, error } = await sb.rpc('get_pending_invites', { p_admin_id: currentUser.id });
   const body = document.getElementById('inviteBody');
   if (!data?.length) {
     body.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--gray-4)">No pending invites</td></tr>`;
@@ -823,8 +821,8 @@ async function loadPendingInvites() {
   }
   body.innerHTML = data.map(m => `<tr>
     <td style="font-size:.82rem">${m.invited_email||'—'}</td>
-    <td><span style="font-size:.72rem;font-weight:700;background:#EFF6FF;color:#1E40AF;padding:2px 7px;border-radius:4px">${m.firm_role||m.role}</span></td>
-    <td style="font-size:.79rem;color:var(--gray-5)">${m.entities?.name||'—'}</td>
+    <td><span style="font-size:.72rem;font-weight:700;background:#EFF6FF;color:#1E40AF;padding:2px 7px;border-radius:4px">${m.firm_role}</span></td>
+    <td style="font-size:.79rem;color:var(--gray-5)">${m.entity_name||'—'}</td>
     <td style="font-size:.74rem;color:var(--gray-5)">${new Date(m.created_at).toLocaleDateString('en-IN')}</td>
     <td>
       <button class="ab ab-blue" onclick="resendInvite('${m.invited_email}')">Resend</button>
@@ -839,7 +837,9 @@ async function resendInvite(email) {
 }
 
 async function cancelInvite(id) {
-  await sb.from('entity_members').delete().eq('id', id);
+  // SECURITY DEFINER RPC — safe admin-only delete
+  const { error } = await sb.rpc('cancel_invite', { p_invite_id: id, p_admin_id: currentUser.id });
+  if (error) { showToast('Error: ' + error.message); return; }
   loadPendingInvites();
   showToast('Invite cancelled.');
 }
