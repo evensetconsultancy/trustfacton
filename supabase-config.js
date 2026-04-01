@@ -58,20 +58,30 @@ async function getMyEntities(userId) {
       return true;
     });
 
-    return unique.map(e => ({
-      id:              e.entity_id,
-      name:            e.entity_name,
-      type:            e.entity_type,
-      pan:             e.pan,
-      gstin:           e.gstin,
-      tan:             e.tan,
-      cin_llpin:       e.cin_llpin,
-      email_reminders: e.email_reminders,
-      my_role:         'professional',
-      my_firm_role:    'staff',
-      assignment_type: e.assignment_type, // 'client' or 'task'
-      registrations:   {},
-    }));
+    // Load registrations for each entity so deadlines compute correctly
+    const result = [];
+    for (const e of unique) {
+      const { data: reg } = await sb
+        .from('registrations')
+        .select('*')
+        .eq('entity_id', e.entity_id)
+        .single();
+      result.push({
+        id:              e.entity_id,
+        name:            e.entity_name,
+        type:            e.entity_type,
+        pan:             e.pan,
+        gstin:           e.gstin,
+        tan:             e.tan,
+        cin_llpin:       e.cin_llpin,
+        email_reminders: e.email_reminders,
+        my_role:         'professional',
+        my_firm_role:    'staff',
+        assignment_type: e.assignment_type,
+        registrations:   reg || {},
+      });
+    }
+    return result;
   }
 
   // Everyone else: normal query
