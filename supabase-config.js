@@ -40,7 +40,7 @@ async function getMyEntities(userId) {
     .eq('user_id', userId)
     .eq('status', 'active')
     .limit(1)
-    .single();
+    .maybeSingle();
 
   const firmRole = memberCheck?.firm_role;
 
@@ -65,7 +65,7 @@ async function getMyEntities(userId) {
         .from('registrations')
         .select('*')
         .eq('entity_id', e.entity_id)
-        .single();
+        .maybeSingle();
       result.push({
         id:              e.entity_id,
         name:            e.entity_name,
