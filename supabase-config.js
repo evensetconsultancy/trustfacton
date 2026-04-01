@@ -559,21 +559,51 @@ async function deleteClientEntity(entityId, adminUserId) {
 }
 
 async function inviteStaffMember(email, adminUserId, adminName) {
-  // SECURITY DEFINER RPC v2 — auto-finds admin's firm entity, no entity_ids needed
+  // Step 1: create pending DB row via SECURITY DEFINER RPC
   const { error } = await sb.rpc('invite_staff', {
     p_email:    email,
     p_admin_id: adminUserId,
   });
   if (error) return [error.message];
-  // Send magic link — redirects to accept-invite.html on click
-  const { error: otpErr } = await sb.auth.signInWithOtp({
-    email,
-    options: {
-      shouldCreateUser: true,
-      emailRedirectTo: 'https://trustfacton.com/accept-invite.html',
-      data: { role: 'staff', invited_by: adminName }
+
+  // Step 2: send branded Template B via Edge Function (Zoho SMTP + magic link)
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    const res = await fetch(`${SUPABASE_URL}/functions/v1/send-invite`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${session?.access_token ?? SUPABASE_ANON_KEY}`,
+      },
+      body: JSON.stringify({ type: 'staff', to: email, adminName }),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      return [err.error || 'Email delivery failed'];
     }
-  });
-  if (otpErr) console.warn('OTP send warning:', otpErr.message);
-  return []; // success
+  } catch(e) {
+    return [e.message];
+  }
+  return [];
+}
+
+async function sendClientInviteEmail(email, adminName, entityName) {
+  // Template C via Edge Function (Zoho SMTP + magic link)
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    const res = await fetch(`${SUPABASE_URL}/functions/v1/send-invite`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${session?.access_token ?? SUPABASE_ANON_KEY}`,
+      },
+      body: JSON.stringify({ type: 'client', to: email, adminName, entityName }),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      console.warn('client invite email error:', err);
+    }
+  } catch(e) {
+    console.warn('client invite fetch error:', e);
+  }
 }

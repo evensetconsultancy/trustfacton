@@ -732,7 +732,7 @@ async function saveNewClient() {
   // Send client invite if email provided
   if (invite) {
     await sb.rpc('invite_client', { p_entity_id: ent, p_email: invite, p_admin_id: currentUser.id });
-    await sb.auth.signInWithOtp({ email: invite, options: { shouldCreateUser: true, emailRedirectTo: 'https://trustfacton.com/accept-invite.html' } });
+    await sendClientInviteEmail(invite, currentProfile?.name || 'TrustFactON', name);
   }
 
   document.getElementById('addClientModal').classList.remove('open');
@@ -748,7 +748,7 @@ async function inviteClient(entityId, name) {
   if (!email) return;
   const { error } = await sb.rpc('invite_client', { p_entity_id: entityId, p_email: email, p_admin_id: currentUser.id });
   if (error) { showToast('Error: ' + error.message); return; }
-  await sb.auth.signInWithOtp({ email, options: { shouldCreateUser: true, emailRedirectTo: 'https://trustfacton.com/accept-invite.html' } });
+  await sendClientInviteEmail(email, currentProfile?.name || 'TrustFactON', name);
   allClients = await getFirmClients(currentUser.id);
   renderClientTable(allClients);
   showToast('✅ Invitation sent to ' + email);
@@ -846,7 +846,7 @@ async function loadPendingInvites() {
 }
 
 async function resendInvite(email) {
-  await sb.auth.signInWithOtp({ email, options: { shouldCreateUser: true, emailRedirectTo: 'https://trustfacton.com/accept-invite.html' } });
+  await sendClientInviteEmail(email, currentProfile?.name || 'TrustFactON', name);
   showToast('✅ Invite resent to ' + email);
 }
 
