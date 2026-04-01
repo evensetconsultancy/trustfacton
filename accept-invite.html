@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Accept Invitation — TrustFactON</title>
+<link rel="stylesheet" href="style.css">
+<style>
+body{background:var(--gray-1);display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;}
+.wrap{width:100%;max-width:420px;}
+.logo{text-align:center;margin-bottom:24px;}
+.logo img{width:46px;height:46px;object-fit:contain;mix-blend-mode:multiply;}
+.logo-name{font-family:'Playfair Display',Georgia,serif;font-size:1.3rem;color:var(--navy);font-weight:700;margin-top:5px;}
+.logo-name .accent{color:var(--blue);}
+.card{background:white;border-radius:14px;border:1px solid var(--gray-3);padding:32px;box-shadow:0 4px 24px rgba(0,0,0,.06);}
+.card h2{font-size:1.15rem;color:var(--black);margin-bottom:6px;}
+.card p{font-size:0.84rem;color:var(--gray-5);margin-bottom:22px;line-height:1.55;}
+.fg{margin-bottom:16px;}
+.fg label{display:block;font-size:0.79rem;font-weight:600;color:var(--gray-6);margin-bottom:5px;}
+.fg input{width:100%;padding:10px 12px;border:1.5px solid var(--gray-3);border-radius:8px;font-size:0.87rem;font-family:'Inter',sans-serif;color:var(--black);background:white;transition:border-color .15s,box-shadow .15s;box-sizing:border-box;}
+.fg input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.08);}
+.btn-full{width:100%;padding:11px;background:var(--navy);color:white;border:none;border-radius:8px;font-size:0.9rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:background .15s;}
+.btn-full:hover{background:#0F2444;}
+.btn-full:disabled{background:var(--gray-4);cursor:not-allowed;}
+.err{background:#FEF2F2;border:1px solid #FECACA;border-radius:8px;padding:9px 12px;font-size:0.81rem;color:#991B1B;margin-bottom:14px;display:none;}
+.err.show{display:block;}
+.badge{display:inline-flex;align-items:center;gap:6px;background:#EFF6FF;color:#1E40AF;border-radius:6px;padding:5px 10px;font-size:0.78rem;font-weight:600;margin-bottom:18px;}
+.spin{display:inline-block;width:18px;height:18px;border:2px solid #CBD5E1;border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.center{text-align:center;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo">
+    <img src="trustlogotrans.png" alt="TrustFactON">
+    <div class="logo-name">Trust<span class="accent">Fact</span>ON</div>
+  </div>
+
+  <!-- Loading state -->
+  <div class="card center" id="stateLoading">
+    <div class="spin" style="width:32px;height:32px;margin:0 auto 16px;"></div>
+    <p style="margin:0;color:var(--gray-5);">Verifying your invitation…</p>
+  </div>
+
+  <!-- Name collection form -->
+  <div class="card" id="stateForm" style="display:none;">
+    <div class="badge">✉️ Invitation Accepted</div>
+    <h2>Welcome to TrustFactON!</h2>
+    <p id="welcomeMsg">You've been invited to join a firm. Please enter your name to complete setup.</p>
+    <div class="err" id="formErr"></div>
+    <div class="fg">
+      <label>Your Full Name</label>
+      <input type="text" id="nameInput" placeholder="e.g. Ravi Kumar"
+        onkeydown="if(event.key==='Enter')completeSetup()">
+    </div>
+    <button class="btn-full" id="submitBtn" onclick="completeSetup()">Complete Setup →</button>
+  </div>
+
+  <!-- Error state -->
+  <div class="card center" id="stateError" style="display:none;">
+    <div style="font-size:2rem;margin-bottom:12px;">⚠️</div>
+    <h2 style="margin-bottom:8px;">Link Expired</h2>
+    <p id="errMsg">This invitation link has expired or already been used.</p>
+    <a href="login.html" style="display:block;margin-top:18px;padding:10px;background:var(--navy);color:white;border-radius:8px;text-decoration:none;font-weight:600;font-size:.88rem;">
+      Go to Login →
+    </a>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script>
+let currentUser = null;
+let inviteRole  = 'staff'; // or 'client'
+
+(async () => {
+  // Supabase magic link puts tokens in the URL hash — exchange them for a session
+  const { data: { session }, error } = await sb.auth.getSession();
+
+  if (!session) {
+    // Try to exchange the hash tokens (magic link click)
+    const hashParams = new URLSearchParams(window.location.hash.replace('#', ''));
+    const accessToken  = hashParams.get('access_token');
+    const refreshToken = hashParams.get('refresh_token');
+
+    if (accessToken) {
+      const { data, error: setErr } = await sb.auth.setSession({ access_token: accessToken, refresh_token: refreshToken });
+      if (setErr || !data.session) return showError('This invitation link has expired. Please ask to be re-invited.');
+      currentUser = data.session.user;
+    } else {
+      return showError('No invitation token found. Please use the link from your invitation email.');
+    }
+  } else {
+    currentUser = session.user;
+  }
+
+  // Accept all pending invites for this email
+  const { data: acceptedCount, error: acceptErr } = await sb.rpc('accept_staff_invites', {
+    p_user_id: currentUser.id,
+    p_email:   currentUser.email,
+  });
+
+  if (acceptErr) {
+    console.error('accept_staff_invites error:', acceptErr);
+    return showError('Something went wrong accepting the invitation. Please try again.');
+  }
+
+  if (!acceptedCount || acceptedCount === 0) {
+    // No pending invites — might be already accepted or wrong email
+    // Check if they already have a profile and redirect appropriately
+    const profile = await getProfile(currentUser.id);
+    if (profile) {
+      window.location.href = profile.role === 'professional' ? 'firm-dashboard.html' : 'dashboard.html';
+    } else {
+      showError('No pending invitation found for ' + currentUser.email + '. Please contact your firm administrator.');
+    }
+    return;
+  }
+
+  // Determine invite role to show correct message
+  const { data: myRow } = await sb.from('entity_members')
+    .select('firm_role')
+    .eq('user_id', currentUser.id)
+    .eq('status', 'active')
+    .limit(1)
+    .single();
+  inviteRole = myRow?.firm_role || 'staff';
+
+  // Check if profile already has a name
+  const profile = await getProfile(currentUser.id);
+  if (profile?.name && profile.name !== currentUser.email.split('@')[0]) {
+    // Already has a real name — skip form, go straight to dashboard
+    await redirectToDashboard();
+    return;
+  }
+
+  // Show name form
+  const roleLabel = inviteRole === 'client' ? 'client' : 'staff member';
+  document.getElementById('welcomeMsg').textContent =
+    `You've been added as a ${roleLabel}. Please enter your name to complete your account setup.`;
+  showState('stateForm');
+  setTimeout(() => document.getElementById('nameInput').focus(), 100);
+})();
+
+async function completeSetup() {
+  const name = document.getElementById('nameInput').value.trim();
+  if (!name) {
+    const err = document.getElementById('formErr');
+    err.textContent = 'Please enter your name.';
+    err.classList.add('show');
+    return;
+  }
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Setting up…';
+
+  // Save profile with name
+  const { error } = await sb.from('profiles').upsert({
+    id:   currentUser.id,
+    name: name,
+    role: inviteRole === 'client' ? 'owner' : 'professional',
+  });
+
+  if (error) {
+    btn.disabled = false;
+    btn.textContent = 'Complete Setup →';
+    const err = document.getElementById('formErr');
+    err.textContent = 'Error saving profile: ' + error.message;
+    err.classList.add('show');
+    return;
+  }
+
+  await redirectToDashboard();
+}
+
+async function redirectToDashboard() {
+  if (inviteRole === 'client') {
+    window.location.href = 'dashboard.html';
+  } else {
+    window.location.href = 'firm-dashboard.html';
+  }
+}
+
+function showState(id) {
+  ['stateLoading','stateForm','stateError'].forEach(s => {
+    document.getElementById(s).style.display = s === id ? '' : 'none';
+  });
+}
+
+function showError(msg) {
+  document.getElementById('errMsg').textContent = msg;
+  showState('stateError');
+}
+</script>
+</body>
+</html>

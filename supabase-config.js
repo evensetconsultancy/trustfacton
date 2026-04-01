@@ -564,11 +564,12 @@ async function inviteStaffMember(email, adminUserId, adminName) {
     p_admin_id: adminUserId,
   });
   if (error) return [error.message];
-  // Send OTP invitation email
+  // Send magic link — redirects to accept-invite.html on click
   const { error: otpErr } = await sb.auth.signInWithOtp({
     email,
     options: {
       shouldCreateUser: true,
+      emailRedirectTo: 'https://trustfacton.com/accept-invite.html',
       data: { role: 'staff', invited_by: adminName }
     }
   });

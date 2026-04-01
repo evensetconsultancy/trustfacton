@@ -718,7 +718,7 @@ async function saveNewClient() {
       firm_role: 'client', role: 'client',
       status: 'pending', invited_by: currentUser.id,
     });
-    await sb.auth.signInWithOtp({ email: invite, options: { shouldCreateUser: true } });
+    await sb.auth.signInWithOtp({ email: invite, options: { shouldCreateUser: true, emailRedirectTo: 'https://trustfacton.com/accept-invite.html' } });
   }
 
   document.getElementById('addClientModal').classList.remove('open');
@@ -738,7 +738,7 @@ async function inviteClient(entityId, name) {
     p_admin_id:  currentUser.id,
   });
   if (error) { showToast('Error: ' + error.message); return; }
-  await sb.auth.signInWithOtp({ email, options: { shouldCreateUser: true } });
+  await sb.auth.signInWithOtp({ email, options: { shouldCreateUser: true, emailRedirectTo: 'https://trustfacton.com/accept-invite.html' } });
   allClients = await getFirmClients(currentUser.id);
   renderClientTable(allClients);
   showToast('✅ Invitation sent to ' + email);
@@ -833,7 +833,7 @@ async function loadPendingInvites() {
 }
 
 async function resendInvite(email) {
-  await sb.auth.signInWithOtp({ email, options: { shouldCreateUser: true } });
+  await sb.auth.signInWithOtp({ email, options: { shouldCreateUser: true, emailRedirectTo: 'https://trustfacton.com/accept-invite.html' } });
   showToast('✅ Invite resent to ' + email);
 }
 

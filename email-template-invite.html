@@ -1,0 +1,54 @@
+<!-- ═══════════════════════════════════════════════════════════
+     TrustFactON — Custom Invite Email Template
+     Paste this in: Supabase → Auth → Email Templates → Magic Link
+     ═══════════════════════════════════════════════════════════ -->
+
+<div style="font-family:'Inter',Arial,sans-serif;max-width:520px;margin:0 auto;background:#ffffff;border-radius:12px;border:1px solid #E2E8F0;overflow:hidden;">
+
+  <!-- Header -->
+  <div style="background:#0F2133;padding:28px 32px;text-align:center;">
+    <p style="margin:0;font-family:Georgia,serif;font-size:1.4rem;color:#ffffff;font-weight:700;letter-spacing:.5px;">
+      Trust<span style="color:#60A5FA;">Fact</span>ON
+    </p>
+    <p style="margin:6px 0 0;font-size:0.78rem;color:#94A3B8;letter-spacing:1px;text-transform:uppercase;">
+      Compliance &amp; Filing Platform
+    </p>
+  </div>
+
+  <!-- Body -->
+  <div style="padding:32px;">
+    <p style="margin:0 0 8px;font-size:1rem;font-weight:700;color:#0F172A;">
+      You've been invited to TrustFactON
+    </p>
+    <p style="margin:0 0 24px;font-size:0.875rem;color:#475569;line-height:1.6;">
+      A CA firm has added you to their TrustFactON workspace for compliance tracking and filing management.
+      Click the button below to accept the invitation and set up your account.
+    </p>
+
+    <!-- CTA Button -->
+    <div style="text-align:center;margin:28px 0;">
+      <a href="{{ .ConfirmationURL }}"
+         style="display:inline-block;background:#0F2133;color:#ffffff;text-decoration:none;
+                padding:13px 36px;border-radius:8px;font-size:0.92rem;font-weight:700;
+                letter-spacing:.3px;">
+        ✅ Accept Invitation
+      </a>
+    </div>
+
+    <p style="margin:0 0 6px;font-size:0.78rem;color:#94A3B8;text-align:center;">
+      Button not working? Copy and paste this link into your browser:
+    </p>
+    <p style="margin:0;font-size:0.75rem;color:#3B82F6;text-align:center;word-break:break-all;">
+      {{ .ConfirmationURL }}
+    </p>
+  </div>
+
+  <!-- Footer -->
+  <div style="background:#F8FAFC;padding:18px 32px;border-top:1px solid #E2E8F0;">
+    <p style="margin:0;font-size:0.75rem;color:#94A3B8;text-align:center;line-height:1.6;">
+      This link expires in 24 hours. If you didn't expect this email, you can safely ignore it.<br>
+      © TrustFactON — Evenset Consultancy Services OPC Pvt. Ltd.
+    </p>
+  </div>
+
+</div>
