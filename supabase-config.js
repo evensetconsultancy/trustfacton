@@ -557,12 +557,11 @@ async function deleteClientEntity(entityId, adminUserId) {
   return error;
 }
 
-async function inviteStaffMember(entityIds, email, adminUserId, adminName) {
-  // SECURITY DEFINER RPC — bypasses RLS (pending rows have user_id = null)
+async function inviteStaffMember(email, adminUserId, adminName) {
+  // SECURITY DEFINER RPC v2 — auto-finds admin's firm entity, no entity_ids needed
   const { error } = await sb.rpc('invite_staff', {
-    p_entity_ids: entityIds,
-    p_email:      email,
-    p_admin_id:   adminUserId,
+    p_email:    email,
+    p_admin_id: adminUserId,
   });
   if (error) return [error.message];
   // Send OTP invitation email
@@ -570,7 +569,7 @@ async function inviteStaffMember(entityIds, email, adminUserId, adminName) {
     email,
     options: {
       shouldCreateUser: true,
-      data: { role: 'professional', invited_by: adminName }
+      data: { role: 'staff', invited_by: adminName }
     }
   });
   if (otpErr) console.warn('OTP send warning:', otpErr.message);

@@ -148,18 +148,32 @@ async function verifyCode() {
 
   // Accept any pending staff/client invites for this email
   const { data: { user } } = await sb.auth.getUser();
+  let acceptedCount = 0;
   if (user) {
     try {
-      await sb.rpc('accept_staff_invites', {
+      const { data: cnt } = await sb.rpc('accept_staff_invites', {
         p_user_id: user.id,
         p_email:   user.email,
       });
+      acceptedCount = cnt || 0;
     } catch(e) { console.warn('accept_staff_invites:', e); }
   }
 
-  // Smart redirect: professionals go to firm dashboard
+  // Smart redirect:
+  // - Invited staff (acceptedCount > 0) → prompt for name → firm-dashboard
+  // - Existing professional → firm-dashboard
+  // - Others → dashboard
   const profile = user ? await getProfile(user.id) : null;
-  if (profile?.role === 'professional') {
+  if (acceptedCount > 0) {
+    // Staff accepted invite — ask for their display name
+    const displayName = prompt('Welcome to TrustFactON! Please enter your name:');
+    if (displayName?.trim()) {
+      await sb.from('profiles').upsert({
+        id: user.id, name: displayName.trim(), role: 'professional'
+      });
+    }
+    window.location.href = 'firm-dashboard.html';
+  } else if (profile?.role === 'professional') {
     window.location.href = 'firm-dashboard.html';
   } else {
     window.location.href = 'dashboard.html';

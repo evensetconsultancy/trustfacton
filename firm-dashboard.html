@@ -803,10 +803,11 @@ function openInviteStaff() {
 async function sendStaffInvite() {
   const email = document.getElementById('is-email').value.trim();
   if (!email) { showToast('Please enter an email.'); return; }
-  const myEntityIds = allClients.map(c => c.entity_id);
-  const errors = await inviteStaffMember(myEntityIds, email, currentUser.id, currentProfile?.name || '');
+  // invite_staff v2: no entity_ids needed — function auto-finds admin's firm entity
+  const errors = await inviteStaffMember(email, currentUser.id, currentProfile?.name || '');
   document.getElementById('inviteStaffModal').classList.remove('open');
   if (errors.length) { showToast('Some errors: ' + errors[0]); return; }
+  loadPendingInvites();
   showToast('✅ Staff invitation sent!');
 }
 
