@@ -550,7 +550,7 @@ function renderClientTable(clients) {
       <td>${staffHtml}</td>
       <td>${clientHtml}</td>
       <td style="display:flex;gap:4px;flex-wrap:wrap">
-        <a href="dashboard.html" class="ab ab-blue" onclick="sessionStorage.setItem('openEntity','${c.entity_id}');sessionStorage.setItem('openEntityName','${c.entity_name?.replace(/'/g,&quot;'&quot;)}');sessionStorage.setItem('openEntityType','${c.entity_type||&quot;&quot;}')">Open</a>
+        <a href="dashboard.html" class="ab ab-blue" onclick="openClientDashboard('${c.entity_id}')">Open</a>
         ${isCurrentUserPrimary ? `<button class="ab ab-red" onclick="openDelete('${c.entity_id}','${c.entity_name?.replace(/'/g,"\\'")}')">Delete</button>` : ''}
       </td>
     </tr>`;
@@ -897,6 +897,17 @@ async function removeStaff(userId, name) {
   allStaff = await getFirmStaff(currentUser.id);
   renderStaffGrid();
   showToast(`${name} removed from firm.`);
+}
+
+function openClientDashboard(entityId) {
+  // Find client data from allClients
+  const client = allClients.find(c => c.entity_id === entityId);
+  sessionStorage.setItem('openEntity', entityId);
+  if (client) {
+    sessionStorage.setItem('openEntityName', client.entity_name || '');
+    sessionStorage.setItem('openEntityType', client.entity_type || '');
+  }
+  window.location.href = 'dashboard.html';
 }
 
 async function doLogout() { await sb.auth.signOut(); window.location.href = 'index.html'; }
