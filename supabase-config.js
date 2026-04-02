@@ -110,11 +110,10 @@ async function getMyEntities(userId) {
 
 async function getEntityFilings(entityId) {
   try {
-    const { data, error } = await sb
-      .from('filings')
-      .select('*')
-      .eq('entity_id', entityId)
-      .order('due_date', { ascending: true });
+    // Use SECURITY DEFINER RPC — works for all users including task-level staff
+    const { data, error } = await sb.rpc('get_entity_filings', {
+      p_entity_id: entityId
+    });
     if (error) { console.error('getEntityFilings:', error); return []; }
     return data || [];
   } catch(e) { console.error('getEntityFilings exception:', e); return []; }
