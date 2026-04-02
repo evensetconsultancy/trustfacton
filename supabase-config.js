@@ -4,8 +4,8 @@
    Supabase Dashboard → Settings → API
    ========================================= */
 
-const SUPABASE_URL      = 'https://jmolgvabcfbmsctldpcr.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_ITdqqr6Yczf2d6c_fuNcmw_065lWBcj';
+const SUPABASE_URL      = 'https://XXXXXX.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_ITdqqxxxxxxx_xxxx_xxxxx';
 
 // Supabase JS v2 loaded via CDN in each HTML file
 // This file just exports the client
@@ -479,7 +479,12 @@ async function getMyFirmRole(userId, entityId) {
     .eq('user_id', userId)
     .eq('entity_id', entityId)
     .eq('status', 'active')
-    .single();
+    .maybeSingle();
+  // Staff are not in client entity_members rows — fall back to their profile role
+  if (!data) {
+    const profile = await getProfile(userId);
+    return profile?.role || 'owner';
+  }
   return data?.firm_role || data?.role || 'owner';
 }
 
