@@ -550,7 +550,7 @@ function renderClientTable(clients) {
       <td>${staffHtml}</td>
       <td>${clientHtml}</td>
       <td style="display:flex;gap:4px;flex-wrap:wrap">
-        <a href="dashboard.html" class="ab ab-blue" onclick="sessionStorage.setItem('openEntity','${c.entity_id}')">Open</a>
+        <a href="dashboard.html" class="ab ab-blue" onclick="sessionStorage.setItem('openEntity','${c.entity_id}');sessionStorage.setItem('openEntityName','${c.entity_name?.replace(/'/g,&quot;'&quot;)}');sessionStorage.setItem('openEntityType','${c.entity_type||&quot;&quot;}')">Open</a>
         ${isCurrentUserPrimary ? `<button class="ab ab-red" onclick="openDelete('${c.entity_id}','${c.entity_name?.replace(/'/g,"\\'")}')">Delete</button>` : ''}
       </td>
     </tr>`;
