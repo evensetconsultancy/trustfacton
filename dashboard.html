@@ -369,6 +369,17 @@ body { background: var(--gray-1); min-height: 100vh; }
   <!-- ── TAB: Deadlines ── -->
   <div id="tab-deadlines">
 
+    <!-- Client context bar — shows which client/entity is active -->
+    <div id="clientContextBar" style="display:none;align-items:center;gap:10px;
+         background:white;border:1px solid var(--gray-3);border-radius:10px;
+         padding:10px 16px;margin-bottom:14px;">
+      <span style="font-size:1rem;">📋</span>
+      <div>
+        <div id="ctxEntityName" style="font-size:.88rem;font-weight:700;color:var(--black)"></div>
+        <div id="ctxEntityMeta" style="font-size:.74rem;color:var(--gray-5)"></div>
+      </div>
+    </div>
+
     <!-- Month navigator + category filter row -->
     <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px">
       <!-- Month nav -->
@@ -817,6 +828,23 @@ const MONTHS = ['','January','February','March','April','May','June',
   showWelcome();
   applyRoleUI();
 
+  // Auto-select entity if opened from firm dashboard
+  const openEntityId   = sessionStorage.getItem('openEntity');
+  const openEntityName = sessionStorage.getItem('openEntityName');
+  const openEntityType = sessionStorage.getItem('openEntityType');
+  if (openEntityId) {
+    sessionStorage.removeItem('openEntity');
+    sessionStorage.removeItem('openEntityName');
+    sessionStorage.removeItem('openEntityType');
+    const target = entities.find(e => e.id === openEntityId);
+    if (target) {
+      activeEntity = target;
+      renderEntitySwitcher();
+      await loadEntityData();
+      showWelcome();
+    }
+  }
+
   if (location.search.includes('new=1') || location.search.includes('setup=1')) {
     showToast('🎉 Account verified! Your compliance dashboard is ready.');
   }
@@ -852,6 +880,18 @@ async function showWelcome() {
     `${activeEntity?.name || ''} · ${activeEntity?.type || ''} · Compliance dashboard`;
   document.getElementById('dbWelcome').style.display = 'flex';
 
+  // Update client context bar above task table
+  const ctxBar = document.getElementById('clientContextBar');
+  const ctxName = document.getElementById('ctxEntityName');
+  const ctxMeta = document.getElementById('ctxEntityMeta');
+  if (ctxBar && activeEntity) {
+    ctxName.textContent = activeEntity.name || '';
+    const pan  = activeEntity.pan  ? ` · PAN: ${activeEntity.pan}`  : '';
+    const gstin= activeEntity.gstin? ` · GSTIN: ${activeEntity.gstin}` : '';
+    ctxMeta.textContent = `${activeEntity.type || ''}${pan}${gstin}`;
+    ctxBar.style.display = 'flex';
+  }
+
   // Show All Clients tab + Firm Dashboard btn for primary admins
   const isProf = currentProfile?.role === 'professional' || entities.length > 2;
   const tab = document.getElementById('allClientsTab');
@@ -862,27 +902,23 @@ async function showWelcome() {
   const pdUserEmail = currentUser?.email || '';
   const pdRoleKey   = myFirmRole || currentProfile?.role || 'owner';
   const initials    = pdFullName.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2) || '?';
+  // For staff: always show 'Staff' regardless of profile.role
+  const effectiveRole = (activeEntity?.my_firm_role === 'staff') ? 'staff' :
+                        (activeEntity?.my_firm_role === 'client') ? 'client' :
+                        pdRoleKey;
   const roleLabel = {
     primary_admin:'Primary Admin', secondary_admin:'Secondary Admin',
     staff:'Staff', client:'Client', owner:'Owner', professional:'Professional'
-  }[pdRoleKey] || pdRoleKey;
+  }[effectiveRole] || effectiveRole;
 
+  const roleColor = effectiveRole === 'primary_admin' ? '#1A3A6B' :
+                   effectiveRole === 'secondary_admin' ? '#6D28D9' :
+                   effectiveRole === 'staff' ? '#16A34A' :
+                   effectiveRole === 'client' ? '#2563EB' : '#1A3A6B';
   const av = document.getElementById('profileAvatar');
-  if (av) {
-    av.textContent = initials;
-    av.style.background = pdRoleKey === 'primary_admin' ? '#1A3A6B' :
-                          pdRoleKey === 'secondary_admin' ? '#6D28D9' :
-                          pdRoleKey === 'staff' ? '#16A34A' :
-                          pdRoleKey === 'client' ? '#2563EB' : '#1A3A6B';
-  }
+  if (av) { av.textContent = initials; av.style.background = roleColor; }
   const avLg = document.getElementById('pdAvatarLg');
-  if (avLg) {
-    avLg.textContent = initials;
-    avLg.style.background = pdRoleKey === 'primary_admin' ? '#1A3A6B' :
-                            pdRoleKey === 'secondary_admin' ? '#6D28D9' :
-                            pdRoleKey === 'staff' ? '#16A34A' :
-                            pdRoleKey === 'client' ? '#2563EB' : '#1A3A6B';
-  }
+  if (avLg) { avLg.textContent = initials; avLg.style.background = roleColor; }
   // Populate reminder email field
   const remEl = document.getElementById('pdReminderEmail');
   if (remEl && activeEntity) {
@@ -895,7 +931,7 @@ async function showWelcome() {
   const pdEmailEl = document.getElementById('pdEmail');
   if (pdEmailEl) pdEmailEl.textContent = pdUserEmail;
   const pdRoleEl  = document.getElementById('pdRole');
-  if (pdRoleEl)  pdRoleEl.textContent  = roleLabel[pdRoleKey] || pdRoleKey;
+  if (pdRoleEl)  pdRoleEl.textContent  = roleLabel;
 
   // Show firm dashboard button for primary + secondary admins
   try {
@@ -1649,6 +1685,15 @@ async function switchToEntity(id) {
 // ── Role detection + UI ──────────────────────────────
 async function detectFirmRole() {
   if (!activeEntity) return;
+
+  // For staff: use my_firm_role from the entity object (set by getMyEntities)
+  // This handles staff assigned to client entities where they have no entity_members row
+  if (activeEntity.my_firm_role) {
+    myFirmRole = activeEntity.my_firm_role;
+    return;
+  }
+
+  // For others: query entity_members directly
   try {
     const { data } = await sb.from('entity_members')
       .select('firm_role, role')
@@ -1656,7 +1701,12 @@ async function detectFirmRole() {
       .eq('entity_id', activeEntity.id)
       .eq('status', 'active')
       .maybeSingle();
-    myFirmRole = data?.firm_role || data?.role || 'owner';
+    // If no row found (staff on client entity), fall back to profile role
+    if (!data) {
+      myFirmRole = currentProfile?.role || 'owner';
+    } else {
+      myFirmRole = data?.firm_role || data?.role || 'owner';
+    }
   } catch { myFirmRole = 'owner'; }
 }
 
