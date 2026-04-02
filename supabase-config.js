@@ -61,11 +61,11 @@ async function getMyEntities(userId) {
     // Load registrations for each entity so deadlines compute correctly
     const result = [];
     for (const e of unique) {
-      const { data: reg } = await sb
-        .from('registrations')
-        .select('*')
-        .eq('entity_id', e.entity_id)
-        .maybeSingle();
+      // Use SECURITY DEFINER RPC — staff can't read registrations via RLS directly
+      const { data: regArr } = await sb.rpc('get_entity_registrations', {
+        p_entity_id: e.entity_id
+      });
+      const reg = regArr?.[0] || null;
       result.push({
         id:              e.entity_id,
         name:            e.entity_name,
