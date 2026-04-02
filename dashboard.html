@@ -1655,7 +1655,7 @@ async function detectFirmRole() {
       .eq('user_id', currentUser.id)
       .eq('entity_id', activeEntity.id)
       .eq('status', 'active')
-      .single();
+      .maybeSingle();
     myFirmRole = data?.firm_role || data?.role || 'owner';
   } catch { myFirmRole = 'owner'; }
 }

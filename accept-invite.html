@@ -132,7 +132,7 @@ async function handleAccept() {
       .eq('user_id', currentUser.id)
       .eq('status', 'active')
       .limit(1)
-      .single();
+      .maybeSingle();
     inviteRole = myRow?.firm_role || 'staff';
 
     // Check if profile already has a proper name
