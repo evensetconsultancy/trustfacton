@@ -2,10 +2,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
 
 :root {
-  /* 3 colors only */
-  --navy:   #1A3A6B;   /* primary — nav, headings */
-  --blue:   #2563EB;   /* accent — buttons, links, active */
-  --light:  #F0F4F8;   /* background — cards, sections */
+  /* TrustFactON theme — matches Evenset Consultancy brand */
+  --navy:   #1A2B4A;   /* primary — headings, text */
+  --blue:   #2563EB;   /* informational — links, info boxes */
+  --brand:  #C0392B;   /* brand red — CTA, active, accents */
+  --light:  #F8F9FA;   /* background — cards, sections */
 
   /* Supporting neutrals */
   --white:  #FFFFFF;
@@ -84,7 +85,7 @@ p  { line-height: 1.7; color: var(--gray-5); }
   font-family: var(--font-head); font-size: 1.3rem;
   color: white; letter-spacing: -0.3px; white-space: nowrap; margin-right: 16px;
 }
-.nav-logo .accent { color: #60A5FA; }
+.nav-logo .accent { color: #C0392B; }
 .nav-links { display: flex; list-style: none; gap: 2px; flex: 1; }
 .nav-links a {
   color: rgba(255,255,255,0.75); font-size: 0.875rem; font-weight: 500;
@@ -300,7 +301,7 @@ p  { line-height: 1.7; color: var(--gray-5); }
 #site-footer { background: var(--black); color: rgba(255,255,255,0.6); padding: 48px 0 28px; }
 .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1.4fr; gap: 36px; padding-bottom: 36px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 24px; }
 .footer-logo { font-family: var(--font-head); font-size: 1.2rem; color: white; margin-bottom: 10px; }
-.footer-logo .accent { color: #60A5FA; }
+.footer-logo .accent { color: #C0392B; }
 .footer-brand p { font-size: 0.84rem; line-height: 1.7; max-width: 260px; }
 .footer-col h4 { color: white; font-size: 0.85rem; font-weight: 600; margin-bottom: 12px; }
 .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 7px; }
@@ -355,7 +356,7 @@ p  { line-height: 1.7; color: var(--gray-5); }
   font-family: var(--font-head); font-size: 1.25rem;
   color: white; letter-spacing: -0.3px; white-space: nowrap;
 }
-.nav-logo-text .accent { color: #60A5FA; }
+.nav-logo-text .accent { color: #C0392B; }
 
 /* Footer logo */
 .footer-logo-wrap {
