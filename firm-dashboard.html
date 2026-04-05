@@ -12,17 +12,17 @@
 body{background:var(--gray-1);min-height:100vh;}
 
 /* Header */
-.fh{background:#FFFFFF;position:sticky;top:0;z-index:200;box-shadow:0 2px 8px rgba(0,0,0,.08);border-bottom:3px solid var(--brand);}
+.fh{background:#FFFFFF;position:sticky;top:0;z-index:200;box-shadow:0 2px 8px rgba(0,0,0,.08);border-bottom:3px solid #C0392B;}
 .fh-inner{display:flex;align-items:center;gap:12px;height:54px;}
 .fh-logo{display:flex;align-items:center;gap:8px;text-decoration:none;}
 .fh-logo img{width:30px;height:30px;object-fit:contain;mix-blend-mode:multiply;}
 .fh-logo span{font-family:'Playfair Display',Georgia,serif;font-size:1.05rem;color:var(--navy);}
 .fh-logo .accent{color:#C0392B;}
-.fh-badge{background:#FEF2F2;border:1px solid #FECACA;color:#C0392B;font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:10px;}
+.fh-badge{background:#0F172A;border:1px solid #0F172A;color:white;font-size:.68rem;font-weight:700;padding:3px 10px;border-radius:6px;}
 .fh-right{margin-left:auto;display:flex;gap:8px;}
 .fh-btn{padding:5px 13px;border-radius:7px;font-size:.77rem;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;border:1.5px solid #E2E8F0;color:var(--navy);background:transparent;text-decoration:none;transition:all .15s;}
 .fh-btn:hover{background:#F1F5F9;border-color:var(--navy);}
-.fh-btn.green{background:var(--navy);color:white;border-color:var(--navy);}
+.fh-btn.green{background:#C0392B;color:white;border-color:#C0392B;}
 
 /* Body */
 .fb{max-width:1100px;margin:0 auto;padding:24px 20px 56px;}
@@ -30,13 +30,13 @@ body{background:var(--gray-1);min-height:100vh;}
 /* Tabs */
 .firm-tabs{display:flex;gap:2px;border-bottom:2px solid var(--gray-3);margin-bottom:22px;}
 .firm-tab{padding:9px 18px;font-size:.83rem;font-weight:500;color:var(--gray-5);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;background:none;border-top:none;border-left:none;border-right:none;font-family:'Inter',sans-serif;transition:all .15s;}
-.firm-tab.active{color:var(--brand);border-bottom-color:var(--brand);font-weight:600;}
+.firm-tab.active{color:#C0392B;border-bottom-color:#C0392B;font-weight:600;}
 .firm-tab:hover{color:var(--navy);}
 
 /* Stats */
 .firm-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px;}
-.fs-card{background:white;border:1px solid var(--gray-3);border-radius:10px;padding:16px 18px;border-left:3px solid var(--brand);}
-.fs-card .sv{font-size:1.8rem;font-weight:700;font-family:'Playfair Display',Georgia,serif;line-height:1;}
+.fs-card{background:white;border:1px solid var(--gray-3);border-radius:10px;padding:16px 18px;border-left:3px solid #C0392B;}
+.fs-card .sv{font-size:1.8rem;font-weight:700;font-family:'Playfair Display',Georgia,serif;line-height:1;color:#0F172A;}
 .fs-card .sl{font-size:.74rem;color:var(--gray-5);margin-top:4px;}
 
 /* Client table */
@@ -53,15 +53,15 @@ body{background:var(--gray-1);min-height:100vh;}
 
 /* Table */
 .firm-table{width:100%;border-collapse:collapse;font-size:.79rem;}
-.firm-table thead th{background:var(--navy);color:white;padding:9px 12px;text-align:left;font-weight:600;font-size:.73rem;white-space:nowrap;border-bottom:2px solid var(--brand);}
+.firm-table thead th{background:#0F172A;color:white;padding:9px 12px;text-align:left;font-weight:600;font-size:.73rem;white-space:nowrap;border-bottom:2px solid #C0392B;}
 .firm-table tbody td{padding:10px 12px;border-bottom:1px solid var(--gray-2);vertical-align:middle;}
 .firm-table tbody tr:last-child td{border-bottom:none;}
-.firm-table tbody tr:hover td{background:var(--gray-1);}
+.firm-table tbody tr:hover td{background:#F8FAFC;}
 
 /* Compliance toggles */
 .comp-toggles{display:flex;gap:4px;flex-wrap:wrap;}
 .ct{padding:2px 7px;border-radius:4px;font-size:.67rem;font-weight:700;cursor:pointer;border:1.5px solid;transition:all .12s;font-family:'Inter',sans-serif;}
-.ct.on{color:white;}
+.ct.on{color:white;font-weight:600;}
 .ct.off{background:white;opacity:.5;}
 .ct-gst.on{background:#16A34A;border-color:#16A34A;}
 .ct-gst.off{color:#16A34A;border-color:#16A34A;}
@@ -136,8 +136,8 @@ body{background:var(--gray-1);min-height:100vh;}
   <div class="container">
     <div class="fh-inner">
       <a href="dashboard.html" class="fh-logo">
-        <img src="logo.png" alt="">
-        <span>Trust<span class="accent">Fact</span>ON</span>
+        <img src="trustlogotrans.png" alt="TrustFactON">
+        <span style="color:#C0392B;font-family:'Playfair Display',Georgia,serif;font-size:1.05rem;font-weight:700;letter-spacing:-0.3px;">TrustFactON</span>
       </a>
       <span class="fh-badge">Primary Admin</span>
       <div class="fh-right">

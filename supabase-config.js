@@ -372,8 +372,12 @@ function daysLabel(due, status) {
 }
 
 const CAT_COLOR = {
-  'GST': '#16A34A', 'Income Tax': '#2563EB', 'TDS': '#D97706',
-  'PF': '#7C3AED', 'ESIC': '#0891B2', 'ROC': '#DC2626'
+  'GST':        '#166534',   /* Emerald - professional green */
+  'Income Tax': '#1E3A5F',   /* Deep navy - authority */
+  'TDS':        '#92400E',   /* Amber - caution */
+  'PF':         '#5B21B6',   /* Indigo - distinct */
+  'ESIC':       '#0E7490',   /* Teal - health */
+  'ROC':        '#C0392B',   /* Trust-Red - regulatory */
 };
 
 

@@ -2,13 +2,29 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
 
 :root {
-  /* TrustFactON theme — matches Evenset Consultancy brand */
-  --navy:   #1A2B4A;   /* primary — headings, text */
-  --blue:   #2563EB;   /* informational — links, info boxes */
-  --brand:  #C0392B;   /* brand red — CTA, active, accents */
-  --light:  #F8F9FA;   /* background — cards, sections */
+  /* BRAND COLORS */
+  --brand-red:   #C0392B;   /* TrustFactON Primary Red */
+  --brand-navy:  #0F172A;   /* Professional Slate Navy */
 
-  /* Supporting neutrals */
+  /* NEUTRAL SURFACES */
+  --bg-main:     #F8FAFC;   /* Soft Ghost Gray for app backgrounds */
+  --surface:     #FFFFFF;   /* Pure white for cards/tables */
+  --border:      #E2E8F0;   /* Light gray for subtle borders */
+
+  /* TEXT HIERARCHY */
+  --text-main:   #1E293B;   /* Deep charcoal for primary reading */
+  --text-muted:  #64748B;   /* Muted gray for secondary labels */
+
+  /* SYSTEM STATUS */
+  --status-done-bg:   #DCFCE7; --status-done-text:  #166534;
+  --status-soon-bg:   #FEF3C7; --status-soon-text:  #92400E;
+  --status-over-bg:   #FEE2E2; --status-over-text:  #991B1B;
+
+  /* LEGACY ALIASES (keep existing components working) */
+  --navy:   #0F172A;
+  --blue:   #2563EB;
+  --brand:  #C0392B;
+  --light:  #F8FAFC;
   --white:  #FFFFFF;
   --gray-1: #F8FAFC;
   --gray-2: #F1F5F9;
@@ -17,8 +33,6 @@
   --gray-5: #64748B;
   --gray-6: #334155;
   --black:  #0F172A;
-
-  /* Status */
   --green:  #16A34A;
   --red:    #DC2626;
   --amber:  #D97706;
@@ -39,7 +53,7 @@
 /* ── RESET ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; font-size: 16px; }
-body { font-family: var(--font); color: var(--black); background: var(--white); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+body { font-family: var(--font); color: var(--text-main); background: var(--bg-main); line-height: 1.6; -webkit-font-smoothing: antialiased; }
 a { text-decoration: none; color: inherit; }
 button { font-family: var(--font); cursor: pointer; border: none; outline: none; }
 input, textarea, select { font-family: var(--font); }
@@ -77,21 +91,22 @@ p  { line-height: 1.7; color: var(--gray-5); }
 /* ── NAVIGATION ── */
 #site-nav {
   position: sticky; top: 0; z-index: 1000;
-  background: var(--navy);
-  border-bottom: 1px solid rgba(255,255,255,0.08);
+  background: #FFFFFF;
+  border-bottom: 3px solid var(--brand-red);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 .nav-inner { display: flex; align-items: center; height: 60px; gap: 8px; }
 .nav-logo {
   font-family: var(--font-head); font-size: 1.3rem;
-  color: white; letter-spacing: -0.3px; white-space: nowrap; margin-right: 16px;
+  color: var(--brand-red); letter-spacing: -0.3px; white-space: nowrap; margin-right: 16px;
 }
 .nav-logo .accent { color: #C0392B; }
 .nav-links { display: flex; list-style: none; gap: 2px; flex: 1; }
 .nav-links a {
-  color: rgba(255,255,255,0.75); font-size: 0.875rem; font-weight: 500;
+  color: var(--brand-navy); font-size: 0.875rem; font-weight: 500;
   padding: 6px 12px; border-radius: var(--radius); transition: all 0.15s;
 }
-.nav-links a:hover, .nav-links a.active { color: white; background: rgba(255,255,255,0.1); }
+.nav-links a:hover, .nav-links a.active { color: var(--brand-red); background: #FEF2F2; }
 .nav-dropdown { position: relative; }
 .nav-dropdown-menu {
   display: none; position: absolute; top: calc(100% + 8px); left: 0;
@@ -109,11 +124,11 @@ p  { line-height: 1.7; color: var(--gray-5); }
 .act-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
 .nav-cta { margin-left: auto; }
 .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; }
-.hamburger span { display: block; width: 20px; height: 2px; background: white; border-radius: 2px; }
-.mobile-menu { display: none; background: var(--navy); border-top: 1px solid rgba(255,255,255,0.1); padding: 12px 20px 20px; }
+.hamburger span { display: block; width: 20px; height: 2px; background: var(--navy); border-radius: 2px; }
+.mobile-menu { display: none; background: #FFFFFF; border-top: 1px solid #E2E8F0; padding: 12px 20px 20px; }
 .mobile-menu.open { display: block; }
-.mobile-menu a { display: block; color: rgba(255,255,255,0.8); padding: 9px 0; font-size: 0.9rem; border-bottom: 1px solid rgba(255,255,255,0.06); }
-.mobile-menu a:hover { color: #60A5FA; }
+.mobile-menu a { display: block; color: var(--navy); padding: 9px 0; font-size: 0.9rem; border-bottom: 1px solid #E2E8F0; }
+.mobile-menu a:hover { color: #C0392B; }
 
 /* ── HERO ── */
 .hero { background: var(--navy); padding: 56px 0 48px; }
@@ -224,7 +239,7 @@ p  { line-height: 1.7; color: var(--gray-5); }
 
 /* ── DATA TABLES ── */
 .data-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; margin-top: 14px; }
-.data-table th { background: var(--navy); color: white; padding: 10px 14px; text-align: left; font-weight: 600; font-size: 0.78rem; }
+.data-table th { background: var(--brand-navy); color: white; padding: 10px 14px; text-align: left; font-weight: 600; font-size: 0.78rem; }
 .data-table td { padding: 10px 14px; border-bottom: 1px solid var(--gray-3); vertical-align: top; color: var(--gray-6); }
 .data-table tr:hover td { background: var(--gray-1); }
 
@@ -349,12 +364,12 @@ p  { line-height: 1.7; color: var(--gray-5); }
 .nav-logo-img {
   width: 38px; height: 38px;
   object-fit: contain;
-  mix-blend-mode: screen;   /* removes black bg on dark navbar */
+  mix-blend-mode: multiply;  /* removes black bg on white navbar */
   flex-shrink: 0;
 }
 .nav-logo-text {
   font-family: var(--font-head); font-size: 1.25rem;
-  color: white; letter-spacing: -0.3px; white-space: nowrap;
+  color: var(--brand-red); letter-spacing: -0.3px; white-space: nowrap;
 }
 .nav-logo-text .accent { color: #C0392B; }
 
@@ -449,13 +464,14 @@ p  { line-height: 1.7; color: var(--gray-5); }
 }
 
 /* ── Logo blend mode fixes ──────────────────────────── */
-/* Dark backgrounds (navy navbar, hero): screen removes black */
-.site-nav .nav-logo-img,
+/* Dashboard header is now white — use multiply */
 .db-header .db-logo img,
-.db-header img,
-.home-hero .nav-logo-img { mix-blend-mode: screen; }
+.db-header img { mix-blend-mode: multiply; }
+/* Home hero nav logo — hero is dark so use screen */
+.home-hero .nav-logo-img { mix-blend-mode: multiply; }
 
-/* Light backgrounds (auth pages, cards, white sections): multiply removes black */
+/* All white backgrounds: multiply removes black bg from logo */
 .auth-wrap img,
 .wrap img[src="logo.png"],
-.logo img[src="logo.png"] { mix-blend-mode: multiply; }
+.logo img[src="logo.png"],
+#site-nav .nav-logo-img { mix-blend-mode: multiply; }

@@ -5,8 +5,8 @@ const NAV_HTML = `
   <div class="container">
     <div class="nav-inner">
       <a href="index.html" class="nav-logo">
-        <img src="logo.png" alt="TrustFactON" class="nav-logo-img">
-        <span class="nav-logo-text">Trust<span class="accent">Fact</span>ON</span>
+        <img src="trustlogotrans.png" alt="TrustFactON" class="nav-logo-img" style="mix-blend-mode:multiply;">
+        <span class="nav-logo-text"><span style="color:#C0392B;font-family:'Playfair Display',Georgia,serif;">TrustFactON</span>
       </a>
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
@@ -42,8 +42,8 @@ const FOOTER_HTML = `
     <div class="footer-grid">
       <div class="footer-brand">
         <div class="footer-logo-wrap">
-          <img src="logo.png" alt="TrustFactON" class="footer-logo-img">
-          <div class="footer-logo">Trust<span class="accent">Fact</span>ON</div>
+          <img src="trustlogotrans.png" alt="TrustFactON" class="footer-logo-img" style="mix-blend-mode:multiply;">
+          <div class="footer-logo"><span style="color:#C0392B;font-family:'Playfair Display',Georgia,serif;">TrustFactON</span></div>
         </div>
         <p>India's plain-language compliance reference. Income Tax · Goods &amp; Service Tax · Companies Act · TDS/TCS.<br>Built by Evenset Consultancy Services, Bengaluru.</p>
         <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
