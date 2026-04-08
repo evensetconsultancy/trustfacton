@@ -12,17 +12,17 @@
 body{background:var(--gray-1);min-height:100vh;}
 
 /* Header */
-.fh{background:#FFFFFF;position:sticky;top:0;z-index:200;box-shadow:0 2px 8px rgba(0,0,0,.08);border-bottom:3px solid #C0392B;}
+.fh{background:var(--navy);position:sticky;top:0;z-index:200;box-shadow:0 2px 12px rgba(0,0,0,.2);}
 .fh-inner{display:flex;align-items:center;gap:12px;height:54px;}
 .fh-logo{display:flex;align-items:center;gap:8px;text-decoration:none;}
-.fh-logo img{width:30px;height:30px;object-fit:contain;mix-blend-mode:multiply;}
-.fh-logo span{font-family:'Playfair Display',Georgia,serif;font-size:1.05rem;color:var(--navy);}
-.fh-logo .accent{color:#C0392B;}
-.fh-badge{background:#0F172A;border:1px solid #0F172A;color:white;font-size:.68rem;font-weight:700;padding:3px 10px;border-radius:6px;}
+.fh-logo img{width:30px;height:30px;object-fit:contain;mix-blend-mode:screen;}
+.fh-logo span{font-family:'Playfair Display',Georgia,serif;font-size:1.05rem;color:white;}
+.fh-logo .accent{color:#60A5FA;}
+.fh-badge{background:rgba(96,165,250,.2);border:1px solid rgba(96,165,250,.3);color:#93C5FD;font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:10px;}
 .fh-right{margin-left:auto;display:flex;gap:8px;}
-.fh-btn{padding:5px 13px;border-radius:7px;font-size:.77rem;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;border:1.5px solid #E2E8F0;color:var(--navy);background:transparent;text-decoration:none;transition:all .15s;}
-.fh-btn:hover{background:#F1F5F9;border-color:var(--navy);}
-.fh-btn.green{background:#C0392B;color:white;border-color:#C0392B;}
+.fh-btn{padding:5px 13px;border-radius:7px;font-size:.77rem;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.75);background:transparent;text-decoration:none;transition:all .15s;}
+.fh-btn:hover{background:rgba(255,255,255,.1);color:white;}
+.fh-btn.green{background:#16A34A;color:white;border-color:#16A34A;}
 
 /* Body */
 .fb{max-width:1100px;margin:0 auto;padding:24px 20px 56px;}
@@ -30,13 +30,13 @@ body{background:var(--gray-1);min-height:100vh;}
 /* Tabs */
 .firm-tabs{display:flex;gap:2px;border-bottom:2px solid var(--gray-3);margin-bottom:22px;}
 .firm-tab{padding:9px 18px;font-size:.83rem;font-weight:500;color:var(--gray-5);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;background:none;border-top:none;border-left:none;border-right:none;font-family:'Inter',sans-serif;transition:all .15s;}
-.firm-tab.active{color:#C0392B;border-bottom-color:#C0392B;font-weight:600;}
+.firm-tab.active{color:var(--navy);border-bottom-color:var(--navy);font-weight:600;}
 .firm-tab:hover{color:var(--navy);}
 
 /* Stats */
 .firm-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px;}
-.fs-card{background:white;border:1px solid var(--gray-3);border-radius:10px;padding:16px 18px;border-left:3px solid #C0392B;}
-.fs-card .sv{font-size:1.8rem;font-weight:700;font-family:'Playfair Display',Georgia,serif;line-height:1;color:#0F172A;}
+.fs-card{background:white;border:1px solid var(--gray-3);border-radius:10px;padding:16px 18px;}
+.fs-card .sv{font-size:1.8rem;font-weight:700;font-family:'Playfair Display',Georgia,serif;line-height:1;}
 .fs-card .sl{font-size:.74rem;color:var(--gray-5);margin-top:4px;}
 
 /* Client table */
@@ -53,15 +53,15 @@ body{background:var(--gray-1);min-height:100vh;}
 
 /* Table */
 .firm-table{width:100%;border-collapse:collapse;font-size:.79rem;}
-.firm-table thead th{background:#0F172A;color:white;padding:9px 12px;text-align:left;font-weight:600;font-size:.73rem;white-space:nowrap;border-bottom:2px solid #C0392B;}
+.firm-table thead th{background:var(--navy);color:white;padding:9px 12px;text-align:left;font-weight:600;font-size:.73rem;white-space:nowrap;}
 .firm-table tbody td{padding:10px 12px;border-bottom:1px solid var(--gray-2);vertical-align:middle;}
 .firm-table tbody tr:last-child td{border-bottom:none;}
-.firm-table tbody tr:hover td{background:#F8FAFC;}
+.firm-table tbody tr:hover td{background:var(--gray-1);}
 
 /* Compliance toggles */
 .comp-toggles{display:flex;gap:4px;flex-wrap:wrap;}
 .ct{padding:2px 7px;border-radius:4px;font-size:.67rem;font-weight:700;cursor:pointer;border:1.5px solid;transition:all .12s;font-family:'Inter',sans-serif;}
-.ct.on{color:white;font-weight:600;}
+.ct.on{color:white;}
 .ct.off{background:white;opacity:.5;}
 .ct-gst.on{background:#16A34A;border-color:#16A34A;}
 .ct-gst.off{color:#16A34A;border-color:#16A34A;}
@@ -136,8 +136,8 @@ body{background:var(--gray-1);min-height:100vh;}
   <div class="container">
     <div class="fh-inner">
       <a href="dashboard.html" class="fh-logo">
-        <img src="trustlogotrans.png" alt="TrustFactON">
-        <span style="color:#C0392B;font-family:'Playfair Display',Georgia,serif;font-size:1.05rem;font-weight:700;letter-spacing:-0.3px;">TrustFactON</span>
+        <img src="logo.png" alt="">
+        <span>Trust<span class="accent">Fact</span>ON</span>
       </a>
       <span class="fh-badge">Primary Admin</span>
       <div class="fh-right">
@@ -412,12 +412,12 @@ body{background:var(--gray-1);min-height:100vh;}
 <div class="modal-overlay" id="deleteModal">
   <div class="modal">
     <h3>Delete Client</h3>
-    <p id="deleteClientName" style="font-weight:600;color:var(--brand)"></p>
+    <p id="deleteClientName" style="font-weight:600;color:var(--red)"></p>
     <p>This will permanently delete the entity and all its filing history. This cannot be undone.</p>
     <input type="hidden" id="deleteEntityId">
     <div class="m-btns">
       <button class="m-can" onclick="document.getElementById('deleteModal').classList.remove('open')">Cancel</button>
-      <button class="m-sub" style="background:var(--brand)" onclick="confirmDelete()">Delete Permanently</button>
+      <button class="m-sub" style="background:var(--red)" onclick="confirmDelete()">Delete Permanently</button>
     </div>
   </div>
 </div>
@@ -450,6 +450,37 @@ const cmState   = {};
   }
 
   isStrictPA = await isStrictPrimaryAdmin(currentUser.id);
+  
+  // Detect if user is a business owner (not a CA firm)
+  const { data: ownerCheck } = await sb.from('entity_members')
+    .select('firm_role, role')
+    .eq('user_id', currentUser.id)
+    .eq('role', 'owner')
+    .eq('firm_role', 'owner')
+    .eq('status', 'active')
+    .limit(1)
+    .maybeSingle();
+  const isBusinessOwner = !!ownerCheck;
+  
+  if (isBusinessOwner) {
+    // Hide client-specific elements for business owners
+    // They manage their own entities, not client entities
+    const clientsTab = document.querySelector('[onclick*="clients"]');
+    if (clientsTab) clientsTab.style.display = 'none';
+    // Change header subtitle
+    const subtitle = document.getElementById('fh-subtitle');
+    if (subtitle) subtitle.textContent = 'My Entities Dashboard';
+    // Hide Add Client button
+    document.querySelectorAll('button, a').forEach(el => {
+      if (el.textContent.includes('+ Add Client') || el.textContent.includes('Invite client')) {
+        el.style.display = 'none';
+      }
+    });
+    // Switch to staff tab by default
+    const staffTab = document.querySelector('[onclick*="switchFirmTab('staff'"]') || 
+                     document.querySelector('[onclick*="staff"]');
+    if (staffTab) staffTab.click();
+  }
   await loadAll();
 })();
 
@@ -458,32 +489,13 @@ async function loadAll() {
   allStaff   = await getFirmStaff(currentUser.id);
   renderClientTable(allClients);
   populateStaffFilter();
-  await updateStats();
+  updateStats();
 }
 
 // ── Stats ─────────────────────────────────────────────
-async function updateStats() {
+function updateStats() {
   document.getElementById('fs-clients').textContent = allClients.length;
   document.getElementById('fs-staff').textContent   = allStaff.length;
-  // Compute overdue + done this month across all clients
-  const today      = new Date(); today.setHours(0,0,0,0);
-  const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
-  let totalOverdue = 0, totalDone = 0;
-  for (const client of allClients) {
-    const filings   = await getEntityFilings(client.entity_id);
-    const deadlines = getEntityDeadlines(client, new Date());
-    deadlines.forEach(dl => {
-      const f = filings.find(f => f.deadline_key === dl.key);
-      if (f?.status === 'done') {
-        if (f.done_at && new Date(f.done_at) >= monthStart) totalDone++;
-      } else {
-        const diff = Math.round((new Date(dl.due) - today) / 86400000);
-        if (diff < 0) totalOverdue++;
-      }
-    });
-  }
-  document.getElementById('fs-overdue').textContent = totalOverdue || '0';
-  document.getElementById('fs-done').textContent    = totalDone    || '0';
 }
 
 // ── Tab switching ─────────────────────────────────────
@@ -508,8 +520,9 @@ function renderClientTable(clients) {
     return;
   }
 
-  // Only strict primary_admin can delete — checked via isStrictPA flag set at init
-  const isCurrentUserPrimary = isStrictPA;
+  // Only primary_admin can delete
+  const isCurrentUserPrimary = currentProfile?.role === 'primary_admin' ||
+    allStaff.find(s => s.id === currentUser.id)?.firm_role !== 'secondary_admin';
 
   body.innerHTML = clients.map(c => {
     const gst  = c.gst_regular || c.gst_qrmp || c.gst_composition || c.gst;
@@ -550,7 +563,7 @@ function renderClientTable(clients) {
       <td>${staffHtml}</td>
       <td>${clientHtml}</td>
       <td style="display:flex;gap:4px;flex-wrap:wrap">
-        <a href="dashboard.html" class="ab ab-blue" onclick="openClientDashboard('${c.entity_id}')">Open</a>
+        <a href="dashboard.html" class="ab ab-blue" onclick="sessionStorage.setItem('openEntity','${c.entity_id}')">Open</a>
         ${isCurrentUserPrimary ? `<button class="ab ab-red" onclick="openDelete('${c.entity_id}','${c.entity_name?.replace(/'/g,"\\'")}')">Delete</button>` : ''}
       </td>
     </tr>`;
@@ -591,7 +604,7 @@ async function quickToggle(entityId, key, current, el) {
   el.classList.toggle('off', !newVal);
 
   // Get full current registrations
-  const { data: reg } = await sb.from('registrations').select('*').eq('entity_id', entityId).maybeSingle();
+  const { data: reg } = await sb.from('registrations').select('*').eq('entity_id', entityId).single();
   if (!reg) return;
 
   const update = {};
@@ -731,14 +744,18 @@ async function saveNewClient() {
 
   // Send client invite if email provided
   if (invite) {
-    await sb.rpc('invite_client', { p_entity_id: ent, p_email: invite, p_admin_id: currentUser.id });
-    await sendClientInviteEmail(invite, currentProfile?.name || 'TrustFactON', name);
+    await sb.from('entity_members').insert({
+      entity_id: ent, invited_email: invite,
+      firm_role: 'client', role: 'client',
+      status: 'pending', invited_by: currentUser.id,
+    });
+    await sb.auth.signInWithOtp({ email: invite, options: { shouldCreateUser: true } });
   }
 
   document.getElementById('addClientModal').classList.remove('open');
   allClients = await getFirmClients(currentUser.id);
   renderClientTable(allClients);
-  await updateStats();
+  updateStats();
   showToast('✅ Client added!' + (invite ? ' Invitation sent.' : ''));
 }
 
@@ -746,9 +763,13 @@ async function saveNewClient() {
 async function inviteClient(entityId, name) {
   const email = prompt(`Enter client email to invite for ${name}:`);
   if (!email) return;
-  const { error } = await sb.rpc('invite_client', { p_entity_id: entityId, p_email: email, p_admin_id: currentUser.id });
-  if (error) { showToast('Error: ' + error.message); return; }
-  await sendClientInviteEmail(email, currentProfile?.name || 'TrustFactON', name);
+  const { error } = await sb.from('entity_members').insert({
+    entity_id: entityId, invited_email: email,
+    firm_role: 'client', role: 'client',
+    status: 'pending', invited_by: currentUser.id,
+  });
+  if (error && !error.message.includes('unique')) { showToast('Error: ' + error.message); return; }
+  await sb.auth.signInWithOtp({ email, options: { shouldCreateUser: true } });
   allClients = await getFirmClients(currentUser.id);
   renderClientTable(allClients);
   showToast('✅ Invitation sent to ' + email);
@@ -768,7 +789,7 @@ async function confirmDelete() {
   if (error) { showToast('Error: ' + error.message); return; }
   allClients = allClients.filter(c => c.entity_id !== entityId);
   renderClientTable(allClients);
-  await updateStats();
+  updateStats();
   showToast('Client deleted.');
 }
 
@@ -795,10 +816,10 @@ function renderStaffGrid() {
       ${isStrictPA ? `
         <div style="display:flex;gap:6px">
           ${s.firm_role === 'secondary_admin'
-            ? `<button class="ab ab-blue" onclick="changeStaffRole('${s.entityId}','${s.id}','staff')">↓ Demote to Staff</button>`
-            : `<button class="ab ab-green" onclick="changeStaffRole('${s.entityId}','${s.id}','secondary_admin')">↑ Make Secondary Admin</button>`
+            ? `<button class="ab ab-blue" onclick="toggleSecondaryAdmin('${s.id}','${s.name}',true)">↓ Demote to Staff</button>`
+            : `<button class="ab ab-green" onclick="toggleSecondaryAdmin('${s.id}','${s.name}',false)">↑ Make Secondary Admin</button>`
           }
-          <button class="ab ab-red" onclick="removeStaff('${s.id}','${s.name}')">Remove</button>
+          <button class="ab ab-red" onclick="removeStaff('${s.entityId}','${s.id}','${s.name}')">Remove</button>
         </div>` : ''}
     </div>`;
   }).join('');
@@ -813,30 +834,28 @@ function openInviteStaff() {
 async function sendStaffInvite() {
   const email = document.getElementById('is-email').value.trim();
   if (!email) { showToast('Please enter an email.'); return; }
-  const btn = document.querySelector('#inviteStaffModal .m-sub');
-  if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
-  // v2: no entity_ids — invite_staff auto-finds admin firm entity
-  const errors = await inviteStaffMember(email, currentUser.id, currentProfile?.name || '');
+  const myEntityIds = allClients.map(c => c.entity_id);
+  const errors = await inviteStaffMember(myEntityIds, email, currentUser.id, currentProfile?.name || '');
   document.getElementById('inviteStaffModal').classList.remove('open');
-  if (btn) { btn.disabled = false; btn.textContent = 'Send Invite →'; }
   if (errors.length) { showToast('Some errors: ' + errors[0]); return; }
-  showToast('✅ Staff invitation sent! They will receive an email.');
+  showToast('✅ Staff invitation sent!');
 }
 
 // ── Pending invites ───────────────────────────────────
 async function loadPendingInvites() {
+  const { data } = await sb.from('entity_members')
+    .select('*, entities(name)')
+    .eq('status', 'pending')
+    .in('entity_id', allClients.map(c => c.entity_id));
   const body = document.getElementById('inviteBody');
-  body.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:18px;color:var(--gray-4)">Loading…</td></tr>`;
-  // SECURITY DEFINER RPC — sees pending rows (user_id=null) that RLS would block
-  const { data, error } = await sb.rpc('get_pending_invites', { p_admin_id: currentUser.id });
   if (!data?.length) {
     body.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--gray-4)">No pending invites</td></tr>`;
     return;
   }
   body.innerHTML = data.map(m => `<tr>
     <td style="font-size:.82rem">${m.invited_email||'—'}</td>
-    <td><span style="font-size:.72rem;font-weight:700;background:#EFF6FF;color:#1E40AF;padding:2px 7px;border-radius:4px">${m.firm_role}</span></td>
-    <td style="font-size:.79rem;color:var(--gray-5)">${m.entity_name||'—'}</td>
+    <td><span style="font-size:.72rem;font-weight:700;background:#EFF6FF;color:#1E40AF;padding:2px 7px;border-radius:4px">${m.firm_role||m.role}</span></td>
+    <td style="font-size:.79rem;color:var(--gray-5)">${m.entities?.name||'—'}</td>
     <td style="font-size:.74rem;color:var(--gray-5)">${new Date(m.created_at).toLocaleDateString('en-IN')}</td>
     <td>
       <button class="ab ab-blue" onclick="resendInvite('${m.invited_email}')">Resend</button>
@@ -846,13 +865,12 @@ async function loadPendingInvites() {
 }
 
 async function resendInvite(email) {
-  await sendClientInviteEmail(email, currentProfile?.name || 'TrustFactON', name);
+  await sb.auth.signInWithOtp({ email, options: { shouldCreateUser: true } });
   showToast('✅ Invite resent to ' + email);
 }
 
 async function cancelInvite(id) {
-  const { error } = await sb.rpc('cancel_invite', { p_invite_id: id, p_admin_id: currentUser.id });
-  if (error) { showToast('Error: ' + error.message); return; }
+  await sb.from('entity_members').delete().eq('id', id);
   loadPendingInvites();
   showToast('Invite cancelled.');
 }
@@ -869,7 +887,18 @@ async function changeStaffRole(entityId, userId, newRole) {
   showToast(`✅ Role updated to ${label}`);
 }
 
-// removeStaff v2 defined below (removes from all entities)
+async function removeStaff(entityId, userId, name) {
+  if (!confirm(`Remove ${name} from your firm?`)) return;
+  const { error } = await sb.from('entity_members')
+    .delete()
+    .eq('entity_id', entityId)
+    .eq('user_id', userId)
+    .eq('firm_role', 'staff');
+  if (error) { showToast('Error: ' + error.message); return; }
+  allStaff = await getFirmStaff(currentUser.id);
+  renderStaffGrid();
+  showToast(`${name} removed from firm.`);
+}
 
 async function toggleSecondaryAdmin(userId, name, isCurrentlySecondary) {
   const newRole = isCurrentlySecondary ? 'staff' : 'secondary_admin';
@@ -897,17 +926,6 @@ async function removeStaff(userId, name) {
   allStaff = await getFirmStaff(currentUser.id);
   renderStaffGrid();
   showToast(`${name} removed from firm.`);
-}
-
-function openClientDashboard(entityId) {
-  // Find client data from allClients
-  const client = allClients.find(c => c.entity_id === entityId);
-  sessionStorage.setItem('openEntity', entityId);
-  if (client) {
-    sessionStorage.setItem('openEntityName', client.entity_name || '');
-    sessionStorage.setItem('openEntityType', client.entity_type || '');
-  }
-  window.location.href = 'dashboard.html';
 }
 
 async function doLogout() { await sb.auth.signOut(); window.location.href = 'index.html'; }

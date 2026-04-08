@@ -11,17 +11,17 @@
 <style>
 /* ── Layout ───────────────────────────── */
 body { background: var(--gray-1); min-height: 100vh; }
-.db-header { background: #FFFFFF; color: var(--navy); padding: 0; position: sticky; top: 0; z-index: 200; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border-bottom: 3px solid #C0392B; }
+.db-header { background: var(--navy); color: white; padding: 0; position: sticky; top: 0; z-index: 200; box-shadow: 0 2px 12px rgba(0,0,0,0.2); }
 .db-header-inner { display: flex; align-items: center; gap: 12px; height: 56px; }
 .db-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; flex-shrink: 0; }
-.db-logo img  { width: 32px; height: 32px; object-fit: contain; mix-blend-mode: multiply; }
-.db-logo span { font-family: 'Playfair Display', Georgia, serif; font-size: 1.1rem; color: var(--navy); }
-.db-logo .accent { color: #C0392B; }
+.db-logo img  { width: 32px; height: 32px; object-fit: contain; mix-blend-mode: screen; }
+.db-logo span { font-family: 'Playfair Display', Georgia, serif; font-size: 1.1rem; color: white; }
+.db-logo .accent { color: #60A5FA; }
 
 /* Entity switcher */
 .entity-switcher { position: relative; flex: 1; max-width: 320px; }
-.entity-btn { display: flex; align-items: center; gap: 8px; background: #F8F9FA; border: 1.5px solid #E2E8F0; border-radius: 8px; padding: 6px 12px; color: var(--navy); font-size: 0.84rem; cursor: pointer; font-family: 'Inter',sans-serif; width: 100%; text-align: left; transition: background 0.15s; min-width: 0; }
-.entity-btn:hover { background: #F1F5F9; border-color: var(--blue); }
+.entity-btn { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 6px 12px; color: white; font-size: 0.84rem; cursor: pointer; font-family: 'Inter',sans-serif; width: 100%; text-align: left; transition: background 0.15s; min-width: 0; }
+.entity-btn:hover { background: rgba(255,255,255,0.15); }
 .entity-btn .ename { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; }
 .entity-btn .etype { font-size: 0.72rem; opacity: 0.65; flex-shrink: 0; }
 .entity-drop { position: absolute; top: calc(100% + 6px); left: 0; min-width: 300px; background: white; border-radius: 10px; border: 1px solid var(--gray-3); box-shadow: 0 8px 32px rgba(0,0,0,0.12); z-index: 300; display: none; overflow: hidden; }
@@ -36,8 +36,8 @@ body { background: var(--gray-1); min-height: 100vh; }
 .entity-drop-add:hover { background: #EFF6FF; }
 
 .db-nav-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
-.db-nav-btn { padding: 5px 13px; border-radius: 7px; font-size: 0.78rem; font-weight: 500; cursor: pointer; font-family: 'Inter',sans-serif; border: 1.5px solid #E2E8F0; color: var(--navy); background: transparent; transition: all 0.15s; white-space: nowrap; }
-.db-nav-btn:hover { background: #F1F5F9; border-color: var(--navy); }
+.db-nav-btn { padding: 5px 13px; border-radius: 7px; font-size: 0.78rem; font-weight: 500; cursor: pointer; font-family: 'Inter',sans-serif; border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.8); background: transparent; transition: all 0.15s; white-space: nowrap; }
+.db-nav-btn:hover { background: rgba(255,255,255,0.1); color: white; }
 .db-nav-btn.primary { background: var(--blue); color: white; border-color: var(--blue); }
 .db-nav-btn.primary:hover { background: #1D4ED8; }
 
@@ -45,43 +45,43 @@ body { background: var(--gray-1); min-height: 100vh; }
 .db-body { max-width: 1100px; margin: 0 auto; padding: 24px 20px 48px; }
 
 /* Welcome banner */
-.db-welcome { background: white; border-radius: 12px; padding: 20px 24px; color: var(--navy); margin-bottom: 22px; display: flex; align-items: center; justify-content: space-between; gap: 16px; border: 1px solid #E2E8F0; border-left: 4px solid #C0392B; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-.db-welcome h2 { font-size: 1.1rem; color: var(--navy); margin-bottom: 3px; }
-.db-welcome p  { font-size: 0.83rem; color: var(--gray-5); }
+.db-welcome { background: var(--navy); border-radius: 12px; padding: 20px 24px; color: white; margin-bottom: 22px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.db-welcome h2 { font-size: 1.1rem; color: white; margin-bottom: 3px; }
+.db-welcome p  { font-size: 0.83rem; color: rgba(255,255,255,0.6); }
 
 /* Stat cards */
 .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 22px; }
-.stat-card { background: white; border: 1px solid var(--gray-3); border-radius: 10px; padding: 16px 18px; border-left: 3px solid #C0392B; }
+.stat-card { background: white; border: 1px solid var(--gray-3); border-radius: 10px; padding: 16px 18px; }
 .stat-card .sv { font-size: 1.7rem; font-weight: 700; font-family: 'Playfair Display', Georgia, serif; line-height: 1; }
 .stat-card .sl { font-size: 0.75rem; color: var(--gray-5); margin-top: 4px; }
-.sv-red    { color: #0F172A; }
-.sv-amber  { color: #0F172A; }
-.sv-green  { color: #0F172A; }
-.sv-blue   { color: #0F172A; }
+.sv-red    { color: var(--red); }
+.sv-amber  { color: var(--amber); }
+.sv-green  { color: var(--green); }
+.sv-blue   { color: var(--blue); }
 
 /* Tabs */
 .db-tabs { display: flex; gap: 2px; border-bottom: 2px solid var(--gray-3); margin-bottom: 18px; }
 .db-tab { padding: 9px 18px; font-size: 0.84rem; font-weight: 500; color: var(--gray-5); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.15s; font-family: 'Inter',sans-serif; background: none; border-top: none; border-left: none; border-right: none; }
 .db-tab:hover { color: var(--navy); }
-.db-tab.active { color: #C0392B; border-bottom-color: #C0392B; font-weight: 600; }
+.db-tab.active { color: var(--navy); border-bottom-color: var(--navy); font-weight: 600; }
 
 /* Filter pills */
 .cat-pills { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
 .cat-pill { padding: 4px 12px; border-radius: 20px; border: 1.5px solid var(--gray-3); background: white; font-size: 0.76rem; font-weight: 500; color: var(--gray-5); cursor: pointer; transition: all 0.15s; font-family: 'Inter',sans-serif; }
-.cat-pill.on { background: #0F172A; color: white; border-color: #0F172A; }
+.cat-pill.on { background: var(--navy); color: white; border-color: var(--navy); }
 .cat-pill:hover:not(.on) { border-color: var(--blue); color: var(--blue); }
 
 /* Filing table */
 .filing-table-wrap { background: white; border: 1px solid var(--gray-3); border-radius: 12px; overflow: hidden; }
 .filing-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
-.filing-table thead th { background: #0F172A; color: white; padding: 10px 13px; text-align: left; font-weight: 600; font-size: 0.76rem; white-space: nowrap; border-bottom: 2px solid #C0392B; }
+.filing-table thead th { background: var(--navy); color: white; padding: 10px 13px; text-align: left; font-weight: 600; font-size: 0.76rem; white-space: nowrap; }
 .filing-table tbody td { padding: 11px 13px; border-bottom: 1px solid var(--gray-2); vertical-align: middle; }
 .filing-table tbody tr:last-child td { border-bottom: none; }
 .filing-table tbody tr:hover td { background: var(--gray-1); }
 
 /* Row urgency */
 .row-overdue td { background: #FEF2F2 !important; }
-.row-overdue td:first-child { border-left: 3px solid #C0392B; }
+.row-overdue td:first-child { border-left: 3px solid var(--red); }
 .row-soon td    { background: #FFFBEB !important; }
 .row-soon td:first-child    { border-left: 3px solid var(--amber); }
 .row-near td    { background: #F0FDF4 !important; }
@@ -102,7 +102,7 @@ body { background: var(--gray-1); min-height: 100vh; }
 
 /* Done button */
 .done-btn { padding: 4px 11px; border-radius: 6px; font-size: 0.76rem; font-weight: 600; cursor: pointer; font-family: 'Inter',sans-serif; border: none; transition: all 0.15s; white-space: nowrap; }
-.done-btn.mark { background: #C0392B; color: white; }
+.done-btn.mark { background: var(--navy); color: white; }
 .done-btn.mark:hover { background: #0F2444; }
 .done-btn.undo { background: var(--gray-2); color: var(--gray-6); }
 .done-btn.undo:hover { background: var(--gray-3); }
@@ -158,10 +158,10 @@ body { background: var(--gray-1); min-height: 100vh; }
 
 /* ── Profile dropdown ── */
 .profile-wrap{position:relative;}
-.profile-btn{display:flex;align-items:center;gap:7px;padding:5px 10px;background:#F8F9FA;border:1.5px solid #E2E8F0;border-radius:8px;color:var(--navy);cursor:pointer;font-family:'Inter',sans-serif;font-size:.8rem;transition:all .15s;}
-.profile-btn:hover{background:#F1F5F9;border-color:var(--blue);}
-.profile-avatar{width:26px;height:26px;border-radius:50%;background:#0F172A;color:white;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0;}
-.profile-name{max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--navy);}
+.profile-btn{display:flex;align-items:center;gap:7px;padding:5px 10px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:8px;color:white;cursor:pointer;font-family:'Inter',sans-serif;font-size:.8rem;transition:all .15s;}
+.profile-btn:hover{background:rgba(255,255,255,.18);}
+.profile-avatar{width:26px;height:26px;border-radius:50%;background:#2563EB;color:white;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0;}
+.profile-name{max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .profile-drop{position:absolute;top:calc(100% + 8px);right:0;background:white;border:1px solid var(--gray-3);border-radius:10px;box-shadow:0 8px 32px rgba(0,0,0,.12);min-width:220px;z-index:500;display:none;}
 .profile-drop.open{display:block;}
 .pd-info{padding:14px 16px 10px;text-align:center;}
@@ -172,7 +172,7 @@ body { background: var(--gray-1); min-height: 100vh; }
 .pd-divider{height:1px;background:var(--gray-2);margin:2px 0;}
 .pd-item{display:block;width:100%;padding:9px 16px;font-size:.82rem;color:var(--gray-6);text-decoration:none;background:none;border:none;cursor:pointer;font-family:'Inter',sans-serif;text-align:left;transition:background .1s;}
 .pd-item:hover{background:var(--gray-1);color:var(--navy);}
-.pd-logout{color:var(--brand)!important;}
+.pd-logout{color:var(--red)!important;}
 .pd-logout:hover{background:#FEF2F2!important;}
 
 /* ── Mobile improvements ── */
@@ -251,7 +251,7 @@ body { background: var(--gray-1); min-height: 100vh; }
 
 @media(max-width:420px){
   .stat-grid{grid-template-columns:1fr 1fr!important;}
-  .db-logo span{display:none;} .db-header .db-logo img { mix-blend-mode: multiply !important; }
+  .db-logo span{display:none;}
   .sv{font-size:1.3rem!important;}
   .filing-table{min-width:480px;}
 }
@@ -264,8 +264,8 @@ body { background: var(--gray-1); min-height: 100vh; }
   <div class="container">
     <div class="db-header-inner">
       <a href="index.html" class="db-logo">
-        <img src="trustlogotrans.png" alt="TrustFactON">
-        <span style="color:#C0392B;font-family:'Playfair Display',Georgia,serif;font-size:1.1rem;font-weight:700;letter-spacing:-0.3px;">TrustFactON</span>
+        <img src="logo.png" alt="TrustFactON">
+        <span>Trust<span class="accent">Fact</span>ON</span>
       </a>
 
       <!-- Entity switcher -->
@@ -285,7 +285,7 @@ body { background: var(--gray-1); min-height: 100vh; }
 
       <div class="db-nav-right">
         <a href="firm-dashboard.html" class="db-nav-btn" id="firmDashBtn" style="display:none;background:white;color:#C0392B;border:1.5px solid #C0392B;font-weight:600;">🏢 Firm</a>
-        <button type="button" class="db-nav-btn" id="logoutBtn" onclick="doLogout()" style="border-color:#FECACA;color:#C0392B;">Sign Out</button>
+        <button type="button" class="db-nav-btn" id="logoutBtn" onclick="doLogout()" style="border-color:rgba(255,100,100,.4);color:rgba(255,180,180,.9)">Sign Out</button>
         <!-- Profile dropdown -->
         <div class="profile-wrap" id="profileWrap">
           <button class="profile-btn" onclick="toggleProfile()" id="profileBtn">
@@ -303,14 +303,11 @@ body { background: var(--gray-1); min-height: 100vh; }
             <div class="pd-divider"></div>
             <div class="pd-item pd-email-edit" id="pdEmailEditRow" style="flex-direction:column;align-items:flex-start;gap:4px;cursor:default">
               <div style="font-size:.72rem;font-weight:600;color:var(--gray-5)">Reminder email</div>
-              <div style="display:flex;gap:6px;width:100%" id="reminderEmailRow">
+              <div style="display:flex;gap:6px;width:100%">
                 <input type="email" id="pdReminderEmail" placeholder="your@email.com"
                   style="flex:1;padding:5px 8px;border:1.5px solid var(--gray-3);border-radius:6px;font-size:.78rem;font-family:'Inter',sans-serif;">
                 <button type="button" onclick="saveReminderEmail()"
                   style="padding:5px 10px;background:var(--navy);color:white;border:none;border-radius:6px;font-size:.74rem;font-weight:600;cursor:pointer">Save</button>
-              </div>
-              <div id="reminderEmailReadonly" style="display:none;font-size:.75rem;color:var(--gray-5)">
-                Managed by your firm admin
               </div>
             </div>
             <div class="pd-divider"></div>
@@ -369,17 +366,6 @@ body { background: var(--gray-1); min-height: 100vh; }
   <!-- ── TAB: Deadlines ── -->
   <div id="tab-deadlines">
 
-    <!-- Client context bar — shows which client/entity is active -->
-    <div id="clientContextBar" style="display:none;align-items:center;gap:10px;
-         background:white;border:1px solid var(--gray-3);border-radius:10px;
-         padding:10px 16px;margin-bottom:14px;">
-      <span style="font-size:1rem;">📋</span>
-      <div>
-        <div id="ctxEntityName" style="font-size:.88rem;font-weight:700;color:var(--black)"></div>
-        <div id="ctxEntityMeta" style="font-size:.74rem;color:var(--gray-5)"></div>
-      </div>
-    </div>
-
     <!-- Month navigator + category filter row -->
     <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px">
       <!-- Month nav -->
@@ -390,7 +376,7 @@ body { background: var(--gray-1); min-height: 100vh; }
         <button onclick="goCurrentMonth()" style="padding:3px 10px;border:1px solid var(--gray-3);border-radius:6px;font-size:.72rem;color:var(--gray-5);background:white;cursor:pointer;font-family:'Inter',sans-serif">Today</button>
       </div>
       <!-- Assign task button -->
-      <button onclick="openAssignTask()" style="display:flex;align-items:center;gap:6px;padding:7px 14px;background:#C0392B;color:white;border:none;border-radius:8px;font-size:.81rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif">
+      <button onclick="openAssignTask()" style="display:flex;align-items:center;gap:6px;padding:7px 14px;background:var(--blue);color:white;border:none;border-radius:8px;font-size:.81rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif">
         + Assign Task
       </button>
     </div>
@@ -450,7 +436,7 @@ body { background: var(--gray-1); min-height: 100vh; }
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
       <div style="font-size:.84rem;color:var(--gray-5)">Track tax notices, SCNs and demand orders for this entity</div>
       <button onclick="openAddNotice()"
-        style="display:flex;align-items:center;gap:6px;padding:7px 14px;background:var(--brand);color:white;border:none;border-radius:8px;font-size:.81rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif">
+        style="display:flex;align-items:center;gap:6px;padding:7px 14px;background:var(--red);color:white;border:none;border-radius:8px;font-size:.81rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif">
         + Add Notice
       </button>
     </div>
@@ -590,7 +576,7 @@ body { background: var(--gray-1); min-height: 100vh; }
     </div>
     <div class="modal-btns">
       <button class="modal-cancel" onclick="document.getElementById('noticeModal').classList.remove('open')">Cancel</button>
-      <button class="modal-submit" style="background:var(--brand)" onclick="saveNotice()">Save Notice</button>
+      <button class="modal-submit" style="background:var(--red)" onclick="saveNotice()">Save Notice</button>
     </div>
   </div>
 </div>
@@ -810,7 +796,7 @@ const MONTHS = ['','January','February','March','April','May','June',
   try {
     await acceptPendingInvitations(currentUser.email);
     entities = await getMyEntities(currentUser.id);
-  } catch { /* ignore if RPC unavailable */ }
+  } catch { /* ignore if accept_invitation RPC not deployed yet */ }
 
   // Client with single entity → use that entity directly
   activeEntity = entities[0];
@@ -827,23 +813,6 @@ const MONTHS = ['','January','February','March','April','May','June',
   await loadEntityData();
   showWelcome();
   applyRoleUI();
-
-  // Auto-select entity if opened from firm dashboard
-  const openEntityId   = sessionStorage.getItem('openEntity');
-  const openEntityName = sessionStorage.getItem('openEntityName');
-  const openEntityType = sessionStorage.getItem('openEntityType');
-  if (openEntityId) {
-    sessionStorage.removeItem('openEntity');
-    sessionStorage.removeItem('openEntityName');
-    sessionStorage.removeItem('openEntityType');
-    const target = entities.find(e => e.id === openEntityId);
-    if (target) {
-      activeEntity = target;
-      renderEntitySwitcher();
-      await loadEntityData();
-      showWelcome();
-    }
-  }
 
   if (location.search.includes('new=1') || location.search.includes('setup=1')) {
     showToast('🎉 Account verified! Your compliance dashboard is ready.');
@@ -866,7 +835,7 @@ function hideSetupBanner() {
 
 async function acceptPendingInvitations(email) {
   try {
-    const { error } = await sb.rpc('accept_staff_invites', { p_user_id: currentUser.id, p_email: email });
+    const { error } = await sb.rpc('accept_invitation', { p_email: email, p_user_id: currentUser.id });
     if (!error) entities = await getMyEntities(currentUser.id);
   } catch {}
 }
@@ -880,18 +849,6 @@ async function showWelcome() {
     `${activeEntity?.name || ''} · ${activeEntity?.type || ''} · Compliance dashboard`;
   document.getElementById('dbWelcome').style.display = 'flex';
 
-  // Update client context bar above task table
-  const ctxBar = document.getElementById('clientContextBar');
-  const ctxName = document.getElementById('ctxEntityName');
-  const ctxMeta = document.getElementById('ctxEntityMeta');
-  if (ctxBar && activeEntity) {
-    ctxName.textContent = activeEntity.name || '';
-    const pan  = activeEntity.pan  ? ` · PAN: ${activeEntity.pan}`  : '';
-    const gstin= activeEntity.gstin? ` · GSTIN: ${activeEntity.gstin}` : '';
-    ctxMeta.textContent = `${activeEntity.type || ''}${pan}${gstin}`;
-    ctxBar.style.display = 'flex';
-  }
-
   // Show All Clients tab + Firm Dashboard btn for primary admins
   const isProf = currentProfile?.role === 'professional' || entities.length > 2;
   const tab = document.getElementById('allClientsTab');
@@ -902,23 +859,27 @@ async function showWelcome() {
   const pdUserEmail = currentUser?.email || '';
   const pdRoleKey   = myFirmRole || currentProfile?.role || 'owner';
   const initials    = pdFullName.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2) || '?';
-  // For staff: always show 'Staff' regardless of profile.role
-  const effectiveRole = (activeEntity?.my_firm_role === 'staff') ? 'staff' :
-                        (activeEntity?.my_firm_role === 'client') ? 'client' :
-                        pdRoleKey;
   const roleLabel = {
     primary_admin:'Primary Admin', secondary_admin:'Secondary Admin',
     staff:'Staff', client:'Client', owner:'Owner', professional:'Professional'
-  }[effectiveRole] || effectiveRole;
+  }[pdRoleKey] || pdRoleKey;
 
-  const roleColor = effectiveRole === 'primary_admin' ? '#1A3A6B' :
-                   effectiveRole === 'secondary_admin' ? '#6D28D9' :
-                   effectiveRole === 'staff' ? '#16A34A' :
-                   effectiveRole === 'client' ? '#2563EB' : '#1A3A6B';
   const av = document.getElementById('profileAvatar');
-  if (av) { av.textContent = initials; av.style.background = roleColor; }
+  if (av) {
+    av.textContent = initials;
+    av.style.background = pdRoleKey === 'primary_admin' ? '#1A3A6B' :
+                          pdRoleKey === 'secondary_admin' ? '#6D28D9' :
+                          pdRoleKey === 'staff' ? '#16A34A' :
+                          pdRoleKey === 'client' ? '#2563EB' : '#1A3A6B';
+  }
   const avLg = document.getElementById('pdAvatarLg');
-  if (avLg) { avLg.textContent = initials; avLg.style.background = roleColor; }
+  if (avLg) {
+    avLg.textContent = initials;
+    avLg.style.background = pdRoleKey === 'primary_admin' ? '#1A3A6B' :
+                            pdRoleKey === 'secondary_admin' ? '#6D28D9' :
+                            pdRoleKey === 'staff' ? '#16A34A' :
+                            pdRoleKey === 'client' ? '#2563EB' : '#1A3A6B';
+  }
   // Populate reminder email field
   const remEl = document.getElementById('pdReminderEmail');
   if (remEl && activeEntity) {
@@ -931,13 +892,13 @@ async function showWelcome() {
   const pdEmailEl = document.getElementById('pdEmail');
   if (pdEmailEl) pdEmailEl.textContent = pdUserEmail;
   const pdRoleEl  = document.getElementById('pdRole');
-  if (pdRoleEl)  pdRoleEl.textContent  = roleLabel;
+  if (pdRoleEl)  pdRoleEl.textContent  = roleLabel[pdRoleKey] || pdRoleKey;
 
   // Show firm dashboard button for primary + secondary admins
   try {
     const isPA = await isPrimaryAdmin(currentUser.id);
     const firmBtn = document.getElementById('firmDashBtn');
-    const showFirm = isPA || myFirmRole === 'secondary_admin' || myFirmRole === 'primary_admin';
+    const showFirm = isPA || myFirmRole === 'secondary_admin' || myFirmRole === 'primary_admin' || myFirmRole === 'owner';
     if (firmBtn) firmBtn.style.display = showFirm ? 'inline-flex' : 'none';
     // Show firm link in profile dropdown
     const pdFirmLink = document.getElementById('pdFirmLink');
@@ -992,24 +953,12 @@ async function loadEntityData() {
 
     // Compute deadlines synchronously
     const refDate = new Date(dlYear, dlMonth - 1, 1);
-    let allDeadlines = getEntityDeadlines(reg, refDate);
-    allDeadlines.sort((a,b) => a.due - b.due);
-
+    deadlines = getEntityDeadlines(reg, refDate);
+    deadlines.sort((a,b) => a.due - b.due);
     updateMonthLabel();
 
-    // Load filings from DB FIRST before filtering
+    // Load filings from DB
     allFilings = await getEntityFilings(activeEntity.id);
-
-    // Task-level staff: only show filings assigned to them
-    // Client-level staff: show all filings for that client
-    if (myFirmRole === 'staff' && activeEntity.assignment_type === 'task') {
-      deadlines = allDeadlines.filter(dl => {
-        const f = allFilings.find(f => f.deadline_key === dl.key);
-        return f?.assigned_to === currentUser.id;
-      });
-    } else {
-      deadlines = allDeadlines;
-    }
 
     // Load notices
     try { await loadNoticesData(); } catch { allNotices = []; }
@@ -1025,7 +974,7 @@ async function loadEntityData() {
     console.error('loadEntityData failed:', e);
     // Show error state instead of loading spinner
     const body = document.getElementById('filingBody');
-    if (body) body.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:32px;color:var(--brand)">
+    if (body) body.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:32px;color:var(--red)">
       Error loading deadlines. Please refresh the page.<br>
       <span style="font-size:.75rem;color:var(--gray-4)">${e.message||'Unknown error'}</span>
     </td></tr>`;
@@ -1223,33 +1172,23 @@ async function sendInvite() {
   const msg   = document.getElementById('inviteMsg');
   if (!email) { showToast('Enter an email address.'); return; }
 
-  // Use SECURITY DEFINER RPC — bypasses RLS for pending invite insert
-  const firmRole = role === 'professional' ? 'staff' : 'client';
-  let rpcError;
-  if (firmRole === 'client') {
-    const { error } = await sb.rpc('invite_client', {
-      p_entity_id: activeEntity.id,
-      p_email:     email,
-      p_admin_id:  currentUser.id,
-    });
-    rpcError = error;
-  } else {
-    const { error } = await sb.rpc('invite_staff', {
-      p_email:    email,
-      p_admin_id: currentUser.id,
-    });
-    rpcError = error;
-  }
+  const { error } = await sb.from('entity_members').insert({
+    entity_id:    activeEntity.id,
+    invited_email:email,
+    role,
+    status:      'pending',
+    invited_by:  currentUser.id,
+  });
 
-  if (rpcError) {
-    msg.style.cssText = 'display:block;color:var(--brand)';
-    msg.textContent = rpcError.message.includes('unique') ? 'This email is already invited.' : rpcError.message;
+  if (error) {
+    msg.style.cssText = 'display:block;color:var(--red)';
+    msg.textContent = error.message.includes('unique') ? 'This email is already invited.' : error.message;
   } else {
+    // Send invitation email via Supabase Auth
     await sb.auth.signInWithOtp({
       email,
       options: {
-        shouldCreateUser: true,
-        emailRedirectTo: 'https://trustfacton.com/accept-invite.html',
+        emailRedirectTo: window.location.origin + '/dashboard.html',
         data: { invited_by: currentProfile?.name, entity: activeEntity.name }
       }
     });
@@ -1348,18 +1287,20 @@ async function openAssignTask() {
     }
   });
 
-  // Populate members dropdown — all firm staff via SECURITY DEFINER RPC
-  const { data: members, error: mErr } = await sb.rpc('get_firm_staff_for_entity', {
-    p_entity_id: activeEntity.id
-  });
+  // Populate members dropdown
+  const { data: members } = await sb
+    .from('entity_members')
+    .select('user_id, profiles(name)')
+    .eq('entity_id', activeEntity.id)
+    .eq('status', 'active');
 
   const msel = document.getElementById('assignMember');
   msel.innerHTML = '<option value="">— Select member —</option>';
   (members || []).forEach(m => {
-    if (m.user_id && m.name) {
+    if (m.profiles?.name) {
       const opt = document.createElement('option');
       opt.value = m.user_id;
-      opt.textContent = m.name + (m.firm_role === 'primary_admin' || m.firm_role === 'owner' ? ' (Admin)' : '');
+      opt.textContent = m.profiles.name;
       msel.appendChild(opt);
     }
   });
@@ -1647,7 +1588,7 @@ async function renderClientGrid(entities) {
         </div>
         <div style="display:flex;gap:8px;margin-bottom:10px">
           <div style="flex:1;background:${overdue>0?'#FEF2F2':'var(--gray-1)'};border-radius:8px;padding:8px;text-align:center">
-            <div style="font-size:1.1rem;font-weight:700;color:${overdue>0?'var(--brand)':'var(--gray-5)'}">${overdue}</div>
+            <div style="font-size:1.1rem;font-weight:700;color:${overdue>0?'var(--red)':'var(--gray-5)'}">${overdue}</div>
             <div style="font-size:.62rem;color:var(--gray-5)">Overdue</div>
           </div>
           <div style="flex:1;background:${soonCount>0?'#FFFBEB':'var(--gray-1)'};border-radius:8px;padding:8px;text-align:center">
@@ -1685,28 +1626,14 @@ async function switchToEntity(id) {
 // ── Role detection + UI ──────────────────────────────
 async function detectFirmRole() {
   if (!activeEntity) return;
-
-  // For staff: use my_firm_role from the entity object (set by getMyEntities)
-  // This handles staff assigned to client entities where they have no entity_members row
-  if (activeEntity.my_firm_role) {
-    myFirmRole = activeEntity.my_firm_role;
-    return;
-  }
-
-  // For others: query entity_members directly
   try {
     const { data } = await sb.from('entity_members')
       .select('firm_role, role')
       .eq('user_id', currentUser.id)
       .eq('entity_id', activeEntity.id)
       .eq('status', 'active')
-      .maybeSingle();
-    // If no row found (staff on client entity), fall back to profile role
-    if (!data) {
-      myFirmRole = currentProfile?.role || 'owner';
-    } else {
-      myFirmRole = data?.firm_role || data?.role || 'owner';
-    }
+      .single();
+    myFirmRole = data?.firm_role || data?.role || 'owner';
   } catch { myFirmRole = 'owner'; }
 }
 
@@ -1731,11 +1658,6 @@ function applyRoleUI() {
 
   if (isStaff) {
     showRoleBanner('staff');
-    // Hide reminder email edit — staff cannot change entity reminder email
-    const reminderRow     = document.getElementById('reminderEmailRow');
-    const reminderReadonly= document.getElementById('reminderEmailReadonly');
-    if (reminderRow)      reminderRow.style.display     = 'none';
-    if (reminderReadonly) reminderReadonly.style.display = 'block';
   }
 
   // ── Hide Team tab for staff + client ──
@@ -1804,11 +1726,6 @@ document.addEventListener('click', e => {
 });
 
 async function saveReminderEmail() {
-  // Only owners and primary_admin can change entity reminder email
-  if (myFirmRole === 'staff' || myFirmRole === 'client') {
-    showToast('Only the account owner can change the reminder email.');
-    return;
-  }
   const email = document.getElementById('pdReminderEmail')?.value.trim();
   if (!email) { showToast('Please enter an email.'); return; }
   if (!activeEntity?.id) { showToast('No entity selected.'); return; }
