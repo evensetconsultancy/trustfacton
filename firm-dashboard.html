@@ -477,9 +477,8 @@ const cmState   = {};
       }
     });
     // Switch to staff tab by default
-    const staffTab = document.querySelector('[onclick*="switchFirmTab('staff'"]') || 
-                     document.querySelector('[onclick*="staff"]');
-    if (staffTab) staffTab.click();
+    const tabs = document.querySelectorAll('.firm-tab');
+    tabs.forEach(t => { if (t.textContent.includes('Staff')) t.click(); });
   }
   await loadAll();
 })();
