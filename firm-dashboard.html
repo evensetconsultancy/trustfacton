@@ -902,13 +902,16 @@ async function removeStaff(entityId, userId, name) {
 async function toggleSecondaryAdmin(userId, name, isCurrentlySecondary) {
   const newRole = isCurrentlySecondary ? 'staff' : 'secondary_admin';
   const label   = isCurrentlySecondary ? 'demoted to Staff' : 'promoted to Secondary Admin';
-  // Update firm_role across all entities this staff member is in
-  const entityIds = allClients.map(c => c.entity_id);
-  const { error } = await sb.from('entity_members')
-    .update({ firm_role: newRole })
-    .eq('user_id', userId)
-    .in('entity_id', entityIds);
-  if (error) { showToast('Error: ' + error.message); return; }
+  // Use SECURITY DEFINER RPC — RLS prevents admin from updating other users rows directly
+  const { data, error } = await sb.rpc('update_staff_role', {
+    p_staff_user_id: userId,
+    p_new_role:      newRole,
+    p_admin_id:      currentUser.id
+  });
+  if (error || data?.error) {
+    showToast('Error: ' + (error?.message || data?.error));
+    return;
+  }
   allStaff = await getFirmStaff(currentUser.id);
   renderStaffGrid();
   showToast(`✅ ${name} ${label}`);
