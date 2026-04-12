@@ -91,7 +91,7 @@ body { background: var(--gray-1); min-height: 100vh; }
 /* Status badges */
 .sb { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: 20px; font-size: 0.72rem; font-weight: 700; white-space: nowrap; }
 .sb-overdue { background: #FEE2E2; color: #991B1B; }
-.sb-soon    { background: #FEF3C7; color: #92400E; }
+.sb-soon    { background: #FEF3C7; color: #6B3200; }
 .sb-near    { background: #DCFCE7; color: #166534; }
 .sb-future  { background: var(--gray-2); color: var(--gray-5); }
 .sb-done    { background: #DCFCE7; color: #166534; }
@@ -284,7 +284,7 @@ body { background: var(--gray-1); min-height: 100vh; }
       </div>
 
       <div class="db-nav-right">
-        <a href="firm-dashboard.html" class="db-nav-btn" id="firmDashBtn" style="display:none;background:white;color:#C0392B;border:1.5px solid #C0392B;font-weight:600;">🏢 Firm</a>
+        <a href="firm-dashboard.html" class="db-nav-btn" id="firmDashBtn" style="display:none;background:white;color:#1E293B;border:1.5px solid #1E293B;font-weight:600;">🏢 Firm</a>
         <button type="button" class="db-nav-btn" id="logoutBtn" onclick="doLogout()" style="border-color:rgba(255,100,100,.4);color:rgba(255,180,180,.9)">Sign Out</button>
         <!-- Profile dropdown -->
         <div class="profile-wrap" id="profileWrap">
@@ -1069,7 +1069,7 @@ function renderDeadlines() {
                         extMatch ? new Date(extMatch.extended_due) :
                                    new Date(dl.due);
     const extBadge    = (extMatch || userExt)
-      ? '<span style="font-size:.67rem;background:#FEF3C7;color:#92400E;padding:1px 6px;border-radius:4px;font-weight:700;margin-left:4px">Extended</span>'
+      ? '<span style="font-size:.67rem;background:#FEF3C7;color:#6B3200;padding:1px 6px;border-radius:4px;font-weight:700;margin-left:4px">Extended</span>'
       : '';
     const diff   = Math.round((effectiveDue - today) / 86400000);
 
@@ -1451,7 +1451,7 @@ function renderNotices() {
       'Closed':'#F1F5F9','Appeal Filed':'#EDE9FE'
     };
     const statusTextColors = {
-      'Open':'#991B1B','Responded':'#166534','Extension Requested':'#92400E',
+      'Open':'#991B1B','Responded':'#166534','Extension Requested':'#6B3200',
       'Closed':'#475569','Appeal Filed':'#5B21B6'
     };
     return `<tr class="${urg === 'status-overdue' ? 'row-overdue' : urg === 'status-soon' ? 'row-soon' : ''}">
