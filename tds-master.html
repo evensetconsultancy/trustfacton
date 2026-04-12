@@ -93,7 +93,7 @@
 .df .v{font-size:0.82rem;color:var(--black);line-height:1.4;}
 .d-plain{background:#EFF6FF;border:1px solid #BFDBFE;border-radius:var(--radius);padding:9px 12px;font-size:0.8rem;color:#1E40AF;margin-bottom:8px;}
 .d-plain label{font-size:0.62rem;font-weight:700;text-transform:uppercase;display:block;margin-bottom:3px;}
-.d-note{background:#FFFBEB;border:1px solid #FDE68A;border-radius:var(--radius);padding:9px 12px;font-size:0.78rem;color:#92400E;line-height:1.6;}
+.d-note{background:#FFFBEB;border:1px solid #FDE68A;border-radius:var(--radius);padding:9px 12px;font-size:0.78rem;color:#6B3200;line-height:1.6;}
 .d-note label{font-size:0.62rem;font-weight:700;text-transform:uppercase;display:block;margin-bottom:3px;color:#D97706;}
 .dl{display:inline-flex;align-items:center;gap:4px;font-size:0.74rem;color:var(--blue);border:1px solid #BFDBFE;border-radius:var(--radius);padding:4px 10px;text-decoration:none;margin-top:8px;transition:all 0.15s;}
 .dl:hover{background:var(--blue);color:white;}
@@ -456,7 +456,7 @@ function doCompare(){
       <div class="cp-field"><label>Deductor</label><span style="font-size:0.74rem">${d.deductor}</span></div>
       <div class="cp-field"><label>Form</label><span class="fb">${d.form}</span></div>
     </div>
-    ${d.note?`<div style="margin-top:8px;padding:8px;background:#FFFBEB;border-radius:6px;font-size:0.74rem;color:#92400E">⚡ ${d.note.substring(0,100)}${d.note.length>100?'...':''}</div>`:''}
+    ${d.note?`<div style="margin-top:8px;padding:8px;background:#FFFBEB;border-radius:6px;font-size:0.74rem;color:#6B3200">⚡ ${d.note.substring(0,100)}${d.note.length>100?'...':''}</div>`:''}
   </div>`).join('');
   G('cpanel').classList.add('on');
 }
@@ -506,4 +506,3 @@ document.addEventListener('keydown',e=>{if(e.key==='/'&&document.activeElement.t
 document.addEventListener('DOMContentLoaded',()=>{buildCols();svRdr();go();});
 </script>
 </body>
-</html>
