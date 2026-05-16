@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9958699509806971"
+         crossorigin="anonymous"></script>
 <meta charset="UTF-8">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -284,7 +287,7 @@ body { background: var(--gray-1); min-height: 100vh; }
       </div>
 
       <div class="db-nav-right">
-        <a href="firm-dashboard.html" class="db-nav-btn" id="firmDashBtn" style="display:none;background:white;color:#C0392B;border:1.5px solid #C0392B;font-weight:600;">🏢 Firm</a>
+        <a href="firm-dashboard.html" class="db-nav-btn" id="firmDashBtn" style="display:none;background:#7C3AED;color:white;border-color:#7C3AED">🏢 Firm</a>
         <button type="button" class="db-nav-btn" id="logoutBtn" onclick="doLogout()" style="border-color:rgba(255,100,100,.4);color:rgba(255,180,180,.9)">Sign Out</button>
         <!-- Profile dropdown -->
         <div class="profile-wrap" id="profileWrap">
@@ -898,7 +901,7 @@ async function showWelcome() {
   try {
     const isPA = await isPrimaryAdmin(currentUser.id);
     const firmBtn = document.getElementById('firmDashBtn');
-    const showFirm = isPA || myFirmRole === 'secondary_admin' || myFirmRole === 'primary_admin' || myFirmRole === 'owner';
+    const showFirm = isPA || myFirmRole === 'secondary_admin' || myFirmRole === 'primary_admin';
     if (firmBtn) firmBtn.style.display = showFirm ? 'inline-flex' : 'none';
     // Show firm link in profile dropdown
     const pdFirmLink = document.getElementById('pdFirmLink');

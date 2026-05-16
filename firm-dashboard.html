@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9958699509806971"
+         crossorigin="anonymous"></script>
 <meta charset="UTF-8">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -450,36 +453,6 @@ const cmState   = {};
   }
 
   isStrictPA = await isStrictPrimaryAdmin(currentUser.id);
-  
-  // Detect if user is a business owner (not a CA firm)
-  const { data: ownerCheck } = await sb.from('entity_members')
-    .select('firm_role, role')
-    .eq('user_id', currentUser.id)
-    .eq('role', 'owner')
-    .eq('firm_role', 'owner')
-    .eq('status', 'active')
-    .limit(1)
-    .maybeSingle();
-  const isBusinessOwner = !!ownerCheck;
-  
-  if (isBusinessOwner) {
-    // Hide client-specific elements for business owners
-    // They manage their own entities, not client entities
-    const clientsTab = document.querySelector('[onclick*="clients"]');
-    if (clientsTab) clientsTab.style.display = 'none';
-    // Change header subtitle
-    const subtitle = document.getElementById('fh-subtitle');
-    if (subtitle) subtitle.textContent = 'My Entities Dashboard';
-    // Hide Add Client button
-    document.querySelectorAll('button, a').forEach(el => {
-      if (el.textContent.includes('+ Add Client') || el.textContent.includes('Invite client')) {
-        el.style.display = 'none';
-      }
-    });
-    // Switch to staff tab by default
-    const tabs = document.querySelectorAll('.firm-tab');
-    tabs.forEach(t => { if (t.textContent.includes('Staff')) t.click(); });
-  }
   await loadAll();
 })();
 
@@ -815,8 +788,8 @@ function renderStaffGrid() {
       ${isStrictPA ? `
         <div style="display:flex;gap:6px">
           ${s.firm_role === 'secondary_admin'
-            ? `<button class="ab ab-blue" onclick="toggleSecondaryAdmin('${s.id}','${s.name}',true)">↓ Demote to Staff</button>`
-            : `<button class="ab ab-green" onclick="toggleSecondaryAdmin('${s.id}','${s.name}',false)">↑ Make Secondary Admin</button>`
+            ? `<button class="ab ab-blue" onclick="changeStaffRole('${s.entityId}','${s.id}','staff')">↓ Demote to Staff</button>`
+            : `<button class="ab ab-green" onclick="changeStaffRole('${s.entityId}','${s.id}','secondary_admin')">↑ Make Secondary Admin</button>`
           }
           <button class="ab ab-red" onclick="removeStaff('${s.entityId}','${s.id}','${s.name}')">Remove</button>
         </div>` : ''}
@@ -902,16 +875,13 @@ async function removeStaff(entityId, userId, name) {
 async function toggleSecondaryAdmin(userId, name, isCurrentlySecondary) {
   const newRole = isCurrentlySecondary ? 'staff' : 'secondary_admin';
   const label   = isCurrentlySecondary ? 'demoted to Staff' : 'promoted to Secondary Admin';
-  // Use SECURITY DEFINER RPC — RLS prevents admin from updating other users rows directly
-  const { data, error } = await sb.rpc('update_staff_role', {
-    p_staff_user_id: userId,
-    p_new_role:      newRole,
-    p_admin_id:      currentUser.id
-  });
-  if (error || data?.error) {
-    showToast('Error: ' + (error?.message || data?.error));
-    return;
-  }
+  // Update firm_role across all entities this staff member is in
+  const entityIds = allClients.map(c => c.entity_id);
+  const { error } = await sb.from('entity_members')
+    .update({ firm_role: newRole })
+    .eq('user_id', userId)
+    .in('entity_id', entityIds);
+  if (error) { showToast('Error: ' + error.message); return; }
   allStaff = await getFirmStaff(currentUser.id);
   renderStaffGrid();
   showToast(`✅ ${name} ${label}`);
